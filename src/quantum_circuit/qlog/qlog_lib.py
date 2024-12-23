@@ -6,6 +6,53 @@ FILE_PATH = os.path.dirname(os.path.realpath(__file__))
 QLOG_SO_FILE_PATH = str(FILE_PATH) + "/qlog_engine/qlog_engine.so"
 qlog_cross = ctypes.CDLL(QLOG_SO_FILE_PATH)
 
+qlog_gate_convert = {
+    "IDENTITY": 0,
+    "HADAMARD": 1,
+    "PAULIX": 2,
+    "PAULIY": 3,
+    "PAULIZ": 4,
+    "PHASE": 5,
+    "S": 6,
+    "SDG": 7,
+    "T": 8,
+    "TDG": 9,
+    "RZ": 10,
+    "RY": 11,
+    "RX": 12,
+    "SX": 13,
+    "SXDG": 14,
+    "U": 15,
+    "CX": 16,
+    "CH": 17,
+    "CY": 18,
+    "CZ": 19,
+    "CRX": 20,
+    "CRY": 21,
+    "CRZ": 22,
+    "CR1": 23,
+    "CCX": 24,
+    "QFT": 25,
+    "RCCX": 26,
+    "RC3X": 27,
+    "SWAP": 28,
+    "RXX": 29,
+    "RZZ": 30,
+    "CUSTOM": 31,
+    "CUSTOMCONTROLLED": 32,
+    "MULTI": 33,
+    "CUSTOMBLOCK": 34,
+    "CUSTOMALGORITHM": 35,
+}
+
+qlog_type_convert = {
+    "SINGLE": 0,
+    "CONTROLLED": 1,
+    "MULTI": 2,
+    "BLOCK": 3,
+    "ALGORITHM": 4,
+}
+
 
 class qlog_stats_def(ctypes.Structure):
     _fields_ = [("test", ctypes.c_int)]
@@ -16,47 +63,11 @@ class qlog_entry_stats_def(ctypes.Structure):
 
 
 class qg_entry_gate(IntEnum):
-    QLOG_ENTRY_GATE_IDENTITY = 0
-    QLOG_ENTRY_GATE_HADAMARD = 1
-    QLOG_ENTRY_GATE_PAULIX = 2
-    QLOG_ENTRY_GATE_PAULIY = 3
-    QLOG_ENTRY_GATE_PAULIZ = 4
-    QLOG_ENTRY_GATE_PHASE = 5
-    QLOG_ENTRY_GATE_S = 6
-    QLOG_ENTRY_GATE_SDG = 7
-    QLOG_ENTRY_GATE_T = 8
-    QLOG_ENTRY_GATE_TDG = 9
-    QLOG_ENTRY_GATE_RZ = 10
-    QLOG_ENTRY_GATE_RY = 11
-    QLOG_ENTRY_GATE_RX = 12
-    QLOG_ENTRY_GATE_SX = 13
-    QLOG_ENTRY_GATE_SXDG = 14
-    QLOG_ENTRY_GATE_U = 15
-    QLOG_ENTRY_GATE_CX = 16
-    QLOG_ENTRY_GATE_CH = 17
-    QLOG_ENTRY_GATE_CY = 18
-    QLOG_ENTRY_GATE_CZ = 19
-    QLOG_ENTRY_GATE_CRX = 20
-    QLOG_ENTRY_GATE_CRY = 21
-    QLOG_ENTRY_GATE_CRZ = 22
-    QLOG_ENTRY_GATE_CR1 = 23
-    QLOG_ENTRY_GATE_CCX = 24
-    QLOG_ENTRY_GATE_QFT = 25
-    QLOG_ENTRY_GATE_RCCX = 26
-    QLOG_ENTRY_GATE_RC3X = 27
-    QLOG_ENTRY_GATE_CUSTOM = 28
-    QLOG_ENTRY_GATE_CUSTOMCONTROLLED = 29
-    QLOG_ENTRY_GATE_MULTI = 30
-    QLOG_ENTRY_GATE_CUSTOMBLOCK = 31
-    QLOG_ENTRY_GATE_CUSTOMALGORITHM = 32
+    pass
 
 
 class qg_entry_type(IntEnum):
-    SINGLE = 0
-    CONTROLLED = 1
-    MULTI = 2
-    BLOCK = 3
-    ALGORITHM = 4
+    pass
 
 
 class qlog_append_res(IntEnum):
@@ -106,4 +117,7 @@ qlog_cross.qlog_optimize_set.restype = ctypes.POINTER(qlog_def)
 
 
 def convert_qubits_qlog_append(qubits_to_apply):
-    return (ctypes.c_uint8 * len(qubits_to_apply))(*qubits_to_apply)
+    return (ctypes.c_ubyte * len(qubits_to_apply))(*qubits_to_apply)
+
+
+qlog_cross.qlog_dump_content.argtypes = [ctypes.POINTER(qlog_def), ctypes.c_bool]

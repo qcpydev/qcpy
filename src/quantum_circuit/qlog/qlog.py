@@ -17,9 +17,9 @@ class QLog:
         qubits = convert_qubits_qlog_append(qubits)
         app_res = qlog_cross.qlog_append(self.qlog, qubits, num_qubits, gate_type, gate)
         if app_res == 1:
-            print("FULL")
+            print("insert user error here")
         elif app_res == 2:
-            print("RUH ROH")
+            print("insert internal error here")
 
     def clear(self) -> None:
         qlog_cross.qlog_clear(self.qlog)
@@ -29,3 +29,7 @@ class QLog:
 
     def optimize(self) -> None:
         self.qlog = qlog_cross.qlog_optimize_set(self.qlog)
+
+    def dump(self, verbose: bool = False) -> None:
+        qlog_cross.qlog_dump_content(self.qlog, verbose)
+        pass
