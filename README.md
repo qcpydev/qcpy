@@ -3,7 +3,9 @@
 # qcpy - A Quantum Computing Library for Python
 
 qcpy is an open source python library and collaborative project for flexible simulations and visualizations of quantum circuits. This library contains a set of tools to teach computer scientists about the emerging discipline of quantum computing and improve overall understanding.
+---
 [Join The Discord](https://discord.gg/dDwPhn6E)
+---
 You can download the package using pip:
 
 ```txt
