@@ -5,54 +5,6 @@
 #define MAX_QLOG_QUBITS (256)
 #define MATRIX_UNITARY_FORMAT (2)
 #define IS_QLOG_EMPTY(qlog) (qlog->qlog_size == EMPTY_QLOG)
-
-const char *gate_names[] = {
-  [QLOG_ENTRY_GATE_IDENTITY] = "IDENTITY",
-  [QLOG_ENTRY_GATE_HADAMARD] = "HADAMARD",
-  [QLOG_ENTRY_GATE_PAULIX] = "PAULIX",
-  [QLOG_ENTRY_GATE_PAULIY] = "PAULIY",
-  [QLOG_ENTRY_GATE_PAULIZ] = "PAULIZ",
-  [QLOG_ENTRY_GATE_PHASE] = "PHASE",
-  [QLOG_ENTRY_GATE_S] = "S",
-  [QLOG_ENTRY_GATE_SDG] = "SDG",
-  [QLOG_ENTRY_GATE_T] = "T",
-  [QLOG_ENTRY_GATE_TDG] = "TDG",
-  [QLOG_ENTRY_GATE_RZ] = "RZ",
-  [QLOG_ENTRY_GATE_RY] = "RY",
-  [QLOG_ENTRY_GATE_RX] = "RX",
-  [QLOG_ENTRY_GATE_SX] = "SX",
-  [QLOG_ENTRY_GATE_SXDG] = "SXDG",
-  [QLOG_ENTRY_GATE_U] = "U",
-  [QLOG_ENTRY_GATE_CX] = "CX",
-  [QLOG_ENTRY_GATE_CH] = "CH",
-  [QLOG_ENTRY_GATE_CY] = "CY",
-  [QLOG_ENTRY_GATE_CZ] = "CZ",
-  [QLOG_ENTRY_GATE_CRX] = "CRX",
-  [QLOG_ENTRY_GATE_CRY] = "CRY",
-  [QLOG_ENTRY_GATE_CRZ] = "CRZ",
-  [QLOG_ENTRY_GATE_CR1] = "CR1",
-  [QLOG_ENTRY_GATE_CCX] = "CCX",
-  [QLOG_ENTRY_GATE_QFT] = "QFT",
-  [QLOG_ENTRY_GATE_RCCX] = "RCCX",
-  [QLOG_ENTRY_GATE_RC3X] = "RC3X",
-  [QLOG_ENTRY_GATE_SWAP] = "SWAP",
-  [QLOG_ENTRY_GATE_RXX] = "RXX",
-  [QLOG_ENTRY_GATE_RZZ] = "RZZ",
-  [QLOG_ENTRY_GATE_CUSTOM] = "CUSTOM",
-  [QLOG_ENTRY_GATE_CUSTOMCONTROLLED] = "CUSTOMCONTROLLED",
-  [QLOG_ENTRY_GATE_MULTI] = "MULTI",
-  [QLOG_ENTRY_GATE_CUSTOMBLOCK] = "CUSTOMBLOCK",
-  [QLOG_ENTRY_GATE_CUSTOMALGORITHM] = "CUSTOMALGORITHM",
-};
-
-const char *gate_types[] = {
-  [QLOG_ENTRY_TYPE_SINGLE] = "SINGLE",
-  [QLOG_ENTRY_TYPE_CONTROLLED] = "CONTROLLED",
-  [QLOG_ENTRY_TYPE_MULTI] = "MULTI",
-  [QLOG_ENTRY_TYPE_BLOCK] = "BLOCK",
-  [QLOG_ENTRY_TYPE_ALGORITHM] = "ALGORITHM",
-};
-
 #define GATE_TYPE_TO_STRING (qlog_entry_gate) (gate_names[qlog_entry_gate])
 
 
@@ -152,6 +104,7 @@ struct qlog_entry_def* qlog_entry_init(uint8_t *qubits, uint8_t num_qubits, int 
   qlog_entry->qlog_entry_qubit_cnt = num_qubits;
   qlog_entry->qlog_entry_gate = gate;
   qlog_entry->qlog_entry_gate_type = type;
+  //qlog_entry->qlog_entry_gate_matrix = gate_matrix_init(num_qubits * 2);
   // set type via function to enum, handle if it does not exist
   // set gate name via function to enum, handle if it does not exist
   // set qlog_entry stat
@@ -167,11 +120,11 @@ void qlog_entry_delete(struct qlog_entry_def *qlog_entry) {
   return;
 }
 
-qlog_entry_gate qlog_entry_qg_name(struct qlog_entry_def *qlog_entry) {
+global_gate_name qlog_entry_qg_name(struct qlog_entry_def *qlog_entry) {
   return qlog_entry->qlog_entry_gate;
 }
 
-qlog_entry_type qlog_entry_qg_type(struct qlog_entry_def *qlog_entry) {
+global_gate_type qlog_entry_qg_type(struct qlog_entry_def *qlog_entry) {
   return qlog_entry->qlog_entry_gate_type;
 }
 
@@ -194,34 +147,4 @@ void qlog_entry_dump_content(struct qlog_entry_def *qlog_entry, bool verbose) {
   printf("%s, %s", get_qlog_entry_gate(qlog_entry), get_qlog_entry_gate_type(qlog_entry));
   printf(")");
   return;
-}
-
-struct gate_matrix_def* gate_matrix_init(uint8_t size, complex_64 **gate_matrix_gate) {
-  struct gate_matrix_def *gate_matrix;
-  gate_matrix->gate_matrix_size = size * 2;
-  gate_matrix->gate_matrix_gate = (complex_64**)malloc((gate_matrix->gate_matrix_size) * sizeof(complex_64));
-  if (!gate_matrix->gate_matrix_gate) {
-  }
-  memcpy(gate_matrix->gate_matrix_gate, gate_matrix_gate, gate_matrix->gate_matrix_size * sizeof(complex_64));
-  return gate_matrix;
-}
-
-void gate_matrix_delete(struct gate_matrix_def *gate_matrix) {
-  free(gate_matrix->gate_matrix_gate);
-  gate_matrix->gate_matrix_gate = NULL;
-  free(gate_matrix);
-  gate_matrix = NULL;
-  return;
-}
-
-uint8_t gate_matrix_get_size(struct gate_matrix_def *gate_matrix) {
-  return gate_matrix->gate_matrix_size;
-}
-
-const char* get_qlog_entry_gate(struct qlog_entry_def *qlog_entry) {
-  return gate_names[qlog_entry->qlog_entry_gate];
-}
-
-const char* get_qlog_entry_gate_type(struct qlog_entry_def *qlog_entry) {
-  return gate_types[qlog_entry->qlog_entry_gate_type];
 }

@@ -133,7 +133,6 @@ class QuantumCircuit:
         if isinstance(qubits_to_apply, int):
             qubits_to_apply = [qubits_to_apply]
         elif gate_type == "SINGLE":
-            print(qubits_to_apply)
             for i in range(len(qubits_to_apply)):
                 self.__add_qlog_item__(qubits_to_apply[i], gate_name, gate_type)
             return
