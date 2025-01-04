@@ -1,6 +1,7 @@
 from .qlog_lib import qlog_cross, convert_qubits_qlog_append
 import numpy as np
 
+
 class QLog:
     def __init__(self, qubits: int) -> None:
         self.qubits = qubits
@@ -13,14 +14,18 @@ class QLog:
     def end(self) -> int:
         return qlog_cross.qlog_end(self.qlog)
 
-    def append(self, qubits, num_qubits: int, gate_type, gate) -> None:
-        arr = np.array([[1+0j, 0+0j], [0+0j, 1+0j]], dtype=np.complex64)
+    def append(self, qubits, num_qubits: int, gate_type: int, gate: int) -> None:
         qubits = convert_qubits_qlog_append(qubits)
-        app_res = qlog_cross.qlog_append(self.qlog, qubits, num_qubits, gate_type, gate, arr)
+        app_res = qlog_cross.qlog_append(self.qlog, qubits, num_qubits, gate_type, gate)
         if app_res == 1:
             print("insert user error here")
         elif app_res == 2:
             print("insert internal error here")
+
+    def append_custom(
+        self, qubits, num_qubits: int, gate_type: int, gate: np.array
+    ) -> None:
+        pass
 
     def clear(self) -> None:
         qlog_cross.qlog_clear(self.qlog)

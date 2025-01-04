@@ -1,6 +1,5 @@
-import subprocess
+from ..global_types import global_lib
 from .qlog.qlog import QLog
-from .qlog.qlog_lib import qlog_gate_convert, qlog_type_convert
 import numpy as np
 from ..quantum_gate import (
     hadamard,
@@ -136,8 +135,8 @@ class QuantumCircuit:
             for i in range(len(qubits_to_apply)):
                 self.__add_qlog_item__(qubits_to_apply[i], gate_name, gate_type)
             return
-        gate_val = qlog_gate_convert[gate_name]
-        type_val = qlog_type_convert[gate_type]
+        gate_val = global_lib.global_gate_convert[gate_name]
+        type_val = global_lib.global_type_convert[gate_type]
         num_qubits = len(qubits_to_apply)
         self.qlog.append(qubits_to_apply, num_qubits, type_val, gate_val)
 

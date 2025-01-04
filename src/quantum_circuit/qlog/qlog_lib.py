@@ -3,55 +3,8 @@ import os
 from enum import IntEnum
 
 FILE_PATH = os.path.dirname(os.path.realpath(__file__))
-QLOG_SO_FILE_PATH = str(FILE_PATH) + "/qlog_engine/qlog_engine.so"
-qlog_cross = ctypes.CDLL(QLOG_SO_FILE_PATH)
-
-qlog_gate_convert = {
-    "IDENTITY": 0,
-    "HADAMARD": 1,
-    "PAULIX": 2,
-    "PAULIY": 3,
-    "PAULIZ": 4,
-    "PHASE": 5,
-    "S": 6,
-    "SDG": 7,
-    "T": 8,
-    "TDG": 9,
-    "RZ": 10,
-    "RY": 11,
-    "RX": 12,
-    "SX": 13,
-    "SXDG": 14,
-    "U": 15,
-    "CX": 16,
-    "CH": 17,
-    "CY": 18,
-    "CZ": 19,
-    "CRX": 20,
-    "CRY": 21,
-    "CRZ": 22,
-    "CR1": 23,
-    "CCX": 24,
-    "QFT": 25,
-    "RCCX": 26,
-    "RC3X": 27,
-    "SWAP": 28,
-    "RXX": 29,
-    "RZZ": 30,
-    "CUSTOM": 31,
-    "CUSTOMCONTROLLED": 32,
-    "MULTI": 33,
-    "CUSTOMBLOCK": 34,
-    "CUSTOMALGORITHM": 35,
-}
-
-qlog_type_convert = {
-    "SINGLE": 0,
-    "CONTROLLED": 1,
-    "MULTI": 2,
-    "BLOCK": 3,
-    "ALGORITHM": 4,
-}
+QLOG_BIN_FILE_PATH = str(FILE_PATH) + "qlog_engine.so"
+qlog_cross = ctypes.CDLL(QLOG_BIN_FILE_PATH)
 
 
 class qlog_stats_def(ctypes.Structure):
@@ -69,17 +22,17 @@ class qg_entry_gate(IntEnum):
 class qg_entry_type(IntEnum):
     pass
 
+
 class complex_64(ctypes.Structure):
-    _fields_ = [
-        ("real", ctypes.c_float),
-        ("imag", ctypes.c_float)
-    ]
+    _fields_ = [("real", ctypes.c_float), ("imag", ctypes.c_float)]
+
 
 class gate_matrix_def(ctypes.Structure):
     _fields_ = [
         ("gate_matrix_size", ctypes.c_uint8),
-        ("gate_matrix_gate", ctypes.POINTER(ctypes.POINTER(complex_64)))
+        ("gate_matrix_gate", ctypes.POINTER(ctypes.POINTER(complex_64))),
     ]
+
 
 class qlog_append_res(IntEnum):
     QLOG_APPEND_SUCCESS = 0
@@ -105,10 +58,14 @@ class qlog_def(ctypes.Structure):
         ("qlog_stat", qlog_stats_def),
     ]
 
+
 class complex_matrix(ctypes.Structure):
-    _fields_ = [("matrix", ctypes.POINTER(complex_64)),
-                ("rows", ctypes.c_int),
-                ("cols", ctypes.c_int)]
+    _fields_ = [
+        ("matrix", ctypes.POINTER(complex_64)),
+        ("rows", ctypes.c_int),
+        ("cols", ctypes.c_int),
+    ]
+
 
 qlog_cross.qlog_init.argtypes = [ctypes.c_uint8]
 qlog_cross.qlog_init.restype = ctypes.POINTER(qlog_def)
@@ -124,7 +81,7 @@ qlog_cross.qlog_append.argtypes = [
     ctypes.c_uint8,
     ctypes.c_int,
     ctypes.c_int,
-    ctypes.POINTER(ctypes.POINTER(complex_64))
+    ctypes.POINTER(ctypes.POINTER(complex_64)),
 ]
 qlog_cross.qlog_append.restype = qlog_append_res
 

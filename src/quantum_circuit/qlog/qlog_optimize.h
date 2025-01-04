@@ -41,6 +41,5 @@ void qlog_optimize_remove_duplicate_gates(struct qlog_def* qlog, struct qlog_def
 void qlog_optimize_remove_redundant_gates(struct qlog_def* qlog, struct qlog_def* optimized_qlog, qlog_optimize_def* qlog_optimize);
 struct qlog_def* qlog_optimize_set(struct qlog_def* qlog);
 // To be imported from quantum gates:
-void 
 
 

@@ -47,15 +47,25 @@ const char *global_gate_types[] = {
   [GLOBAL_TYPE_ALGORITHM] = "ALGORITHM",
 };
 
-struct global_matrix_def* global_matrix_init(int rows, int cols, global_comp_val_def **matrix) {
-  return NULL;
-}
-
-global_matrix_del_res global_matrix_delete(struct global_matrix_def *gate_matrix) {
+global_matrix_del_res global_matrix_delete(struct global_matrix_def **gate_matrix) {
   return GLOBAL_MATRIX_DEL_SUCCESS; 
 }
 
-global_comp_val_def** global_matrix_convert() {
-  return NULL;
-}  
+global_matrix_def** global_matrix_alloc(int size) {
+  global_matrix_def **matrix = (global_matrix_def **)malloc(size * sizeof(global_matrix_def));
+  for (int i = 0; i < size; ++i) {
+    matrix[i] = (global_matrix_def *)malloc(size * sizeof(global_matrix_def));
+  }
+  return matrix;
+}
 
+struct global_matrix_def** global_matrix_zeroed(int size) {
+  struct global_matrix_def** matrix = global_matrix_alloc(size);
+  for (int i = 0; i < size; ++i) {
+    for (int j = 0; j < size; ++j) {
+      matrix[i][j].real = 0;
+      matrix[i][j].imag = 0;
+    }
+  }
+  return matrix;
+}

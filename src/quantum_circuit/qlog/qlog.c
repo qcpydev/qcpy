@@ -104,6 +104,7 @@ struct qlog_entry_def* qlog_entry_init(uint8_t *qubits, uint8_t num_qubits, int 
   qlog_entry->qlog_entry_qubit_cnt = num_qubits;
   qlog_entry->qlog_entry_gate = gate;
   qlog_entry->qlog_entry_gate_type = type;
+  qlog_entry->qlog_quantum_gate = quantum_gate_get_gate(gate, 0, 0, 0);
   //qlog_entry->qlog_entry_gate_matrix = gate_matrix_init(num_qubits * 2);
   // set type via function to enum, handle if it does not exist
   // set gate name via function to enum, handle if it does not exist

@@ -5,7 +5,7 @@
 #include <stdbool.h>
 #include <assert.h>
 #include "qlog_stats.h"
-#include "../../global/global.h"
+#include "../../global_types/global.h"
 
 /*
  * In port functions/types:
@@ -38,8 +38,8 @@ typedef struct qlog_entry_def {
   uint8_t qlog_entry_qubit_cnt; // number of qubits
   global_gate_name qlog_entry_gate; // gate name 
   global_gate_type qlog_entry_gate_type; // gate type
-  struct gate_matrix_def *qlog_entry_gate_matrix; // gate matrix content
-  struct qlog_entry_stats_def qlog_entry_stat; // entry stats
+  struct quantum_gate_def* qlog_quantum_gate; // quantum gate
+  struct qlog_entry_stats_def* qlog_entry_stat; // entry stats
 } qlog_entry_def;
 
 struct qlog_def* qlog_init(uint8_t qubits);

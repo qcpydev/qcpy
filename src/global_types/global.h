@@ -59,16 +59,15 @@ typedef enum {
   GLOBAL_MATRIX_DEL_SUCCESS
 } global_matrix_del_res;
 
-typedef struct global_comp_val_def {
+typedef struct global_matrix_def {
   float16 real;
   float16 imag;
-} global_comp_val_def;
-
-typedef struct global_matrix_def {
-  uint8_t matrix_size;
-  struct global_comp_val_def **matrix;
 } global_matrix_def;
 
-struct global_matrix_def* global_matrix_init(int rows, int cols, global_comp_val_def **complex_arr);
-global_matrix_del_res global_matrix_delete(struct global_matrix_def *gate_matrix);
-struct global_comp_val_def** global_matrix_convert(); //how tf do you get a numpy array???? 
+typedef struct global_state_def {
+  struct global_matrix_def* state;
+} global_state_def;
+
+struct global_matrix_def** global_matrix_alloc(int size);
+global_matrix_del_res global_matrix_delete(struct global_matrix_def **gate_matrix);
+struct global_matrix_def** global_matrix_zeroed(int size);
