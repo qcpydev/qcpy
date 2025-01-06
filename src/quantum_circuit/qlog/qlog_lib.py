@@ -3,7 +3,9 @@ import os
 from enum import IntEnum
 
 FILE_PATH = os.path.dirname(os.path.realpath(__file__))
-QLOG_BIN_FILE_PATH = str(FILE_PATH) + "qlog_engine.so"
+QLOG_BIN_FILE_PATH = (
+    str(os.path.abspath(os.path.join(FILE_PATH, os.pardir, os.pardir))) + "/core.so"
+)
 qlog_cross = ctypes.CDLL(QLOG_BIN_FILE_PATH)
 
 
@@ -21,17 +23,6 @@ class qg_entry_gate(IntEnum):
 
 class qg_entry_type(IntEnum):
     pass
-
-
-class complex_64(ctypes.Structure):
-    _fields_ = [("real", ctypes.c_float), ("imag", ctypes.c_float)]
-
-
-class gate_matrix_def(ctypes.Structure):
-    _fields_ = [
-        ("gate_matrix_size", ctypes.c_uint8),
-        ("gate_matrix_gate", ctypes.POINTER(ctypes.POINTER(complex_64))),
-    ]
 
 
 class qlog_append_res(IntEnum):
@@ -59,14 +50,6 @@ class qlog_def(ctypes.Structure):
     ]
 
 
-class complex_matrix(ctypes.Structure):
-    _fields_ = [
-        ("matrix", ctypes.POINTER(complex_64)),
-        ("rows", ctypes.c_int),
-        ("cols", ctypes.c_int),
-    ]
-
-
 qlog_cross.qlog_init.argtypes = [ctypes.c_uint8]
 qlog_cross.qlog_init.restype = ctypes.POINTER(qlog_def)
 
@@ -81,7 +64,6 @@ qlog_cross.qlog_append.argtypes = [
     ctypes.c_uint8,
     ctypes.c_int,
     ctypes.c_int,
-    ctypes.POINTER(ctypes.POINTER(complex_64)),
 ]
 qlog_cross.qlog_append.restype = qlog_append_res
 

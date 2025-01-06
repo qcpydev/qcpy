@@ -30,29 +30,24 @@ const qg_func qg_init_functions[] = {
 }; 
 
 struct quantum_gate_def* quantum_gate_get_gate(int qg_name, float theta, float phi, float lambda) {
-  if (qg_name < GLOBAL_GATE_IDENTITY || qg_name > GLOBAL_GATE_RZZ) {
+  if (!QG_HAS_PHI_PARAMS(qg_name) || !QG_HAS_NO_PARAMS(qg_name) || !QG_HAS_THETA_PARAMS(qg_name) || !QG_HAS_LAMBDA_PARAMS(qg_name)) {
     return NULL;
   }
   struct quantum_gate_params_def* qg_params = malloc(sizeof(quantum_gate_params_def));
-  if (QG_HAS_NO_PARAMS(qg_name)) {
-    qg_params = NULL;
+  if (QG_HAS_THETA_PARAMS(qg_name)) {
+    qg_params->theta = theta;
+    qg_params->has_theta = true;
   }
-  else {
-    if (QG_HAS_THETA_PARAMS(qg_name)) {
-      qg_params->theta = theta;
-      qg_params->has_theta = true;
-    }
-    if (QG_HAS_PHI_PARAMS(qg_name)) {
-      qg_params->phi = phi;
-      qg_params->has_phi = true;
-    }
-    if (QG_HAS_LAMBDA_PARAMS(qg_name)) {
-      qg_params->lambda = lambda;
-      qg_params->lambda = true;
-    }
+  if (QG_HAS_PHI_PARAMS(qg_name)) {
+    qg_params->phi = phi;
+    qg_params->has_phi = true;
+  }
+  if (QG_HAS_LAMBDA_PARAMS(qg_name)) {
+    qg_params->lambda = lambda;
+    qg_params->lambda = true;
   }
   struct quantum_gate_def* gate = qg_init_functions[qg_name](qg_params);
-  if (!gate) {
+  if (gate == NULL) {
     printf("INTERNAL ERROR: on gate %d \n", qg_name);
     exit(1);
   }
@@ -82,9 +77,6 @@ struct quantum_gate_def* quantum_gate_identity(struct quantum_gate_params_def* q
   if (!qg_params) {
     return NULL;
   }
-  if (QG_HAS_ANY_SET_PARAMS(qg_params)) {
-    return NULL;
-  }
   struct global_matrix_def** matrix = global_matrix_zeroed(QG_SINGLE_GATE_SIZE);
   if (!matrix) {
     return NULL;
@@ -98,9 +90,6 @@ struct quantum_gate_def* quantum_gate_hadamard(struct quantum_gate_params_def* q
   if (!qg_params) {
     return NULL;
   }
-  if (QG_HAS_ANY_SET_PARAMS(qg_params)) {
-    return NULL; 
-  }
   struct global_matrix_def** matrix = global_matrix_alloc(QG_SINGLE_GATE_SIZE);
   matrix[0][0].real = 1 / sqrt(2);
   matrix[0][0].imag = 0;
@@ -108,15 +97,12 @@ struct quantum_gate_def* quantum_gate_hadamard(struct quantum_gate_params_def* q
   matrix[0][1].imag = 0;
   matrix[1][0].real = 1 / sqrt(2);
   matrix[1][0].imag = 0;
-  matrix[1][1].real = 1 / sqrt(2);
+  matrix[1][1].real = -(1 / sqrt(2));
   return quantum_gate_init(QG_SINGLE_GATE_SIZE, GLOBAL_GATE_HADAMARD, GLOBAL_TYPE_SINGLE, matrix, qg_params);
 }
 
 struct quantum_gate_def* quantum_gate_paulix(struct quantum_gate_params_def* qg_params) {
   if (!qg_params) {
-    return NULL;
-  }
-  if (QG_HAS_ANY_SET_PARAMS(qg_params)) {
     return NULL;
   }
   struct global_matrix_def** matrix = global_matrix_zeroed(QG_SINGLE_GATE_SIZE);
@@ -129,9 +115,6 @@ struct quantum_gate_def* quantum_gate_pauliz(struct quantum_gate_params_def* qg_
   if (!qg_params) {
     return NULL;
   }
-  if (QG_HAS_ANY_SET_PARAMS(qg_params)) {
-    return NULL;
-  }
   struct global_matrix_def** matrix = global_matrix_zeroed(QG_SINGLE_GATE_SIZE);
   matrix[0][0].real = 1;
   matrix[1][1].real = -1;
@@ -140,9 +123,6 @@ struct quantum_gate_def* quantum_gate_pauliz(struct quantum_gate_params_def* qg_
 
 struct quantum_gate_def* quantum_gate_pauliy(struct quantum_gate_params_def* qg_params) {
   if (!qg_params) {
-    return NULL;
-  }
-  if (QG_HAS_ANY_SET_PARAMS(qg_params)) {
     return NULL;
   }
   struct global_matrix_def** matrix = global_matrix_zeroed(QG_SINGLE_GATE_SIZE);
@@ -155,9 +135,6 @@ struct quantum_gate_def* quantum_gate_p(struct quantum_gate_params_def* qg_param
   if (!qg_params) {
     return NULL;
   }
-  if (!QG_HAS_THETA_SET_PARAMS(qg_params)) {
-    return NULL;
-  }
   struct global_matrix_def** matrix = global_matrix_zeroed(QG_SINGLE_GATE_SIZE);
   matrix[0][0].real = 1;
   matrix[1][1].imag = qg_params->theta;
@@ -166,9 +143,6 @@ struct quantum_gate_def* quantum_gate_p(struct quantum_gate_params_def* qg_param
 
 struct quantum_gate_def* quantum_gate_s(struct quantum_gate_params_def* qg_params) {
   if (!qg_params) {
-    return NULL;
-  }
-  if (QG_HAS_ANY_SET_PARAMS(qg_params)) {
     return NULL;
   }
   struct global_matrix_def** matrix = global_matrix_zeroed(QG_SINGLE_GATE_SIZE);
@@ -181,9 +155,6 @@ struct quantum_gate_def* quantum_gate_sdg(struct quantum_gate_params_def* qg_par
   if (!qg_params) {
     return NULL;
   }
-  if (QG_HAS_ANY_SET_PARAMS(qg_params)) {
-    return NULL;
-  }
   struct global_matrix_def** matrix = global_matrix_zeroed(QG_SINGLE_GATE_SIZE);
   matrix[0][0].real = 1;
   matrix[1][1].imag = -1;
@@ -192,9 +163,6 @@ struct quantum_gate_def* quantum_gate_sdg(struct quantum_gate_params_def* qg_par
 
 struct quantum_gate_def* quantum_gate_t(struct quantum_gate_params_def* qg_params) {
   if (!qg_params) {
-    return NULL;
-  }
-  if (QG_HAS_ANY_SET_PARAMS(qg_params)) {
     return NULL;
   }
   struct global_matrix_def** matrix = global_matrix_zeroed(QG_SINGLE_GATE_SIZE);
@@ -207,9 +175,6 @@ struct quantum_gate_def* quantum_gate_tdg(struct quantum_gate_params_def* qg_par
   if (!qg_params) {
     return NULL;
   }
-  if (QG_HAS_ANY_SET_PARAMS(qg_params)) {
-    return NULL;
-  }
   struct global_matrix_def** matrix = global_matrix_zeroed(QG_SINGLE_GATE_SIZE);
   matrix[0][0].real = 1;
   matrix[1][1].imag = exp((-1 * M_PI) / 4);
@@ -220,9 +185,6 @@ struct quantum_gate_def* quantum_gate_rz(struct quantum_gate_params_def* qg_para
   if (!qg_params) {
     return NULL;
   }
-  if (!QG_HAS_THETA_SET_PARAMS(qg_params)) {
-    return NULL;
-  }
   struct global_matrix_def** matrix = global_matrix_zeroed(QG_SINGLE_GATE_SIZE);
   matrix[0][0].imag = exp(-1 * (qg_params->theta / 2));
   matrix[1][1].imag = exp(1j * (qg_params->theta / 2));
@@ -231,9 +193,6 @@ struct quantum_gate_def* quantum_gate_rz(struct quantum_gate_params_def* qg_para
 
 struct quantum_gate_def* quantum_gate_rx(struct quantum_gate_params_def* qg_params) {
   if (!qg_params) {
-    return NULL;
-  }
-  if (!QG_HAS_THETA_SET_PARAMS(qg_params)) {
     return NULL;
   }
   struct global_matrix_def** matrix = global_matrix_alloc(QG_SINGLE_GATE_SIZE);
@@ -252,9 +211,6 @@ struct quantum_gate_def* quantum_gate_ry(struct quantum_gate_params_def* qg_para
   if (!qg_params) {
     return NULL;
   }
-  if (!QG_HAS_THETA_SET_PARAMS(qg_params)) {
-    return NULL;
-  }
   struct global_matrix_def** matrix = global_matrix_alloc(QG_SINGLE_GATE_SIZE);
   matrix[0][0].real = cos(qg_params->theta);
   matrix[0][0].imag = 0;
@@ -269,9 +225,6 @@ struct quantum_gate_def* quantum_gate_ry(struct quantum_gate_params_def* qg_para
 
 struct quantum_gate_def* quantum_gate_sx(struct quantum_gate_params_def* qg_params) {
   if (!qg_params) {
-    return NULL;
-  }
-  if (QG_HAS_ANY_SET_PARAMS(qg_params)) {
     return NULL;
   }
   struct global_matrix_def** matrix = global_matrix_alloc(QG_SINGLE_GATE_SIZE);
@@ -290,9 +243,6 @@ struct quantum_gate_def* quantum_gate_sxdg(struct quantum_gate_params_def* qg_pa
   if (!qg_params) {
     return NULL;
   }
-  if (QG_HAS_ANY_SET_PARAMS(qg_params)) {
-    return NULL;
-  }
   struct global_matrix_def** matrix = global_matrix_alloc(QG_SINGLE_GATE_SIZE);
   matrix[0][0].real = 0.5;
   matrix[0][0].imag = -0.5;
@@ -307,9 +257,6 @@ struct quantum_gate_def* quantum_gate_sxdg(struct quantum_gate_params_def* qg_pa
 
 struct quantum_gate_def* quantum_gate_u(struct quantum_gate_params_def* qg_params) {
   if(!qg_params) {
-    return NULL;
-  }
-  if (!QG_HAS_ALL_SET_PARAMS(qg_params)) {
     return NULL;
   }
   struct global_matrix_def** matrix = global_matrix_alloc(QG_SINGLE_GATE_SIZE);

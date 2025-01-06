@@ -2,6 +2,8 @@ import ctypes
 import os
 from enum import IntEnum
 
+FILE_PATH = os.path.dirname(os.path.realpath(__file__))
+GLOBAL_BIN_FILE_PATH = str(FILE_PATH) + "/global.so"
 global_gate_convert = {
     "IDENTITY": 0,
     "HADAMARD": 1,

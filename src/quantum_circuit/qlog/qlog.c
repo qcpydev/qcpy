@@ -1,6 +1,6 @@
 #include "qlog.h"
 
-#define MAX_QLOG_LENGTH (5000)
+#define MAX_QLOG_LENGTH (10000)
 #define EMPTY_QLOG (MAX_QLOG_LENGTH + 1000)
 #define MAX_QLOG_QUBITS (256)
 #define MATRIX_UNITARY_FORMAT (2)
@@ -148,4 +148,12 @@ void qlog_entry_dump_content(struct qlog_entry_def *qlog_entry, bool verbose) {
   printf("%s, %s", get_qlog_entry_gate(qlog_entry), get_qlog_entry_gate_type(qlog_entry));
   printf(")");
   return;
+}
+
+const char* get_qlog_entry_gate(struct qlog_entry_def *qlog_entry) {
+  return global_get_gate_name(qlog_entry->qlog_entry_gate);
+}
+
+const char* get_qlog_entry_gate_type(struct qlog_entry_def *qlog_entry) {
+  return global_get_gate_type(qlog_entry->qlog_entry_gate_type);
 }

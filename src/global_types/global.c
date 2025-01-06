@@ -69,3 +69,11 @@ struct global_matrix_def** global_matrix_zeroed(int size) {
   }
   return matrix;
 }
+
+const char* global_get_gate_name(int gate) {
+  return global_gate_names[gate];
+}
+
+const char* global_get_gate_type(int type) {
+  return global_gate_types[type];
+}

@@ -63,13 +63,13 @@ void qlog_optimize_expand_rzz(struct qlog_def* qlog, struct qlog_def* optimized_
 void qlog_optimize_remove_identity_gates(struct qlog_def* qlog, struct qlog_def* optimized_qlog, struct qlog_optimize_def* qlog_optimize) {
   for (uint16_t i = 0; i < qlog->qlog_size; ++i) {
     qlog_entry_def* qlog_entry = qlog->qlog_entries[i];
-    if (qlog_entry->qlog_entry_gate != QLOG_ENTRY_GATE_IDENTITY) {
+    if (qlog_entry->qlog_entry_gate != GLOBAL_GATE_IDENTITY) {
       qlog_optimize->gate_removed_cnt += 1;
       qlog_append_res append_res = qlog_append(optimized_qlog, 
                                                qlog_entry->qlog_entry_qubits,  
                                                qlog_entry->qlog_entry_qubit_cnt, 
                                                qlog_entry->qlog_entry_gate_type, 
-                                               qlog_entry->qlog_entry_gate, NULL);
+                                               qlog_entry->qlog_entry_gate);
     }
   }
 }

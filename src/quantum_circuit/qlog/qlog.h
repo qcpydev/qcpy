@@ -5,7 +5,7 @@
 #include <stdbool.h>
 #include <assert.h>
 #include "qlog_stats.h"
-#include "../../global_types/global.h"
+#include "../../quantum_gate/quantum_gate.h"
 
 /*
  * In port functions/types:

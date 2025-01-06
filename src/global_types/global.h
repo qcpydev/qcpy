@@ -1,9 +1,8 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <arm_fp16.h>
 
-typedef __fp16 float16;
+typedef float float16; // need to change to own/library float16
 
 typedef enum {
   GLOBAL_GATE_IDENTITY,
@@ -71,3 +70,5 @@ typedef struct global_state_def {
 struct global_matrix_def** global_matrix_alloc(int size);
 global_matrix_del_res global_matrix_delete(struct global_matrix_def **gate_matrix);
 struct global_matrix_def** global_matrix_zeroed(int size);
+const char* global_get_gate_name(int gate);
+const char* global_get_gate_type(int type);
