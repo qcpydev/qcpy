@@ -1,6 +1,6 @@
 import subprocess
+from ..global_types import global_lib
 from .qlog.qlog import QLog
-from .qlog.qlog_lib import qlog_gate_convert, qlog_type_convert
 import numpy as np
 from ..quantum_gate import (
     hadamard,
@@ -133,12 +133,11 @@ class QuantumCircuit:
         if isinstance(qubits_to_apply, int):
             qubits_to_apply = [qubits_to_apply]
         elif gate_type == "SINGLE":
-            print(qubits_to_apply)
             for i in range(len(qubits_to_apply)):
                 self.__add_qlog_item__(qubits_to_apply[i], gate_name, gate_type)
             return
-        gate_val = qlog_gate_convert[gate_name]
-        type_val = qlog_type_convert[gate_type]
+        gate_val = global_lib.global_gate_convert[gate_name]
+        type_val = global_lib.global_type_convert[gate_type]
         num_qubits = len(qubits_to_apply)
         self.qlog.append(qubits_to_apply, num_qubits, type_val, gate_val)
 
@@ -176,7 +175,7 @@ class QuantumCircuit:
         Args:
             qubits_to_apply (int, arr[int]): qubits to apply the gate to.
         """
-        self.calculator.pass_single_gate(qubits_to_apply, identity())
+        # self.calculator.pass_single_gate(qubits_to_apply, identity())
         self.__add_single_drawing__(qubits_to_apply, "I")
         self.__add_qlog_item__(qubits_to_apply, "IDENTITY", "SINGLE")
 
