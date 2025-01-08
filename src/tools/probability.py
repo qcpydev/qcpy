@@ -40,7 +40,5 @@ def probability(
         probability = abs(square(quantum_state[show_bit]))
     if show_percent:
         probability = multiply(probability, 100)
-    if sum(probability) != float(100):
-        raise InvalidProbability("Probability is invalid and is not equal to 100%")
-
-    return around(probability, decimals=round)
+    output = around(probability, decimals=round)
+    return output

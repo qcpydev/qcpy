@@ -47,7 +47,16 @@ const char *global_gate_types[] = {
   [GLOBAL_TYPE_ALGORITHM] = "ALGORITHM",
 };
 
-global_matrix_del_res global_matrix_delete(struct global_matrix_def **gate_matrix) {
+global_matrix_del_res global_matrix_delete(struct global_matrix_def **gate_matrix, uint16_t size) {
+  if (!gate_matrix) {
+    return GLOBAL_MATRIX_DEL_BAD_VALUE_ERR;
+  }
+  for (uint16_t i = 0; i < size; ++i) {
+      free(gate_matrix[i]);
+      gate_matrix[i] = NULL; 
+  }
+  free(gate_matrix);
+  gate_matrix = NULL;
   return GLOBAL_MATRIX_DEL_SUCCESS; 
 }
 
