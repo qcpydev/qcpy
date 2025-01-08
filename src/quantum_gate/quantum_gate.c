@@ -71,6 +71,12 @@ void quantum_gate_delete(struct quantum_gate_def* quantum_gate) {
   if (!quantum_gate) {
     return;
   }
+  global_matrix_delete(quantum_gate->quantum_gate_matrix, quantum_gate->quantum_gate_size);
+  free(quantum_gate->quantum_gate_params);
+  quantum_gate->quantum_gate_params = NULL;
+  free(quantum_gate);
+  quantum_gate = NULL;
+  return;
 }
 
 struct quantum_gate_def* quantum_gate_identity(struct quantum_gate_params_def* qg_params) {

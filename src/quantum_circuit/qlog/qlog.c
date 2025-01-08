@@ -26,9 +26,6 @@ struct qlog_def* qlog_init(uint8_t qubits) {
 }
 
 void qlog_delete(struct qlog_def* qlog) {
-  // free qlog_stat
-  // set qlog_stat to null;
-
   for (uint16_t i = 0; i < qlog->qlog_size; ++i) {
     qlog_entry_delete(qlog->qlog_entries[i]);
   }
@@ -105,10 +102,6 @@ struct qlog_entry_def* qlog_entry_init(uint8_t *qubits, uint8_t num_qubits, int 
   qlog_entry->qlog_entry_gate = gate;
   qlog_entry->qlog_entry_gate_type = type;
   qlog_entry->qlog_quantum_gate = quantum_gate_get_gate(gate, 0, 0, 0);
-  //qlog_entry->qlog_entry_gate_matrix = gate_matrix_init(num_qubits * 2);
-  // set type via function to enum, handle if it does not exist
-  // set gate name via function to enum, handle if it does not exist
-  // set qlog_entry stat
   return qlog_entry;
 }
 
@@ -117,7 +110,6 @@ void qlog_entry_delete(struct qlog_entry_def *qlog_entry) {
   qlog_entry->qlog_entry_qubits = NULL;
   free(qlog_entry);
   qlog_entry = NULL;
-  // set stats to null
   return;
 }
 

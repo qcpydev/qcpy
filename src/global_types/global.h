@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 
 typedef float float16; // need to change to own/library float16
 
@@ -68,7 +69,7 @@ typedef struct global_state_def {
 } global_state_def;
 
 struct global_matrix_def** global_matrix_alloc(int size);
-global_matrix_del_res global_matrix_delete(struct global_matrix_def **gate_matrix);
+global_matrix_del_res global_matrix_delete(struct global_matrix_def **gate_matrix, uint16_t size);
 struct global_matrix_def** global_matrix_zeroed(int size);
 const char* global_get_gate_name(int gate);
 const char* global_get_gate_type(int type);

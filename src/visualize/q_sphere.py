@@ -41,7 +41,17 @@ def q_sphere(
     prob_values = probability(quantumstate)
     phase_values = phaseangle(quantumstate)
     num_qubits = int(log2(len(prob_values)))
-    bucket_array = [0] * (num_qubits + 1)
+    bucket_array = [0.0] * (num_qubits + 1)
+    left = 0
+    right = num_qubits
+    while left < right:
+        binomial_coeff = math.comb(num_qubits, left)
+        inc_segment = 2 * pi / binomial_coeff
+        bucket_array[left] += binomial_coeff / inc_segment
+        bucket_array[right] += binomial_coeff / inc_segment * -1
+        left += 1
+        right -= 1
+    print(bucket_array)
     phi_values = linspace(0, pi, num_qubits + 1)
     for i in range(len(prob_values)):
         if prob_values[i] > 0:
@@ -55,7 +65,7 @@ def q_sphere(
             y = [0, sin(phi_values[bucket_index]) * sin(lat_segments)]
             z = [0, cos(phi_values[bucket_index])]
             ax.plot3D(x, y, z, color=colors(norm(phase_values[i])))
-            ax.scatter(x[1], y[1], z[1], s=5, color=colors(norm(phase_values[i])))
+            ax.scatter(x[1], y[1], z[1], color=colors(norm(phase_values[i])))
             ax.text(
                 x[1] * 1.15,
                 y[1] * 1.15,
