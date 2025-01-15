@@ -79,6 +79,23 @@ void quantum_gate_delete(struct quantum_gate_def* quantum_gate) {
   return;
 }
 
+bool quantum_gate_compare_params(struct quantum_gate_def* qg, struct quantum_gate_def* qg_to_compare) {
+  if (!qg && !qg_to_compare) {
+    return true;
+  }
+  if (!qg || !qg_to_compare) {
+    return false;
+  }
+  quantum_gate_params_def* qg_params = qg->quantum_gate_params;
+  quantum_gate_params_def* qg_comp_params = qg_to_compare->quantum_gate_params;
+  return ((qg_params->has_phi == qg_comp_params->has_phi) &&
+          (qg_params->has_theta == qg_comp_params->has_theta) &&
+          (qg_params->has_lambda == qg_comp_params->has_lambda) &&
+          (qg_params->phi == qg_comp_params->phi) &&
+          (qg_params->theta == qg_comp_params->theta) &&
+          (qg_params->lambda == qg_comp_params->lambda));
+}
+
 struct quantum_gate_def* quantum_gate_identity(struct quantum_gate_params_def* qg_params) {
   if (!qg_params) {
     return NULL;
