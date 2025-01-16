@@ -27,20 +27,32 @@ void quantum_gate_delete(struct quantum_gate_def *quantum_gate);
 global_matrix_def* quantum_gate_export();
 void quantum_gate_import();
 
-quantum_gate_def* quantum_gate_get_gate(int qg_name, float theta, float phi, float lambda);
-quantum_gate_def* quantum_gate_identity(struct quantum_gate_params_def* qg_params);
-quantum_gate_def* quantum_gate_hadamard(struct quantum_gate_params_def* qg_params);
-quantum_gate_def* quantum_gate_paulix(struct quantum_gate_params_def* qg_params);
-quantum_gate_def* quantum_gate_pauliz(struct quantum_gate_params_def* qg_params);
-quantum_gate_def* quantum_gate_pauliy(struct quantum_gate_params_def* qg_params);
-quantum_gate_def* quantum_gate_p(struct quantum_gate_params_def* qg_params);
-quantum_gate_def* quantum_gate_s(struct quantum_gate_params_def* qg_params);
-quantum_gate_def* quantum_gate_sdg(struct quantum_gate_params_def* qg_params);
-quantum_gate_def* quantum_gate_t(struct quantum_gate_params_def* qg_params);
-quantum_gate_def* quantum_gate_tdg(struct quantum_gate_params_def* qg_params);
-quantum_gate_def* quantum_gate_rz(struct quantum_gate_params_def* qg_params);
-quantum_gate_def* quantum_gate_ry(struct quantum_gate_params_def* qg_params);
-quantum_gate_def* quantum_gate_rx(struct quantum_gate_params_def* qg_params);
-quantum_gate_def* quantum_gate_sx(struct quantum_gate_params_def* qg_params);
-quantum_gate_def* quantum_gate_sxdg(struct quantum_gate_params_def* qg_params);
-quantum_gate_def* quantum_gate_u(struct quantum_gate_params_def* qg_params);
+struct quantum_gate_def* quantum_gate_get_gate(int qg_name, float theta, float phi, float lambda);
+struct quantum_gate_def* quantum_gate_identity(struct quantum_gate_params_def* qg_params);
+struct quantum_gate_def* quantum_gate_hadamard(struct quantum_gate_params_def* qg_params);
+struct quantum_gate_def* quantum_gate_paulix(struct quantum_gate_params_def* qg_params);
+struct quantum_gate_def* quantum_gate_pauliz(struct quantum_gate_params_def* qg_params);
+struct quantum_gate_def* quantum_gate_pauliy(struct quantum_gate_params_def* qg_params);
+struct quantum_gate_def* quantum_gate_p(struct quantum_gate_params_def* qg_params);
+struct quantum_gate_def* quantum_gate_s(struct quantum_gate_params_def* qg_params);
+struct quantum_gate_def* quantum_gate_sdg(struct quantum_gate_params_def* qg_params);
+struct quantum_gate_def* quantum_gate_t(struct quantum_gate_params_def* qg_params);
+struct quantum_gate_def* quantum_gate_tdg(struct quantum_gate_params_def* qg_params);
+struct quantum_gate_def* quantum_gate_rz(struct quantum_gate_params_def* qg_params);
+struct quantum_gate_def* quantum_gate_ry(struct quantum_gate_params_def* qg_params);
+struct quantum_gate_def* quantum_gate_rx(struct quantum_gate_params_def* qg_params);
+struct quantum_gate_def* quantum_gate_sx(struct quantum_gate_params_def* qg_params);
+struct quantum_gate_def* quantum_gate_sxdg(struct quantum_gate_params_def* qg_params);
+struct quantum_gate_def* quantum_gate_u(struct quantum_gate_params_def* qg_params);
+struct quantum_gate_def* quantum_gate_cx(struct quantum_gate_params_def* qg_params);
+struct quantum_gate_def* quantum_gate_ch(struct quantum_gate_params_def* qg_params);
+struct quantum_gate_def* quantum_gate_cy(struct quantum_gate_params_def* qg_params);
+struct quantum_gate_def* quantum_gate_cz(struct quantum_gate_params_def* qg_params);
+struct quantum_gate_def* quantum_gate_crx(struct quantum_gate_params_def* qg_params);
+struct quantum_gate_def* quantum_gate_cry(struct quantum_gate_params_def* qg_params);
+struct quantum_gate_def* quantum_gate_crz(struct quantum_gate_params_def* qg_params);
+struct quantum_gate_def* quantum_gate_cr1(struct quantum_gate_params_def* qg_params);
+
+
+
+

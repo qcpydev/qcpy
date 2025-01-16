@@ -175,7 +175,7 @@ class QuantumCircuit:
         Args:
             qubits_to_apply (int, arr[int]): qubits to apply the gate to.
         """
-        # self.calculator.pass_single_gate(qubits_to_apply, identity())
+        self.calculator.pass_single_gate(qubits_to_apply, identity())
         self.__add_single_drawing__(qubits_to_apply, "I")
         self.__add_qlog_item__(qubits_to_apply, "IDENTITY", "SINGLE")
 
