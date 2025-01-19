@@ -102,7 +102,7 @@ class QuantumCircuit:
         Returns:
             str: String output of the quantum circuit drawing.
         """
-        return self.circuit_drawing.make()
+        return self.circuit_drawing.make(self.qlog)
 
     def __len__(self) -> int:
         """Amount of possible states in the quantum circuit (2^num_qubits).

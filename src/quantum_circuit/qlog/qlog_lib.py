@@ -76,3 +76,9 @@ def convert_qubits_qlog_append(qubits_to_apply):
 
 
 qlog_cross.qlog_dump_content.argtypes = [ctypes.POINTER(qlog_def), ctypes.c_bool]
+
+qlog_cross.qlog_get_gate_names.argtypes = [ctypes.POINTER(qlog_def)]
+qlog_cross.qlog_get_gate_names.restype = ctypes.POINTER(ctypes.POINTER(ctypes.c_char))
+
+qlog_cross.qlog_get_gate_types.argtypes = [ctypes.POINTER(qlog_def)]
+qlog_cross.qlog_get_gate_types.restype = ctypes.POINTER(ctypes.POINTER(ctypes.c_char))

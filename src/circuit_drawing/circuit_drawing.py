@@ -12,6 +12,7 @@ from .drawings import (
     swap_point,
 )
 from .wire import Wire
+from ..quantum_circuit.qlog.qlog import QLog
 
 
 class CircuitDrawing:
@@ -194,11 +195,13 @@ class CircuitDrawing:
                 bottom[-1] += wire[item][counter + size * 2]
         return "".join(top) + "\n" + "".join(middle) + "\n" + "".join(bottom) + "\n"
 
-    def make(self) -> str:
+    def make(self, qlog) -> str:
         """Generates the entirety of the string to print.
         Returns:
             str: Combination of all qubit strings in a single string.
         """
+        qlog.get_types()
+        qlog.get_names()
         output = ""
         for i in range(len(self.circuit_queue)):
             output += self.make_wire(self.circuit_queue[i].content, i)

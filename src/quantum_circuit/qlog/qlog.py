@@ -38,3 +38,9 @@ class QLog:
 
     def dump(self, verbose: bool = False) -> None:
         qlog_cross.qlog_dump_content(self.qlog, verbose)
+        
+    def get_names(self) -> None:
+        qlog_cross.qlog_get_gate_names(self.qlog)
+    
+    def get_types(self) -> None:
+        qlog_cross.qlog_get_gate_types(self.qlog)
