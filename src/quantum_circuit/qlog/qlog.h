@@ -51,7 +51,8 @@ void qlog_clear();
 void qlog_dump_content(struct qlog_def *qlog, bool verbose);
 char** qlog_get_gate_names(struct qlog_def *qlog);
 char** qlog_get_gate_types(struct qlog_def *qlog);
-
+uint8_t** qlog_get_gate_qubits(struct qlog_def *qlog);
+uint8_t* qlog_get_entry_sizes(struct qlog_def *qlog);
 /*
  * Offshore functions/types
  * */

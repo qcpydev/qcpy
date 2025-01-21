@@ -56,13 +56,12 @@ global_matrix_del_res global_matrix_delete(struct global_matrix_def **gate_matri
       gate_matrix[i] = NULL; 
   }
   free(gate_matrix);
-  gate_matrix = NULL;
   return GLOBAL_MATRIX_DEL_SUCCESS; 
 }
 
 global_matrix_def** global_matrix_alloc(int size) {
   global_matrix_def **matrix = (global_matrix_def **)malloc(size * sizeof(global_matrix_def));
-  for (int i = 0; i < size; ++i) {
+  for (int i= 0; i < size; ++i) {
     matrix[i] = (global_matrix_def *)malloc(size * sizeof(global_matrix_def));
   }
   return matrix;
