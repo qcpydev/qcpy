@@ -45,7 +45,7 @@ typedef struct qlog_entry_def {
 struct qlog_def* qlog_init(uint8_t qubits);
 void qlog_delete(struct qlog_def *qlog);
 uint16_t qlog_size(struct qlog_def *qlog);
-qlog_append_res qlog_append(struct qlog_def *qlog, uint8_t *qubits, uint8_t num_qubits, int type, int gate);
+qlog_append_res qlog_append(struct qlog_def *qlog, uint8_t *qubits, uint8_t num_qubits, int type, int gate, float16 theta, float16 phi, float16 lambda);
 void qlog_print_content(struct qlog_def *qlog);
 void qlog_clear();
 void qlog_dump_content(struct qlog_def *qlog, bool verbose);
@@ -54,7 +54,7 @@ void qlog_dump_content(struct qlog_def *qlog, bool verbose);
  * Offshore functions/types
  * */
 
-struct qlog_entry_def* qlog_entry_init(uint8_t *qubits, uint8_t num_qubits, int type, int gate, uint8_t qlog_qubits);
+struct qlog_entry_def* qlog_entry_init(uint8_t *qubits, uint8_t num_qubits, int type, int gate, uint8_t qlog_qubits, float16 theta, float16 phi, float16 lambda);
 void qlog_entry_delete(struct qlog_entry_def *qlog_entry);
 global_gate_name qlog_entry_qg_name(struct qlog_entry_def *qlog_entry); 
 global_gate_type qlog_entry_qg_type(struct qlog_entry_def *qlog_entry);

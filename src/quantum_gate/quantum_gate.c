@@ -1,4 +1,5 @@
 #include "quantum_gate.h"
+#include <stdlib.h>
 
 #define QG_SINGLE_GATE_SIZE (2)
 #define QG_HAS_NO_PARAMS(qg_name) (!(QG_HAS_THETA_PARAMS(qg_name) || QG_HAS_PHI_PARAMS(qg_name) || QG_HAS_LAMBDA_PARAMS(qg_name)))
@@ -36,17 +37,23 @@ const qg_func qg_init_functions[] = {
   [GLOBAL_GATE_CRZ] = quantum_gate_crz,
   [GLOBAL_GATE_CRY] = quantum_gate_cry,
   [GLOBAL_GATE_CR1] = quantum_gate_cr1,
+  [GLOBAL_GATE_CSX] = quantum_gate_csx,
+  [GLOBAL_GATE_CSXDG] = quantum_gate_csxdg,
 }; 
 
-const qg_func qg_expand_init_functionss[] = {
-
-};
+struct quantum_gate_params_def* quantum_gate_params_zeroed() {
+  quantum_gate_params_def* quantum_gate_params_zero = (quantum_gate_params_def*)malloc(sizeof(quantum_gate_params_def));
+  quantum_gate_params_zero->has_phi = false;
+  quantum_gate_params_zero->has_theta = false;
+  quantum_gate_params_zero->has_lambda = false;
+  return quantum_gate_params_zero;
+}
 
 struct quantum_gate_def* quantum_gate_get_gate(int qg_name, float theta, float phi, float lambda) {
   if (!QG_HAS_PHI_PARAMS(qg_name) || !QG_HAS_NO_PARAMS(qg_name) || !QG_HAS_THETA_PARAMS(qg_name) || !QG_HAS_LAMBDA_PARAMS(qg_name)) {
     return NULL;
   }
-  struct quantum_gate_params_def* qg_params = malloc(sizeof(quantum_gate_params_def));
+  struct quantum_gate_params_def* qg_params = (quantum_gate_params_def*)malloc(sizeof(quantum_gate_params_def));
   if (QG_HAS_THETA_PARAMS(qg_name)) {
     qg_params->theta = theta;
     qg_params->has_theta = true;
@@ -339,7 +346,6 @@ struct quantum_gate_def* quantum_gate_cry(struct quantum_gate_params_def* qg_par
   return qg_cry;
 }
 
-
 struct quantum_gate_def* quantum_gate_cr1(struct quantum_gate_params_def* qg_params) {
   struct quantum_gate_def* qg_cr1 = quantum_gate_cr1(qg_params);
   qg_cr1->quantum_gate_name = GLOBAL_GATE_CR1;
@@ -347,3 +353,38 @@ struct quantum_gate_def* quantum_gate_cr1(struct quantum_gate_params_def* qg_par
   return qg_cr1;
 }
 
+struct quantum_gate_def* quantum_gate_csx(struct quantum_gate_params_def* qg_params) {
+  struct quantum_gate_def* qg_csx = quantum_gate_sx(qg_params);
+  qg_csx->quantum_gate_name = GLOBAL_GATE_CSX;
+  qg_csx->quantum_gate_type = GLOBAL_TYPE_CONTROLLED;
+  return qg_csx;
+}
+
+struct quantum_gate_def* quantum_gate_csxdg(struct quantum_gate_params_def* qg_params) {
+  struct quantum_gate_def* qg_csxdg = quantum_gate_sxdg(qg_params);
+  qg_csxdg->quantum_gate_name = GLOBAL_GATE_CSXDG;
+  qg_csxdg->quantum_gate_type = GLOBAL_TYPE_CONTROLLED;
+  return qg_csxdg;
+}
+
+struct quantum_gate_def* quantum_gate_braket_zero() {
+  struct global_matrix_def** matrix = global_matrix_alloc(QG_SINGLE_GATE_SIZE);
+  matrix[0][0].real = 1;
+  struct quantum_gate_params_def* params = quantum_gate_params_zeroed();
+  return quantum_gate_init(QG_SINGLE_GATE_SIZE, GLOBAL_GATE_CUSTOM, GLOBAL_TYPE_SINGLE, matrix, params);
+}
+
+struct quantum_gate_def* quantum_gate_braket_one() {
+  struct global_matrix_def** matrix = global_matrix_alloc(QG_SINGLE_GATE_SIZE);
+  matrix[1][1].real = 1;
+  struct quantum_gate_params_def* params = quantum_gate_params_zeroed();
+  return quantum_gate_init(QG_SINGLE_GATE_SIZE, GLOBAL_GATE_CUSTOM, GLOBAL_TYPE_SINGLE, matrix, params);
+}
+
+struct quantum_gate_def** quantum_gate_get_arr_identity_gates(uint16_t size) {
+  struct quantum_gate_def**  arr_identity_gate = (struct quantum_gate_def**)malloc(size * sizeof(quantum_gate_def*));
+  for (uint16_t i = 0; i < size; ++i) {
+    arr_identity_gate[i] = quantum_gate_get_gate(GLOBAL_GATE_IDENTITY, 0, 0, 0);
+  }
+  return arr_identity_gate;
+}

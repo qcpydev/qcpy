@@ -14,9 +14,20 @@ class QLog:
     def end(self) -> int:
         return qlog_cross.qlog_end(self.qlog)
 
-    def append(self, qubits, num_qubits: int, gate_type: int, gate: int) -> None:
+    def append(
+        self,
+        qubits,
+        num_qubits: int,
+        gate_type: int,
+        gate: int,
+        theta: float,
+        phi: float,
+        lmbda: float,
+    ) -> None:
         qubits = convert_qubits_qlog_append(qubits)
-        app_res = qlog_cross.qlog_append(self.qlog, qubits, num_qubits, gate_type, gate)
+        app_res = qlog_cross.qlog_append(
+            self.qlog, qubits, num_qubits, gate_type, gate, theta, phi, lmbda
+        )
         if app_res == 1:
             print("insert user error here")
         elif app_res == 2:

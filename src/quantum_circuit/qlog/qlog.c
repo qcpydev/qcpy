@@ -51,7 +51,7 @@ void qlog_clear(struct qlog_def *qlog) {
   return;
 }
 
-qlog_append_res qlog_append(struct qlog_def *qlog, uint8_t *qubits, uint8_t num_qubits, int type, int gate) {
+qlog_append_res qlog_append(struct qlog_def *qlog, uint8_t *qubits, uint8_t num_qubits, int type, int gate, float16 theta, float16 phi, float16 lambda) {
   if (!qlog) {
     return QLOG_APPEND_ERROR;
   }
@@ -61,7 +61,7 @@ qlog_append_res qlog_append(struct qlog_def *qlog, uint8_t *qubits, uint8_t num_
   if (qlog->qlog_size == EMPTY_QLOG) {
     qlog->qlog_size = 0;
   }
-  qlog->qlog_entries[qlog->qlog_size] = qlog_entry_init(qubits, num_qubits, type, gate, qlog->qlog_size);
+  qlog->qlog_entries[qlog->qlog_size] = qlog_entry_init(qubits, num_qubits, type, gate, qlog->qlog_size, theta, phi, lambda);
   if (!qlog->qlog_entries[qlog->qlog_size]) {
     return QLOG_APPEND_ERROR;
   }
@@ -88,7 +88,7 @@ void qlog_dump_content(struct qlog_def *qlog, bool verbose) {
   return;
 }
 
-struct qlog_entry_def* qlog_entry_init(uint8_t *qubits, uint8_t num_qubits, int type, int gate, uint8_t qlog_qubits) {
+struct qlog_entry_def* qlog_entry_init(uint8_t *qubits, uint8_t num_qubits, int type, int gate, uint8_t qlog_qubits, float16 theta, float16 phi, float16 lambda) {
   struct qlog_entry_def* qlog_entry = (struct qlog_entry_def*)malloc(sizeof(struct qlog_entry_def));
   if (!qlog_entry) {
     return NULL;
@@ -101,7 +101,7 @@ struct qlog_entry_def* qlog_entry_init(uint8_t *qubits, uint8_t num_qubits, int 
   qlog_entry->qlog_entry_qubit_cnt = num_qubits;
   qlog_entry->qlog_entry_gate = gate;
   qlog_entry->qlog_entry_gate_type = type;
-  qlog_entry->qlog_quantum_gate = quantum_gate_get_gate(gate, 0, 0, 0);
+  qlog_entry->qlog_quantum_gate = quantum_gate_get_gate(gate, theta, phi, lambda);
   return qlog_entry;
 }
 

@@ -128,18 +128,28 @@ class QuantumCircuit:
             self.circuit_drawing.insert_single(gate, qubits_to_apply)
 
     def __add_qlog_item__(
-        self, qubits_to_apply, gate_name: str, gate_type: str
+        self,
+        qubits_to_apply,
+        gate_name: str,
+        gate_type: str,
+        theta: float = 0,
+        phi: float = 0,
+        lmbda: float = 0,
     ) -> None:
+        gate_val = global_lib.global_gate_convert[gate_name]
+        type_val = global_lib.global_type_convert[gate_type]
         if isinstance(qubits_to_apply, int):
             qubits_to_apply = [qubits_to_apply]
         elif gate_type == "SINGLE":
             for i in range(len(qubits_to_apply)):
-                self.__add_qlog_item__(qubits_to_apply[i], gate_name, gate_type)
+                self.qlog.append(
+                    qubits_to_apply[i], num_qubits, type_val, gate_val, theta, phi, lmbda
+                )
             return
-        gate_val = global_lib.global_gate_convert[gate_name]
-        type_val = global_lib.global_type_convert[gate_type]
         num_qubits = len(qubits_to_apply)
-        self.qlog.append(qubits_to_apply, num_qubits, type_val, gate_val)
+        self.qlog.append(
+            qubits_to_apply, num_qubits, type_val, gate_val, theta, phi, lmbda
+        )
 
     def set(self, circuit) -> None:
         """Sets the current state to a given one.
@@ -222,7 +232,7 @@ class QuantumCircuit:
         """
         self.calculator.pass_single_gate(qubits_to_apply, phase(theta))
         self.__add_single_drawing__(qubits_to_apply, "P")
-        self.__add_qlog_item__(qubits_to_apply, "PHASE", "SINGLE")
+        self.__add_qlog_item__(qubits_to_apply, "PHASE", "SINGLE", theta=theta)
 
     def s(self, qubits_to_apply) -> None:
         """Use the S gate on the quantum circuit.
@@ -318,7 +328,9 @@ class QuantumCircuit:
         """
         self.calculator.pass_single_gate(qubits_to_apply, u(theta, phi, lmbda))
         self.__add_single_drawing__(qubits_to_apply, "U")
-        self.__add_qlog_item__(qubits_to_apply, "U", "SINGLE")
+        self.__add_qlog_item__(
+            qubits_to_apply, "U", "SINGLE", theta=theta, phi=phi, lmbda=lmbda
+        )
 
     def custom(self, qubits_to_apply, gate: np.array) -> None:
         """Insert a custom gate into the quantum circuit.
@@ -539,7 +551,7 @@ class QuantumCircuit:
         )
         self.calculator.pass_single_gate(qubit_two, hadamard())
         self.circuit_drawing.add_block("RXX", [qubit_one, qubit_two])
-        self.__add_qlog_item__([qubit_one, qubit_two], "RXX", "CONTROLLED")
+        self.__add_qlog_item__([qubit_one, qubit_two], "RXX", "CONTROLLED", lmbda=lmbda)
 
     def rzz(self, qubit_one: int, qubit_two: int, lmbda: float = np.pi / 2) -> None:
         """Insert a RZZ gate into the quantum circuit.
@@ -552,4 +564,4 @@ class QuantumCircuit:
         self.calculator.pass_single_gate(qubit_two, u(0, lmbda, 0))
         self.calculator.pass_multi_gate(qubit_one, qubit_two, paulix())
         self.circuit_drawing.add_block("RZZ", [qubit_one, qubit_two])
-        self.__add_qlog_item__([qubit_one, qubit_two], "RZZ", "CONTROLLED")
+        self.__add_qlog_item__([qubit_one, qubit_two], "RZZ", "CONTROLLED", lmbda=lmbda)

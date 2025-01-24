@@ -64,6 +64,9 @@ qlog_cross.qlog_append.argtypes = [
     ctypes.c_uint8,
     ctypes.c_int,
     ctypes.c_int,
+    ctypes.c_float,
+    ctypes.c_float,
+    ctypes.c_float
 ]
 qlog_cross.qlog_append.restype = qlog_append_res
 
