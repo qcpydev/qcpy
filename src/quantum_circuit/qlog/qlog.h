@@ -26,7 +26,7 @@ typedef struct qlog_def {
   uint16_t qlog_qubit_cnt; // number of qubits inside of the 
   uint16_t qlog_size; // number of entries in qlog
   struct qlog_entry_def **qlog_entries; // list of qlog_entry
-  struct qlog_stats_def qlog_stat; // qlog stats
+  struct qlog_stats_def* qlog_stat; // qlog stats
 } qlog_type;
 
 /*
@@ -49,9 +49,16 @@ qlog_append_res qlog_append(struct qlog_def *qlog, uint8_t *qubits, uint8_t num_
 void qlog_print_content(struct qlog_def *qlog);
 void qlog_clear();
 void qlog_dump_content(struct qlog_def *qlog, bool verbose);
+<<<<<<< HEAD
 bool qlog_compare_qlogs(struct qlog_def *qlog, struct qlog_def *qlog_to_compare);
 struct qlog_def* qlog_combine_qlogs(struct qlog_def *qlog, struct qlog_def *qlog_to_add);
 
+=======
+char** qlog_get_gate_names(struct qlog_def *qlog);
+char** qlog_get_gate_types(struct qlog_def *qlog);
+uint8_t** qlog_get_gate_qubits(struct qlog_def *qlog);
+uint8_t* qlog_get_entry_sizes(struct qlog_def *qlog);
+>>>>>>> main
 /*
  * Offshore functions/types
  * */

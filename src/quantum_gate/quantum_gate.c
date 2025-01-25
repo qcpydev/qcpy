@@ -1,13 +1,14 @@
 #include "quantum_gate.h"
 
+#define QG_SINGLE_GATE_SIZE (2)
 #define QG_HAS_NO_PARAMS(qg_name) (!(QG_HAS_THETA_PARAMS(qg_name) || QG_HAS_PHI_PARAMS(qg_name) || QG_HAS_LAMBDA_PARAMS(qg_name)))
 #define QG_HAS_THETA_PARAMS(qg_name) (qg_name == GLOBAL_GATE_PHASE || qg_name == GLOBAL_GATE_RZ || qg_name == GLOBAL_GATE_RX || qg_name == GLOBAL_GATE_RY || qg_name == GLOBAL_GATE_U)
 #define QG_HAS_LAMBDA_PARAMS(qg_name) (qg_name == GLOBAL_GATE_U)
 #define QG_HAS_PHI_PARAMS(qg_name) (qg_name == GLOBAL_GATE_U)
-#define QG_SINGLE_GATE_SIZE (2)
 #define QG_HAS_ANY_SET_PARAMS(qg_params) (qg_params->has_theta || qg_params->has_phi || qg_params->has_lambda)
 #define QG_HAS_ALL_SET_PARAMS(qg_params) (qg_params->has_theta && qg_params->has_phi && qg_params->has_lambda)
 #define QG_HAS_THETA_SET_PARAMS(qg_params) (qg_params->has_theta && !(qg_params->has_phi && qg_params->has_lambda))
+#define QG_IS_CONTROLLED(qg_name) (qg_name >= GLOBAL_GATE_CX && qg_name <= GLOBAL_GATE_CR1)
 
 typedef struct quantum_gate_def* (*qg_func)(struct quantum_gate_params_def* qg_params);
 const qg_func qg_init_functions[] = {
@@ -27,7 +28,19 @@ const qg_func qg_init_functions[] = {
   [GLOBAL_GATE_SX] = quantum_gate_sx,
   [GLOBAL_GATE_SXDG] = quantum_gate_sxdg,
   [GLOBAL_GATE_U] = quantum_gate_u,
+  [GLOBAL_GATE_CX] = quantum_gate_cx,
+  [GLOBAL_GATE_CY] = quantum_gate_cy,
+  [GLOBAL_GATE_CZ] = quantum_gate_cz,
+  [GLOBAL_GATE_CH] = quantum_gate_ch,
+  [GLOBAL_GATE_CRX] = quantum_gate_crx,
+  [GLOBAL_GATE_CRZ] = quantum_gate_crz,
+  [GLOBAL_GATE_CRY] = quantum_gate_cry,
+  [GLOBAL_GATE_CR1] = quantum_gate_cr1,
 }; 
+
+const qg_func qg_expand_init_functionss[] = {
+
+};
 
 struct quantum_gate_def* quantum_gate_get_gate(int qg_name, float theta, float phi, float lambda) {
   if (!QG_HAS_PHI_PARAMS(qg_name) || !QG_HAS_NO_PARAMS(qg_name) || !QG_HAS_THETA_PARAMS(qg_name) || !QG_HAS_LAMBDA_PARAMS(qg_name)) {
@@ -76,7 +89,6 @@ void quantum_gate_delete(struct quantum_gate_def* quantum_gate) {
   quantum_gate->quantum_gate_params = NULL;
   free(quantum_gate);
   quantum_gate = NULL;
-  return;
 }
 
 bool quantum_gate_compare_params(struct quantum_gate_def* qg, struct quantum_gate_def* qg_to_compare) {
@@ -133,6 +145,7 @@ struct quantum_gate_def* quantum_gate_paulix(struct quantum_gate_params_def* qg_
   matrix[1][0].real = 1;
   return quantum_gate_init(QG_SINGLE_GATE_SIZE, GLOBAL_GATE_PAULIX, GLOBAL_TYPE_SINGLE, matrix, qg_params);
 }
+
 
 struct quantum_gate_def* quantum_gate_pauliz(struct quantum_gate_params_def* qg_params) {
   if (!qg_params) {
@@ -293,3 +306,61 @@ struct quantum_gate_def* quantum_gate_u(struct quantum_gate_params_def* qg_param
   matrix[1][1].imag = (qg_params->lambda + qg_params->phi) * cos(qg_params->theta / 2);
   return quantum_gate_init(QG_SINGLE_GATE_SIZE, GLOBAL_GATE_U, GLOBAL_TYPE_SINGLE, matrix, qg_params);
 }
+
+struct quantum_gate_def* quantum_gate_cx(struct quantum_gate_params_def* qg_params) {
+  struct quantum_gate_def* qg_cx = quantum_gate_paulix(qg_params);
+  qg_cx->quantum_gate_name = GLOBAL_GATE_CX;
+  qg_cx->quantum_gate_type = GLOBAL_TYPE_CONTROLLED;
+  return qg_cx;
+}
+
+struct quantum_gate_def* quantum_gate_ch(struct quantum_gate_params_def* qg_params) {
+  struct quantum_gate_def* qg_ch = quantum_gate_hadamard(qg_params);
+  qg_ch->quantum_gate_name = GLOBAL_GATE_CH;
+  qg_ch->quantum_gate_type = GLOBAL_TYPE_CONTROLLED;
+  return qg_ch;
+}
+
+struct quantum_gate_def* quantum_gate_cy(struct quantum_gate_params_def* qg_params) {
+  struct quantum_gate_def* qg_cy = quantum_gate_pauliy(qg_params);
+  qg_cy->quantum_gate_name = GLOBAL_GATE_CY;
+  qg_cy->quantum_gate_type = GLOBAL_TYPE_CONTROLLED;
+  return qg_cy;
+}
+
+struct quantum_gate_def* quantum_gate_cz(struct quantum_gate_params_def* qg_params) {
+  struct quantum_gate_def* qg_cz = quantum_gate_pauliz(qg_params);
+  qg_cz->quantum_gate_name = GLOBAL_GATE_CZ;
+  qg_cz->quantum_gate_type = GLOBAL_TYPE_CONTROLLED;
+  return qg_cz;
+}
+
+struct quantum_gate_def* quantum_gate_crx(struct quantum_gate_params_def* qg_params) {
+  struct quantum_gate_def* qg_crx = quantum_gate_rx(qg_params);
+  qg_crx->quantum_gate_name = GLOBAL_GATE_CRX;
+  qg_crx->quantum_gate_type = GLOBAL_TYPE_CONTROLLED;
+  return qg_crx;
+}
+
+struct quantum_gate_def* quantum_gate_crz(struct quantum_gate_params_def* qg_params) {
+  struct quantum_gate_def* qg_crz = quantum_gate_rz(qg_params);
+  qg_crz->quantum_gate_name = GLOBAL_GATE_CRZ;
+  qg_crz->quantum_gate_type = GLOBAL_TYPE_CONTROLLED;
+  return qg_crz;
+}
+
+struct quantum_gate_def* quantum_gate_cry(struct quantum_gate_params_def* qg_params) {
+  struct quantum_gate_def* qg_cry = quantum_gate_ry(qg_params);
+  qg_cry->quantum_gate_name = GLOBAL_GATE_CRY;
+  qg_cry->quantum_gate_type = GLOBAL_TYPE_CONTROLLED;
+  return qg_cry;
+}
+
+
+struct quantum_gate_def* quantum_gate_cr1(struct quantum_gate_params_def* qg_params) {
+  struct quantum_gate_def* qg_cr1 = quantum_gate_cr1(qg_params);
+  qg_cr1->quantum_gate_name = GLOBAL_GATE_CR1;
+  qg_cr1->quantum_gate_type = GLOBAL_TYPE_CONTROLLED;
+  return qg_cr1;
+}
+

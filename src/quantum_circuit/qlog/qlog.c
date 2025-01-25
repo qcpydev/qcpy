@@ -1,12 +1,11 @@
 #include "qlog.h"
-
 #define MAX_QLOG_LENGTH (10000)
 #define EMPTY_QLOG (MAX_QLOG_LENGTH + 1000)
+#define MAX_STR_LENGTH (30)
 #define MAX_QLOG_QUBITS (256)
 #define MATRIX_UNITARY_FORMAT (2)
 #define IS_QLOG_EMPTY(qlog) (qlog->qlog_size == EMPTY_QLOG)
 #define GATE_TYPE_TO_STRING (qlog_entry_gate) (gate_names[qlog_entry_gate])
-
 
 struct qlog_def* qlog_init(uint8_t qubits) {
   struct qlog_def* qlog = (struct qlog_def*)malloc(sizeof(struct qlog_def));
@@ -21,7 +20,7 @@ struct qlog_def* qlog_init(uint8_t qubits) {
     return NULL;
   }
   struct qlog_stats_def qlog_stat = {0};
-  qlog->qlog_stat = qlog_stat;
+  qlog->qlog_stat = qlog_stats_init();
   return qlog;
 }
 
@@ -29,11 +28,12 @@ void qlog_delete(struct qlog_def* qlog) {
   for (uint16_t i = 0; i < qlog->qlog_size; ++i) {
     qlog_entry_delete(qlog->qlog_entries[i]);
   }
+  qlog_stats_delete(qlog->qlog_stat);
   free(qlog->qlog_entries);
   qlog->qlog_entries = NULL;
   free(qlog);
   qlog = NULL;
-  return; 
+  return;
 }
 
 uint16_t qlog_size(struct qlog_def *qlog) {
@@ -78,7 +78,7 @@ void qlog_dump_content(struct qlog_def *qlog, bool verbose) {
   }
   if (verbose) {
     printf("qlog size: %d, number of qubits: %d\n", qlog->qlog_size, qlog->qlog_qubit_cnt);
-    // get stats from qlog in small table
+    qlog_stats_dump_log(qlog->qlog_stat);
   } 
   for (uint16_t i = 0; i < qlog->qlog_size; i++) {
     printf("Entry: %d\n", i + 1);
@@ -88,6 +88,7 @@ void qlog_dump_content(struct qlog_def *qlog, bool verbose) {
   return;
 }
 
+<<<<<<< HEAD
 bool qlog_compare_qlogs(struct qlog_def *qlog, struct qlog_def *qlog_to_compare) {
   if (!qlog || !qlog_to_compare) {
     return false;
@@ -123,6 +124,52 @@ struct qlog_def* qlog_combine_qlogs(struct qlog_def* qlog, struct qlog_def* qlog
   }
   return qlog;
 } 
+=======
+char** qlog_get_gate_names(struct qlog_def *qlog) {
+  if (!qlog) {
+    return NULL;
+  }
+  char** gate_names = (char**)malloc(sizeof(char*) * qlog->qlog_size * MAX_STR_LENGTH);
+  for (uint16_t i = 0; i < qlog->qlog_size; ++i) {
+    gate_names[i] = (char*)get_qlog_entry_gate(qlog->qlog_entries[i]);
+  }
+  return gate_names;
+}
+
+char** qlog_get_gate_types(struct qlog_def* qlog) {
+  if (!qlog) {
+    return NULL;
+  }
+  char** gate_types = (char**)malloc(sizeof(char*) * qlog->qlog_size * MAX_STR_LENGTH);
+  for (uint16_t i = 0; i < qlog->qlog_size; ++i) {
+    gate_types[i] = (char*)get_qlog_entry_gate_type(qlog->qlog_entries[i]);
+  }
+  return gate_types;
+}
+
+uint8_t** qlog_get_gate_qubits(struct qlog_def* qlog) {
+  if (!qlog) {
+    return NULL;
+  }
+  uint8_t** qlog_gate_qubits = (uint8_t**)malloc(sizeof(uint8_t*) * qlog->qlog_size);
+  for (uint16_t i = 0; i < qlog->qlog_size; ++i) {
+    qlog_gate_qubits[i] = (uint8_t*)malloc(sizeof(uint8_t) * qlog->qlog_entries[i]->qlog_entry_qubit_cnt);
+    memcpy(qlog_gate_qubits[i], qlog->qlog_entries[i]->qlog_entry_qubits, qlog->qlog_entries[i]->qlog_entry_qubit_cnt);
+  }
+  return qlog_gate_qubits;
+}
+
+uint8_t* qlog_get_entry_sizes(struct qlog_def* qlog) {
+  if (!qlog) {
+    return NULL;
+  }
+  uint8_t* qlog_entry_sizes = (uint8_t*)malloc(sizeof(uint8_t) * qlog->qlog_size);
+  for (uint16_t i = 0; i < qlog->qlog_size; ++i) {
+    qlog_entry_sizes[i] = qlog->qlog_entries[i]->qlog_entry_qubit_cnt;
+  }
+  return qlog_entry_sizes;
+}
+>>>>>>> main
 
 struct qlog_entry_def* qlog_entry_init(uint8_t *qubits, uint8_t num_qubits, int type, int gate, uint8_t qlog_qubits) {
   struct qlog_entry_def* qlog_entry = (struct qlog_entry_def*)malloc(sizeof(struct qlog_entry_def));
@@ -138,6 +185,7 @@ struct qlog_entry_def* qlog_entry_init(uint8_t *qubits, uint8_t num_qubits, int 
   qlog_entry->qlog_entry_gate = gate;
   qlog_entry->qlog_entry_gate_type = type;
   qlog_entry->qlog_quantum_gate = quantum_gate_get_gate(gate, 0, 0, 0);
+  qlog_entry->qlog_entry_stat = qlog_entry_stats_init();
   return qlog_entry;
 }
 
