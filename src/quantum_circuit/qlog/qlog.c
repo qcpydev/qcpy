@@ -88,7 +88,6 @@ void qlog_dump_content(struct qlog_def *qlog, bool verbose) {
   return;
 }
 
-<<<<<<< HEAD
 bool qlog_compare_qlogs(struct qlog_def *qlog, struct qlog_def *qlog_to_compare) {
   if (!qlog || !qlog_to_compare) {
     return false;
@@ -124,7 +123,7 @@ struct qlog_def* qlog_combine_qlogs(struct qlog_def* qlog, struct qlog_def* qlog
   }
   return qlog;
 } 
-=======
+
 char** qlog_get_gate_names(struct qlog_def *qlog) {
   if (!qlog) {
     return NULL;
@@ -169,7 +168,6 @@ uint8_t* qlog_get_entry_sizes(struct qlog_def* qlog) {
   }
   return qlog_entry_sizes;
 }
->>>>>>> main
 
 struct qlog_entry_def* qlog_entry_init(uint8_t *qubits, uint8_t num_qubits, int type, int gate, uint8_t qlog_qubits) {
   struct qlog_entry_def* qlog_entry = (struct qlog_entry_def*)malloc(sizeof(struct qlog_entry_def));

@@ -63,6 +63,7 @@ class QuantumCircuit:
         self.calculator = None
         self.sparse = sparse
         self.gpu = gpu
+        self.qubits = qubits
         if prep != "z" and prep != "y" and prep != "x":
             raise InvalidQubitPrepError("Qubit prep is not x,y,or z")
         if self.gpu:

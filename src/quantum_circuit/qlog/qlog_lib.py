@@ -75,7 +75,6 @@ def convert_qubits_qlog_append(qubits_to_apply):
     return (ctypes.c_ubyte * len(qubits_to_apply))(*qubits_to_apply)
 
 
-<<<<<<< HEAD
 qlog_cross.qlog_combine_qlogs.argtypes = [
     ctypes.POINTER(qlog_def),
     ctypes.POINTER(qlog_def),
@@ -86,7 +85,6 @@ qlog_cross.qlog_compare_qlogs.argtypes = [
     ctypes.POINTER(qlog_def),
 ]
 qlog_cross.qlog_compare_qlogs.restype = ctypes.POINTER(qlog_def)
-=======
 qlog_cross.qlog_dump_content.argtypes = [ctypes.POINTER(qlog_def), ctypes.c_bool]
 
 qlog_cross.qlog_get_gate_names.argtypes = [ctypes.POINTER(qlog_def)]
@@ -132,4 +130,3 @@ def convert_arr_to_sizes(qlog_int_out, size):
         if item:
             arr_of_sizes.append(item)
     return arr_of_sizes
->>>>>>> main
