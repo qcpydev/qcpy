@@ -57,7 +57,6 @@ qlog_cross.qlog_delete.argtypes = [ctypes.POINTER(qlog_def)]
 
 qlog_cross.qlog_size.argtypes = [ctypes.POINTER(qlog_def)]
 qlog_cross.qlog_size.restype = ctypes.c_uint16
-
 qlog_cross.qlog_append.argtypes = [
     ctypes.POINTER(qlog_def),
     ctypes.POINTER(ctypes.c_uint8),
@@ -76,3 +75,47 @@ def convert_qubits_qlog_append(qubits_to_apply):
 
 
 qlog_cross.qlog_dump_content.argtypes = [ctypes.POINTER(qlog_def), ctypes.c_bool]
+
+qlog_cross.qlog_get_gate_names.argtypes = [ctypes.POINTER(qlog_def)]
+qlog_cross.qlog_get_gate_names.restype = ctypes.POINTER(ctypes.POINTER(ctypes.c_char))
+
+qlog_cross.qlog_get_gate_types.argtypes = [ctypes.POINTER(qlog_def)]
+qlog_cross.qlog_get_gate_types.restype = ctypes.POINTER(ctypes.POINTER(ctypes.c_char))
+
+qlog_cross.qlog_get_gate_qubits.argtypes = [ctypes.POINTER(qlog_def)]
+qlog_cross.qlog_get_gate_qubits.restype = ctypes.POINTER(ctypes.POINTER(ctypes.c_uint8))
+
+qlog_cross.qlog_get_entry_sizes.argtypes = [ctypes.POINTER(qlog_def)]
+qlog_cross.qlog_get_entry_sizes.restype = ctypes.POINTER(ctypes.c_uint8)
+
+
+def convert_arr_to_str(qlog_str_out, size):
+    arr_of_strs = []
+    for i in range(size):
+        item = qlog_str_out[i]
+        if item:
+            arr_of_strs.append(ctypes.cast(item, ctypes.c_char_p).value.decode("utf-8"))
+    return arr_of_strs
+
+
+def convert_arr_to_int(qlog_int_out, size, sizes):
+    arr_of_ints = []
+    for i in range(size):
+        item = qlog_int_out[i]
+        if item:
+            j = 0
+            internal_ints = []
+            while j < sizes[i]:
+                internal_ints.append(item[j])
+                j += 1
+            arr_of_ints.append(internal_ints)
+    return arr_of_ints
+
+
+def convert_arr_to_sizes(qlog_int_out, size):
+    arr_of_sizes = []
+    for i in range(size):
+        item = qlog_int_out[i]
+        if item:
+            arr_of_sizes.append(item)
+    return arr_of_sizes

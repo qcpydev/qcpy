@@ -1,4 +1,10 @@
-from .qlog_lib import qlog_cross, convert_qubits_qlog_append
+from .qlog_lib import (
+    convert_arr_to_sizes,
+    convert_arr_to_str,
+    qlog_cross,
+    convert_qubits_qlog_append,
+    convert_arr_to_int,
+)
 import numpy as np
 
 
@@ -38,3 +44,20 @@ class QLog:
 
     def dump(self, verbose: bool = False) -> None:
         qlog_cross.qlog_dump_content(self.qlog, verbose)
+
+    def get_names(self):
+        out = qlog_cross.qlog_get_gate_names(self.qlog)
+        return convert_arr_to_str(out, self.size())
+
+    def get_types(self):
+        out = qlog_cross.qlog_get_gate_types(self.qlog)
+        return convert_arr_to_str(out, self.size())
+
+    def get_qubits(self):
+        out = qlog_cross.qlog_get_gate_qubits(self.qlog)
+        return convert_arr_to_int(out, self.size(), self.get_sizes())
+
+    def get_sizes(self):
+        return convert_arr_to_sizes(
+            qlog_cross.qlog_get_entry_sizes(self.qlog), self.size()
+        )
