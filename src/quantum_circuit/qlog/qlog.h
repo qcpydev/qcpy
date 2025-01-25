@@ -26,7 +26,7 @@ typedef struct qlog_def {
   uint16_t qlog_qubit_cnt; // number of qubits inside of the 
   uint16_t qlog_size; // number of entries in qlog
   struct qlog_entry_def **qlog_entries; // list of qlog_entry
-  struct qlog_stats_def qlog_stat; // qlog stats
+  struct qlog_stats_def* qlog_stat; // qlog stats
 } qlog_type;
 
 /*
