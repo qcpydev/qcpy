@@ -94,7 +94,16 @@ class QuantumCircuit:
             temp_state = temp_state.toarray()
         if circuit.sparse:
             foreign_temp = foreign_temp.toarray()
+        if not (self.qlog == circuit.qlog):
+            return False
         return (temp_state == foreign_temp).all()
+
+    def __add__(self, circuit) -> None:
+        """Combine two quantum circuits together.
+        Returns:
+            None.
+        """
+        self.qlog.add(circuit.qlog)
 
     def __str__(self) -> str:
         """Prints out a circuit drawing in console.
@@ -130,6 +139,12 @@ class QuantumCircuit:
     def __add_qlog_item__(
         self, qubits_to_apply, gate_name: str, gate_type: str
     ) -> None:
+        """Sets the current state to a given one.
+        Args:
+            qubits_to_apply (List[int]): array of qubits to apply to qlog.
+            gate_name (str): name of the gate in all caps.
+            gate_type (str): type of gate that can be single, multi, etc.
+        """
         if isinstance(qubits_to_apply, int):
             qubits_to_apply = [qubits_to_apply]
         elif gate_type == "SINGLE":
