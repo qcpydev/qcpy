@@ -247,7 +247,6 @@ class CircuitDrawing:
         for i in range(len(qubits)):
             insert = CircuitDrawingInsert(name=names[i], qubits=qubits[i])
             if names[i] == "SWAP":
-                print("why arent we hitting")
                 self.add_swap(insert)
             else:
                 if names[i] in self.internal_gates:
