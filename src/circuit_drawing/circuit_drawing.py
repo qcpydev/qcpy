@@ -14,6 +14,12 @@ from .drawings import (
 from .wire import Wire
 
 
+class CircuitDrawingInsert:
+    def __init__(self, name: str, qubits: List[int]):
+        self.name = name
+        self.qubits = qubits
+
+
 class CircuitDrawing:
     """Private handler of generating the circuit drawing.
 
@@ -37,6 +43,30 @@ class CircuitDrawing:
         for _ in range(qubits):
             self.circuit_queue.append(Wire())
 
+        self.internal_types = {
+            "SINGLE": self.insert_single,
+            "CONTROLLED": self.add_control,
+            "MULTI": self.add_multi,
+            "BLOCK": self.add_block,
+            "ALGORITHM": self.add_block,
+        }
+        self.internal_gates = {
+            "IDENTITY": "I",
+            "HADAMARD": "H",
+            "PAULIX": "X",
+            "PAULIZ": "Z",
+            "PAULIY": "Y",
+            "PHASE": "P",
+            "SDG": "S†",
+            "TDG": "T†",
+            "SXDG": "SX†",
+            "CUSTOM": "C",
+            "CUSTOMCONTROLLED": "CC",
+            "MULTI": "M",
+            "CUSTOMBLOCK": "B",
+            "CUSTOMALGORIHTM": "A",
+        }
+
     def equal_length(self) -> None:
         """Determines and sets all rows of strings to be equal after a gate insertion"""
         for i in range(self.qubits):
@@ -53,7 +83,7 @@ class CircuitDrawing:
         self.circuit_queue[qubit].add(drawing)
         self.max_length = max(self.max_length, self.circuit_queue[qubit].length)
 
-    def insert_single(self, gate: str, qubit: int) -> None:
+    def insert_single(self, insert: CircuitDrawingInsert) -> None:
         """Inserts a single gate drawing into a specific qubit row.
 
         Note:
@@ -69,6 +99,9 @@ class CircuitDrawing:
             max_length (int): Value to compare when needing to extend rows to match lengths.
 
         """
+        qubit = insert.qubits[0]
+        gate = insert.name
+
         to_insert = self.max_length - 1
         if self.max_length:
             while (
@@ -107,16 +140,18 @@ class CircuitDrawing:
             self.add_drawing(swap_point(), qubit_2)
         self.equal_length()
 
-    def add_multi(self, gate: str, controls: List[int], target: int) -> None:
+    def add_multi(self, insert: CircuitDrawingInsert) -> None:
         """Adds a multi gate drawing (toffoli for example)
         Args:
             gate (str): Character symbol of the gate that is being inserted.
             controls (arr): array of controls on the gate.
             target (int): Where the gate drawing will be inserted.
         """
-        controls.append(target)
+        controls = insert.qubits
+        target = controls[-1]
+        gate = insert.name
         self.equal_length()
-        for i in range(self.qubits):
+        for i in range(len(controls)):
             if i == target:
                 if target <= min(controls):
                     self.add_drawing(
@@ -134,29 +169,36 @@ class CircuitDrawing:
                 self.add_drawing(multi_connect(), i)
         self.equal_length()
 
-    def add_swap(self, qubit_1, qubit_2) -> None:
+    def add_swap(self, insert: CircuitDrawingInsert) -> None:
         """Draws a swap gate on a circuit drawing.
         Args:
             qubit_2 (int): first qubit to add 'x' drawing.
             qubit_1 (int): second qubit to add 'x' drawing.
         """
+        qubit_1 = insert.qubits[0]
+        qubit_2 = insert.qubits[1]
         self.two_qubit(qubit_1=qubit_1, qubit_2=qubit_2)
 
-    def add_control(self, gate: str, control: int, target: int) -> None:
+    def add_control(self, insert: CircuitDrawingInsert) -> None:
         """Adds a gate that has a singular controlled qubit to the drawing.
         Args:
             gate (str): Character symbol for the target drawing.
             control (int): Control qubit.
             target (int): Target qubit.
         """
+        control = insert.qubits[0]
+        target = insert.qubits[1]
+        gate = insert.name
         self.two_qubit(qubit_1=control, qubit_2=target, gate=gate)
 
-    def add_block(self, gate: str, qubits: List[int]) -> None:
+    def add_block(self, insert: CircuitDrawingInsert) -> None:
         """Adds a block drawing to the circuit drawing (example: RC3X).
         Args:
             gate (str): String that represents the gate.
             qubits (int): Which qubits to know the range of the gate.
         """
+        qubits = insert.qubits
+        gate = insert.name
         center = (max(qubits) + min(qubits)) // 2
         for i in range(self.qubits):
             if i == center:
@@ -194,11 +236,23 @@ class CircuitDrawing:
                 bottom[-1] += wire[item][counter + size * 2]
         return "".join(top) + "\n" + "".join(middle) + "\n" + "".join(bottom) + "\n"
 
-    def make(self) -> str:
+    def make(self, qlog) -> str:
         """Generates the entirety of the string to print.
         Returns:
             str: Combination of all qubit strings in a single string.
         """
+        types = qlog.get_types()
+        names = qlog.get_names()
+        qubits = qlog.get_qubits()
+        for i in range(len(qubits)):
+            insert = CircuitDrawingInsert(name=names[i], qubits=qubits[i])
+            if names[i] == "SWAP":
+                print("why arent we hitting")
+                self.add_swap(insert)
+            else:
+                if names[i] in self.internal_gates:
+                    insert.name = self.internal_gates[names[i]]
+                self.internal_types[types[i]](insert)
         output = ""
         for i in range(len(self.circuit_queue)):
             output += self.make_wire(self.circuit_queue[i].content, i)
