@@ -138,7 +138,13 @@ class QuantumCircuit:
             self.circuit_drawing.insert_single(gate, qubits_to_apply)
 
     def __add_qlog_item__(
-        self, qubits_to_apply, gate_name: str, gate_type: str
+        self,
+        qubits_to_apply,
+        gate_name: str,
+        gate_type: str,
+        theta: float = 0,
+        phi: float = 0,
+        lmbda: float = 0,
     ) -> None:
         """Sets the current state to a given one.
         Args:
@@ -146,16 +152,20 @@ class QuantumCircuit:
             gate_name (str): name of the gate in all caps.
             gate_type (str): type of gate that can be single, multi, etc.
         """
+        gate_val = global_lib.global_gate_convert[gate_name]
+        type_val = global_lib.global_type_convert[gate_type]
         if isinstance(qubits_to_apply, int):
             qubits_to_apply = [qubits_to_apply]
         elif gate_type == "SINGLE":
             for i in range(len(qubits_to_apply)):
-                self.__add_qlog_item__(qubits_to_apply[i], gate_name, gate_type)
+                self.qlog.append(
+                    [qubits_to_apply[i]], 1, type_val, gate_val, theta, phi, lmbda
+                )
             return
-        gate_val = global_lib.global_gate_convert[gate_name]
-        type_val = global_lib.global_type_convert[gate_type]
         num_qubits = len(qubits_to_apply)
-        self.qlog.append(qubits_to_apply, num_qubits, type_val, gate_val)
+        self.qlog.append(
+            qubits_to_apply, num_qubits, type_val, gate_val, theta, phi, lmbda
+        )
 
     def set(self, circuit) -> None:
         """Sets the current state to a given one.
@@ -232,7 +242,7 @@ class QuantumCircuit:
             qubits_to_apply(int, arr[int]): qubits to apply the gate to.
         """
         self.calculator.pass_single_gate(qubits_to_apply, phase(theta))
-        self.__add_qlog_item__(qubits_to_apply, "PHASE", "SINGLE")
+        self.__add_qlog_item__(qubits_to_apply, "PHASE", "SINGLE", theta=theta)
 
     def s(self, qubits_to_apply) -> None:
         """Use the S gate on the quantum circuit.
@@ -303,7 +313,6 @@ class QuantumCircuit:
         Args:
             qubits_to_apply(int, arr[int]): qubits to apply the gate to.
         """
-        self.calculator.pass_single_gate(qubits_to_apply, sxdg())
         self.__add_qlog_item__(qubits_to_apply, "SXDG", "SINGLE")
 
     def u(
@@ -318,7 +327,9 @@ class QuantumCircuit:
             qubits_to_apply(int, arr[int]): qubits to apply the gate to.
         """
         self.calculator.pass_single_gate(qubits_to_apply, u(theta, phi, lmbda))
-        self.__add_qlog_item__(qubits_to_apply, "U", "SINGLE")
+        self.__add_qlog_item__(
+            qubits_to_apply, "U", "SINGLE", theta=theta, phi=phi, lmbda=lmbda
+        )
 
     def custom(self, qubits_to_apply, gate: np.array) -> None:
         """Insert a custom gate into the quantum circuit.
@@ -523,9 +534,9 @@ class QuantumCircuit:
             qubit_one, u(np.pi / 2, -1 * np.pi, np.pi - theta)
         )
         self.calculator.pass_single_gate(qubit_two, hadamard())
-        self.__add_qlog_item__([qubit_one, qubit_two], "RXX", "CONTROLLED")
+        self.__add_qlog_item__([qubit_one, qubit_two], "RXX", "CONTROLLED", theta=theta)
 
-    def rzz(self, qubit_one: int, qubit_two: int, lmbda: float = np.pi / 2) -> None:
+    def rzz(self, qubit_one: int, qubit_two: int, theta: float = np.pi / 2) -> None:
         """Insert a RZZ gate into the quantum circuit.
         Args:
             qubit_one (int): qubit to act as the qubit one for the gate.
@@ -533,6 +544,6 @@ class QuantumCircuit:
             lmbda (float): The lambda value to rotate the gate on the z axis.
         """
         self.calculator.pass_multi_gate(qubit_one, qubit_two, paulix())
-        self.calculator.pass_single_gate(qubit_two, u(0, lmbda, 0))
+        self.calculator.pass_single_gate(qubit_two, u(0, theta, 0))
         self.calculator.pass_multi_gate(qubit_one, qubit_two, paulix())
-        self.__add_qlog_item__([qubit_one, qubit_two], "RZZ", "CONTROLLED")
+        self.__add_qlog_item__([qubit_one, qubit_two], "RZZ", "CONTROLLED", theta=theta)

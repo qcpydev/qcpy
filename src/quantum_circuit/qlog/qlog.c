@@ -51,7 +51,7 @@ void qlog_clear(struct qlog_def *qlog) {
   return;
 }
 
-qlog_append_res qlog_append(struct qlog_def *qlog, uint8_t *qubits, uint8_t num_qubits, int type, int gate) {
+qlog_append_res qlog_append(struct qlog_def *qlog, uint8_t *qubits, uint8_t num_qubits, int type, int gate, float16 theta, float16 phi, float16 lambda) {
   if (!qlog) {
     return QLOG_APPEND_ERROR;
   }
@@ -61,12 +61,26 @@ qlog_append_res qlog_append(struct qlog_def *qlog, uint8_t *qubits, uint8_t num_
   if (qlog->qlog_size == EMPTY_QLOG) {
     qlog->qlog_size = 0;
   }
-  qlog->qlog_entries[qlog->qlog_size] = qlog_entry_init(qubits, num_qubits, type, gate, qlog->qlog_size);
+  qlog->qlog_entries[qlog->qlog_size] = qlog_entry_init(qubits, num_qubits, type, gate, qlog->qlog_size, theta, phi, lambda);
   if (!qlog->qlog_entries[qlog->qlog_size]) {
     return QLOG_APPEND_ERROR;
   }
   qlog->qlog_size += 1;
   return QLOG_APPEND_SUCCESS;
+}
+
+qlog_append_res qlog_append_entry(struct qlog_def *qlog, struct qlog_entry_def *qlog_entry) {
+  if (!qlog || !qlog_entry) {
+    return QLOG_APPEND_ERROR;
+  }
+  struct quantum_gate_params_def *qg_params = qlog_entry->qlog_quantum_gate->quantum_gate_params;
+  return qlog_append(qlog, qlog_entry->qlog_entry_qubits,
+                     qlog_entry->qlog_entry_qubit_cnt,
+                     qlog_entry->qlog_entry_gate_type,
+                     qlog_entry->qlog_entry_gate,
+                     qg_params->theta,
+                     qg_params->phi,
+                     qg_params->lambda);
 }
 
 void qlog_dump_content(struct qlog_def *qlog, bool verbose) {
@@ -119,7 +133,7 @@ struct qlog_def* qlog_combine_qlogs(struct qlog_def* qlog, struct qlog_def* qlog
   qlog->qlog_size += qlog_to_add->qlog_size;
   for (uint16_t i = 0; i < qlog_to_add->qlog_size; ++i) {
     struct qlog_entry_def* entry = qlog_to_add->qlog_entries[i];
-    qlog_append(qlog, entry->qlog_entry_qubits, entry->qlog_entry_qubit_cnt, entry->qlog_entry_gate, entry->qlog_entry_gate_type);
+    qlog_append_entry(qlog, qlog_to_add->qlog_entries[i]);
   }
   return qlog;
 } 
@@ -169,7 +183,7 @@ uint8_t* qlog_get_entry_sizes(struct qlog_def* qlog) {
   return qlog_entry_sizes;
 }
 
-struct qlog_entry_def* qlog_entry_init(uint8_t *qubits, uint8_t num_qubits, int type, int gate, uint8_t qlog_qubits) {
+struct qlog_entry_def* qlog_entry_init(uint8_t *qubits, uint8_t num_qubits, int type, int gate, uint8_t qlog_qubits, float16 theta, float16 phi, float16 lambda) {
   struct qlog_entry_def* qlog_entry = (struct qlog_entry_def*)malloc(sizeof(struct qlog_entry_def));
   if (!qlog_entry) {
     return NULL;
@@ -182,7 +196,7 @@ struct qlog_entry_def* qlog_entry_init(uint8_t *qubits, uint8_t num_qubits, int 
   qlog_entry->qlog_entry_qubit_cnt = num_qubits;
   qlog_entry->qlog_entry_gate = gate;
   qlog_entry->qlog_entry_gate_type = type;
-  qlog_entry->qlog_quantum_gate = quantum_gate_get_gate(gate, 0, 0, 0);
+  qlog_entry->qlog_quantum_gate = quantum_gate_get_gate(gate, theta, phi, lambda);
   qlog_entry->qlog_entry_stat = qlog_entry_stats_init();
   return qlog_entry;
 }

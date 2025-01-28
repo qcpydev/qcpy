@@ -25,6 +25,7 @@ const char *global_gate_names[] = {
   [GLOBAL_GATE_CRY] = "CRY",
   [GLOBAL_GATE_CRZ] = "CRZ",
   [GLOBAL_GATE_CR1] = "CR1",
+  [GLOBAL_GATE_CSX] = "CSX",
   [GLOBAL_GATE_CCX] = "CCX",
   [GLOBAL_GATE_QFT] = "QFT",
   [GLOBAL_GATE_RCCX] = "RCCX",
