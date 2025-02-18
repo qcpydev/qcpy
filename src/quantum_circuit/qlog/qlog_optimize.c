@@ -187,6 +187,48 @@ void qlog_optimize_expand_swap(struct qlog_def* qlog, struct qlog_def* optimized
   }
 }
 
+struct qlog_optimize_circuit_def* qlog_optimize_circuit_init(struct qlog_def* qlog) {
+  if (!qlog) {
+    return NULL;
+  }
+  struct qlog_optimize_circuit_def* qlog_opt_circuit;
+  qlog_opt_circuit->qlog_optimize_circuit_size = qlog->qlog_size;
+  qlog_opt_circuit->qlog_optimize_circuit_used_qubits = (bool*)malloc(sizeof(bool) * qlog->qlog_qubit_cnt);
+  qlog_opt_circuit->qlog_optimize_circuit_row_size = (uint16_t*)malloc(sizeof(uint16_t) * qlog->qlog_qubit_cnt);
+
+  qlog_opt_circuit->qlog_optimize_circuit = (struct qlog_node_def**)malloc(sizeof(struct qlog_node_def*) * qlog->qlog_qubit_cnt);
+  struct qlog_node_def** qlog_opt_circuit_iter = (struct qlog_node_def**)malloc(sizeof(struct qlog_node_def*) * qlog->qlog_qubit_cnt);
+
+  for (uint16_t i = 0; i < qlog->qlog_size; ++i) {
+    qlog_opt_circuit->qlog_optimize_circuit[i]->qlog_node_next = qlog_opt_circuit_iter[i];
+    qlog_opt_circuit_iter[i]->qlog_node_prev = qlog_opt_circuit->qlog_optimize_circuit[i];
+  }
+
+  for (uint16_t i = 0; i < qlog->qlog_size; ++i) {
+    uint8_t at_row = qlog->qlog_entries[i]->qlog_entry_qubits[0];
+    qlog_opt_circuit_iter[at_row]->qlog_entry = qlog->qlog_entries[i];
+    qlog_opt_circuit_iter[at_row]->qlog_node_next->qlog_node_prev = qlog_opt_circuit_iter[at_row];
+  
+    // At this point, it is known and should always be known that the gates should have a max of 2 qubits per gate.
+    if (qlog->qlog_entries[i]->qlog_entry_qubit_cnt > 1) {
+      uint8_t controlled = qlog->qlog_entries[i]->qlog_entry_qubits[0];
+      qlog_opt_circuit_iter[controlled]->qlog_node_up = qlog_opt_circuit_iter[at_row];
+      qlog_opt_circuit_iter[at_row]->qlog_node_down = qlog_opt_circuit_iter[controlled];
+      qlog_opt_circuit_iter[controlled]->qlog_node_next->qlog_node_prev = qlog_opt_circuit_iter[controlled];
+      qlog_opt_circuit_iter[controlled] = qlog_opt_circuit_iter[controlled]->qlog_node_next;
+    }
+    qlog_opt_circuit_iter[at_row] = qlog_opt_circuit_iter[at_row]->qlog_node_next;
+  }
+
+  return qlog_opt_circuit;
+}
+
+void qlog_optimize_circuit_delete(struct qlog_optimize_circuit_def* qlog_optimize_circuit) {
+  if (!qlog_optimize_circuit) {
+    return;
+  }
+}
+
 void qlog_optimize_remove_identity_gates(struct qlog_def* qlog, struct qlog_def* optimized_qlog, struct qlog_optimize_def* qlog_optimize) {
   for (uint16_t i = 0; i < qlog->qlog_size; ++i) {
     qlog_entry_def* qlog_entry = qlog->qlog_entries[i];
@@ -195,3 +237,15 @@ void qlog_optimize_remove_identity_gates(struct qlog_def* qlog, struct qlog_def*
     }
   }
 }
+
+void qlog_optimize_remove_paired_dup_gates(struct qlog_def* qlog, struct qlog_def* optimized_qlog, struct qlog_optimize_def* qlog_optimize) {
+  
+  for (uint16_t i = 0; i < qlog->qlog_size; ++i) {
+    qlog_entry_def* qlog_entry = qlog->qlog_entries[i];
+  }
+}
+
+void qlog_optimize_remove_redundant_cnot(struct qlog_def* qlog, struct qlog_def* optimize_qlog, struct qlog_optimize_def* qlog_optimize) {
+
+}
+
