@@ -39,6 +39,8 @@ const qg_func qg_init_functions[] = {
   [GLOBAL_GATE_CR1] = quantum_gate_cr1,
   [GLOBAL_GATE_CSX] = quantum_gate_csx,
   [GLOBAL_GATE_CSXDG] = quantum_gate_csxdg,
+  [GLOBAL_GATE_RXX] = quantum_gate_rxx,
+  [GLOBAL_GATE_RZZ] = quantum_gate_rzz,
 }; 
 
 struct quantum_gate_params_def* quantum_gate_params_zeroed() {
@@ -364,10 +366,7 @@ struct quantum_gate_def* quantum_gate_cry(struct quantum_gate_params_def* qg_par
 }
 
 struct quantum_gate_def* quantum_gate_cr1(struct quantum_gate_params_def* qg_params) {
-  struct quantum_gate_def* qg_cr1 = quantum_gate_cr1(qg_params);
-  qg_cr1->quantum_gate_name = GLOBAL_GATE_CR1;
-  qg_cr1->quantum_gate_type = GLOBAL_TYPE_CONTROLLED;
-  return qg_cr1;
+  return NULL;
 }
 
 struct quantum_gate_def* quantum_gate_csx(struct quantum_gate_params_def* qg_params) {
@@ -382,6 +381,18 @@ struct quantum_gate_def* quantum_gate_csxdg(struct quantum_gate_params_def* qg_p
   qg_csxdg->quantum_gate_name = GLOBAL_GATE_CSXDG;
   qg_csxdg->quantum_gate_type = GLOBAL_TYPE_CONTROLLED;
   return qg_csxdg;
+}
+
+struct quantum_gate_def* quantum_gate_rxx(struct quantum_gate_params_def* qg_params) {
+  struct quantum_gate_def* qg_dummy = {0};
+  struct global_matrix_def** matrix = {0};
+  return quantum_gate_init(QG_SINGLE_GATE_SIZE, GLOBAL_GATE_RXX, GLOBAL_TYPE_CONTROLLED, matrix, qg_params);
+}
+
+struct quantum_gate_def* quantum_gate_rzz(struct quantum_gate_params_def* qg_params) {
+  struct quantum_gate_def* qg_dummy = {0};
+  struct global_matrix_def** matrix = {0};
+  return quantum_gate_init(QG_SINGLE_GATE_SIZE, GLOBAL_GATE_RZZ, GLOBAL_TYPE_CONTROLLED, matrix, qg_params);
 }
 
 struct quantum_gate_def* quantum_gate_braket_zero() {

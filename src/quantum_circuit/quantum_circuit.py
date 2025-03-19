@@ -362,7 +362,7 @@ class QuantumCircuit:
             target (int): qubit to act as the target for the gate.
         """
         self.calculator.pass_multi_gate(control, target, hadamard())
-        self.__add_qlog_item__(qubits_to_apply, "CH", "CONTROLLED")
+        self.__add_qlog_item__([control, target], "CH", "CONTROLLED")
 
     def cy(self, control: int, target: int) -> None:
         """Insert a CY (Controlled Pauliy) gate into the quantum circuit.
@@ -370,7 +370,7 @@ class QuantumCircuit:
             control (int): qubit to act as the control for the gate.
         """
         self.calculator.pass_multi_gate(control, target, pauliy())
-        self.__add_qlog_item__(qubits_to_apply, "CY", "CONTROLLED")
+        self.__add_qlog_item__([control, target], "CY", "CONTROLLED")
 
     def cz(self, control: int, target: int) -> None:
         """Insert a CZ (Controlled Pauliz) gate into the quantum circuit.
@@ -379,7 +379,7 @@ class QuantumCircuit:
             target (int): qubit to act as the target for the target.
         """
         self.calculator.pass_multi_gate(control, target, pauliz())
-        self.__add_qlog_item__(qubits_to_apply, "CZ", "CONTROLLED")
+        self.__add_qlog_item__([control, target], "CZ", "CONTROLLED")
 
     def crx(self, control: int, target: int) -> None:
         """Insert a CRX (Controlled RX) gate into the quantum circuit.
@@ -388,7 +388,7 @@ class QuantumCircuit:
             target (int): qubit to act as the target for the gate.
         """
         self.calculator.pass_multi_gate(control, target, rx())
-        self.__add_qlog_item__(qubits_to_apply, "CRX", "CONTROLLED")
+        self.__add_qlog_item__([control, target], "CRX", "CONTROLLED")
 
     def cry(self, control: int, target: int) -> None:
         """Insert a CRY (Controlled RY) gate into the quantum circuit.
@@ -397,7 +397,7 @@ class QuantumCircuit:
             target (int): qubit to act as the target for the gate.
         """
         self.calculator.pass_multi_gate(control, target, ry())
-        self.__add_qlog_item__(qubits_to_apply, "CRY", "CONTROLLED")
+        self.__add_qlog_item__([control, target], "CRY", "CONTROLLED")
 
     def crz(self, control: int, target: int) -> None:
         """Insert a CRZ (Controlled RZ) gate into the quantum circuit.

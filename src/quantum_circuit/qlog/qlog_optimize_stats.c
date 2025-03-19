@@ -1,7 +1,7 @@
 #include "qlog_optimize_stats.h"
 
 struct qlog_optimize_stats_def* qlog_optimize_stats_init() {
-  struct qlog_optimize_stats_def* qlog_optimize_stats = {0};
+  struct qlog_optimize_stats_def* qlog_optimize_stats = (struct qlog_optimize_stats_def*) malloc(sizeof(struct qlog_optimize_stats_def));
   return qlog_optimize_stats;
 }
 

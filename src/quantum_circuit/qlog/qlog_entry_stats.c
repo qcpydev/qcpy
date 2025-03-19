@@ -2,7 +2,8 @@
 #include "qlog_entry_stats.h"
 
 struct qlog_entry_stats_def* qlog_entry_stats_init() {
-  struct qlog_entry_stats_def* qlog_entry_stats = {0};
+  struct qlog_entry_stats_def* qlog_entry_stats = (struct qlog_entry_stats_def*) malloc(sizeof(struct qlog_entry_stats_def));
+  qlog_entry_stats->qlog_entry_stats_was_expanded = false;
   return qlog_entry_stats;
 }
 
