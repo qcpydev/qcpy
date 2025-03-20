@@ -26,7 +26,6 @@ struct qlog_def* qlog_init(uint8_t qubits) {
     free(qlog);
     return NULL;
   }
-  struct qlog_stats_def qlog_stat = {0};
   qlog->qlog_stat = qlog_stats_init();
   return qlog;
 }
@@ -68,6 +67,7 @@ qlog_append_res qlog_append(struct qlog_def *qlog, uint8_t *qubits, uint8_t num_
   if (qlog->qlog_size == EMPTY_QLOG) {
     qlog->qlog_size = 0;
   }
+  printf("hereher\n");
   qlog->qlog_entries[qlog->qlog_size] = qlog_entry_init(qubits, num_qubits, type, gate, qlog->qlog_size, theta, phi, lambda);
   if (!qlog->qlog_entries[qlog->qlog_size]) {
     return QLOG_APPEND_ERROR;
@@ -80,14 +80,22 @@ qlog_append_res qlog_append_entry(struct qlog_def *qlog, struct qlog_entry_def *
   if (!qlog || !qlog_entry) {
     return QLOG_APPEND_ERROR;
   }
-  struct quantum_gate_params_def *qg_params = qlog_entry->qlog_quantum_gate->quantum_gate_params;
+  
+  struct quantum_gate_params_def *qg_params; 
+  float theta, phi, lambda = 0.0;
+  if (qlog_entry->qlog_quantum_gate && qlog_entry->qlog_quantum_gate->quantum_gate_params) {
+    qg_params = qlog_entry->qlog_quantum_gate->quantum_gate_params;
+    theta = qg_params->theta;
+    phi = qg_params->phi;
+    lambda = qg_params->lambda;
+  }
   return qlog_append(qlog, qlog_entry->qlog_entry_qubits,
                      qlog_entry->qlog_entry_qubit_cnt,
                      qlog_entry->qlog_entry_gate_type,
                      qlog_entry->qlog_entry_gate,
-                     qg_params->theta,
-                     qg_params->phi,
-                     qg_params->lambda);
+                     theta,
+                     phi,
+                     lambda);
 }
 
 void qlog_dump_content(struct qlog_def *qlog, bool verbose) {

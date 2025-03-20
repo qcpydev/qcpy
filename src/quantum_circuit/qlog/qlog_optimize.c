@@ -9,10 +9,12 @@
                                          qe_gate_type == GLOBAL_GATE_SWAP ||\
                                          qe_gate_type == GLOBAL_GATE_RC3X)
 
-#define X(f) f,
-void (*qlog_optimize_types_arr[])(struct qlog_def*, struct qlog_def*, qlog_optimize_def*) = {QLOG_OPTIMIZE_TYPES};
-#undef X
-int qlog_optimize_types_arr_cnt = sizeof(qlog_optimize_types_arr) / sizeof(qlog_optimize_types_arr[0]);
+
+void (*qlog_optimize_types[])(struct qlog_def* qlog, struct qlog_def* qlog_optimized, struct qlog_optimize_def* qlog_optimize) = {
+  qlog_optimize_remove_identity_gates
+};
+
+uint8_t qlog_optimize_types_size = sizeof(qlog_optimize_types) / sizeof(qlog_optimize_types[0]);
 
 void (*qlog_optimize_expand_types[])(struct qlog_def* qlog, struct qlog_entry_def* qlog_entry) = {
   [GLOBAL_GATE_CCX] = qlog_optimize_expand_ccx,
@@ -38,13 +40,12 @@ struct qlog_optimize_def* qlog_optimize_init(struct qlog_def* qlog) {
 
 struct qlog_def* qlog_optimize_set(struct qlog_def *qlog) {
   struct qlog_def* qlog_expanded = qlog_optimize_expand_multi_gate(qlog);
-  return qlog_expanded;
   struct qlog_def* optimized_qlog;
   struct qlog_optimize_def* qlog_optimize;
-  for (int i = 0; i < qlog_optimize_types_arr_cnt; ++i) {
+  for (int i = 0; i < qlog_optimize_types_size; ++i) {
     optimized_qlog = qlog_init(qlog_expanded->qlog_qubit_cnt); 
     qlog_optimize = qlog_optimize_init(qlog_expanded);
-    qlog_optimize_types_arr[i](qlog_expanded, optimized_qlog, qlog_optimize);
+    qlog_optimize_types[i](qlog_expanded, optimized_qlog, qlog_optimize);
     memcpy(qlog_expanded, optimized_qlog, sizeof(struct qlog_def));
   }
   return optimized_qlog;
@@ -57,27 +58,18 @@ struct qlog_def* qlog_optimize_expand_multi_gate(struct qlog_def* qlog){
     struct qlog_entry_def* qlog_entry = qlog->qlog_entries[i]; 
     struct quantum_gate_params_def* params;
 
-    if (qlog_entry->qlog_quantum_gate) {
+    if (qlog_entry->qlog_quantum_gate && qlog_entry->qlog_quantum_gate->quantum_gate_params) {
       params = qlog_entry->qlog_quantum_gate->quantum_gate_params;
     }
 
     if (EXPAND_QLOG_ENTRY(qlog_entry->qlog_entry_gate)) {
       qlog_optimize_expand_types[qlog_entry->qlog_entry_gate](expand_qlog, qlog_entry);
     }
-
     else {
-      qlog_append(expand_qlog,
-                  qlog_entry->qlog_entry_qubits,
-                  qlog_entry->qlog_entry_qubit_cnt,
-                  qlog_entry->qlog_entry_gate_type,
-                  qlog_entry->qlog_entry_gate,
-                  params->theta,
-                  params->phi,
-                  params->lambda);
+      qlog_append_entry(expand_qlog, qlog_entry);
     }
 
   }
-  qlog_dump_content(expand_qlog, false);
   return expand_qlog;
 }
 
@@ -184,6 +176,10 @@ void qlog_optimize_expand_swap(struct qlog_def* qlog, struct qlog_entry_def* qlo
 
 void qlog_optimize_remove_identity_gates(struct qlog_def* qlog, struct qlog_def* optimized_qlog, struct qlog_optimize_def* qlog_optimize) {
   for (uint16_t i = 0; i < qlog->qlog_size; ++i) {
+    struct qlog_entry_def* qlog_entry = qlog->qlog_entries[i];
+    if (qlog_entry->qlog_entry_gate != GLOBAL_GATE_IDENTITY) {
+      qlog_append_entry(optimized_qlog, qlog_entry);
+    }
   }
 }
 
