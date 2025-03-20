@@ -1,5 +1,6 @@
 #include <stdint.h>
 #include <stdio.h>
+#include "qlog_entry_stats.h"
 #include "../../quantum_gate/quantum_gate.h"
 
 /*

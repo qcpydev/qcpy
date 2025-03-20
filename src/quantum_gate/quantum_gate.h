@@ -57,6 +57,8 @@ struct quantum_gate_def* quantum_gate_crz(struct quantum_gate_params_def* qg_par
 struct quantum_gate_def* quantum_gate_cr1(struct quantum_gate_params_def* qg_params);
 struct quantum_gate_def* quantum_gate_csx(struct quantum_gate_params_def* qg_params);
 struct quantum_gate_def* quantum_gate_csxdg(struct quantum_gate_params_def* qg_params);
+struct quantum_gate_def* quantum_gate_rxx(struct quantum_gate_params_def* qg_params);
+struct quantum_gate_def* quantum_gate_rzz(struct quantum_gate_params_def* qg_params);
 
 struct quantum_gate_def* quantum_gate_braket_zero();
 struct quantum_gate_def* quantum_gate_braket_one();

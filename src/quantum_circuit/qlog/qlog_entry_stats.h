@@ -1,4 +1,5 @@
-#include "qlog_entry.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 typedef struct qlog_entry_stats_def {
   bool qlog_entry_stats_was_expanded; 
