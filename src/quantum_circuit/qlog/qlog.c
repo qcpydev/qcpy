@@ -67,7 +67,6 @@ qlog_append_res qlog_append(struct qlog_def *qlog, uint8_t *qubits, uint8_t num_
   if (qlog->qlog_size == EMPTY_QLOG) {
     qlog->qlog_size = 0;
   }
-  printf("hereher\n");
   qlog->qlog_entries[qlog->qlog_size] = qlog_entry_init(qubits, num_qubits, type, gate, qlog->qlog_size, theta, phi, lambda);
   if (!qlog->qlog_entries[qlog->qlog_size]) {
     return QLOG_APPEND_ERROR;
