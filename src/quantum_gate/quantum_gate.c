@@ -3,7 +3,7 @@
 
 #define QG_SINGLE_GATE_SIZE (2)
 #define QG_HAS_NO_PARAMS(qg_name) (!(QG_HAS_THETA_PARAMS(qg_name) || QG_HAS_PHI_PARAMS(qg_name) || QG_HAS_LAMBDA_PARAMS(qg_name)))
-#define QG_HAS_THETA_PARAMS(qg_name) (qg_name == GLOBAL_GATE_PHASE || qg_name == GLOBAL_GATE_RZ || qg_name == GLOBAL_GATE_RX || qg_name == GLOBAL_GATE_RY || qg_name == GLOBAL_GATE_U)
+#define QG_HAS_THETA_PARAMS(qg_name) (qg_name == GLOBAL_GATE_PHASE || qg_name == GLOBAL_GATE_RZ || qg_name == GLOBAL_GATE_RX || qg_name == GLOBAL_GATE_RY || qg_name == GLOBAL_GATE_U, qg_name == GLOBAL_GATE_RXX || qg_name == GLOBAL_GATE_RZZ)
 #define QG_HAS_LAMBDA_PARAMS(qg_name) (qg_name == GLOBAL_GATE_U)
 #define QG_HAS_PHI_PARAMS(qg_name) (qg_name == GLOBAL_GATE_U)
 #define QG_HAS_ANY_SET_PARAMS(qg_params) (qg_params->has_theta || qg_params->has_phi || qg_params->has_lambda)
@@ -52,9 +52,10 @@ struct quantum_gate_params_def* quantum_gate_params_zeroed() {
 }
 
 struct quantum_gate_def* quantum_gate_get_gate(int qg_name, float theta, float phi, float lambda) {
-  if (!QG_HAS_PHI_PARAMS(qg_name) || !QG_HAS_NO_PARAMS(qg_name) || !QG_HAS_THETA_PARAMS(qg_name) || !QG_HAS_LAMBDA_PARAMS(qg_name)) {
+   if (QG_HAS_NO_PARAMS(qg_name)) {
     return NULL;
   }
+
   struct quantum_gate_params_def* qg_params = (quantum_gate_params_def*)malloc(sizeof(quantum_gate_params_def));
   if (QG_HAS_THETA_PARAMS(qg_name)) {
     qg_params->theta = theta;
@@ -69,7 +70,7 @@ struct quantum_gate_def* quantum_gate_get_gate(int qg_name, float theta, float p
     qg_params->lambda = true;
   }
   struct quantum_gate_def* gate = qg_init_functions[qg_name](qg_params);
-  if (gate == NULL) {
+  if (!gate) {
     printf("INTERNAL ERROR: on gate %d \n", qg_name);
     exit(1);
   }
@@ -384,14 +385,12 @@ struct quantum_gate_def* quantum_gate_csxdg(struct quantum_gate_params_def* qg_p
 }
 
 struct quantum_gate_def* quantum_gate_rxx(struct quantum_gate_params_def* qg_params) {
-  struct quantum_gate_def* qg_dummy = {0};
-  struct global_matrix_def** matrix = {0};
+  struct global_matrix_def** matrix = global_matrix_alloc(QG_SINGLE_GATE_SIZE);
   return quantum_gate_init(QG_SINGLE_GATE_SIZE, GLOBAL_GATE_RXX, GLOBAL_TYPE_CONTROLLED, matrix, qg_params);
 }
 
 struct quantum_gate_def* quantum_gate_rzz(struct quantum_gate_params_def* qg_params) {
-  struct quantum_gate_def* qg_dummy = {0};
-  struct global_matrix_def** matrix = {0};
+  struct global_matrix_def** matrix = global_matrix_alloc(QG_SINGLE_GATE_SIZE);
   return quantum_gate_init(QG_SINGLE_GATE_SIZE, GLOBAL_GATE_RZZ, GLOBAL_TYPE_CONTROLLED, matrix, qg_params);
 }
 

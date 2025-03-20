@@ -32,7 +32,13 @@ typedef struct qlog_def {
 struct qlog_def* qlog_init(uint8_t qubits);
 void qlog_delete(struct qlog_def *qlog);
 uint16_t qlog_size(struct qlog_def *qlog);
-qlog_append_res qlog_append(struct qlog_def *qlog, uint8_t *qubits, uint8_t num_qubits, int type, int gate, float16 theta, float16 phi, float16 lambda);
+qlog_append_res qlog_append(struct qlog_def *qlog,
+                            uint8_t *qubits,
+                            uint8_t num_qubits,
+                            int type, int gate,
+                            float16 theta,
+                            float16 phi,
+                            float16 lambda);
 qlog_append_res qlog_append_entry(struct qlog_def *qlog, struct qlog_entry_def *qlog_entry);
 void qlog_print_content(struct qlog_def *qlog);
 void qlog_clear();
