@@ -1,12 +1,14 @@
 #include "qlog_optimize_graph.h"
 #include <stdio.h>
 
-struct qlog_node_def* qlog_node_init(struct qlog_entry_def* qlog_entry,
+struct qlog_node_def* qlog_node_init(uint16_t id,
+                                     struct qlog_entry_def* qlog_entry,
                                      struct qlog_node_def* qlog_node_prev,
                                      struct qlog_node_def* qlog_node_next,
                                      struct qlog_node_def* qlog_node_up,
                                      struct qlog_node_def* qlog_node_down) {
-  struct qlog_node_def* qlog_node = (qlog_node_def*)malloc(sizeof(struct qlog_node_def)); 
+  struct qlog_node_def* qlog_node = (qlog_node_def*)malloc(sizeof(struct qlog_node_def));
+  qlog_node->qlog_node_id = id;
   if (qlog_entry) {
     qlog_node->qlog_node_entry = qlog_entry;
   }
@@ -66,7 +68,7 @@ void qlog_node_dump_content(struct qlog_node_def* qlog_node) {
   }
 }
 
-void qlog_graph_append(struct qlog_graph_def* qlog_graph, struct qlog_entry_def* qlog_entry, uint8_t ins, bool controlled, uint8_t ins_targ) {
+void qlog_graph_append(uint16_t id, struct qlog_graph_def* qlog_graph, struct qlog_entry_def* qlog_entry, uint8_t ins, bool controlled, uint8_t ins_targ) {
   if (!qlog_graph) {
     return;
   }
@@ -75,11 +77,11 @@ void qlog_graph_append(struct qlog_graph_def* qlog_graph, struct qlog_entry_def*
     return;
   }
 
-  struct qlog_node_def* insert = qlog_node_init(qlog_entry, qlog_graph->qlog_graph_circuit_track[ins], NULL, NULL, NULL);
+  struct qlog_node_def* insert = qlog_node_init(id, qlog_entry, qlog_graph->qlog_graph_circuit_track[ins], NULL, NULL, NULL);
   qlog_graph->qlog_graph_circuit_track[ins]->qlog_node_next = insert;
 
   if (controlled) {
-    struct qlog_node_def* paired_insert = qlog_node_init(qlog_entry, qlog_graph->qlog_graph_circuit_track[ins_targ], NULL, insert, NULL);
+    struct qlog_node_def* paired_insert = qlog_node_init(id, qlog_entry, qlog_graph->qlog_graph_circuit_track[ins_targ], NULL, insert, NULL);
     insert->qlog_node_down = paired_insert;
     qlog_graph->qlog_graph_circuit_track[ins_targ]->qlog_node_next = paired_insert;
     qlog_graph->qlog_graph_circuit_track[ins_targ] = paired_insert;
@@ -126,18 +128,17 @@ struct qlog_graph_def* qlog_graph_init(qlog_optimize_def* qlog_optimize) {
   qlog_graph->qlog_graph_circuit_track = (struct qlog_node_def**) malloc(sizeof(struct qlog_node_def*) * qlog_optimize->qlog_optimize_size);
 
   for (uint8_t i = 0; i < qlog_graph->qlog_graph_size; ++i) {
-    qlog_graph->qlog_graph_circuit[i] = qlog_node_init(NULL, NULL, NULL, NULL, NULL);
+    qlog_graph->qlog_graph_circuit[i] = qlog_node_init(0, NULL, NULL, NULL, NULL, NULL);
     qlog_graph->qlog_graph_circuit_track[i] = qlog_graph->qlog_graph_circuit[i];
   }
 
   for (uint16_t i = 0; i < qlog_optimize->qlog_optimize_size; ++i) {
     struct qlog_entry_def* qlog_new_entry;
-    memcpy(qlog_new_entry, qlog_optimize->qlog_optimize_qlog_ptr->qlog_entries[i], sizeof(struct qlog_entry_def));
     ++qlog_graph->qlog_graph_row_size[i];
     qlog_graph->qlog_graph_used_qubits[i] = 1;
     bool is_controlled = qlog_new_entry->qlog_entry_qubit_cnt > 1;
     uint8_t target_qubit = is_controlled ? qlog_new_entry->qlog_entry_qubits[1] : 0;
-    qlog_graph_append(qlog_graph, qlog_new_entry, qlog_new_entry->qlog_entry_qubits[0], is_controlled, target_qubit);
+    qlog_graph_append(i, qlog_graph, qlog_new_entry, qlog_new_entry->qlog_entry_qubits[0], is_controlled, target_qubit);
   }
 
   return qlog_graph;

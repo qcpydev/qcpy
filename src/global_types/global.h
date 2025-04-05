@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+#ifndef GLOBAL_H
 
 typedef float float16; // need to change to own/library float16
 
@@ -75,3 +76,4 @@ global_matrix_del_res global_matrix_delete(struct global_matrix_def **gate_matri
 struct global_matrix_def** global_matrix_zeroed(int size);
 const char* global_get_gate_name(int gate);
 const char* global_get_gate_type(int type);
+#endif // GLOBAL_H

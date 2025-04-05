@@ -242,8 +242,10 @@ class CircuitDrawing:
             str: Combination of all qubit strings in a single string.
         """
         types = qlog.get_types()
+        print(types)
         names = qlog.get_names()
         qubits = qlog.get_qubits()
+        print(qubits)
         for i in range(len(qubits)):
             insert = CircuitDrawingInsert(name=names[i], qubits=qubits[i])
             if names[i] == "SWAP":

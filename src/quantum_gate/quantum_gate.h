@@ -23,6 +23,7 @@ typedef struct quantum_gate_def {
 } quantum_gate_def;
 
 quantum_gate_params_def* quantum_gate_params_zeroed();
+struct quantum_gate_params_def* quantum_gate_params_init(int gate, float16 theta, float16 phi, float16 lambda); 
 
 quantum_gate_def* quantum_gate_init(uint16_t size, global_gate_name gate_name, global_gate_type gate_type, global_matrix_def **matrix, struct quantum_gate_params_def *quantum_gate_params);
 void quantum_gate_delete(struct quantum_gate_def *quantum_gate);
