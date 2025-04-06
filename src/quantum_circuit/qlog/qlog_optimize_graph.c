@@ -137,8 +137,8 @@ struct qlog_graph_def* qlog_graph_init(qlog_optimize_def* qlog_optimize) {
     ++qlog_graph->qlog_graph_row_size[i];
     qlog_graph->qlog_graph_used_qubits[i] = 1;
     bool is_controlled = qlog_new_entry->qlog_entry_qubit_cnt > 1;
-    uint8_t target_qubit = is_controlled ? qlog_new_entry->qlog_entry_qubits[1] : 0;
-    qlog_graph_append(i, qlog_graph, qlog_new_entry, qlog_new_entry->qlog_entry_qubits[0], is_controlled, target_qubit);
+    //uint8_t target_qubit = is_controlled ? qlog_new_entry->qlog_entry_qubits[1] : 0;
+    //qlog_graph_append(i, qlog_graph, qlog_new_entry, qlog_new_entry->qlog_entry_qubits[0], is_controlled, target_qubit);
   }
 
   return qlog_graph;
