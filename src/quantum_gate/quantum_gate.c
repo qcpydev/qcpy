@@ -3,7 +3,14 @@
 
 #define QG_SINGLE_GATE_SIZE (2)
 #define QG_HAS_NO_PARAMS(qg_name) (!(QG_HAS_THETA_PARAMS(qg_name) || QG_HAS_PHI_PARAMS(qg_name) || QG_HAS_LAMBDA_PARAMS(qg_name)))
-#define QG_HAS_THETA_PARAMS(qg_name) (qg_name == GLOBAL_GATE_PHASE || qg_name == GLOBAL_GATE_RZ || qg_name == GLOBAL_GATE_RX || qg_name == GLOBAL_GATE_RY || qg_name == GLOBAL_GATE_U, qg_name == GLOBAL_GATE_RXX || qg_name == GLOBAL_GATE_RZZ)
+#define QG_HAS_THETA_PARAMS(qg_name) (qg_name == GLOBAL_GATE_PHASE ||\
+                                      qg_name == GLOBAL_GATE_RZ    ||\
+                                      qg_name == GLOBAL_GATE_RX    ||\
+                                      qg_name == GLOBAL_GATE_RY    ||\
+                                      qg_name == GLOBAL_GATE_U     ||\
+                                      qg_name == GLOBAL_GATE_RXX   ||\
+                                      qg_name == GLOBAL_GATE_RZZ)
+
 #define QG_HAS_LAMBDA_PARAMS(qg_name) (qg_name == GLOBAL_GATE_U)
 #define QG_HAS_PHI_PARAMS(qg_name) (qg_name == GLOBAL_GATE_U)
 #define QG_HAS_ANY_SET_PARAMS(qg_params) (qg_params->has_theta || qg_params->has_phi || qg_params->has_lambda)
@@ -51,8 +58,10 @@ struct quantum_gate_params_def* quantum_gate_params_zeroed() {
   return quantum_gate_params_zero;
 }
 
+struct quantum_gate_params_def* quantum_gate_params_init(int gate, float16 theta, float16 phi, float16 lambda) {}
+
 struct quantum_gate_def* quantum_gate_get_gate(int qg_name, float theta, float phi, float lambda) {
-   if (QG_HAS_NO_PARAMS(qg_name)) {
+  if (QG_HAS_NO_PARAMS(qg_name)) {
     return NULL;
   }
 

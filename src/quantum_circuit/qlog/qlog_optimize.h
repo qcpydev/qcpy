@@ -5,15 +5,6 @@
 #include "qlog.h"
 #include "qlog_optimize_stats.h"
 
-#define QLOG_OPTIMIZE_TYPES \
-  X(qlog_optimize_remove_identity_gates) \
-  X(qlog_optimize_remove_paired_dup_gates) \
-  X(qlog_optimize_remove_redundant_cnot)
-
-typedef enum {
-  REMOVE_IDENTITY_GATES
-} qlog_opt_track_types;
-
 typedef struct qlog_optimize_def {
   struct qlog_optimize_stats_def* qlog_optimize_stats;
   uint8_t* qlog_optimize_qubits;

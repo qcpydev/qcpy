@@ -1,6 +1,8 @@
 #include <stdint.h>
 #include <stdio.h>
-#include "qlog_entry_stats.h"
+#include <stdbool.h>
+#ifndef QLOG_ENTRY_H
+#define QLOG_ENTRY_H
 #include "../../quantum_gate/quantum_gate.h"
 
 /*
@@ -9,16 +11,22 @@
  * */
 
 typedef struct qlog_entry_def {
+  uint64_t qlog_entry_id;                            // Unique ID, each id is (qlog, qlog_entry)
+  struct qlog_entry_def* qlog_entry_prev;            // prev node for the qlog
+  struct qlog_entry_def* qlog_entry_next;            // next node
+  struct quantum_gate_params_def* qlog_entry_params; // params for the gate associated with qlog_entry
+  struct qlog_entry_stats_def* qlog_entry_stat;      // entry stats
+  global_gate_name qlog_entry_gate;                  // gate name 
+  global_gate_type qlog_entry_gate_type;             // gate type
+  uint64_t qlog_entry_qubit_bm;                      // bit map that stores the qubits
+  uint8_t qlog_entry_qubit_cnt;                      // number of qubits
+
   uint8_t *qlog_entry_qubits;                   // int arr to 
-  uint8_t qlog_entry_qubit_cnt;                 // number of qubits
-  global_gate_name qlog_entry_gate;             // gate name 
-  global_gate_type qlog_entry_gate_type;        // gate type
-  struct quantum_gate_def* qlog_quantum_gate;   // quantum gate
-  struct qlog_entry_stats_def* qlog_entry_stat; // entry stats
 } qlog_entry_def;
 
-
-struct qlog_entry_def* qlog_entry_init(uint8_t *qubits, uint8_t num_qubits, int type, int gate, uint8_t qlog_qubits, float16 theta, float16 phi, float16 lambda);
+struct qlog_entry_def* qlog_entry_init(uint64_t id, struct qlog_entry_def* qlog_entry_prev, uint8_t *qubits, uint8_t num_qubits, int type, int gate, float16 theta, float16 phi, float16 lambda);
+struct qlog_entry_def* qlog_entry_dummy_init();
+uint64_t qlog_entry_init_bmap(uint8_t* qlog_entry_qubits, uint8_t count);
 void qlog_entry_delete(struct qlog_entry_def *qlog_entry);
 global_gate_name qlog_entry_qg_name(struct qlog_entry_def *qlog_entry); 
 global_gate_type qlog_entry_qg_type(struct qlog_entry_def *qlog_entry);
@@ -29,3 +37,6 @@ void qlog_entry_dump_content(struct qlog_entry_def *qlog_entry, bool verbose);
 const char* get_qlog_entry_gate(struct qlog_entry_def *qlog_entry);
 const char* get_qlog_entry_gate_type(struct qlog_entry_def *qlog_entry);
 bool qlog_entry_compare_entries(struct qlog_entry_def *qlog_entry, struct qlog_entry_def *qlog_entry_to_compare);
+
+
+#endif // QLOG_ENTRY_H

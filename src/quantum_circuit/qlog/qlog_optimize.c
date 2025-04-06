@@ -1,5 +1,4 @@
-#include "qlog_optimize.h"
-#include <stdint.h>
+#include "qlog_optimize_graph.h"
 
 #define EXPAND_QLOG_ENTRY(qe_gate_type) (qe_gate_type == GLOBAL_GATE_CCX || \
                                          qe_gate_type == GLOBAL_GATE_QFT || \
@@ -11,7 +10,8 @@
 
 
 void (*qlog_optimize_types[])(struct qlog_def* qlog, struct qlog_def* qlog_optimized, struct qlog_optimize_def* qlog_optimize) = {
-  qlog_optimize_remove_identity_gates
+  qlog_optimize_remove_identity_gates,
+  qlog_optimize_remove_paired_dup_gates
 };
 
 uint8_t qlog_optimize_types_size = sizeof(qlog_optimize_types) / sizeof(qlog_optimize_types[0]);
@@ -54,20 +54,7 @@ struct qlog_def* qlog_optimize_set(struct qlog_def *qlog) {
 struct qlog_def* qlog_optimize_expand_multi_gate(struct qlog_def* qlog){ 
   struct qlog_def* expand_qlog = qlog_init(qlog->qlog_qubit_cnt);
   for (int i = 0; i < qlog->qlog_size; ++i) {
-
-    struct qlog_entry_def* qlog_entry = qlog->qlog_entries[i]; 
-    struct quantum_gate_params_def* params;
-
-    if (qlog_entry->qlog_quantum_gate && qlog_entry->qlog_quantum_gate->quantum_gate_params) {
-      params = qlog_entry->qlog_quantum_gate->quantum_gate_params;
-    }
-
-    if (EXPAND_QLOG_ENTRY(qlog_entry->qlog_entry_gate)) {
-      qlog_optimize_expand_types[qlog_entry->qlog_entry_gate](expand_qlog, qlog_entry);
-    }
-    else {
-      qlog_append_entry(expand_qlog, qlog_entry);
-    }
+    
 
   }
   return expand_qlog;
@@ -101,53 +88,53 @@ void qlog_optimize_expand_qft(struct qlog_def* qlog, struct qlog_entry_def* qlog
   append_res = qlog_append(qlog, (uint8_t[]){qubit_one, qubit_three}, 2, GLOBAL_TYPE_CONTROLLED, GLOBAL_GATE_CSX, 0, 0, 0);
 }
 
-void qlog_optimize_expand_rccx(struct qlog_def* qlog, struct qlog_entry_def* qlog_entry) {
-  qlog_append_res append_res;
-  uint8_t control_one = qlog_entry->qlog_entry_qubits[0];
-  uint8_t control_two = qlog_entry->qlog_entry_qubits[1];
-  uint8_t target = qlog_entry->qlog_entry_qubits[2];
-  append_res = qlog_append(qlog, (uint8_t[]){target}, 1, GLOBAL_TYPE_SINGLE, GLOBAL_GATE_U, M_PI / 2, 0, M_PI);
-  append_res = qlog_append(qlog, (uint8_t[]){target}, 1, GLOBAL_TYPE_SINGLE, GLOBAL_GATE_U, 0, 0, M_PI / 4);
-  append_res = qlog_append(qlog, (uint8_t[]){control_two, target}, 2, GLOBAL_TYPE_CONTROLLED, GLOBAL_GATE_CSX, 0, 0, 0);
-  append_res = qlog_append(qlog, (uint8_t[]){target}, 1, GLOBAL_TYPE_SINGLE, GLOBAL_GATE_U, 0, 0, (-1 * M_PI) / 4);
-  append_res = qlog_append(qlog, (uint8_t[]){control_one, target}, 2, GLOBAL_TYPE_CONTROLLED, GLOBAL_GATE_CSX, 0, 0, 0);
-  append_res = qlog_append(qlog, (uint8_t[]){target}, 1, GLOBAL_TYPE_SINGLE, GLOBAL_GATE_U, 0, 0, M_PI / 4);
-  append_res = qlog_append(qlog, (uint8_t[]){control_two, target}, 2, GLOBAL_TYPE_CONTROLLED, GLOBAL_GATE_CSX, 0, 0, 0);
-  append_res = qlog_append(qlog, (uint8_t[]){target}, 1, GLOBAL_TYPE_SINGLE, GLOBAL_GATE_U, 0, 0, 0);
-  append_res = qlog_append(qlog, (uint8_t[]){target}, 1, GLOBAL_TYPE_SINGLE, GLOBAL_GATE_U, 0, 0, 0);
-}
+  void qlog_optimize_expand_rccx(struct qlog_def* qlog, struct qlog_entry_def* qlog_entry) {
+    qlog_append_res append_res;
+    uint8_t control_one = qlog_entry->qlog_entry_qubits[0];
+    uint8_t control_two = qlog_entry->qlog_entry_qubits[1];
+    uint8_t target = qlog_entry->qlog_entry_qubits[2];
+    append_res = qlog_append(qlog, (uint8_t[]){target}, 1, GLOBAL_TYPE_SINGLE, GLOBAL_GATE_U, M_PI / 2, 0, M_PI);
+    append_res = qlog_append(qlog, (uint8_t[]){target}, 1, GLOBAL_TYPE_SINGLE, GLOBAL_GATE_U, 0, 0, M_PI / 4);
+    append_res = qlog_append(qlog, (uint8_t[]){control_two, target}, 2, GLOBAL_TYPE_CONTROLLED, GLOBAL_GATE_CSX, 0, 0, 0);
+    append_res = qlog_append(qlog, (uint8_t[]){target}, 1, GLOBAL_TYPE_SINGLE, GLOBAL_GATE_U, 0, 0, (-1 * M_PI) / 4);
+    append_res = qlog_append(qlog, (uint8_t[]){control_one, target}, 2, GLOBAL_TYPE_CONTROLLED, GLOBAL_GATE_CSX, 0, 0, 0);
+    append_res = qlog_append(qlog, (uint8_t[]){target}, 1, GLOBAL_TYPE_SINGLE, GLOBAL_GATE_U, 0, 0, M_PI / 4);
+    append_res = qlog_append(qlog, (uint8_t[]){control_two, target}, 2, GLOBAL_TYPE_CONTROLLED, GLOBAL_GATE_CSX, 0, 0, 0);
+    append_res = qlog_append(qlog, (uint8_t[]){target}, 1, GLOBAL_TYPE_SINGLE, GLOBAL_GATE_U, 0, 0, 0);
+    append_res = qlog_append(qlog, (uint8_t[]){target}, 1, GLOBAL_TYPE_SINGLE, GLOBAL_GATE_U, 0, 0, 0);
+  }
 
-void qlog_optimize_expand_rc3x(struct qlog_def* qlog, struct qlog_entry_def* qlog_entry) {
-  qlog_append_res append_res;
-  uint8_t qubit_1 = qlog_entry->qlog_entry_qubits[0];
-  uint8_t qubit_2 = qlog_entry->qlog_entry_qubits[1];
-  uint8_t qubit_3 = qlog_entry->qlog_entry_qubits[2];
-  uint8_t qubit_4 = qlog_entry->qlog_entry_qubits[3];
-  append_res = qlog_append(qlog, (uint8_t[]){qubit_4}, 1, GLOBAL_TYPE_SINGLE, GLOBAL_GATE_U, M_PI / 2, 0, M_PI);
-  append_res = qlog_append(qlog, (uint8_t[]){qubit_4}, 1, GLOBAL_TYPE_SINGLE, GLOBAL_GATE_U, 0, 0, M_PI / 4);
-  append_res = qlog_append(qlog, (uint8_t[]){qubit_3, qubit_4}, 2, GLOBAL_TYPE_CONTROLLED, GLOBAL_GATE_CX, 0, 0, 0);
-  append_res = qlog_append(qlog, (uint8_t[]){qubit_4}, 1, GLOBAL_TYPE_SINGLE, GLOBAL_GATE_U, 0, 0, (-1 * M_PI) / 4);
-  append_res = qlog_append(qlog, (uint8_t[]){qubit_4}, 1, GLOBAL_TYPE_SINGLE, GLOBAL_GATE_U, M_PI / 2, 0, M_PI);
-  append_res = qlog_append(qlog, (uint8_t[]){qubit_1, qubit_4}, 2, GLOBAL_TYPE_CONTROLLED, GLOBAL_GATE_CX, 0, 0, 0);
-  append_res = qlog_append(qlog, (uint8_t[]){qubit_4}, 1, GLOBAL_TYPE_SINGLE, GLOBAL_GATE_U, 0, 0, M_PI / 4);
-  append_res = qlog_append(qlog, (uint8_t[]){qubit_2, qubit_4}, 2, GLOBAL_TYPE_CONTROLLED, GLOBAL_GATE_CX, 0, 0, 0);
-  append_res = qlog_append(qlog, (uint8_t[]){qubit_4}, 1, GLOBAL_TYPE_SINGLE, GLOBAL_GATE_U, 0, 0, (-1 * M_PI) / 4);
-  append_res = qlog_append(qlog, (uint8_t[]){qubit_1, qubit_4}, 2, GLOBAL_TYPE_CONTROLLED, GLOBAL_GATE_CX, 0, 0, 0);
-  append_res = qlog_append(qlog, (uint8_t[]){qubit_4}, 1, GLOBAL_TYPE_SINGLE, GLOBAL_GATE_U, 0, 0, M_PI / 4);
-  append_res = qlog_append(qlog, (uint8_t[]){qubit_2, qubit_4}, 2, GLOBAL_TYPE_CONTROLLED, GLOBAL_GATE_CX, 0, 0, 0);
-  append_res = qlog_append(qlog, (uint8_t[]){qubit_4}, 1, GLOBAL_TYPE_SINGLE, GLOBAL_GATE_U, 0, 0, (-1 * M_PI) / 4);
-  append_res = qlog_append(qlog, (uint8_t[]){qubit_4}, 1, GLOBAL_TYPE_SINGLE, GLOBAL_GATE_U, M_PI / 2, 0, M_PI);
-  append_res = qlog_append(qlog, (uint8_t[]){qubit_4}, 1, GLOBAL_TYPE_SINGLE, GLOBAL_GATE_U, 0, 0, M_PI / 4);
-  append_res = qlog_append(qlog, (uint8_t[]){qubit_3, qubit_4}, 2, GLOBAL_TYPE_CONTROLLED, GLOBAL_GATE_CX, 0, 0, 0);
-  append_res = qlog_append(qlog, (uint8_t[]){qubit_4}, 1, GLOBAL_TYPE_SINGLE, GLOBAL_GATE_U, 0, 0, (-1 * M_PI) / 4);
-  append_res = qlog_append(qlog, (uint8_t[]){qubit_4}, 1, GLOBAL_TYPE_SINGLE, GLOBAL_GATE_U, M_PI / 2, 0, M_PI);
-}
+  void qlog_optimize_expand_rc3x(struct qlog_def* qlog, struct qlog_entry_def* qlog_entry) {
+    qlog_append_res append_res;
+    uint8_t qubit_1 = qlog_entry->qlog_entry_qubits[0];
+    uint8_t qubit_2 = qlog_entry->qlog_entry_qubits[1];
+    uint8_t qubit_3 = qlog_entry->qlog_entry_qubits[2];
+    uint8_t qubit_4 = qlog_entry->qlog_entry_qubits[3];
+    append_res = qlog_append(qlog, (uint8_t[]){qubit_4}, 1, GLOBAL_TYPE_SINGLE, GLOBAL_GATE_U, M_PI / 2, 0, M_PI);
+    append_res = qlog_append(qlog, (uint8_t[]){qubit_4}, 1, GLOBAL_TYPE_SINGLE, GLOBAL_GATE_U, 0, 0, M_PI / 4);
+    append_res = qlog_append(qlog, (uint8_t[]){qubit_3, qubit_4}, 2, GLOBAL_TYPE_CONTROLLED, GLOBAL_GATE_CX, 0, 0, 0);
+    append_res = qlog_append(qlog, (uint8_t[]){qubit_4}, 1, GLOBAL_TYPE_SINGLE, GLOBAL_GATE_U, 0, 0, (-1 * M_PI) / 4);
+    append_res = qlog_append(qlog, (uint8_t[]){qubit_4}, 1, GLOBAL_TYPE_SINGLE, GLOBAL_GATE_U, M_PI / 2, 0, M_PI);
+    append_res = qlog_append(qlog, (uint8_t[]){qubit_1, qubit_4}, 2, GLOBAL_TYPE_CONTROLLED, GLOBAL_GATE_CX, 0, 0, 0);
+    append_res = qlog_append(qlog, (uint8_t[]){qubit_4}, 1, GLOBAL_TYPE_SINGLE, GLOBAL_GATE_U, 0, 0, M_PI / 4);
+    append_res = qlog_append(qlog, (uint8_t[]){qubit_2, qubit_4}, 2, GLOBAL_TYPE_CONTROLLED, GLOBAL_GATE_CX, 0, 0, 0);
+    append_res = qlog_append(qlog, (uint8_t[]){qubit_4}, 1, GLOBAL_TYPE_SINGLE, GLOBAL_GATE_U, 0, 0, (-1 * M_PI) / 4);
+    append_res = qlog_append(qlog, (uint8_t[]){qubit_1, qubit_4}, 2, GLOBAL_TYPE_CONTROLLED, GLOBAL_GATE_CX, 0, 0, 0);
+    append_res = qlog_append(qlog, (uint8_t[]){qubit_4}, 1, GLOBAL_TYPE_SINGLE, GLOBAL_GATE_U, 0, 0, M_PI / 4);
+    append_res = qlog_append(qlog, (uint8_t[]){qubit_2, qubit_4}, 2, GLOBAL_TYPE_CONTROLLED, GLOBAL_GATE_CX, 0, 0, 0);
+    append_res = qlog_append(qlog, (uint8_t[]){qubit_4}, 1, GLOBAL_TYPE_SINGLE, GLOBAL_GATE_U, 0, 0, (-1 * M_PI) / 4);
+    append_res = qlog_append(qlog, (uint8_t[]){qubit_4}, 1, GLOBAL_TYPE_SINGLE, GLOBAL_GATE_U, M_PI / 2, 0, M_PI);
+    append_res = qlog_append(qlog, (uint8_t[]){qubit_4}, 1, GLOBAL_TYPE_SINGLE, GLOBAL_GATE_U, 0, 0, M_PI / 4);
+    append_res = qlog_append(qlog, (uint8_t[]){qubit_3, qubit_4}, 2, GLOBAL_TYPE_CONTROLLED, GLOBAL_GATE_CX, 0, 0, 0);
+    append_res = qlog_append(qlog, (uint8_t[]){qubit_4}, 1, GLOBAL_TYPE_SINGLE, GLOBAL_GATE_U, 0, 0, (-1 * M_PI) / 4);
+    append_res = qlog_append(qlog, (uint8_t[]){qubit_4}, 1, GLOBAL_TYPE_SINGLE, GLOBAL_GATE_U, M_PI / 2, 0, M_PI);
+  }
 
-void qlog_optimize_expand_rxx(struct qlog_def* qlog, struct qlog_entry_def* qlog_entry) {
-  qlog_append_res append_res;
-  uint8_t qubit_one = qlog_entry->qlog_entry_qubits[0];
-  uint8_t qubit_two = qlog_entry->qlog_entry_qubits[1];
-  float theta = qlog_entry->qlog_quantum_gate->quantum_gate_params->theta;
+  void qlog_optimize_expand_rxx(struct qlog_def* qlog, struct qlog_entry_def* qlog_entry) {
+    qlog_append_res append_res;
+    uint8_t qubit_one = qlog_entry->qlog_entry_qubits[0];
+    uint8_t qubit_two = qlog_entry->qlog_entry_qubits[1];
+    float theta = qlog_entry->qlog_entry_params->theta;
   append_res = qlog_append(qlog, (uint8_t[]){qubit_two}, 1, GLOBAL_TYPE_SINGLE, GLOBAL_GATE_HADAMARD, 0, 0, 0);
   append_res = qlog_append(qlog, (uint8_t[]){qubit_one, qubit_two}, 2, GLOBAL_TYPE_CONTROLLED, GLOBAL_GATE_CX, 0, 0, 0);
   append_res = qlog_append(qlog, (uint8_t[]){qubit_two}, 1, GLOBAL_TYPE_SINGLE, GLOBAL_GATE_U, -1 * theta, 0, 0);
@@ -159,7 +146,7 @@ void qlog_optimize_expand_rzz(struct qlog_def* qlog, struct qlog_entry_def* qlog
   qlog_append_res append_res;
   uint8_t qubit_one = qlog_entry->qlog_entry_qubits[0];
   uint8_t qubit_two = qlog_entry->qlog_entry_qubits[1];
-  float theta = qlog_entry->qlog_quantum_gate->quantum_gate_params->theta;
+  float theta = qlog_entry->qlog_entry_params->theta;
   append_res = qlog_append(qlog, (uint8_t[]){qubit_one, qubit_two}, 2, GLOBAL_TYPE_CONTROLLED, GLOBAL_GATE_CX, 0, 0, 0);
   append_res = qlog_append(qlog, (uint8_t[]){qubit_one}, 1, GLOBAL_TYPE_SINGLE, GLOBAL_GATE_U, 0, theta, 0);
   append_res = qlog_append(qlog, (uint8_t[]){qubit_one, qubit_two}, 1, GLOBAL_TYPE_CONTROLLED, GLOBAL_GATE_CX, 0, 0, 0);
@@ -175,24 +162,17 @@ void qlog_optimize_expand_swap(struct qlog_def* qlog, struct qlog_entry_def* qlo
 }
 
 void qlog_optimize_remove_identity_gates(struct qlog_def* qlog, struct qlog_def* optimized_qlog, struct qlog_optimize_def* qlog_optimize) {
-  for (uint16_t i = 0; i < qlog->qlog_size; ++i) {
-    struct qlog_entry_def* qlog_entry = qlog->qlog_entries[i];
-    if (qlog_entry->qlog_entry_gate != GLOBAL_GATE_IDENTITY) {
-      qlog_append_entry(optimized_qlog, qlog_entry);
-    }
-  }
 }
 
 void qlog_optimize_remove_paired_dup_gates(struct qlog_def* qlog, struct qlog_def* optimized_qlog, struct qlog_optimize_def* qlog_optimize) {
-  
-  for (uint16_t i = 0; i < qlog->qlog_size; ++i) {
-    qlog_entry_def* qlog_entry = qlog->qlog_entries[i];
+  struct qlog_graph_def* qlog_graph = qlog_graph_init(qlog_optimize);
+  if (!qlog_graph || !qlog_graph->qlog_graph_circuit_track) {
+    return;
   }
+  
+  //qlog_graph_serialize(qlog_graph, optimized_qlog);
 }
 
 void qlog_optimize_remove_redundant_cnot(struct qlog_def* qlog, struct qlog_def* optimize_qlog, struct qlog_optimize_def* qlog_optimize) {
-  for (uint16_t i = 0; i < qlog->qlog_size; ++i){
-    qlog_entry_def* qlog_entry = qlog->qlog_entries[i];
-  }
 }
 
