@@ -81,7 +81,8 @@ qlog_append_res qlog_append_entry(struct qlog_def *qlog, struct qlog_entry_def *
   }
   
   float theta, phi, lambda = 0.0;
-  return qlog_append(qlog, qlog_entry->qlog_entry_qubits,
+  return qlog_append(qlog,
+                     qlog_entry_deconstruct_qubit_flags(qlog_entry),
                      qlog_entry->qlog_entry_qubit_cnt,
                      qlog_entry->qlog_entry_gate_type,
                      qlog_entry->qlog_entry_gate,
@@ -197,8 +198,7 @@ uint8_t** qlog_get_gate_qubits(struct qlog_def* qlog) {
   struct qlog_entry_def* qlog_walker = qlog->qlog_entry_list->qlog_entry_next;
   uint8_t** qlog_gate_qubits = (uint8_t**)malloc(sizeof(uint8_t*) * qlog->qlog_size);
   for (uint16_t i = 0; i < qlog->qlog_size; ++i) {
-    uint8_t* temp = (uint8_t*)calloc(qlog_walker->qlog_entry_qubit_cnt, sizeof(uint8_t) * qlog_walker->qlog_entry_qubit_cnt);
-    qlog_gate_qubits[i] = temp;
+    qlog_gate_qubits[i] = qlog_entry_deconstruct_qubit_flags(qlog_walker);
     qlog_walker = qlog_walker->qlog_entry_next;
     
   }

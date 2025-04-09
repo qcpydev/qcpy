@@ -18,15 +18,15 @@ typedef struct qlog_entry_def {
   struct qlog_entry_stats_def* qlog_entry_stat;      // entry stats
   global_gate_name qlog_entry_gate;                  // gate name 
   global_gate_type qlog_entry_gate_type;             // gate type
-  uint64_t qlog_entry_qubit_bm;                      // bit map that stores the qubits
+  uint64_t qlog_entry_qubits;                        // bit flagsthat stores the qubits
   uint8_t qlog_entry_qubit_cnt;                      // number of qubits
-
-  uint8_t *qlog_entry_qubits;                   // int arr to 
+  uint32_t qlog_entry_qubit_invert : 1;
 } qlog_entry_def;
 
 struct qlog_entry_def* qlog_entry_init(uint64_t id, struct qlog_entry_def* qlog_entry_prev, uint8_t *qubits, uint8_t num_qubits, int type, int gate, float16 theta, float16 phi, float16 lambda);
 struct qlog_entry_def* qlog_entry_dummy_init();
-uint64_t qlog_entry_init_bmap(uint8_t* qlog_entry_qubits, uint8_t count);
+uint64_t qlog_entry_init_qubit_flags(uint8_t* qlog_entry_qubits, uint8_t count);
+uint8_t* qlog_entry_deconstruct_qubit_flags(struct qlog_entry_def* qlog_entry);
 void qlog_entry_delete(struct qlog_entry_def *qlog_entry);
 global_gate_name qlog_entry_qg_name(struct qlog_entry_def *qlog_entry); 
 global_gate_type qlog_entry_qg_type(struct qlog_entry_def *qlog_entry);
