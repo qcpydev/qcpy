@@ -5,6 +5,9 @@
 #include "qlog.h"
 #include "qlog_optimize_stats.h"
 
+#pragma once
+#ifndef QLOG_OPTIMIZE_H
+
 typedef struct qlog_optimize_def {
   struct qlog_optimize_stats_def* qlog_optimize_stats;
   uint8_t* qlog_optimize_qubits;
@@ -26,4 +29,5 @@ void qlog_optimize_remove_identity_gates(struct qlog_def* qlog, struct qlog_def*
 void qlog_optimize_remove_paired_dup_gates(struct qlog_def* qlog, struct qlog_def* optimized_qlog, qlog_optimize_def* qlog_optimize);
 void qlog_optimize_remove_redundant_cnot(struct qlog_def* qlog, struct qlog_def* optimized_qlog, qlog_optimize_def* qlog_optimize);
 struct qlog_def* qlog_optimize_set(struct qlog_def* qlog);
+#endif // QLOG_OPTIMIZE_H
 

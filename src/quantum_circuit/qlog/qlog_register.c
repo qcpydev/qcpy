@@ -1,5 +1,6 @@
 
 #include "qlog.h"
+#include "qlog_error/qlog_error.h"
 #include "qlog_register.h"
 
 
@@ -12,7 +13,7 @@ void qlog_register_init(void) {
   qlog_register->qlog_register_qlogs = (struct qlog_def**) malloc(sizeof(struct qlog_def*) * MAX_QLOG_REGISTER_SIZE);
   qlog_register->qlog_register_size = 0;
   if (!qlog_register) {
-    return;
+    QLOG_REGISTER_SET_ERROR(qlog_register, "qlog register malloc failed", QLOG_ERROR);
   }
   is_qlog_register_enabled = true;
 }
@@ -23,11 +24,11 @@ qlog_register_append_res qlog_register_append(struct qlog_def* qlog) {
   }
 
   if (!qlog_register) {
-    return QLOG_REGISTER_APPEND_ERROR_NULL;
+    QLOG_REGISTER_SET_ERROR(qlog_register, "qlog register is null", QLOG_ERROR);
   }
 
   if (qlog_register->qlog_register_size == MAX_QLOG_REGISTER_SIZE) {
-    return QLOG_REGISTER_APPEND_ERROR_FULL;
+    QLOG_REGISTER_SET_ERROR(qlog_register, "qlog_register is full", QLOG_ERROR);
   }
 
   qlog_register->qlog_register_qlogs[qlog_register->qlog_register_size] = qlog; 
@@ -46,7 +47,7 @@ qlog_register_delete_res qlog_register_delete(void) {
 
 void qlog_register_dump_log(bool verbose) {
   if (!is_qlog_register_enabled) {
-    printf("Qlog Register does not exist!\n");
+    QLOG_REGISTER_SET_ERROR(qlog_register, "qlog register is not set", QLOG_WARNING);
     return;
   }
 

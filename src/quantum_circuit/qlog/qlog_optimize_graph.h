@@ -4,6 +4,9 @@
 #include <stdio.h>
 #include "qlog_optimize.h"
 
+#pragma once
+#ifndef QLOG_OPTIMIZE_GRAPH_H
+
 typedef struct qlog_node_def {
   int qlog_node_id;
   struct qlog_entry_def* qlog_node_entry;
@@ -32,4 +35,4 @@ struct qlog_graph_def* qlog_graph_init(qlog_optimize_def* qlog_optimize);
 void qlog_graph_delete(struct qlog_graph_def* qlog_graph);
 void qlog_graph_dump_content(struct qlog_graph_def* qlog_graph);
 void qlog_graph_serialize(struct qlog_graph_def* qlog_graph, struct qlog_def* qlog_to_serialize);
-
+#endif // !QLOG_OPTIMIZE_GRAPH_H

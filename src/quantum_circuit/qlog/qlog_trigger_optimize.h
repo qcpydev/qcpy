@@ -5,7 +5,6 @@
 #include "qlog_optimize_graph.h"
 #include "qlog.h"
 
-
 /*
  * qlog_trigger_optimize
  * This is a series of queues that track qlog_entries that meet certain criteria.
