@@ -1,9 +1,11 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include "../../quantum_gate/quantum_gate.h"
+
+#pragma once
 #ifndef QLOG_ENTRY_H
 #define QLOG_ENTRY_H
-#include "../../quantum_gate/quantum_gate.h"
 
 /*
  * qlog's entries that keep track of the user

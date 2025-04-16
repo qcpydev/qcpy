@@ -1,5 +1,6 @@
 #include "qlog.h"
 #include "qlog_stats.h"
+#include "qlog_error/qlog_error.h"
 
 uint16_t max_qlog_length = UINT16_MAX - 1;
 uint16_t empty_qlog_size = UINT16_MAX;
@@ -16,7 +17,7 @@ uint8_t matrix_unitarty_format = 2;
 struct qlog_def* qlog_init(uint8_t qubits) {
   struct qlog_def* qlog = (struct qlog_def*)malloc(sizeof(struct qlog_def));
   if (!qlog) {
-    return NULL;
+    QLOG_SET_ERROR(qlog, "Malloc failed", QLOG_ERROR);
   }
   qlog->qlog_qubit_cnt = qubits;
   qlog->qlog_size = 0;
@@ -47,13 +48,16 @@ uint16_t qlog_size(struct qlog_def *qlog) {
 
 void qlog_clear(struct qlog_def *qlog) {
   if (!qlog) {
-    return;
+    QLOG_SET_ERROR(qlog, "Null qlog", QLOG_WARNING);
   }
+
   struct qlog_entry_def* qlog_walker = qlog->qlog_entry_list->qlog_entry_next;
+
   while (qlog_walker) {
     qlog_entry_delete(qlog_walker);
     qlog_walker = qlog_walker->qlog_entry_next;
   }
+
   qlog->qlog_size = 0;
   return;
 }
@@ -64,23 +68,28 @@ qlog_append_res qlog_append(struct qlog_def *qlog, uint8_t *qubits, uint8_t num_
   }
 
   if (num_qubits > qlog->qlog_qubit_cnt) {
-    return QLOG_APPEND_ERROR;
+    QLOG_SET_ERROR(qlog, "num_qubits greater than current qlog qubit count", QLOG_ERROR);
   }
+
   qlog->qlog_entry_last = qlog_entry_init(qlog->qlog_size, qlog->qlog_entry_last, qubits, num_qubits, type, gate, theta, phi, lambda);
+
   if (!qlog->qlog_entry_last) {
-    return QLOG_APPEND_ERROR;
+    QLOG_SET_ERROR(qlog, "qlog failed to append entry", QLOG_ERROR);
   }
+
   qlog->qlog_size += 1;
+
   return QLOG_APPEND_SUCCESS;
 }
 
 qlog_append_res qlog_append_entry(struct qlog_def *qlog, struct qlog_entry_def *qlog_entry) {
 
   if (!qlog_entry) {
-    return QLOG_APPEND_ERROR;
+    QLOG_SET_ERROR(qlog, "qlog entry is null", QLOG_ERROR);
   }
   
-  float theta, phi, lambda = 0.0;
+  float theta, phi, lambda;
+  theta = phi = lambda = 0.0;
   return qlog_append(qlog,
                      qlog_entry_deconstruct_qubit_flags(qlog_entry),
                      qlog_entry->qlog_entry_qubit_cnt,
@@ -135,7 +144,7 @@ bool qlog_compare_qlogs(struct qlog_def *qlog, struct qlog_def *qlog_to_compare)
     qlog_walker = qlog_walker->qlog_entry_next;
     qlog_walker_compare = qlog_walker_compare->qlog_entry_next;
   }
- 
+
   return true;
 }
 
@@ -161,14 +170,18 @@ struct qlog_def* qlog_combine_qlogs(struct qlog_def* qlog, struct qlog_def* qlog
 
 char** qlog_get_gate_names(struct qlog_def *qlog) {
   if (!qlog) {
-    return NULL;
+    QLOG_SET_ERROR(qlog, "qlog is null", QLOG_ERROR);
   }
 
   char** gate_names = (char**)malloc(sizeof(char*) * qlog->qlog_size * MAX_STR_LENGTH);
+  
+  if (!gate_names) {
+    QLOG_SET_ERROR(qlog, "gate_names failed malloc", QLOG_ERROR);
+  }
+
   struct qlog_entry_def* qlog_walker = qlog->qlog_entry_list->qlog_entry_next;
   
   for (uint16_t i = 0; i < qlog->qlog_size; ++i) {
-    
     char* qlog_gate_name = (char*) get_qlog_entry_gate(qlog_walker);
     gate_names[i] = qlog_gate_name;
     qlog_walker = qlog_walker->qlog_entry_next;
@@ -178,44 +191,65 @@ char** qlog_get_gate_names(struct qlog_def *qlog) {
 
 char** qlog_get_gate_types(struct qlog_def* qlog) {
   if (!qlog) {
-    return NULL;
+    QLOG_SET_ERROR(qlog, "qlog is null", QLOG_ERROR);
   }
   char** gate_types = (char**)malloc(sizeof(char*) * qlog->qlog_size * MAX_STR_LENGTH);
+
+  if (!gate_types) {
+    QLOG_SET_ERROR(qlog, "gate_types failed malloc", QLOG_ERROR);
+  }
+
   struct qlog_entry_def* qlog_walker = qlog->qlog_entry_list->qlog_entry_next;
 
   for (uint16_t i = 0; i < qlog->qlog_size; ++i) {
     gate_types[i] = (char*)get_qlog_entry_gate_type(qlog_walker);
     qlog_walker = qlog_walker->qlog_entry_next;
   }
+
   return gate_types;
 }
 
 uint8_t** qlog_get_gate_qubits(struct qlog_def* qlog) {
   if (!qlog) {
-    return NULL;
+    QLOG_SET_ERROR(qlog, "qlog is null", QLOG_ERROR);
   }
   
   struct qlog_entry_def* qlog_walker = qlog->qlog_entry_list->qlog_entry_next;
   uint8_t** qlog_gate_qubits = (uint8_t**)malloc(sizeof(uint8_t*) * qlog->qlog_size);
+
+  if (!qlog_gate_qubits) {
+    QLOG_SET_ERROR(qlog, "qlog_gate_qubits failed malloc", QLOG_ERROR);
+  }
+
   for (uint16_t i = 0; i < qlog->qlog_size; ++i) {
     qlog_gate_qubits[i] = qlog_entry_deconstruct_qubit_flags(qlog_walker);
     qlog_walker = qlog_walker->qlog_entry_next;
-    
   }
   return qlog_gate_qubits;
 }
 
 uint8_t* qlog_get_entry_sizes(struct qlog_def* qlog) {
   if (!qlog) {
-    return NULL;
+    QLOG_SET_ERROR(qlog, "qlog is null", QLOG_ERROR);
   }
 
   struct qlog_entry_def* qlog_walker = qlog->qlog_entry_list->qlog_entry_next;
+
+  if (!qlog_walker) {
+    QLOG_SET_ERROR(qlog, "qlog does not have a correct linked list set up", QLOG_ERROR);
+  }
+
   uint8_t* qlog_entry_sizes = (uint8_t*)malloc(sizeof(uint8_t) * qlog->qlog_size);
+
+  if (!qlog_entry_sizes) {
+    QLOG_SET_ERROR(qlog, "qlog_entry_sizes failed malloc", QLOG_ERROR);
+  }
+
   for (uint16_t i = 0; i < qlog->qlog_size; ++i) {
     qlog_entry_sizes[i] = qlog_walker->qlog_entry_qubit_cnt;
     qlog_walker = qlog_walker->qlog_entry_next;
   }
+
   return qlog_entry_sizes;
 }
 

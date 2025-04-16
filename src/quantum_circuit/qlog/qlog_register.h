@@ -2,6 +2,9 @@
 #include <stdbool.h>
 #include <stdio.h>
 
+#pragma once
+#ifndef QLOG_REGISTER_H
+
 extern bool is_qlog_register_enabled;
 
 typedef struct qlog_register_def {
@@ -26,3 +29,4 @@ void qlog_register_init(void);
 enum qlog_register_delete_res qlog_register_delete(void);
 void qlog_register_dump_log(bool verbose);
 qlog_register_append_res qlog_register_append(struct qlog_def* qlog);
+#endif // !QLOG_REGISTER_H

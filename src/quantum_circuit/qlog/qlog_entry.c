@@ -1,21 +1,21 @@
 #include <math.h>
+#include <stdio.h>
 #include "qlog_entry.h"
 #include "qlog.h"
+#include "qlog_error/qlog_error.h"
 
 struct qlog_entry_def* qlog_entry_dummy_init() {
   struct qlog_entry_def* qlog_entry = (struct qlog_entry_def*) malloc(sizeof(struct qlog_entry_def*));
-  qlog_entry->qlog_entry_prev = NULL;
-  qlog_entry->qlog_entry_next = NULL;
   return qlog_entry;
 }
 
 struct qlog_entry_def* qlog_entry_init(uint64_t id, struct qlog_entry_def* qlog_entry_prev, uint8_t *qubits, uint8_t num_qubits, int type, int gate, float16 theta, float16 phi, float16 lambda) { 
   if (!qlog_entry_prev) {
-    return NULL;
+    QLOG_ENTRY_SET_ERROR(qlog_entry_prev, "qlog_entry_prev is null", QLOG_ERROR);
   }
 
   if (!qubits) {
-    return NULL;
+    QLOG_ENTRY_SET_ERROR(qlog_entry_prev, "qubits are null", QLOG_ERROR);
   }
 
   struct qlog_entry_def* qlog_entry = (struct qlog_entry_def*) malloc(sizeof(struct qlog_entry_def));
@@ -24,20 +24,21 @@ struct qlog_entry_def* qlog_entry_init(uint64_t id, struct qlog_entry_def* qlog_
   qlog_entry->qlog_entry_qubits = qlog_entry_init_qubit_flags(qubits, num_qubits);
 
   if (!qlog_entry->qlog_entry_qubits) {
-    return NULL;
+    QLOG_ENTRY_SET_ERROR(qlog_entry, "qlog entry does not have qubits", QLOG_ERROR);
   }
 
   qlog_entry->qlog_entry_prev = qlog_entry_prev;
-
   qlog_entry_prev->qlog_entry_next = qlog_entry;
   
   qlog_entry->qlog_entry_gate = gate;
   qlog_entry->qlog_entry_gate_type = type;
   qlog_entry->qlog_entry_qubit_cnt = num_qubits;
   qlog_entry->qlog_entry_params = quantum_gate_params_init(gate, theta, phi, lambda);
+
   if (num_qubits > 1 && qubits[0] > qubits[num_qubits - 1]) {
     qlog_entry->qlog_entry_qubit_invert = 1;
   }
+
   return qlog_entry;
 }
 
@@ -47,17 +48,23 @@ uint64_t qlog_entry_init_qubit_flags(uint8_t* qubits, uint8_t count) {
   for (uint8_t i; i < count; ++i) {
     qubit_int |= (1 << qubits[i]);
   }
+
   return qubit_int;
 }
 
 uint8_t* qlog_entry_deconstruct_qubit_flags(struct qlog_entry_def* qlog_entry) {
   if (!qlog_entry) {
-    return NULL; 
+    QLOG_ENTRY_SET_ERROR(qlog_entry, "qlog entry is null", QLOG_ERROR); 
   }
   if (!qlog_entry->qlog_entry_qubits) {
     exit(1);
   }
   uint8_t* qubit_decon = (uint8_t*)malloc(sizeof(uint8_t) * qlog_entry->qlog_entry_qubit_cnt);
+
+  if (!qubit_decon) {
+    QLOG_ENTRY_SET_ERROR(qlog_entry, "qubit_decon malloc failed", QLOG_ERROR);
+  }
+
   uint64_t qubit = 1;
   uint16_t i = qlog_entry->qlog_entry_qubit_invert ? qlog_entry->qlog_entry_qubit_cnt - 1 : 0;
 
@@ -73,14 +80,16 @@ uint8_t* qlog_entry_deconstruct_qubit_flags(struct qlog_entry_def* qlog_entry) {
     }
     qubit = qubit << 1;
 
-  } 
+  }
+
   return qubit_decon; 
 }
 
 void qlog_entry_delete(struct qlog_entry_def *qlog_entry) {
   if (!qlog_entry) {
-    return;
+    QLOG_ENTRY_SET_ERROR(qlog_entry, "qlog entry is null", QLOG_ERROR);
   }
+
   free(qlog_entry->qlog_entry_params);
   qlog_entry->qlog_entry_params = NULL;
 
@@ -89,6 +98,7 @@ void qlog_entry_delete(struct qlog_entry_def *qlog_entry) {
 
   free(qlog_entry);
   qlog_entry = NULL;
+
   return;
 }
 
@@ -102,17 +112,20 @@ global_gate_type qlog_entry_qg_type(struct qlog_entry_def *qlog_entry) {
 
 void qlog_entry_dump_content(struct qlog_entry_def *qlog_entry, bool verbose) {
   if (!qlog_entry) {
-    return;
+    QLOG_ENTRY_SET_ERROR(qlog_entry, "qlog entry is null", QLOG_ERROR);
   }
+
   printf("(");
   if (verbose) {
     printf("Qubit Count: %d", qlog_entry->qlog_entry_qubit_cnt);
   }
+
   printf(" on: [");
   
   printf("] ");
   printf("%s, %s", get_qlog_entry_gate(qlog_entry), get_qlog_entry_gate_type(qlog_entry));
   printf(")");
+
   return;
 }
 

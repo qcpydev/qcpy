@@ -4,10 +4,11 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <assert.h>
+#include "qlog_entry.h"
+
 #pragma once
 #ifndef QLOG_H
 #define QLOG_H
-#include "qlog_entry.h"
 
 /*
  * In port functions/types:
