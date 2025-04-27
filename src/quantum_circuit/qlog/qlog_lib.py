@@ -69,8 +69,8 @@ qlog_cross.qlog_append.argtypes = [
 ]
 qlog_cross.qlog_append.restype = qlog_append_res
 
-qlog_cross.qlog_optimize_set.argtypes = [ctypes.POINTER(qlog_def)]
-qlog_cross.qlog_optimize_set.restype = ctypes.POINTER(qlog_def)
+#qlog_cross.qlog_optimize_set.argtypes = [ctypes.POINTER(qlog_def)]
+#qlog_cross.qlog_optimize_set.restype = ctypes.POINTER(qlog_def)
 qlog_cross.qlog_dump_content.argtypes = [ctypes.POINTER(qlog_def), ctypes.c_bool]
 
 

@@ -26,11 +26,13 @@ typedef enum {
  * */
 
 typedef struct qlog_def {
-  struct qlog_entry_def* qlog_entry_list;
-  struct qlog_entry_def* qlog_entry_last;
-  uint16_t qlog_qubit_cnt;              // number of qubits inside of the 
-  uint16_t qlog_size;                   // number of entries in qlog
-  struct qlog_stats_def* qlog_stat;     // qlog stats
+  struct qlog_entry_def* qlog_entry_list;   // qlog list of items inserted by the user
+  struct qlog_entry_def* qlog_entry_last;   // qlog last inserted item
+  struct qlog_stats_def* qlog_stat;         // qlog stats
+  struct qlog_optimize_def* qlog_optimize;  // qlog optimizer
+  uint16_t qlog_qubit_cnt;                  // number of qubits inside of the 
+  uint16_t qlog_size;                       // number of entries in qlog
+  int qlog_set_optimize : 1;                // should we optimize the qlog on the side
 } qlog_type;
 
 struct qlog_def* qlog_init(uint8_t qubits);
@@ -47,4 +49,6 @@ char** qlog_get_gate_names(struct qlog_def *qlog);
 char** qlog_get_gate_types(struct qlog_def *qlog);
 uint8_t** qlog_get_gate_qubits(struct qlog_def *qlog);
 uint8_t* qlog_get_entry_sizes(struct qlog_def *qlog);
+struct qlog_graph_def* qlog_make_graph(struct qlog_def* qlog, bool optimize);
+
 #endif // QLOG_H

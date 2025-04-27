@@ -1,6 +1,7 @@
 #include "qlog.h"
-#include "qlog_stats.h"
+#include "qlog_stats/qlog_stats.h"
 #include "qlog_error/qlog_error.h"
+#include "qlog_optimize/qlog_optimize.h"
 
 uint16_t max_qlog_length = UINT16_MAX - 1;
 uint16_t empty_qlog_size = UINT16_MAX;
@@ -17,7 +18,7 @@ uint8_t matrix_unitarty_format = 2;
 struct qlog_def* qlog_init(uint8_t qubits) {
   struct qlog_def* qlog = (struct qlog_def*)malloc(sizeof(struct qlog_def));
   if (!qlog) {
-    QLOG_SET_ERROR(qlog, "Malloc failed", QLOG_ERROR);
+    QLOG_SET_ERROR(qlog, "malloc failed", QLOG_ERROR);
   }
   qlog->qlog_qubit_cnt = qubits;
   qlog->qlog_size = 0;
@@ -48,7 +49,7 @@ uint16_t qlog_size(struct qlog_def *qlog) {
 
 void qlog_clear(struct qlog_def *qlog) {
   if (!qlog) {
-    QLOG_SET_ERROR(qlog, "Null qlog", QLOG_WARNING);
+    QLOG_SET_ERROR(qlog, "null qlog", QLOG_WARNING);
   }
 
   struct qlog_entry_def* qlog_walker = qlog->qlog_entry_list->qlog_entry_next;
@@ -253,3 +254,10 @@ uint8_t* qlog_get_entry_sizes(struct qlog_def* qlog) {
   return qlog_entry_sizes;
 }
 
+struct qlog_graph_def* qlog_make_graph(struct qlog_def* qlog, bool optimize) {
+  if (!qlog) {
+    QLOG_SET_ERROR(qlog, "qlog does not exist", QLOG_ERROR);
+  }
+
+  return qlog_optimize_force(qlog->qlog_optimize);
+}
