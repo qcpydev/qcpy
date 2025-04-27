@@ -15,6 +15,7 @@ void qlog_error_set_type(struct qlog_error_def* qlog_error, void* value, qlog_er
       qlog_error->qlog_error_type->qlog_error_type_value.qlog_error_entry_parent = (struct qlog_entry_def*) value;
       break; 
     default:
+      qlog_error->qlog_error_type->qlog_error_type_value.qlog_error_entry_parent = NULL;
       break;
   }
 }

@@ -24,7 +24,13 @@ typedef struct qlog_graph_def {
   struct qlog_node_def** qlog_graph_circuit_track;
 } qlog_graph_def;
 
-struct qlog_node_def* qlog_node_init(uint16_t id, struct qlog_entry_def* qlog_entry, struct qlog_node_def* qlog_node_prev, struct qlog_node_def* qlog_node_next, struct qlog_node_def* qlog_node_up, struct qlog_node_def* qlog_node_down);
+struct qlog_node_def* qlog_node_init(uint16_t id,
+                                     struct qlog_entry_def* qlog_entry,
+                                     struct qlog_node_def* qlog_node_prev,
+                                     struct qlog_node_def* qlog_node_next,
+                                     struct qlog_node_def* qlog_node_up,
+                                     struct qlog_node_def* qlog_node_down);
+
 void qlog_node_delete(struct qlog_node_def* qlog_node);
 void qlog_node_dump_content(struct qlog_node_def* qlog_node);
 

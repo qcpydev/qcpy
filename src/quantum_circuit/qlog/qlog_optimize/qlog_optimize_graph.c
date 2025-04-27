@@ -41,22 +41,6 @@ void qlog_node_delete(struct qlog_node_def* qlog_node) {
     qlog_node->qlog_node_entry = NULL;
   }
 
-  if (qlog_node->qlog_node_next) {
-    qlog_node->qlog_node_next = NULL;
-  }
-
-  if (qlog_node->qlog_node_prev) {
-    qlog_node->qlog_node_prev = NULL;
-  }
-
-  if (qlog_node->qlog_node_up) {
-    qlog_node->qlog_node_up = NULL;
-  }
-
-  if (qlog_node->qlog_node_down) {
-    qlog_node->qlog_node_down = NULL;
-  }
-
   free(qlog_node);
   qlog_node = NULL;
   return;

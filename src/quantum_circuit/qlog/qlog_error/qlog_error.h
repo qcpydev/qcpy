@@ -4,7 +4,7 @@
 #include <string.h>
 #include "../qlog.h"
 #include "../qlog_entry.h"
-#include "../qlog_optimize.h"
+#include "../qlog_optimize/qlog_optimize.h"
 #include "../qlog_register.h"
 
 #pragma once
@@ -27,17 +27,28 @@ typedef enum {
   QLOG_ERROR_VAL,
   QLOG_ENTRY_ERROR_VAL,
   QLOG_REGISTER_ERROR_VAL,
+  QLOG_OPTIMIZE_ERROR_VAL,
+  QLOG_TRIGGER_OPTIMIZE_ERROR_VAL,
+  QLOG_OPTIMIZE_GRAPH_ERROR_VAL,
+  QLOG_OPTIMIZE_TYPES_ERROR_VAL,
 } qlog_error_val_e;
 
 
 #define QLOG_SET_ERROR(qlog, reason, qlog_error_is_warning) qlog_error(__func__, qlog_error_is_warning == QLOG_WARNING, reason, qlog, QLOG_ERROR_VAL)
 #define QLOG_ENTRY_SET_ERROR(qlog_entry, reason, qlog_error_is_warning) qlog_error(__func__, qlog_error_is_warning == QLOG_WARNING, reason, qlog_entry, QLOG_ENTRY_ERROR_VAL)
 #define QLOG_REGISTER_SET_ERROR(qlog_register, reason, qlog_error_is_warning) qlog_error(__func__, qlog_error_is_warning == QLOG_WARNING, reason, qlog_register, QLOG_REGISTER_ERROR_VAL)
+#define QLOG_OPTIMIZE_SET_ERROR(qlog_optimize, reason, qlog_error_is_warning) qlog_error(__func__, qlog_error_is_warning == QLOG_WARNING, reason, qlog_optimize, QLOG_OPTIMIZE_ERROR_VAL)
+#define QLOG_TRIGGER_OPTIMIZE_SET_ERROR(qlog_trigger_optimize, reason, qlog_error_is_warning) qlog_error(__func__, qlog_error_is_warning == QLOG_WARNING, reason, qlog_trigger_optimize, QLOG_TRIGGER_OPTIMIZE_ERROR_VAL)
+#define QLOG_OPTIMIZE_GRAPH_SET_ERROR(qlog_optimize_graph, reason, qlog_error_is_warning) qlog_error(__func__, qlog_error_is_warning == QLOG_WARNING, reason, qlog_optimize_graph, QLOG_OPTIMIZE_GRAPH_ERROR_VAL)
+#define QLOG_OPTIMIZE_TYPES_SET_ERROR(qlog_optimize_types, reason, qlog_error_is_warning) qlog_error(__func__, qlog_error_is_warning == QLOG_WARNING, reason, qlog_optimize_types, QLOG_OPTIMIZE_TYPES_ERROR_VAL)
 
 typedef struct qlog_error_type_def {
   union {
     struct qlog_def* qlog_error_parent;
     struct qlog_entry_def* qlog_error_entry_parent;
+    struct qlog_optimize_def* qlog_error_optimize_parent;
+    struct qlog_trigger_optimize_def* qlog_error_trigger_optimize_parent;
+    struct qlog_optimize_graph_def* qlog_error_optimize_graph_parent;
   } qlog_error_type_value;
   qlog_error_val_e qlog_error_type;
 } qlog_error_type_def;
