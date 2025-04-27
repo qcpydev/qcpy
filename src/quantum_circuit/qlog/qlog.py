@@ -62,7 +62,7 @@ class QLog:
         return qlog_cross.qlog_size(self.qlog)
 
     def optimize(self) -> None:
-        #self.qlog = qlog_cross.qlog_optimize_set(self.qlog)
+        # self.qlog = qlog_cross.qlog_optimize_set(self.qlog)
         pass
 
     def dump(self, verbose: bool = False) -> None:
