@@ -34,7 +34,8 @@ struct qlog_trigger_optimize_sub_def* qlog_trigger_optimize_sub_init_unused_bloc
 }
 
 bool qlog_optimize_shrink_trigger_unused_block(struct qlog_trigger_optimize_sub_def* qlog_trig_sub, struct qlog_graph_def* qlog_graph, struct qlog_entry_def* qlog_entry) {
-  return true;
+  // do the same process relatively for unused_controlled
+  return false;
 }
 
 struct qlog_trigger_optimize_sub_def* qlog_trigger_optimize_sub_init_unused_multicontrolled(struct qlog_trigger_optimize_def* qlog_trigger_optimize) {
@@ -50,6 +51,7 @@ struct qlog_trigger_optimize_sub_def* qlog_trigger_optimize_sub_init_unused_mult
 
 
 bool qlog_optimize_shrink_trigger_unused_multicontrolled(struct qlog_trigger_optimize_sub_def* qlog_trig_sub, struct qlog_graph_def* qlog_graph, struct qlog_entry_def* qlog_entry) {
+  // this is the same process as unused_controlled
   return false;
 }
 
@@ -65,6 +67,14 @@ struct qlog_trigger_optimize_sub_def* qlog_trigger_optimize_sub_init_hadamard_co
 }
 
 bool qlog_optimize_shrink_trigger_hadamard_controlled(struct qlog_trigger_optimize_sub_def* qlog_trig_sub, struct qlog_graph_def* qlog_graph, struct qlog_entry_def* qlog_entry) {
+  if (qlog_trig_sub || qlog_graph || qlog_entry) {
+    return false;
+  }
+  
+  if (qlog_entry->qlog_entry_gate_type == GLOBAL_GATE_HADAMARD) {
+    // determine in qlog_graph if a cnot, and another hadamard immediately was found, this means we can simply boot this entire cnot gate and hadamard
+  }
+
   return false;
 }
 
@@ -79,22 +89,19 @@ struct qlog_trigger_optimize_sub_def* qlog_trigger_optimize_sub_init_unused_cont
                                              4);
 }
 
-
-// better tracking needs to be done here, but ultimately the point is made
-
 bool qlog_optimize_shrink_trigger_unused_controlled(struct qlog_trigger_optimize_sub_def* qlog_trig_sub, struct qlog_graph_def* qlog_graph, struct qlog_entry_def* qlog_entry) {
   if (!qlog_trig_sub || !qlog_graph || !qlog_entry) {
     return false;
   }
 
-  // call func to detemrine if this is a SINGLE controlled or single gate func
+  // need to use matrix multiplication eventually.
+  // basically start from the beginning of the qlog_control and qlog_target lists, and determine 
+  // if we can iterate till such gate, where we see if the gate has been activated or not.
 
   uint8_t* qubits = qlog_entry_deconstruct_qubit_flags(qlog_entry);
   if (qlog_graph->qlog_graph_row_size[qubits[0]] == 0 && qlog_graph->qlog_graph_row_size[qubits[1]]) {
     struct qlog_entry_def* qlog_control = qlog_graph->qlog_graph_circuit_track[qubits[0]]->qlog_node_entry;
     struct qlog_entry_def* qlog_target = qlog_graph->qlog_graph_circuit_track[qubits[1]]->qlog_node_entry;
-
-  
   }
 
   if (qlog_trig_sub->qlog_trigger_optimize_sub_pattern_cnt >= qlog_trig_sub->qlog_trigger_optimize_sub_threshold_max) {
@@ -120,12 +127,16 @@ bool qlog_optimize_shrink_trigger_duplicate_gates(struct qlog_trigger_optimize_s
     return false;
   }
 
-  // call function to determine if we are single or controlled gate
+  uint8_t* qubits = qlog_entry_deconstruct_qubit_flags(qlog_entry);
 
-  for (uint8_t i = 0; i < qlog_graph->qlog_graph_size; ++i) {
+  for (uint16_t i = 0; i < qlog_entry->qlog_entry_qubit_cnt; ++i) {
+    if (!qlog_entry_compare_entries(qlog_entry, qlog_graph->qlog_graph_circuit_track[i]->qlog_node_entry)) {
+      return false;
+    }
+
     qlog_entry_def* prev_entry = qlog_graph->qlog_graph_circuit_track[i]->qlog_node_entry;
 
-    if (qlog_entry_compare_entries(qlog_entry, prev_entry)) {
+    if (prev_entry->qlog_entry_prev && !qlog_entry_compare_entries(prev_entry, prev_entry->qlog_entry_prev)) {
       qlog_entry_def* copy_qlog_entry;
       qlog_entry_def* copy_prev_entry;
 
@@ -141,8 +152,9 @@ bool qlog_optimize_shrink_trigger_duplicate_gates(struct qlog_trigger_optimize_s
       qlog_trig_sub->qlog_trigger_optimize_sub_gate_cnt += 2;
     }
   }
-  
+
   if (qlog_trig_sub->qlog_trigger_optimize_sub_pattern_cnt >= qlog_trig_sub->qlog_trigger_optimize_sub_threshold_max) {
+    for(qlog_entry_def* qlog_entry_temp = qlog_entry; qlog_entry_clean_duplicate_chains(qlog_entry_temp); qlog_entry = qlog_entry->qlog_entry_next);
     return true;
   } 
 
@@ -182,11 +194,7 @@ bool qlog_optimize_shrink_trigger_identity_gates(struct qlog_trigger_optimize_su
   ++qlog_trig_sub->qlog_trigger_optimize_sub_pattern_cnt; 
   ++qlog_trig_sub->qlog_trigger_optimize_sub_gate_cnt;
 
-  if (qlog_trig_sub->qlog_trigger_optimize_sub_pattern_cnt >= qlog_trig_sub->qlog_trigger_optimize_sub_threshold_max) {
-    return true;
-  }
-
-  return false;
+  return qlog_trig_sub->qlog_trigger_optimize_sub_pattern_cnt >= qlog_trig_sub->qlog_trigger_optimize_sub_threshold_max;
 }
 
 void qlog_trigger_optimize_sub_delete(struct qlog_trigger_optimize_sub_def* qlog_trigger_optimize_sub) {

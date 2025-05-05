@@ -33,7 +33,9 @@ typedef struct qlog_trigger_optimize_sub_def {
   struct qlog_entry_def* qlog_trigger_optimize_sub_entry_list;                                             // sub-lists taking account for patterns
   struct qlog_entry_def* qlog_trigger_optimize_sub_last;                                                   // end of the list 
   qlog_trigger_optimize_shrink_types qlog_trigger_optimize_sub_type;                                       // type of optimization
-  bool (*qlog_trigger_optimize_sub_append)(struct qlog_trigger_optimize_sub_def*, struct qlog_graph_def*, struct qlog_entry_def*); // ptr to function to do work
+  bool (*qlog_trigger_optimize_sub_append)(struct qlog_trigger_optimize_sub_def*,                          // ptr to function to do work
+                                           struct qlog_graph_def*,
+                                           struct qlog_entry_def*); 
   uint16_t qlog_trigger_optimize_sub_pattern_cnt;                                                          // count of found patterns
   uint16_t qlog_trigger_optimize_sub_threshold_min;                                                        // optimizations can happen threshold
   uint16_t qlog_trigger_optimize_sub_threshold_max;                                                        // optimizations must happen threshold
