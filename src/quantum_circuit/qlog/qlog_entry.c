@@ -9,7 +9,15 @@ struct qlog_entry_def* qlog_entry_dummy_init() {
   return qlog_entry;
 }
 
-struct qlog_entry_def* qlog_entry_init(uint64_t id, struct qlog_entry_def* qlog_entry_prev, uint8_t *qubits, uint8_t num_qubits, int type, int gate, float16 theta, float16 phi, float16 lambda) { 
+struct qlog_entry_def* qlog_entry_init(uint64_t id,
+                                       struct qlog_entry_def* qlog_entry_prev,
+                                       uint8_t *qubits,
+                                       uint8_t num_qubits,
+                                       int type,
+                                       int gate,
+                                       float16 theta,
+                                       float16 phi,
+                                       float16 lambda) { 
   if (!qlog_entry_prev) {
     QLOG_ENTRY_SET_ERROR(qlog_entry_prev, "qlog_entry_prev is null", QLOG_ERROR);
   }
@@ -127,6 +135,32 @@ void qlog_entry_dump_content(struct qlog_entry_def *qlog_entry, bool verbose) {
   printf(")");
 
   return;
+}
+
+struct qlog_entry_def* qlog_entry_clean_duplicate_chains(struct qlog_entry_def* qlog_entry) {
+  if (!qlog_entry || qlog_entry->qlog_entry_prev) {
+    return NULL;
+  }
+
+  if (!qlog_entry_compare_entries(qlog_entry, qlog_entry->qlog_entry_prev)) {
+    return qlog_entry;
+  }
+  
+  uint64_t qlog_entry_count = 1;
+  struct qlog_entry_def* qlog_entry_partition = qlog_entry->qlog_entry_prev; 
+  while (qlog_entry_partition->qlog_entry_prev &&
+         qlog_entry_compare_entries(qlog_entry_partition, qlog_entry_partition->qlog_entry_prev)) {
+    ++qlog_entry_count;
+    qlog_entry_partition = qlog_entry_partition->qlog_entry_prev;
+  }
+
+  if (qlog_entry_count & 1) {
+    qlog_entry_partition->qlog_entry_next = qlog_entry_partition->qlog_entry_next->qlog_entry_next;
+    qlog_entry_partition->qlog_entry_next->qlog_entry_next->qlog_entry_prev = qlog_entry_partition;
+    qlog_entry_delete(qlog_entry_partition->qlog_entry_next);
+  }
+
+  return qlog_entry_partition;
 }
 
 const char* get_qlog_entry_gate(struct qlog_entry_def *qlog_entry) {
