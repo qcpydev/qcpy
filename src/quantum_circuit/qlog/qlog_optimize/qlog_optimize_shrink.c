@@ -1,4 +1,7 @@
 #include "qlog_optimize_shrink.h"
+#include "qlog_optimize_expand.h"
+#include "qlog_trigger_optimize.h"
+#include <string.h>
 
 struct qlog_trigger_optimize_sub_def* qlog_trigger_optimize_sub_init_base(qlog_trigger_optimize_sub_trigger trigger_shrink_func,
                                                                           qlog_trigger_optimize_shrink_types shrink_type, 
@@ -34,7 +37,9 @@ struct qlog_trigger_optimize_sub_def* qlog_trigger_optimize_sub_init_unused_bloc
 }
 
 bool qlog_optimize_shrink_trigger_unused_block(struct qlog_trigger_optimize_sub_def* qlog_trig_sub, struct qlog_graph_def* qlog_graph, struct qlog_entry_def* qlog_entry) {
-  // do the same process relatively for unused_controlled
+  // this is the same process as unused_controlled
+  // the only difference is that if the gate is in fact being used,
+  // then it must be expanded and processed
   return false;
 }
 
@@ -52,6 +57,9 @@ struct qlog_trigger_optimize_sub_def* qlog_trigger_optimize_sub_init_unused_mult
 
 bool qlog_optimize_shrink_trigger_unused_multicontrolled(struct qlog_trigger_optimize_sub_def* qlog_trig_sub, struct qlog_graph_def* qlog_graph, struct qlog_entry_def* qlog_entry) {
   // this is the same process as unused_controlled
+  // the only difference is that if the gate is in fact being used,
+  // then it must be expanded and processed
+  //
   return false;
 }
 
@@ -70,9 +78,62 @@ bool qlog_optimize_shrink_trigger_hadamard_controlled(struct qlog_trigger_optimi
   if (qlog_trig_sub || qlog_graph || qlog_entry) {
     return false;
   }
-  
-  if (qlog_entry->qlog_entry_gate_type == GLOBAL_GATE_HADAMARD) {
-    // determine in qlog_graph if a cnot, and another hadamard immediately was found, this means we can simply boot this entire cnot gate and hadamard
+
+  if (qlog_entry->qlog_entry_gate_type != GLOBAL_GATE_HADAMARD ||
+      qlog_graph->qlog_graph_size - 2 > 0) {
+    return false;
+  } 
+
+  qlog_node_def* entry_check = qlog_graph->qlog_graph_circuit_track[qlog_entry->qlog_entry_qubits]; 
+  qlog_node_def* controlled_node;
+
+  if(entry_check->qlog_node_entry->qlog_entry_gate == GLOBAL_GATE_CX &&
+     entry_check->qlog_node_prev->qlog_node_entry->qlog_entry_gate == GLOBAL_GATE_HADAMARD) {
+
+    if (entry_check->qlog_node_down) {
+      controlled_node = entry_check->qlog_node_down;
+    }
+
+    else if (entry_check->qlog_node_up){
+      controlled_node = entry_check->qlog_node_up;
+    }
+
+    else {
+      // panic
+    }
+
+    if (controlled_node->qlog_node_prev->qlog_node_entry->qlog_entry_gate == GLOBAL_GATE_HADAMARD &&
+        controlled_node->qlog_node_next->qlog_node_entry->qlog_entry_gate == GLOBAL_GATE_HADAMARD) { 
+      ++qlog_trig_sub->qlog_trigger_optimize_sub_pattern_cnt;
+      qlog_trig_sub->qlog_trigger_optimize_sub_gate_cnt += 5; 
+      struct qlog_entry_def* controlled_node_copy_1;
+      struct qlog_entry_def* controlled_node_copy_2;
+      struct qlog_entry_def* controlled_node_copy_3;
+      struct qlog_entry_def* controlled_node_copy_4;
+      struct qlog_entry_def* controlled_node_copy_5;
+
+      memcpy(controlled_node_copy_1, controlled_node->qlog_node_prev->qlog_node_entry, sizeof(struct qlog_entry_def));
+      memcpy(controlled_node_copy_2, controlled_node->qlog_node_entry, sizeof(struct qlog_entry_def));
+      memcpy(controlled_node_copy_3, controlled_node->qlog_node_next->qlog_node_entry, sizeof(struct qlog_entry_def));
+      memcpy(controlled_node_copy_4, qlog_entry, sizeof(struct qlog_entry_def));
+      memcpy(controlled_node_copy_5, entry_check->qlog_node_prev, sizeof(struct qlog_entry_def));
+
+      qlog_trig_sub->qlog_trigger_optimize_sub_last->qlog_entry_next = controlled_node_copy_5;
+      controlled_node_copy_5->qlog_entry_prev = qlog_trig_sub->qlog_trigger_optimize_sub_last;
+      controlled_node_copy_5->qlog_entry_next = controlled_node_copy_4; 
+      controlled_node_copy_4->qlog_entry_prev = controlled_node_copy_5;
+      controlled_node_copy_3->qlog_entry_prev = controlled_node_copy_4;
+      controlled_node_copy_3->qlog_entry_next = controlled_node_copy_2;
+      controlled_node_copy_2->qlog_entry_prev = controlled_node_copy_3;
+      controlled_node_copy_2->qlog_entry_next = controlled_node_copy_1;
+      controlled_node_copy_1->qlog_entry_prev = controlled_node_copy_1;
+
+      qlog_trig_sub->qlog_trigger_optimize_sub_last = controlled_node_copy_1;
+    }
+
+    if (qlog_trig_sub->qlog_trigger_optimize_sub_pattern_cnt >= qlog_trig_sub->qlog_trigger_optimize_sub_threshold_max) {
+      return true;
+    }
   }
 
   return false;
@@ -154,7 +215,9 @@ bool qlog_optimize_shrink_trigger_duplicate_gates(struct qlog_trigger_optimize_s
   }
 
   if (qlog_trig_sub->qlog_trigger_optimize_sub_pattern_cnt >= qlog_trig_sub->qlog_trigger_optimize_sub_threshold_max) {
-    for(qlog_entry_def* qlog_entry_temp = qlog_entry; qlog_entry_clean_duplicate_chains(qlog_entry_temp); qlog_entry = qlog_entry->qlog_entry_next);
+    for(qlog_entry_def* qlog_entry_temp = qlog_entry;
+        qlog_entry_clean_duplicate_chains(qlog_entry_temp);
+        qlog_entry_temp = qlog_entry_temp->qlog_entry_prev);
     return true;
   } 
 
@@ -197,13 +260,26 @@ bool qlog_optimize_shrink_trigger_identity_gates(struct qlog_trigger_optimize_su
   return qlog_trig_sub->qlog_trigger_optimize_sub_pattern_cnt >= qlog_trig_sub->qlog_trigger_optimize_sub_threshold_max;
 }
 
-void qlog_trigger_optimize_sub_delete(struct qlog_trigger_optimize_sub_def* qlog_trigger_optimize_sub) {
-  if (!qlog_trigger_optimize_sub) {
+void qlog_trigger_optimize_sub_delete(struct qlog_trigger_optimize_sub_def* qlog_trig_sub) {
+  if (!qlog_trig_sub) {
+    return;
+  }
+  qlog_entry_def* qlog_next = qlog_trig_sub->qlog_trigger_optimize_sub_entry_list;
+  qlog_entry_def* qlog_next_temp = qlog_next->qlog_entry_next;
+
+  while (qlog_next) {
+    qlog_entry_delete(qlog_next);
+    qlog_next = qlog_next_temp;
+    qlog_next_temp = qlog_next_temp->qlog_entry_next;
+  }
+
+  free(qlog_trig_sub);
+  qlog_trig_sub = NULL;
+}
+
+void qlog_trigger_optimize_sub_dump_log(struct qlog_trigger_optimize_sub_def* qlog_trig_sub) {
+  if (qlog_trig_sub) {
     return;
   }
 
-  free(qlog_trigger_optimize_sub);
-  qlog_trigger_optimize_sub = NULL;
 }
-
-void qlog_trigger_optimize_sub_dump_log(struct qlog_trigger_optimize_sub_def* qlog_trigger_optimize_sub);

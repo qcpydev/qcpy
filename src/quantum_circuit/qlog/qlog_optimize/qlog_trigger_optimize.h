@@ -25,10 +25,12 @@
 
 typedef struct qlog_trigger_optimize_def {
   uint64_t qlog_trigger_optimize_gate_cnt;                            // gate count of current qlog_optimize
-  struct qlog_optimize_graph_def* qlog_trigger_optimize_graph;        // qlog optimize graph
+  struct qlog_graph_def* qlog_trigger_optimize_graph;                 // qlog optimize graph
   struct qlog_trigger_optimize_sub_def** qlog_trigger_optimize_subs;  // optimize sub lists 
   struct qlog_def* qlog_trigger_optimize_parent;                      // parent of this qlog_trigger_optimize
   uint8_t qlog_trigger_optimize_qubit_cnt;                            // qubit count of this optimizer
+  struct qlog_entry_def* qlog_trigger_optimize_expand_queue;          // queue of items to expand
+  struct qlog_entry_def* qlog_trigger_optimize_expand_queue_last;     // last entered item in expand queue
 } qlog_trigger_optimize_def;
 
 struct qlog_trigger_optimize_def* qlog_trigger_optimize_init(struct qlog_def* qlog);
@@ -38,6 +40,6 @@ void qlog_trigger_optimize_dump_log(struct qlog_trigger_optimize_def* qlog_trigg
 void qlog_trigger_optimize_append_entry(struct qlog_entry_def* qlog_entry, struct qlog_trigger_optimize_def* qlog_trigger_optimize);
 bool qlog_trigger_optimize_secure(struct qlog_trigger_optimize_def* qlog_trigger_optimize);
 bool qlog_trigger_optimize_secure_graph(struct qlog_trigger_optimize_def* qlog_trigger_optimize);
-bool qlog_trigger_optimize_can_do_work(struct qlog_trigger_optimize_def* qlog_trigger_optimize);
+bool qlog_trigger_optimize_can_do_min_work(struct qlog_trigger_optimize_def* qlog_trigger_optimize);
 
 #endif // QLOG_TRIGGER_OPTIMIZE_H
