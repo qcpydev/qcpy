@@ -29,21 +29,20 @@ typedef enum {
 } qlog_trigger_optimize_shrink_types;
 
 typedef struct qlog_trigger_optimize_sub_def {
-  uint64_t qlog_trigger_optimize_sub_gate_cnt;                                                             // gate cnt
-  struct qlog_entry_def* qlog_trigger_optimize_sub_entry_list;                                             // sub-lists taking account for patterns
-  struct qlog_entry_def* qlog_trigger_optimize_sub_last;                                                   // end of the list 
-  qlog_trigger_optimize_shrink_types qlog_trigger_optimize_sub_type;                                       // type of optimization
-  bool (*qlog_trigger_optimize_sub_append)(struct qlog_trigger_optimize_sub_def*,                          // ptr to function to do work
+  uint64_t qlog_trigger_optimize_sub_gate_cnt;                                    // gate cnt
+  struct qlog_entry_def* qlog_trigger_optimize_sub_entry_list;                    // sub-lists taking account for patterns
+  struct qlog_entry_def* qlog_trigger_optimize_sub_last;                          // end of the list 
+  qlog_trigger_optimize_shrink_types qlog_trigger_optimize_sub_type;              // type of optimization
+  bool (*qlog_trigger_optimize_sub_append)(struct qlog_trigger_optimize_sub_def*, // ptr to function to do work
                                            struct qlog_graph_def*,
                                            struct qlog_entry_def*); 
-  uint16_t qlog_trigger_optimize_sub_pattern_cnt;                                                          // count of found patterns
-  uint16_t qlog_trigger_optimize_sub_threshold_min;                                                        // optimizations can happen threshold
-  uint16_t qlog_trigger_optimize_sub_threshold_max;                                                        // optimizations must happen threshold
-  uint16_t qlog_trigger_optimize_sub_expand : 1;                                                           // determinant if optimize_sub type can expand
+  uint16_t qlog_trigger_optimize_sub_pattern_cnt;                                 // count of found patterns
+  uint16_t qlog_trigger_optimize_sub_threshold_min;                               // optimizations can happen threshold
+  uint16_t qlog_trigger_optimize_sub_threshold_max;                               // optimizations must happen threshold
+  uint16_t qlog_trigger_optimize_sub_expand : 1;                                  // determinant if optimize_sub type can expand
 } qlog_trigger_optimize_sub_def;
 
 typedef bool (*qlog_trigger_optimize_sub_trigger)(struct qlog_trigger_optimize_sub_def*, struct qlog_graph_def*, struct qlog_entry_def*);
- 
 struct qlog_trigger_optimize_sub_def* qlog_trigger_optimize_sub_init_base(qlog_trigger_optimize_sub_trigger trigger_shrink_func,
                                                                           qlog_trigger_optimize_shrink_types shrink_type, 
                                                                           uint16_t trigger_threshold_min,

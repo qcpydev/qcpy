@@ -108,6 +108,6 @@ bool qlog_optimize_run(struct qlog_optimize_def* qlog_optimize) {
 
   qlog_trigger_optimize(qlog_optimize->qlog_optimize_trigger);
 
-  return !qlog_optimize_running(qlog_optimize);
+  return qlog_optimize_running(qlog_optimize);
 }
 

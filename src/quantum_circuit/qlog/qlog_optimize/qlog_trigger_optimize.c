@@ -1,4 +1,5 @@
 #include "qlog_trigger_optimize.h"
+#include "qlog_optimize_shrink.h"
 
 typedef struct qlog_trigger_optimize_sub_def* (*qlog_trigger_optimize_sub_inits)(struct qlog_trigger_optimize_def*);
 qlog_trigger_optimize_sub_inits qlog_trigger_optimize_init_arr[] = {
@@ -10,10 +11,13 @@ qlog_trigger_optimize_sub_inits qlog_trigger_optimize_init_arr[] = {
   [QLOG_TRIGGER_SHRINK_IDENTITY_GATES] = qlog_trigger_optimize_sub_init_identity_gates, 
 };
 
+
 bool qlog_trigger_optimize(struct qlog_trigger_optimize_def* qlog_trigger_optimize) {
   if (!qlog_trigger_optimize) {
     return false;
-  }
+  }   
+  qlog_trigger_optimize->qlog_trigger_optimize_parent->qlog_optimize->qlog_optimize_is_running = 1;
+  
   
   return true;
 }
@@ -28,8 +32,12 @@ struct qlog_trigger_optimize_def* qlog_trigger_optimize_init(struct qlog_def* ql
   //qlog_trigger_optimize->qlog_trigger_optimize_graph = qlog_trigger_optimize_graph_init()  
   qlog_trigger_optimize->qlog_trigger_optimize_gate_cnt = qlog->qlog_size;
   qlog_trigger_optimize->qlog_trigger_optimize_subs = (struct qlog_trigger_optimize_sub_def**) malloc(sizeof(struct qlog_trigger_optimize_sub_def*) * QLOG_TRIGGER_SHRINK_MAX - 1);
-  
-  for (uint16_t i = 0; i < QLOG_TRIGGER_SHRINK_MAX - 1; ++i) {
+  qlog_entry_def* entry_expand = (struct qlog_entry_def*) malloc(sizeof(struct qlog_entry_def));  
+
+  qlog_trigger_optimize->qlog_trigger_optimize_expand_queue = qlog_entry_dummy_init();
+  qlog_trigger_optimize->qlog_trigger_optimize_expand_queue_last = qlog_trigger_optimize->qlog_trigger_optimize_expand_queue;
+
+  for (uint16_t i = 0; i < QLOG_TRIGGER_SHRINK_MAX; ++i) {
     qlog_trigger_optimize->qlog_trigger_optimize_subs[i] = qlog_trigger_optimize_init_arr[i](qlog_trigger_optimize);
     if (!qlog_trigger_optimize->qlog_trigger_optimize_subs[i]) {
       return NULL;
@@ -38,14 +46,71 @@ struct qlog_trigger_optimize_def* qlog_trigger_optimize_init(struct qlog_def* ql
 
   return qlog_trigger_optimize;
 }
-void qlog_trigger_optimize_delete(struct qlog_trigger_optimize_def* qlog_trigger_optimize);
-void qlog_trigger_optimize_dump_log(struct qlog_trigger_optimize_def* qlog_trigger_optimize);
 
-void qlog_trigger_optimize_append_entry(struct qlog_entry_def* qlog_entry, struct qlog_trigger_optimize_def* qlog_trigger_optimize) {
-  return;
+void qlog_trigger_optimize_delete(struct qlog_trigger_optimize_def* qlog_trigger_optimize) {
+
 }
 
-bool qlog_trigger_optimize_secure(struct qlog_trigger_optimize_def* qlog_trigger_optimize);
-bool qlog_trigger_optimize_secure_graph(struct qlog_trigger_optimize_def* qlog_trigger_optimize);
-bool qlog_trigger_optimize_can_do_work(struct qlog_trigger_optimize_def* qlog_trigger_optimize);
+void qlog_trigger_optimize_dump_log(struct qlog_trigger_optimize_def* qlog_trigger_optimize) {
+
+}
+
+void qlog_trigger_optimize_append_entry(struct qlog_entry_def* qlog_entry, struct qlog_trigger_optimize_def* qlog_trig_opt) {
+  if (!qlog_trig_opt) {
+    return;
+  }
+
+  bool can_trigger = false;
+
+  for (uint8_t i = 0; i < QLOG_TRIGGER_SHRINK_MAX; ++i) {
+    struct qlog_trigger_optimize_sub_def* qlog_trig_sub = qlog_trig_opt->qlog_trigger_optimize_subs[i];
+
+    if(qlog_trig_sub->qlog_trigger_optimize_sub_append(qlog_trig_sub,
+                                                       qlog_trig_opt->qlog_trigger_optimize_graph,
+                                                       qlog_entry)) {
+      can_trigger = true;
+    }
+    else if (qlog_trig_sub->qlog_trigger_optimize_sub_expand) {
+      struct qlog_entry_def* entry_expand;
+      memcpy(entry_expand, qlog_entry, sizeof(struct qlog_entry_def));
+
+      qlog_trig_opt->qlog_trigger_optimize_expand_queue_last->qlog_entry_next = entry_expand;
+      entry_expand->qlog_entry_prev = qlog_trig_opt->qlog_trigger_optimize_expand_queue_last;
+      qlog_trig_opt->qlog_trigger_optimize_expand_queue_last = entry_expand;
+    }
+  }
+
+  if (can_trigger && !qlog_trigger_optimize(qlog_trig_opt)) {
+    return; // call error
+  }
+}
+
+bool qlog_trigger_optimize_secure(struct qlog_trigger_optimize_def* qlog_trigger_optimize) {
+  if (!qlog_trigger_optimize) {
+    return false;
+  }
+  
+  return true;
+}
+
+bool qlog_trigger_optimize_secure_graph(struct qlog_trigger_optimize_def* qlog_trigger_optimize) {
+  if (!qlog_trigger_optimize) {
+    return false;
+  }
+  return true;
+}
+
+bool qlog_trigger_optimize_can_do_min_work(struct qlog_trigger_optimize_def* qlog_trigger_optimize) {
+  if (!qlog_trigger_optimize) {
+    return false;
+  }
+
+  for (uint8_t i = 0; i < QLOG_TRIGGER_SHRINK_MAX; ++i) {
+    if (qlog_trigger_optimize->qlog_trigger_optimize_subs[i]->qlog_trigger_optimize_sub_threshold_min > 0) {
+      return true;
+    }
+  }
+
+  return false;
+}
 

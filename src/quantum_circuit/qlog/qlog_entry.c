@@ -155,9 +155,10 @@ struct qlog_entry_def* qlog_entry_clean_duplicate_chains(struct qlog_entry_def* 
   }
 
   if (qlog_entry_count & 1) {
-    qlog_entry_partition->qlog_entry_next = qlog_entry_partition->qlog_entry_next->qlog_entry_next;
+    qlog_entry_def* qlog_entry_next = qlog_entry->qlog_entry_next;
     qlog_entry_partition->qlog_entry_next->qlog_entry_next->qlog_entry_prev = qlog_entry_partition;
-    qlog_entry_delete(qlog_entry_partition->qlog_entry_next);
+    qlog_entry_partition->qlog_entry_next = qlog_entry_partition->qlog_entry_next->qlog_entry_next;
+    qlog_entry_delete(qlog_entry_next);
   }
 
   return qlog_entry_partition;
