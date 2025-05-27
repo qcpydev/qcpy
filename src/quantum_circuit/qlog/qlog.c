@@ -25,6 +25,7 @@ struct qlog_def* qlog_init(uint8_t qubits) {
   qlog->qlog_entry_list = qlog_entry_dummy_init();
   qlog->qlog_entry_last = qlog->qlog_entry_list;
   qlog->qlog_stat = qlog_stats_init();
+  qlog->qlog_optimize = qlog_optimize_init(qlog);
   return qlog;
 }
 
@@ -79,6 +80,8 @@ qlog_append_res qlog_append(struct qlog_def *qlog, uint8_t *qubits, uint8_t num_
   }
 
   qlog->qlog_size += 1;
+  
+  qlog_optimize_append(qlog->qlog_optimize, qlog->qlog_entry_last);
 
   return QLOG_APPEND_SUCCESS;
 }

@@ -30,6 +30,7 @@ void quantum_gate_delete(struct quantum_gate_def *quantum_gate);
 global_matrix_def* quantum_gate_export();
 void quantum_gate_import();
 bool quantum_gate_compare_params(struct quantum_gate_def *qg, struct quantum_gate_def *qg_to_compare);
+bool quantum_gate_is_multi_gate(struct quantum_gate_def *qg);
 
 struct quantum_gate_def* quantum_gate_get_gate(int qg_name, float theta, float phi, float lambda);
 struct quantum_gate_def* quantum_gate_identity(struct quantum_gate_params_def* qg_params);

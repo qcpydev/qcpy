@@ -33,9 +33,9 @@ struct qlog_node_def* qlog_node_init(uint16_t id,
 
 void qlog_node_delete(struct qlog_node_def* qlog_node);
 void qlog_node_dump_content(struct qlog_node_def* qlog_node);
-void qlog_graph_append(uint16_t id, struct qlog_graph_def* qlog_graph, struct qlog_entry_def* qlog_entry, uint8_t ins, bool controlled, uint8_t ins_targ);
+void qlog_graph_append(struct qlog_graph_def* qlog_graph, struct qlog_entry_def* qlog_entry);
 void qlog_graph_zero_and_set(struct qlog_graph_def* qlog_graph);
-struct qlog_graph_def* qlog_graph_init(qlog_optimize_def* qlog_optimize);
+struct qlog_graph_def* qlog_graph_init(struct qlog_trigger_optimize_def* qlog_trig_opt);
 void qlog_graph_delete(struct qlog_graph_def* qlog_graph);
 void qlog_graph_dump_content(struct qlog_graph_def* qlog_graph);
 void qlog_graph_serialize(struct qlog_graph_def* qlog_graph, struct qlog_def* qlog_to_serialize);
