@@ -13,9 +13,12 @@ struct qlog_optimize_def* qlog_optimize_init(struct qlog_def* qlog) {
   qlog_optimize->qlog_optimize_size = qlog->qlog_size;
   qlog_optimize->qlog_optimize_stats = qlog_optimize_stats_init();
   qlog_optimize->qlog_optimize_trigger = qlog_trigger_optimize_init(qlog);
+  struct qlog_entry_def* qlog_optimize_list = (struct qlog_entry_def*)malloc(sizeof(struct qlog_entry_def));
+  qlog_optimize->qlog_optimize_list = qlog_optimize_list;
+  qlog_optimize->qlog_optimize_last = qlog_optimize_list;
+
   // qlog_optimize_append_what to do:
   // copy entries if exist from qlog to qlog_optimize
-  //
   return qlog_optimize;
 }
 
@@ -63,6 +66,7 @@ struct qlog_graph_def* qlog_optimize_force(struct qlog_optimize_def* qlog_optimi
   // OR IF THESHOLD FOR TIME COMPLETION in case of hang lets call it 10sec
   return NULL;
 }
+
 void qlog_optimize_append(struct qlog_optimize_def* qlog_optimize, struct qlog_entry_def* qlog_entry) {
   if (!qlog_optimize) {
     return;
@@ -72,9 +76,15 @@ void qlog_optimize_append(struct qlog_optimize_def* qlog_optimize, struct qlog_e
     return;
   }
 
-  qlog_entry->qlog_entry_prev = qlog_optimize->qlog_optimize_last;
-  qlog_optimize->qlog_optimize_last->qlog_entry_next = qlog_entry;
-  qlog_optimize->qlog_optimize_last = qlog_entry;
+  struct qlog_entry_def* qlog_entry_cpy;
+  memcpy(qlog_entry_cpy, qlog_entry, sizeof(struct qlog_entry_def));
+
+  if (!qlog_entry_cpy) {
+    return;
+  }
+  qlog_entry_cpy->qlog_entry_prev = qlog_optimize->qlog_optimize_last;
+  qlog_optimize->qlog_optimize_last->qlog_entry_next = qlog_entry_cpy;
+  qlog_optimize->qlog_optimize_last = qlog_entry_cpy;
   ++qlog_optimize->qlog_optimize_size;
 
   if (qlog_optimize_running(qlog_optimize)) {
@@ -83,9 +93,7 @@ void qlog_optimize_append(struct qlog_optimize_def* qlog_optimize, struct qlog_e
       qlog_optimize->qlog_optimize_backlog = qlog_entry;
     }
   }
-  else {
-    qlog_trigger_optimize_append_entry(qlog_entry, qlog_optimize->qlog_optimize_trigger);
-  }
+  //qlog_trigger_optimize_append_entry(qlog_entry, qlog_optimize->qlog_optimize_trigger);
 }
 
 bool qlog_optimize_stop(struct qlog_optimize_def* qlog_optimize) {

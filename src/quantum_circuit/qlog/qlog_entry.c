@@ -1,4 +1,5 @@
 #include <math.h>
+#include <stdint.h>
 #include <stdio.h>
 #include "qlog_entry.h"
 #include "qlog.h"
@@ -42,10 +43,7 @@ struct qlog_entry_def* qlog_entry_init(uint64_t id,
   qlog_entry->qlog_entry_gate_type = type;
   qlog_entry->qlog_entry_qubit_cnt = num_qubits;
   qlog_entry->qlog_entry_params = quantum_gate_params_init(gate, theta, phi, lambda);
-
-  if (num_qubits > 1 && qubits[0] > qubits[num_qubits - 1]) {
-    qlog_entry->qlog_entry_qubit_invert = 1;
-  }
+  qlog_entry->qlog_entry_qubit_invert = qubits[0] > qubits[num_qubits - 1];
 
   return qlog_entry;
 }
@@ -64,32 +62,36 @@ uint8_t* qlog_entry_deconstruct_qubit_flags(struct qlog_entry_def* qlog_entry) {
   if (!qlog_entry) {
     QLOG_ENTRY_SET_ERROR(qlog_entry, "qlog entry is null", QLOG_ERROR); 
   }
+
   if (!qlog_entry->qlog_entry_qubits) {
-    exit(1);
+    QLOG_ENTRY_SET_ERROR(qlog_entry, "no qlog_entry_qubits found", QLOG_ERROR);
   }
+
   uint8_t* qubit_decon = (uint8_t*)malloc(sizeof(uint8_t) * qlog_entry->qlog_entry_qubit_cnt);
 
   if (!qubit_decon) {
     QLOG_ENTRY_SET_ERROR(qlog_entry, "qubit_decon malloc failed", QLOG_ERROR);
   }
 
-  uint64_t qubit = 1;
-  uint16_t i = qlog_entry->qlog_entry_qubit_invert ? qlog_entry->qlog_entry_qubit_cnt - 1 : 0;
+  uint64_t qubit = qlog_entry->qlog_entry_qubit_invert ? 1ULL << 62 : 1;
+  uint16_t i = 0;
 
-  while (qubit <= qlog_entry->qlog_entry_qubits) {
+  do {
     if (qubit & qlog_entry->qlog_entry_qubits) {
-      qubit_decon[i] = log2(qubit);
-      if (qlog_entry->qlog_entry_qubit_invert) {
-        --i;
-      }
-      else {
-        ++i;
-      }
+      qubit_decon[i] = (uint8_t)log2(qubit);
+      ++i;
     }
-    qubit = qubit << 1;
 
-  }
+    if (qlog_entry->qlog_entry_qubit_invert) {
+      qubit = qubit >> 1;
+    }
+    else {
+      qubit = qubit << 1;
 
+    }
+
+  } while (qubit > 0 && qubit <= 1ULL << 63);
+  
   return qubit_decon; 
 }
 
@@ -177,16 +179,8 @@ bool qlog_entry_compare_entries(struct qlog_entry_def* qlog_entry, struct qlog_e
     return false;
   }
 
-  if (!qlog_entry && !qlog_entry_to_compare) {
-    return true;
-  }
-
-  if (!(qlog_entry->qlog_entry_qubit_cnt != qlog_entry_to_compare->qlog_entry_qubit_cnt ||
-      qlog_entry->qlog_entry_gate_type != qlog_entry_to_compare->qlog_entry_gate_type ||
-      qlog_entry->qlog_entry_gate != qlog_entry_to_compare->qlog_entry_gate) || 
-      qlog_entry->qlog_entry_qubits != qlog_entry_to_compare->qlog_entry_qubits) {
-    return false;
-  }
-  
-  return true;
+  return qlog_entry->qlog_entry_qubit_cnt == qlog_entry_to_compare->qlog_entry_qubit_cnt &&
+      qlog_entry->qlog_entry_gate_type == qlog_entry_to_compare->qlog_entry_gate_type &&
+      qlog_entry->qlog_entry_gate == qlog_entry_to_compare->qlog_entry_gate && 
+      qlog_entry->qlog_entry_qubits == qlog_entry_to_compare->qlog_entry_qubits;
 }
