@@ -6,6 +6,7 @@ from .qlog_lib import (
     convert_arr_to_int,
 )
 import numpy as np
+import time
 
 
 class QLog:
