@@ -83,10 +83,10 @@ uint8_t* qlog_entry_deconstruct_qubit_flags(struct qlog_entry_def* qlog_entry) {
     }
 
     if (qlog_entry->qlog_entry_qubit_invert) {
-      qubit = qubit >> 1;
+      qubit >>= 1;
     }
     else {
-      qubit = qubit << 1;
+      qubit <<= 1;
 
     }
 
@@ -131,10 +131,16 @@ void qlog_entry_dump_content(struct qlog_entry_def *qlog_entry, bool verbose) {
   }
 
   printf(" on: [");
-  
+  uint8_t* qubits = qlog_entry_deconstruct_qubit_flags(qlog_entry);
+  for (uint8_t i = 0; i < qlog_entry->qlog_entry_qubit_cnt; ++i) {
+    printf(" %d ", qubits[i]);
+    if (i + 1 < qlog_entry->qlog_entry_qubit_cnt) {
+      printf(",");
+    }
+  } 
   printf("] ");
   printf("%s, %s", get_qlog_entry_gate(qlog_entry), get_qlog_entry_gate_type(qlog_entry));
-  printf(")");
+  printf(")\n");
 
   return;
 }
@@ -178,9 +184,20 @@ bool qlog_entry_compare_entries(struct qlog_entry_def* qlog_entry, struct qlog_e
   if (!qlog_entry || !qlog_entry_to_compare) {
     return false;
   }
-
+  if (!qlog_entry->qlog_entry_qubit_cnt) {
+    return false;
+  }
+  if (!qlog_entry->qlog_entry_gate_type) {
+    return false;
+  }
+  if(!qlog_entry->qlog_entry_gate) {
+    return false;
+  } 
+  if (!qlog_entry->qlog_entry_qubits) {
+    return false;
+  }
   return qlog_entry->qlog_entry_qubit_cnt == qlog_entry_to_compare->qlog_entry_qubit_cnt &&
-      qlog_entry->qlog_entry_gate_type == qlog_entry_to_compare->qlog_entry_gate_type &&
-      qlog_entry->qlog_entry_gate == qlog_entry_to_compare->qlog_entry_gate && 
-      qlog_entry->qlog_entry_qubits == qlog_entry_to_compare->qlog_entry_qubits;
+         qlog_entry->qlog_entry_gate_type == qlog_entry_to_compare->qlog_entry_gate_type &&
+         qlog_entry->qlog_entry_gate == qlog_entry_to_compare->qlog_entry_gate && 
+         qlog_entry->qlog_entry_qubits == qlog_entry_to_compare->qlog_entry_qubits;
 }

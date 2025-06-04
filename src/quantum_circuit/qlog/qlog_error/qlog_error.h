@@ -16,6 +16,8 @@
  * This will allow easy setting of errors and warnings that were not intended, without simply 
  * setting a null value or relying on the front end only. Theoretically, anything that breaks
  * in qlog is the code's fault, not the user's.
+ * All qlog error types need a dump_content function to follow with the qlog_error type
+ * All qlog data structures need to have their own respective qlog_errors
  * */
 
 typedef enum {
@@ -28,19 +30,31 @@ typedef enum {
   QLOG_ENTRY_ERROR_VAL,
   QLOG_REGISTER_ERROR_VAL,
   QLOG_OPTIMIZE_ERROR_VAL,
-  QLOG_TRIGGER_OPTIMIZE_ERROR_VAL,
-  QLOG_OPTIMIZE_GRAPH_ERROR_VAL,
-  QLOG_OPTIMIZE_TYPES_ERROR_VAL,
+  QLOG_TRIG_OPT_ERROR_VAL,
+  QLOG_OPT_GRAPH_ERROR_VAL,
+  QLOG_OPT_SHRINK_ERROR_VAL,
 } qlog_error_val_e;
 
+#define QLOG_SET_ERROR(qlog, reason, qlog_error_is_warning) \
+  qlog_error(__func__, qlog_error_is_warning == QLOG_WARNING, reason, qlog, QLOG_ERROR_VAL)
 
-#define QLOG_SET_ERROR(qlog, reason, qlog_error_is_warning) qlog_error(__func__, qlog_error_is_warning == QLOG_WARNING, reason, qlog, QLOG_ERROR_VAL)
-#define QLOG_ENTRY_SET_ERROR(qlog_entry, reason, qlog_error_is_warning) qlog_error(__func__, qlog_error_is_warning == QLOG_WARNING, reason, qlog_entry, QLOG_ENTRY_ERROR_VAL)
-#define QLOG_REGISTER_SET_ERROR(qlog_register, reason, qlog_error_is_warning) qlog_error(__func__, qlog_error_is_warning == QLOG_WARNING, reason, qlog_register, QLOG_REGISTER_ERROR_VAL)
-#define QLOG_OPTIMIZE_SET_ERROR(qlog_optimize, reason, qlog_error_is_warning) qlog_error(__func__, qlog_error_is_warning == QLOG_WARNING, reason, qlog_optimize, QLOG_OPTIMIZE_ERROR_VAL)
-#define QLOG_TRIGGER_OPTIMIZE_SET_ERROR(qlog_trigger_optimize, reason, qlog_error_is_warning) qlog_error(__func__, qlog_error_is_warning == QLOG_WARNING, reason, qlog_trigger_optimize, QLOG_TRIGGER_OPTIMIZE_ERROR_VAL)
-#define QLOG_OPTIMIZE_GRAPH_SET_ERROR(qlog_optimize_graph, reason, qlog_error_is_warning) qlog_error(__func__, qlog_error_is_warning == QLOG_WARNING, reason, qlog_optimize_graph, QLOG_OPTIMIZE_GRAPH_ERROR_VAL)
-#define QLOG_OPTIMIZE_TYPES_SET_ERROR(qlog_optimize_types, reason, qlog_error_is_warning) qlog_error(__func__, qlog_error_is_warning == QLOG_WARNING, reason, qlog_optimize_types, QLOG_OPTIMIZE_TYPES_ERROR_VAL)
+#define QLOG_ENTRY_SET_ERROR(qlog_entry, reason, qlog_error_is_warning) \
+  qlog_error(__func__, qlog_error_is_warning == QLOG_WARNING, reason, qlog_entry, QLOG_ENTRY_ERROR_VAL)
+
+#define QLOG_REGISTER_SET_ERROR(qlog_register, reason, qlog_error_is_warning) \
+  qlog_error(__func__, qlog_error_is_warning == QLOG_WARNING, reason, qlog_register, QLOG_REGISTER_ERROR_VAL)
+
+#define QLOG_OPT_SET_ERROR(qlog_optimize, reason, qlog_error_is_warning) \
+  qlog_error(__func__, qlog_error_is_warning == QLOG_WARNING, reason, qlog_optimize, QLOG_OPTIMIZE_ERROR_VAL)
+
+#define QLOG_TRIG_OPT_SET_ERROR(qlog_trigger_optimize, reason, qlog_error_is_warning) \
+  qlog_error(__func__, qlog_error_is_warning == QLOG_WARNING, reason, qlog_trigger_optimize, QLOG_TRIG_OPT_ERROR_VAL)
+
+#define QLOG_OPT_GRAPH_SET_ERROR(qlog_optimize_graph, reason, qlog_error_is_warning) \
+  qlog_error(__func__, qlog_error_is_warning == QLOG_WARNING, reason, qlog_optimize_graph, QLOG_OPT_GRAPH_ERROR_VAL)
+
+#define QLOG_OPT_SHRINK_SET_ERROR(qlog_optimize_shrink, reason, qlog_error_is_warning) \
+  qlog_error(__func__, qlog_error_is_warning == QLOG_WARNING, reason, qlog_optimize_shrink, QLOG_OPT_SHRINK_ERROR_VAL)
 
 typedef struct qlog_error_type_def {
   union {

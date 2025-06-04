@@ -19,7 +19,6 @@ qlog_trigger_optimize_sub_inits qlog_trigger_optimize_init_arr[] = {
   [QLOG_TRIGGER_SHRINK_IDENTITY_GATES] = qlog_trigger_optimize_sub_init_identity_gates, 
 };
 
-
 bool qlog_trigger_optimize(struct qlog_trigger_optimize_def* qlog_trigger_optimize) {
   if (!qlog_trigger_optimize) {
     return false;
@@ -78,17 +77,22 @@ void qlog_trigger_optimize_append_entry(struct qlog_entry_def* qlog_entry, struc
     if (qlog_trig_sub->qlog_trigger_optimize_sub_append(qlog_trig_sub,
                                                         qlog_trig_opt->qlog_trigger_optimize_graph,
                                                         qlog_entry)) {
-
       can_trigger = true;
     }
   }
 
-  if (GATE_CAN_EXPAND(qlog_entry->qlog_entry_gate)) {
+  qlog_graph_append(qlog_trig_opt->qlog_trigger_optimize_graph, qlog_entry);
+
+  if (!can_trigger && GATE_CAN_EXPAND(qlog_entry->qlog_entry_gate)) {
     struct qlog_entry_def* entry_expand = (struct qlog_entry_def*) malloc(sizeof(struct qlog_entry_def));
     memcpy(entry_expand, qlog_entry, sizeof(struct qlog_entry_def));
-    qlog_trig_opt->qlog_trigger_optimize_expand_queue->qlog_entry_next = entry_expand;
+
     entry_expand->qlog_entry_prev = qlog_trig_opt->qlog_trigger_optimize_expand_queue;
-    qlog_trig_opt->qlog_trigger_optimize_expand_queue = entry_expand;
+    qlog_trig_opt->qlog_trigger_optimize_expand_queue_last->qlog_entry_next = entry_expand;
+    qlog_trig_opt->qlog_trigger_optimize_expand_queue_last = entry_expand;
+  }
+  else if (can_trigger){
+    printf("TRIGGERING OPTIMIZATION\n");
   }
 }
 
