@@ -63,6 +63,8 @@ void qlog_error_dump_content(struct qlog_error_def* qlog_error) {
     case(QLOG_REGISTER_ERROR_VAL):
       qlog_register_dump_log(verbose); 
       break; 
+    default:
+      break;
   }
 }
 

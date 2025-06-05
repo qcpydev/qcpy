@@ -1,6 +1,8 @@
 #include "qlog_optimize_graph.h"
 #include "qlog_trigger_optimize.h"
 #include <stdio.h>
+#include <string.h>
+#include <time.h>
 
 struct qlog_node_def* qlog_node_init(uint16_t id,
                                      struct qlog_entry_def* qlog_entry,
@@ -48,10 +50,13 @@ void qlog_node_delete(struct qlog_node_def* qlog_node) {
   return;
 }
 
-void qlog_node_dump_content(struct qlog_node_def* qlog_node) {
-  if (!qlog_node) {
+void qlog_node_dump_content(struct qlog_node_def* qlog_node, bool verbose) {
+  if (!qlog_node || !qlog_node->qlog_node_entry) {
     return;
   }
+  printf("qlog_node ptr: %p\n=======================\n", qlog_node);
+  qlog_entry_dump_content(qlog_node->qlog_node_entry, true);
+  printf("\n===================\n");
 }
 
 void qlog_graph_append(struct qlog_graph_def* qlog_graph, struct qlog_entry_def* qlog_entry) {
@@ -62,13 +67,16 @@ void qlog_graph_append(struct qlog_graph_def* qlog_graph, struct qlog_entry_def*
   if (qlog_entry->qlog_entry_qubit_cnt < 0 || qlog_entry->qlog_entry_qubit_cnt > qlog_graph->qlog_graph_size) {
     return;
   }
-  
-  uint8_t* qlog_entry_qubits = qlog_entry_deconstruct_qubit_flags(qlog_entry);
-  struct qlog_node_def** qlog_node_copies = (struct qlog_node_def**) malloc(sizeof(qlog_node_def*) * qlog_entry->qlog_entry_qubit_cnt);
+
+  struct qlog_entry_def* entry_copy = (struct qlog_entry_def*)malloc(sizeof(struct qlog_entry_def));
+  memcpy(entry_copy, qlog_entry, sizeof(struct qlog_entry_def));
+
+  uint8_t* qlog_entry_qubits = qlog_entry_deconstruct_qubit_flags(entry_copy);
+  struct qlog_node_def** qlog_node_copies = (struct qlog_node_def**) malloc(sizeof(qlog_node_def*) * entry_copy->qlog_entry_qubit_cnt);
 
   for (uint8_t i = 0; i < qlog_entry->qlog_entry_qubit_cnt; ++i) {
-    struct qlog_entry_def* qlog_entry_cpy;
-    memcpy(qlog_entry_cpy, qlog_entry, sizeof(struct qlog_entry_def));
+    struct qlog_entry_def* qlog_entry_cpy = (struct qlog_entry_def*)malloc(sizeof(struct qlog_entry_def));
+    memcpy(qlog_entry_cpy, entry_copy, sizeof(struct qlog_entry_def));
 
     uint8_t ins = qlog_entry_qubits[i];
     uint64_t id = qlog_entry_cpy->qlog_entry_id;
@@ -76,18 +84,27 @@ void qlog_graph_append(struct qlog_graph_def* qlog_graph, struct qlog_entry_def*
     struct qlog_node_def* insert = qlog_node_init(id, qlog_entry_cpy, qlog_graph->qlog_graph_circuit_track[ins], NULL, NULL, NULL);
     qlog_node_copies[i] = insert;
 
-    if (i - 1 != 0) {
-      struct qlog_node_def* qlog_entry_up = qlog_node_copies[i - 1];
-      //insert->qlog_node_up = qlog_node_init(id, qlog_entry_up, qlog_graph->qlog_graph_circuit_track[qlog_entry_qubits[i - 1]], NULL, NULL, insert);        
+    qlog_graph->qlog_graph_circuit_track[ins]->qlog_node_next = insert;
+    insert->qlog_node_prev = qlog_graph->qlog_graph_circuit_track[ins];
+    qlog_graph->qlog_graph_circuit_track[ins] = insert;
+
+    if (!qlog_graph->qlog_graph_used_qubits[ins]) {
+      qlog_graph->qlog_graph_used_qubits[ins] = 1;
     }
 
-    if (i + 1 != qlog_entry->qlog_entry_qubits) {
-      struct qlog_node_def* qlog_entry_down = qlog_node_copies[i + 1];
-      //insert->qlog_node_up = qlog_node_init(id, qlog_entry_down, qlog_graph->qlog_graph_circuit_track[qlog_entry_qubits[i + 1]], NULL, insert, NULL);        
+    if (i - 1 >= 0) {
+      struct qlog_node_def* node_up = qlog_node_copies[i - 1];
+      insert->qlog_node_up = node_up;
+      node_up->qlog_node_down = insert;
+
+      if (!qlog_graph->qlog_graph_used_qubits[qlog_entry_qubits[i - 1]]) {
+        qlog_graph->qlog_graph_used_qubits[qlog_entry_qubits[i - 1]] = 1;
+      }
     }
   }
 
   free(qlog_entry_qubits); 
+  free(qlog_node_copies);
   qlog_entry_qubits = NULL;
  }
 
@@ -102,16 +119,16 @@ void qlog_graph_zero_and_set(struct qlog_graph_def* qlog_graph) {
   }
 
   for (uint16_t i = 0; i < qlog_graph->qlog_graph_size; ++i) {
-    for (uint16_t j = qlog_graph->qlog_graph_row_size[i]; j > 0; --j) {
+    while (qlog_graph->qlog_graph_circuit_track[i] != qlog_graph->qlog_graph_circuit[i]) {
       struct qlog_node_def* temp_prev_node = qlog_graph->qlog_graph_circuit_track[i]->qlog_node_prev;
       qlog_node_delete(qlog_graph->qlog_graph_circuit_track[i]);
       qlog_graph->qlog_graph_circuit_track[i] = temp_prev_node;
     }
+
     qlog_graph->qlog_graph_row_size[i] = 0;
     qlog_graph->qlog_graph_used_qubits[i] = 0;
     qlog_graph->qlog_graph_circuit[i]->qlog_node_next = NULL;
   }
-  
 }
 
 struct qlog_graph_def* qlog_graph_init(struct qlog_trigger_optimize_def* qlog_trig_opt) {
@@ -150,7 +167,7 @@ void qlog_graph_delete(struct qlog_graph_def* qlog_graph) {
   }
 
   qlog_graph_zero_and_set(qlog_graph);
- 
+
   free(qlog_graph->qlog_graph_circuit_track); 
   qlog_graph->qlog_graph_circuit_track = NULL;
 
@@ -168,4 +185,39 @@ void qlog_graph_delete(struct qlog_graph_def* qlog_graph) {
 
   free(qlog_graph);
   qlog_graph = NULL;
+}
+
+void qlog_graph_dump_content(struct qlog_graph_def* qlog_graph, bool verbose) {
+  if (!qlog_graph) {
+    return;
+  }
+
+  printf("qlog_graph contents of: %p:\n"
+         "Size: %d\n",
+         qlog_graph,
+         qlog_graph->qlog_graph_size);
+  if (!qlog_graph->qlog_graph_used_qubits) {
+    printf("used_qubits of qlog_graph not found!\n");
+    return;
+  }
+  
+  if (!qlog_graph->qlog_graph_circuit_track) {
+    printf("circuit_track of qlog_graph not found!\n"); 
+  }
+  if (!qlog_graph->qlog_graph_size) {
+    printf("qlog_graph is empty!\n");
+    return;
+  }
+
+  for (uint8_t i = 0; i < qlog_graph->qlog_graph_size; ++i) {
+    if (qlog_graph->qlog_graph_used_qubits[i]) {
+      printf("qubit: %d in use\n", qlog_graph->qlog_graph_used_qubits[i]);
+      qlog_node_def* node = qlog_graph->qlog_graph_circuit[i]->qlog_node_next;
+
+      while (node) {
+        qlog_node_dump_content(node, verbose); 
+        node = node->qlog_node_next;
+      } 
+    }
+  }
 }

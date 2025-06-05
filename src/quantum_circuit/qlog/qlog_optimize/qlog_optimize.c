@@ -93,7 +93,8 @@ void qlog_optimize_append(struct qlog_optimize_def* qlog_optimize, struct qlog_e
       qlog_optimize->qlog_optimize_backlog = qlog_entry;
     }
   }
-  //qlog_trigger_optimize_append_entry(qlog_entry, qlog_optimize->qlog_optimize_trigger);
+
+  qlog_trigger_optimize_append_entry(qlog_entry, qlog_optimize->qlog_optimize_trigger);
 }
 
 bool qlog_optimize_stop(struct qlog_optimize_def* qlog_optimize) {
