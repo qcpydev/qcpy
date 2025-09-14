@@ -1,0 +1,3 @@
+0000000000000000000000000000000000000000 86e3c2ab7ca5e21584b661779c27f98d8fd37409 123freezebrennan <freezebrennan@gmail.com> 1744769813 -0700	branch: Created from HEAD
+86e3c2ab7ca5e21584b661779c27f98d8fd37409 6a77055e3b5aea762554ac336d73e5fc44eb106c 123freezebrennan <freezebrennan@gmail.com> 1745717872 -0700	commit: continuation of expansion of qlog optimize
+6a77055e3b5aea762554ac336d73e5fc44eb106c c1a74a1f92328d58112a3c72840c0330dbfee022 123freezebrennan <freezebrennan@gmail.com> 1745742322 -0700	commit: whoops, tried to over do it and went into a corner, simplified

@@ -1,0 +1,29 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+[remote "origin"]
+	url = ssh://git@github.com/qcpydev/qcpy.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "main"]
+	remote = origin
+	merge = refs/heads/main
+[branch "brennanfreeze/issue200"]
+	remote = origin
+	merge = refs/heads/brennanfreeze/issue200
+[branch "brennanfreeze/qlog-optimize"]
+	remote = origin
+	merge = refs/heads/brennanfreeze/qlog-optimize
+[branch "brennanfreeze/qlog-optimize-cont"]
+	remote = origin
+	merge = refs/heads/brennanfreeze/qlog-optimize-cont
+[branch "brennanfreeze/qlog-optimize-shrinks"]
+	remote = origin
+	merge = refs/heads/brennanfreeze/qlog-optimize-shrinks
+[branch "brennanfreeze/qlog-optimize-expand-connect"]
+	remote = origin
+	merge = refs/heads/brennanfreeze/qlog-optimize-expand-connect
+[branch "brennanfreeze/issue180-debug"]
+	remote = origin
+	merge = refs/heads/brennanfreeze/issue180-debug

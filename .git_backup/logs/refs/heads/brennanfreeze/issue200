@@ -1,0 +1,2 @@
+0000000000000000000000000000000000000000 c736b04a2ce497fdb235eaaa11bd6c3e39d247ba 123freezebrennan <freezebrennan@gmail.com> 1744172088 -0700	branch: Created from HEAD
+c736b04a2ce497fdb235eaaa11bd6c3e39d247ba dce7900cfd84f422aa3ae2c48e8303abc041f15c 123freezebrennan <freezebrennan@gmail.com> 1744699961 -0700	commit: Added error calling system, also normalized pragma once on qlog

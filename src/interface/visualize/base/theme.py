@@ -1,0 +1,5 @@
+LIGHT_GREY = "lightgrey"
+GREY = "grey"
+TEXT_COLOR = "white"
+ACCENT_COLOR = "#39c0ba"
+BACKGROUND_COLOR = "#2e3037"

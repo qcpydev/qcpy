@@ -1,0 +1,30 @@
+0000000000000000000000000000000000000000 c736b04a2ce497fdb235eaaa11bd6c3e39d247ba 123freezebrennan <freezebrennan@gmail.com> 1744171284 -0700	clone: from https://github.com/qcpydev/qcpy.git
+c736b04a2ce497fdb235eaaa11bd6c3e39d247ba c736b04a2ce497fdb235eaaa11bd6c3e39d247ba 123freezebrennan <freezebrennan@gmail.com> 1744172088 -0700	checkout: moving from main to brennanfreeze/issue200
+c736b04a2ce497fdb235eaaa11bd6c3e39d247ba dce7900cfd84f422aa3ae2c48e8303abc041f15c 123freezebrennan <freezebrennan@gmail.com> 1744699961 -0700	commit: Added error calling system, also normalized pragma once on qlog
+dce7900cfd84f422aa3ae2c48e8303abc041f15c c736b04a2ce497fdb235eaaa11bd6c3e39d247ba 123freezebrennan <freezebrennan@gmail.com> 1744768693 -0700	checkout: moving from brennanfreeze/issue200 to main
+c736b04a2ce497fdb235eaaa11bd6c3e39d247ba 86e3c2ab7ca5e21584b661779c27f98d8fd37409 123freezebrennan <freezebrennan@gmail.com> 1744768697 -0700	pull: Fast-forward
+86e3c2ab7ca5e21584b661779c27f98d8fd37409 86e3c2ab7ca5e21584b661779c27f98d8fd37409 123freezebrennan <freezebrennan@gmail.com> 1744769813 -0700	checkout: moving from main to brennanfreeze/qlog-optimize
+86e3c2ab7ca5e21584b661779c27f98d8fd37409 6a77055e3b5aea762554ac336d73e5fc44eb106c 123freezebrennan <freezebrennan@gmail.com> 1745717872 -0700	commit: continuation of expansion of qlog optimize
+6a77055e3b5aea762554ac336d73e5fc44eb106c c1a74a1f92328d58112a3c72840c0330dbfee022 123freezebrennan <freezebrennan@gmail.com> 1745742322 -0700	commit: whoops, tried to over do it and went into a corner, simplified
+c1a74a1f92328d58112a3c72840c0330dbfee022 86e3c2ab7ca5e21584b661779c27f98d8fd37409 123freezebrennan <freezebrennan@gmail.com> 1745790681 -0700	checkout: moving from brennanfreeze/qlog-optimize to main
+86e3c2ab7ca5e21584b661779c27f98d8fd37409 f661e8d2bf1ba091f17d89cc8c6435ddd45a34ed 123freezebrennan <freezebrennan@gmail.com> 1745790686 -0700	pull: Fast-forward
+f661e8d2bf1ba091f17d89cc8c6435ddd45a34ed f661e8d2bf1ba091f17d89cc8c6435ddd45a34ed 123freezebrennan <freezebrennan@gmail.com> 1745790708 -0700	checkout: moving from main to brennanfreeze/qlog-optimize-cont
+f661e8d2bf1ba091f17d89cc8c6435ddd45a34ed c3b384b0ede54a9734f58153759ff42225d8fe91 123freezebrennan <freezebrennan@gmail.com> 1746431800 -0700	commit: duplicate gate cleaning
+c3b384b0ede54a9734f58153759ff42225d8fe91 f661e8d2bf1ba091f17d89cc8c6435ddd45a34ed 123freezebrennan <freezebrennan@gmail.com> 1746496680 -0700	checkout: moving from brennanfreeze/qlog-optimize-cont to main
+f661e8d2bf1ba091f17d89cc8c6435ddd45a34ed e6eb5f9081def01adb41eeaedb8371b2dc682891 123freezebrennan <freezebrennan@gmail.com> 1746496683 -0700	pull: Fast-forward
+e6eb5f9081def01adb41eeaedb8371b2dc682891 e6eb5f9081def01adb41eeaedb8371b2dc682891 123freezebrennan <freezebrennan@gmail.com> 1746496716 -0700	checkout: moving from main to brennanfreeze/qlog-optimize-shrinks
+e6eb5f9081def01adb41eeaedb8371b2dc682891 530cf9af3598b3f9a0d8a5d0218eeec117091386 123freezebrennan <freezebrennan@gmail.com> 1747196631 -0700	commit: shrinking code + expansion code
+530cf9af3598b3f9a0d8a5d0218eeec117091386 e6eb5f9081def01adb41eeaedb8371b2dc682891 123freezebrennan <freezebrennan@gmail.com> 1747196829 -0700	checkout: moving from brennanfreeze/qlog-optimize-shrinks to main
+e6eb5f9081def01adb41eeaedb8371b2dc682891 530cf9af3598b3f9a0d8a5d0218eeec117091386 123freezebrennan <freezebrennan@gmail.com> 1747196838 -0700	merge brennanfreeze/qlog-optimize-shrinks: Fast-forward
+530cf9af3598b3f9a0d8a5d0218eeec117091386 530cf9af3598b3f9a0d8a5d0218eeec117091386 123freezebrennan <freezebrennan@gmail.com> 1747196860 -0700	checkout: moving from main to brennanfreeze/qlog-optimize-expand-connect
+530cf9af3598b3f9a0d8a5d0218eeec117091386 dc57ad25eabbecc0d0b49475c0e44b339974190a 123freezebrennan <freezebrennan@gmail.com> 1748325340 -0700	commit: Fixed circuit drawing + some bugs
+dc57ad25eabbecc0d0b49475c0e44b339974190a 530cf9af3598b3f9a0d8a5d0218eeec117091386 123freezebrennan <freezebrennan@gmail.com> 1748821345 -0700	checkout: moving from brennanfreeze/qlog-optimize-expand-connect to main
+530cf9af3598b3f9a0d8a5d0218eeec117091386 1b8142242a8e6039c60ccc1554ec12aead3a4d02 123freezebrennan <freezebrennan@gmail.com> 1748821349 -0700	pull: Fast-forward
+1b8142242a8e6039c60ccc1554ec12aead3a4d02 1b8142242a8e6039c60ccc1554ec12aead3a4d02 123freezebrennan <freezebrennan@gmail.com> 1748821375 -0700	checkout: moving from main to brennanfreeze/issue180-debug
+1b8142242a8e6039c60ccc1554ec12aead3a4d02 06dd8164e8ea4b86c8d3d87f4ace52348beea8f0 123freezebrennan <freezebrennan@gmail.com> 1749022578 -0700	commit: Fixed critical issue with package involving duplicate gates
+06dd8164e8ea4b86c8d3d87f4ace52348beea8f0 1b8142242a8e6039c60ccc1554ec12aead3a4d02 123freezebrennan <freezebrennan@gmail.com> 1749095924 -0700	checkout: moving from brennanfreeze/issue180-debug to main
+1b8142242a8e6039c60ccc1554ec12aead3a4d02 c2dd9bc305db6312ceef97d8b135b10dc5ec0b5f 123freezebrennan <freezebrennan@gmail.com> 1749095940 -0700	pull: Fast-forward
+c2dd9bc305db6312ceef97d8b135b10dc5ec0b5f c2dd9bc305db6312ceef97d8b135b10dc5ec0b5f 123freezebrennan <freezebrennan@gmail.com> 1749096069 -0700	checkout: moving from main to brennanfreeze/issue134
+c2dd9bc305db6312ceef97d8b135b10dc5ec0b5f 27e90b0394fe151895f39f7476c3c136c37e738f 123freezebrennan <freezebrennan@gmail.com> 1757779720 -0700	commit: saving work
+27e90b0394fe151895f39f7476c3c136c37e738f 0074bde26fee66568217496b73558c8193370cae 123freezebrennan <freezebrennan@gmail.com> 1757834025 -0700	commit: test
+0074bde26fee66568217496b73558c8193370cae bead7e3b90b4ae421dfb78e07defe465fcf549a6 123freezebrennan <freezebrennan@gmail.com> 1757834091 -0700	commit: test

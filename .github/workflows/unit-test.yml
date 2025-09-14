@@ -1,0 +1,18 @@
+# This pipeline runs unit tests on the QCpy test cases
+# Using pytest
+
+name: unit-tester
+on: pull_request
+jobs:
+  test:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v1
+        with:
+          python-version: 3.11
+      - run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - run: |
+          pytest test
