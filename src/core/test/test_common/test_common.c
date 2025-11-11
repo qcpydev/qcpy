@@ -43,7 +43,7 @@ uint64_t qcpy_run_tests() {
     printf("No tests to run!\n");
   }
 
-  SRunner *suite_runner;
+  SRunner *suite_runner = NULL;
   while (run_test.suites) {
     suite_runner = srunner_create(run_test.suites->test_suite);
     run_test.number_of_failures += srunner_ntests_failed(suite_runner);

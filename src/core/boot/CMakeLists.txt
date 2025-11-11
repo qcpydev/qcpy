@@ -7,7 +7,6 @@ target_link_libraries(boot PUBLIC
    args
    port
    qlog_infra
-   qlog
 )
 
 target_include_directories(boot PUBLIC

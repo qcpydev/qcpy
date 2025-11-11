@@ -7,8 +7,10 @@ target_include_directories(qcpy_error PUBLIC
 add_subdirectory(replay/replay_qlog)
 add_subdirectory(replay/replay_qlog_entry)
 add_subdirectory(replay/replay_qlog_register)
+add_subdirectory(critical/error_importer)
 
 target_link_libraries(qcpy_error PUBLIC
+    error_importer
     replay_qlog
     replay_qlog_entry
     qlog

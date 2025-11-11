@@ -6,7 +6,6 @@ void replay_qlog_delete(replay_qlog_t *replay_qlog) {
 }
 
 replay_qlog_t *replay_qlog_init(qlog_t *qlog, qlog_error_e error_type) {
-
   replay_qlog_t *replayer = (replay_qlog_t *)malloc(sizeof(replay_qlog_t));
 
   if (!replayer) {

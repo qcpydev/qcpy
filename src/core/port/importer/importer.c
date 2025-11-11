@@ -1,92 +1,103 @@
 #include <importer.h>
 #include <qcpy_error.h>
-#include <qlog_register.h>
+#include <qlog_infra.h>
 
-import_t *import_queue = NULL;
-import_sorted_t import_sorted;
+importer_t import_sorted;
 
 void port_import_init() {
-  if (import_queue) {
-    return;
-  }
+  assert(!import_queue);
 
   import_queue = mmap(NULL, sizeof(import_sorted_t), PROT_READ | PROT_WRITE,
                       MAP_SHARED | MAP_ANONYMOUS, -1, 0);
-
   if (!import_queue) {
     assert(0);
   }
 
+  memset(import_queue, 0, sizeof(import_sorted_t));
+  memset(&import_queue->queue, 0, sizeof(block_t) * IMPORT_MAX_SIZE);
+
   sem_init(&import_queue->full, 1, 0);
   sem_init(&import_queue->empty, 1, 1);
 
-  sem_init(&import_sorted.full, 1, 0);
-  sem_init(&import_sorted.empty, 1, 1);
+  pthread_mutex_init(&import_sorted.sorting, NULL);
+
+  for (uint64_t i = 0; i < IMPORT_MAX_SIZE; ++i) {
+    pthread_mutex_init(&import_sorted.registers_lock[i], NULL);
+  }
+
 }
 
-imported_item_t* port_imported_init(import_cxt_t *cxt) {
-  if (!cxt) {
+imported_block_t* port_imported_init(block_t* ctx) {
+  if (!ctx) {
     assert(0);
   }
 
-  import_cxt_t *copy_cxt = (import_cxt_t *)malloc(sizeof(import_cxt_t));
+  imported_block_t* imported_item =
+      (imported_block_t *)malloc(sizeof(imported_block_t));
 
-  if (!copy_cxt) {
-    assert(0);
-  }
+  memset(imported_item, 0, sizeof(imported_block_t));
 
-  memcpy(cxt, copy_cxt, sizeof(import_cxt_t));
-
-  imported_item_t *imported_item =
-      (imported_item_t *)malloc(sizeof(imported_item_t));
+  imported_item->block = (block_t*)malloc(sizeof(block_t));
+  memset(imported_item->block, 0, sizeof(block_t));
 
   if (!imported_item) {
     assert(0);
   }
 
-  imported_item->cxt = copy_cxt;
-
   return imported_item;
 }
 
-void port_import_sort(import_cxt_t *cxt) {
-  if (!cxt) {
-    assert(0);
-  }
+void port_import_enqueue(block_t* block) {
+  assert(block && block->type == IMPORTER_QLOG_ENTRY);
 
-  if (import_sorted.count > IMPORT_MAX_SIZE) {
-    assert(0);
-  }
+  pthread_mutex_lock(&import_sorted.sorting);
+  memcpy(&(import_queue->queue[import_queue->size]), block, sizeof(block_t));
 
-  imported_item_t *imported_item = port_imported_init(cxt);
-  uint64_t reg = imported_item->cxt->item.qlog_register % IMPORT_MAX_SIZE;
-
-  if (import_sorted.registers[reg]) {
-    import_sorted.registers_last[reg]->next_cxt = imported_item;
-    import_sorted.registers_last[reg] = imported_item;
-  } else {
-    import_sorted.registers[reg] = imported_item;
-    import_sorted.registers_last[reg] = imported_item;
-
-    ++(import_sorted.count);
-  }
+  import_queue->size += 1;
+  pthread_mutex_unlock(&import_sorted.sorting);
 }
 
-int port_import_handler() {
+uint64_t port_import_sort(block_t* block) {
+  if (!block) {
+    assert(0);
+  }
+
+  imported_block_t *imported_block = port_imported_init(block);
+  uint64_t reg = imported_block->block->content.qlog_register % IMPORT_MAX_SIZE;
+
+  if (import_sorted.registers[reg]) {
+    import_sorted.registers_last[reg]->next_block = imported_block;
+    import_sorted.registers_last[reg] = imported_block;
+  }
+  else {
+    import_sorted.registers[reg] = imported_block;
+    import_sorted.registers_last[reg] = imported_block;
+    ++(import_sorted.count);
+  }
+
+  return reg;
+}
+
+uint64_t port_import_handler() {
   uint64_t sorted_cnt = 0;
 
-  sem_wait(&import_sorted.empty);
+  pthread_mutex_lock(&import_sorted.sorting);
+  port_import_clear();
+  pthread_mutex_unlock(&import_sorted.sorting);
+  return 1;
 
-  for (uint16_t i = 0; i < import_queue->size; ++i) {
-    port_import_sort(&(import_queue->queue[i]));
+  for (uint64_t i = 0; i < IMPORT_MAX_SIZE; ++i) {
+    uint64_t reg = port_import_sort(&(import_queue->queue[i]));
+
+    pthread_mutex_lock(&import_sorted.registers_lock[reg]);
+
+    qlog_thread_pool.workers[i].state = QLOG_PROCESS_START;
+    qlog_thread_pool_signal_worker(i);
+
+    pthread_mutex_unlock(&import_sorted.registers_lock[i]);
   }
 
   sorted_cnt = import_sorted.count;
-
-  assert(import_sorted.count <= IMPORT_MAX_SIZE);
-
-  sem_post(&import_sorted.full);
-
   return sorted_cnt;
 }
 
@@ -95,7 +106,6 @@ void port_import_clear() {
     assert(0);
   }
 
-  memset(&import_queue->queue, 0, sizeof(import_cxt_t) * IMPORT_MAX_SIZE);
-
+  memset(&import_queue->queue, 0, sizeof(block_t) * IMPORT_MAX_SIZE);
   import_queue->size = 0;
 }

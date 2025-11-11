@@ -1,5 +1,6 @@
 #include <stdbool.h>
 
+#pragma once
 #ifndef QCPY_ERROR_H
 #define QCPY_ERROR_H
 
@@ -22,6 +23,11 @@ typedef enum {
   QCPY_ERROR_QLOG,
   QCPY_ERROR_QLOG_REGISTER,
   QCPY_ERROR_QLOG_ENTRY,
+  QCPY_ERROR_PORT,
+  QCPY_ERROR_IMPORTER,
+  QCPY_ERROR_IMPORT_SORTED,
+  QCPY_ERROR_BOOT,
+  QCPY_ERROR
 } qcpy_error_e;
 
 typedef struct {

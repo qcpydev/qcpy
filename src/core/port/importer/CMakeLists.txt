@@ -1,11 +1,13 @@
-add_library(importer importer.c)
+add_library(importer STATIC importer.c)
 
 target_include_directories(importer PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-target_link_libraries(importer PUBLIC
+target_link_libraries(importer PRIVATE
+
+    block
+    qcpy_error
     qlog
     qlog_register
-    qcpy_error
 )

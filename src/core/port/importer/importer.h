@@ -9,6 +9,7 @@
 #include <sys/mman.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <block.h>
 
 #pragma once
 #ifndef IMPORTER_H
@@ -22,62 +23,54 @@
  * - Once sorted and properly queued, the qlog scheduler will pick this up using
  *   an admin thread.
  *
- *   importer will then inform the port that all information has been
+ * importer will then inform the port that all information has been
  * successfully sent over to qlog, and can zero out the shared memory for more
  * requests.
  */
 
-#define IMPORT_MAX_SIZE 256
+#define IMPORT_MAX_SIZE (uint64_t)16
 
-typedef enum { IMPORTER_QLOG_ENTRY } import_cxt_type_e;
+typedef enum {
+  IMPORT_ERROR_NULL,
+} importer_error_e;
 
-typedef union {
-  uint64_t qlog_register;
-  uint64_t gate_type;
-  uint64_t gate_name;
-  uint64_t qubits;
-  uint64_t qubit_cnt;
-  float theta;
-  float phi;
-  float lambda;
-} import_cxt_item_u;
+typedef enum {
+  IMPORT_SORTED_ERROR_NULL,
+} import_sorted_error_e;
 
-typedef struct import_cxt_s import_cxt_t;
-
-struct import_cxt_s {
-  import_cxt_item_u item;
-  import_cxt_type_e type;
-};
-
-typedef struct importer_s {
+typedef struct import_s {
   sem_t empty;
   sem_t full;
-  import_cxt_t queue[IMPORT_MAX_SIZE];
+  block_t queue[IMPORT_MAX_SIZE];
   uint64_t size;
 } import_t;
 
-typedef struct imported_item_s imported_item_t;
-struct imported_item_s {
-  import_cxt_t *cxt;
-  imported_item_t *next_cxt;
+typedef struct imported_block_s imported_block_t;
+struct imported_block_s {
+  block_t* block;
+  imported_block_t* next_block;
 };
 
 typedef struct import_sorted_s {
-  sem_t empty;
-  sem_t full;
+  pthread_mutex_t sorting;
   uint64_t count;
-  imported_item_t *registers[IMPORT_MAX_SIZE];
-  imported_item_t *registers_last[IMPORT_MAX_SIZE];
-} import_sorted_t;
+  pthread_mutex_t registers_lock[IMPORT_MAX_SIZE];
+  imported_block_t* registers[IMPORT_MAX_SIZE];
+  imported_block_t* registers_last[IMPORT_MAX_SIZE];
+} importer_t;
 
-extern import_t *import_queue;
-extern import_sorted_t import_sorted;
+extern import_t* import_queue;
+extern importer_t import_sorted;
 
 void port_import_init();
-imported_item_t *port_imported_init(import_cxt_t *reg);
+void port_import_enqueue(block_t* block);
+imported_block_t* port_imported_init(block_t* reg);
+
 void port_imported_clear();
-int port_import_handler();
+uint64_t port_import_handler();
 void port_import_clear();
-void port_import_sort(import_cxt_t *cxt);
+
+uint64_t port_import_sort(block_t* cxt);
+void port_import_enqueue(block_t* ctx);
 
 #endif

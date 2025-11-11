@@ -13,6 +13,8 @@
  * and rely on the thread pool to create entries on qlog, clog, etc. and finally
  * signal to compress threads to async work on the unprocessed segments of the
  * qlog.
+ * Use qlog_infra_init to set up the thread pool/scheduler (weight distribution)
+ * Use qlog_infra_process, which will await work to be done in the sorted entries
  */
 
 void qlog_infra_init();

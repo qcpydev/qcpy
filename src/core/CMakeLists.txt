@@ -4,15 +4,16 @@ if ("${CMAKE_BINARY_DIR}" STREQUAL "${CMAKE_SOURCE_DIR}")
     message(FATAL_ERROR "In-source builds are not allowed.")
 endif()
 
-project(qcpy-core VERSION 1.0)
-
+project(qcpy-core VERSION 0.1)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(C_STANDARD 99)
 set(C_STANDARD_REQUIRED ON)
 
 if(MSVC)
     add_compile_options(/W3)
 else()
-  add_compile_options(-Wall -Wextra -Werror -shared -pthread -fPIC)
+  add_compile_options(-fPIC -Wall -Wextra -Werror -pthread -g3)
 endif()
 
 list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
@@ -64,10 +65,6 @@ set(CMAKE_MAP_IMPORTED_CONFIG_TSAN RELEASE)
 set(CMAKE_MAP_IMPORTED_CONFIG_MSAN RELEASE)
 set(CMAKE_MAP_IMPORTED_CONFIG_UBSAN RELEASE)
 
-if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE "Asan")
-endif()
-
 set(CMAKE_PREFIX_PATH "/opt/check" ${CMAKE_PREFIX_PATH})
 
 if(MSVC)
@@ -76,7 +73,6 @@ if(MSVC)
     endif()
 
     set(CMAKE_EXE_LINKER_FLAGS_ASAN "/DEBUG /INCREMENTAL:NO")
-    add_compile_options("$<$<CONFIG:Asan>:/DEBUG /fsanitize=address>")
 else()
     set(CMAKE_C_FLAGS_ASAN
         "-fsanitize=address -fno-optimize-sibling-calls -fsanitize-address-use-after-scope -fno-omit-frame-pointer -g -O1"
@@ -105,9 +101,10 @@ else()
 endif()
 
 
-# QLOG CORE EXECUTABLE
+# QLOG CORE SHARED LIBRARY
 # ========================================
-add_executable(qcpy_core main.c)
+add_library(qcpy_connect SHARED qcpy_connect.c)
+add_executable(qcpy_core qcpy_core.c)
 
 # set up testing
 # ========================================
@@ -121,13 +118,25 @@ add_subdirectory(error)
 add_subdirectory(base)
 add_subdirectory(boot)
 add_subdirectory(port)
+add_subdirectory(dock)
+add_subdirectory(block)
+
+target_link_libraries(qcpy_connect PUBLIC
+    qcpy_error
+    block
+    qcpy_base
+    dock
+    args
+)
 
 target_link_libraries(qcpy_core PRIVATE
-    qlog
     qcpy_error
+    block
+    qlog
     qcpy_base
     boot
     port
 )
+
 # END QLOG CORE EXECUTABLE
 # ========================================

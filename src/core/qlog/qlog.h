@@ -18,14 +18,14 @@
  */
 
 typedef struct qlog_t {
-  qlog_entry_t *entries;        // qlog list of items inserted by the user
-  qlog_entry_t *last_entry;     // qlog last inserted item
-  struct qlog_stats_def *stats; // qlog stats
+  qlog_entry_t *entries;               // qlog entries
+  qlog_entry_t *last_entry;            // qlog last inserted item
+  struct qlog_stats_def *stats;        // qlog stats
   struct qlog_optimize_def *optimizer; // qlog optimizer
-  uint16_t qubit_count; // number of qubits qlog will take account for
-  uint16_t entry_count; // number of entries in qlog
-  uint16_t id;
-  bool can_optimize; // should we optimize the qlog on the side
+  uint16_t qubit_count;                // number of qubits
+  uint16_t entry_count;                // number of entries in qlog
+  uint16_t id;                         // id from the qlog_register
+  bool can_optimize;                   // can do optimization
 } qlog_t;
 
 typedef enum {

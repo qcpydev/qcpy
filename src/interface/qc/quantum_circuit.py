@@ -55,7 +55,7 @@ class QuantumCircuit:
         self,
         qubits: int,
         big_endian: bool = False,
-        prep: chr = "z",
+        prep: str = "z",
         sparse: bool = False,
         gpu: bool = False,
     ):

@@ -1,10 +1,11 @@
-add_library(port port.c)
+add_library(port STATIC port.c)
 
 add_subdirectory(importer)
 add_subdirectory(exporter)
 
 target_link_libraries(port PUBLIC
    qlog
+   block
    qcpy_error
    importer
    exporter

@@ -1,3 +1,4 @@
+#include <error_importer.h>
 #include <qcpy_error.h>
 #include <qlog.h>
 #include <replay_qlog.h>
@@ -7,12 +8,14 @@
 #define QCPY_URL "https://github.com/qcpydev/qcpy"
 
 typedef bool (*qcpy_error_replay)(void *data, int data_error);
+typedef void (*qcpy_error_del)(qcpy_error_t *);
+
 qcpy_error_replay qcpy_error_replay_type[] = {
     [QCPY_ERROR_QLOG] = replay_qlog,
-    //[QCPY_ERROR_QLOG_REGISTER] = replay_qlog_register,
-    [QCPY_ERROR_QLOG_ENTRY] = replay_qlog_entry};
-
-typedef void (*qcpy_error_del)(qcpy_error_t *);
+    [QCPY_ERROR_QLOG_ENTRY] = replay_qlog_entry,
+    [QCPY_ERROR_IMPORTER] = error_importer,
+    [QCPY_ERROR_IMPORT_SORTED] = error_import_sorted,
+};
 
 void qcpy_error_create_issue(qcpy_error_t *qcpy_error) {
   if (!qcpy_error) {
@@ -67,12 +70,21 @@ void qcpy_error(qcpy_error_e type, void *data, int data_error, int error_flags,
   printf("\n%s QCPY %s\n", debug_mode ? "DEBUG" : "",
          is_warning ? "WARNING" : "ERROR");
 
+  bool error_outputed = qcpy_error_replay_type[type](data, data_error);
+
+  if (!error_outputed) {
+    assert(!"There was a critical error trying to generate an issue");
+  }
+
+  qcpy_error_create_issue(qcpy_error);
+
+  qcpy_error_delete(qcpy_error);
+
   if (!is_warning) {
-    printf(
-        "There has been an internal breaking issue."
-        "Attempting to replay up until error.\n"
-        "Please file an issue using the generate template to %s after replay\n",
-        QCPY_URL);
+    printf("There has been an internal breaking issue."
+           "Attempting to replay up until error.\n"
+           "Please file an issue using the generate template%s\n",
+           QCPY_URL);
 
   } else {
     printf("A warning has been detected, possibly leading to future issues.\n"
@@ -81,17 +93,7 @@ void qcpy_error(qcpy_error_e type, void *data, int data_error, int error_flags,
            QCPY_URL);
   }
 
-  bool replay_success = qcpy_error_replay_type[type](data, data_error);
-
-  if (!replay_success) {
-    printf("SOMETHING WENT WRONG\n");
-    assert(0);
-  }
-
-  qcpy_error_create_issue(qcpy_error);
-  qcpy_error_delete(qcpy_error);
-
-  if (!is_warning) {
-    assert(0);
+  if (debug_mode || (!debug_mode && !is_warning)) {
+    assert(!"Halting now...\n");
   }
 }

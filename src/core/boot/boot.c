@@ -21,20 +21,10 @@
 void boot_args_init() {}
 
 void boot_core_init() {
-  port_init();
-  pid_t pid = fork();
-
-  if (pid == 0) {
-    port_import();
-    qlog_infra_init();
-  }
+  pthread_create(&ports.import_thread, NULL, port_import, NULL);
+  qlog_infra_init();
 }
 
-void boot(int args[]) {
-  if (args) {
-    /* Set up arguments  */
-    boot_args_init();
-  }
-
-  boot_core_init();
+void boot_core() {
+  boot_args_init();
 }
