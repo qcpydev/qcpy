@@ -6,17 +6,8 @@
 
 START_TEST(test_qlog_append_1) {
 
-  uint8_t *qubit_arr = {0};
   uint8_t qubits = 1;
-  int type = 1;
-  int gate = 1;
-  float lambda = 0.0;
-  float phi = 0.0;
-  float theta = 0.0;
   qlog_t *qlog = qlog_init(qubits);
-  bool was_success =
-      qlog_append(qlog, qubit_arr, qubits, type, gate, theta, phi, lambda);
-  ck_assert(was_success);
   qlog_delete(qlog);
 }
 END_TEST

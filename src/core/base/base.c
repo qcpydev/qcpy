@@ -24,8 +24,8 @@ const char *base_gate_strs[] = {
     [GATE_CRX] = "CRX",
     [GATE_CRY] = "CRY",
     [GATE_CRZ] = "CRZ",
-    [GATE_CR1] = "CR1",
     [GATE_CSX] = "CSX",
+    [GATE_CR1] = "CR1",
     [GATE_CCX] = "CCX",
     [GATE_QFT] = "QFT",
     [GATE_RCCX] = "RCCX",
@@ -41,11 +41,12 @@ const char *base_gate_strs[] = {
 };
 
 const char *base_type_strs[] = {
-    [TYPE_SINGLE] = "SINGLE",       [TYPE_CONTROLLED] = "CONTROLLED",
-    [TYPE_MULTI] = "MULTI",         [TYPE_BLOCK] = "BLOCK",
+    [TYPE_SINGLE] = "SINGLE",
+    [TYPE_CONTROLLED] = "CONTROLLED",
+    [TYPE_MULTI] = "MULTI",
+    [TYPE_BLOCK] = "BLOCK",
     [TYPE_ALGORITHM] = "ALGORITHM",
 };
 
 const char *base_get_gate_str(int gate) { return base_gate_strs[gate]; }
-
 const char *base_get_type_str(int type) { return base_type_strs[type]; }

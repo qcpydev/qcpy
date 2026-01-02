@@ -13,7 +13,7 @@ set(C_STANDARD_REQUIRED ON)
 if(MSVC)
     add_compile_options(/W3)
 else()
-  add_compile_options(-fPIC -Wall -Wextra -Werror -pthread -g3)
+  add_compile_options(-Wall -Wextra -Werror -pthread -g3)
 endif()
 
 list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
@@ -114,6 +114,7 @@ add_subdirectory(test)
 # ========================================
 
 add_subdirectory(qlog)
+add_subdirectory(register)
 add_subdirectory(error)
 add_subdirectory(base)
 add_subdirectory(boot)
@@ -132,6 +133,7 @@ target_link_libraries(qcpy_connect PUBLIC
 target_link_libraries(qcpy_core PRIVATE
     qcpy_error
     block
+    qlog_register
     qlog
     qcpy_base
     boot

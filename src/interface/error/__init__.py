@@ -45,7 +45,7 @@ class OutOfRangeError(IndexError):
     """
 
 
-class CudaNotInstalledWarning(Warning):
+class CudaNotInstalledError(AttributeError):
     """
     When the user tries to use the gpu flag and they do not have CUDA installed on
     their machine. qcpy will switch this flag back to false internally and inform the
@@ -55,7 +55,7 @@ class CudaNotInstalledWarning(Warning):
     --------
     >>> from qcpy import quantumcircuit
     >>> qc = quantumcircuit(qubits = 2, gpu = True)
-    >>> Warning
+    >>> Error
     """
 
 

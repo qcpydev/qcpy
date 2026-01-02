@@ -1,111 +1,93 @@
-#include <importer.h>
 #include <qcpy_error.h>
+#include <importer.h>
 #include <qlog_infra.h>
+#include <port.h>
 
-importer_t import_sorted;
+import_t importer;
 
-void port_import_init() {
-  assert(!import_queue);
-
-  import_queue = mmap(NULL, sizeof(import_sorted_t), PROT_READ | PROT_WRITE,
-                      MAP_SHARED | MAP_ANONYMOUS, -1, 0);
-  if (!import_queue) {
-    assert(0);
-  }
-
-  memset(import_queue, 0, sizeof(import_sorted_t));
-  memset(&import_queue->queue, 0, sizeof(block_t) * IMPORT_MAX_SIZE);
-
-  sem_init(&import_queue->full, 1, 0);
-  sem_init(&import_queue->empty, 1, 1);
-
-  pthread_mutex_init(&import_sorted.sorting, NULL);
+void importer_init() {
+  pthread_mutex_init(&importer.lock, NULL);
 
   for (uint64_t i = 0; i < IMPORT_MAX_SIZE; ++i) {
-    pthread_mutex_init(&import_sorted.registers_lock[i], NULL);
+   pthread_mutex_init(&importer.queue_lock[i], NULL);
   }
 
+  memset(importer.queue, 0, sizeof(import_block_t*) * IMPORT_MAX_SIZE);
+  memset(importer.queue_last, 0, sizeof(import_block_t*) * IMPORT_MAX_SIZE);
 }
 
-imported_block_t* port_imported_init(block_t* ctx) {
-  if (!ctx) {
-    assert(0);
-  }
+void importer_append(block_t block) {
+  import_block_t* import_block = import_block_init(block);
+  assert(import_block);
+  uint64_t index = block.reg % IMPORT_MAX_SIZE;
 
-  imported_block_t* imported_item =
-      (imported_block_t *)malloc(sizeof(imported_block_t));
-
-  memset(imported_item, 0, sizeof(imported_block_t));
-
-  imported_item->block = (block_t*)malloc(sizeof(block_t));
-  memset(imported_item->block, 0, sizeof(block_t));
-
-  if (!imported_item) {
-    assert(0);
-  }
-
-  return imported_item;
-}
-
-void port_import_enqueue(block_t* block) {
-  assert(block && block->type == IMPORTER_QLOG_ENTRY);
-
-  pthread_mutex_lock(&import_sorted.sorting);
-  memcpy(&(import_queue->queue[import_queue->size]), block, sizeof(block_t));
-
-  import_queue->size += 1;
-  pthread_mutex_unlock(&import_sorted.sorting);
-}
-
-uint64_t port_import_sort(block_t* block) {
-  if (!block) {
-    assert(0);
-  }
-
-  imported_block_t *imported_block = port_imported_init(block);
-  uint64_t reg = imported_block->block->content.qlog_register % IMPORT_MAX_SIZE;
-
-  if (import_sorted.registers[reg]) {
-    import_sorted.registers_last[reg]->next_block = imported_block;
-    import_sorted.registers_last[reg] = imported_block;
+  if (!importer.queue[index]) {
+    importer.queue[index] = import_block;
+    importer.queue_last[index] = import_block;
   }
   else {
-    import_sorted.registers[reg] = imported_block;
-    import_sorted.registers_last[reg] = imported_block;
-    ++(import_sorted.count);
+    importer.queue_last[index]->next = import_block;
+    importer.queue_last[index] = importer.queue_last[index]->next;
   }
 
-  return reg;
+
+  ++importer.count;
 }
 
-uint64_t port_import_handler() {
-  uint64_t sorted_cnt = 0;
-
-  pthread_mutex_lock(&import_sorted.sorting);
-  port_import_clear();
-  pthread_mutex_unlock(&import_sorted.sorting);
-  return 1;
+void importer_sort_ported(port_t* port) {
+  assert(port);
 
   for (uint64_t i = 0; i < IMPORT_MAX_SIZE; ++i) {
-    uint64_t reg = port_import_sort(&(import_queue->queue[i]));
-
-    pthread_mutex_lock(&import_sorted.registers_lock[reg]);
-
-    qlog_thread_pool.workers[i].state = QLOG_PROCESS_START;
-    qlog_thread_pool_signal_worker(i);
-
-    pthread_mutex_unlock(&import_sorted.registers_lock[i]);
+    pthread_mutex_lock(&importer.queue_lock[i]);
+    importer_append(port->queue[i]);
   }
 
-  sorted_cnt = import_sorted.count;
-  return sorted_cnt;
+  // lock enqueued indices, notify qlog_infra to handle whatever they need to
+  for (uint64_t i = 0; i < IMPORT_MAX_SIZE; ++i) {
+    pthread_mutex_unlock(&importer.queue_lock[i]);
+    if (importer.queue[i]) {
+      pthread_cond_signal(&qlog_thread_pool.workers[i].cond);
+    }
+  }
+
+  qlog_thread_pool_await();
 }
 
-void port_import_clear() {
-  if (!import_queue) {
-    assert(0);
+void importer_delete_queue(uint64_t idx) {
+  assert(idx < IMPORT_MAX_SIZE);
+
+  import_block_t* import_block_queue = importer.queue[idx];
+  importer.queue[idx] = NULL;
+  importer.queue_last[idx] = NULL;
+
+  while (import_block_queue) {
+    import_block_t* delete_block = import_block_queue;
+    import_block_queue = import_block_queue->next;
+    import_block_delete(delete_block);
+  }
+}
+
+void importer_clear() {
+  for (uint64_t i = 0; i < IMPORT_MAX_SIZE; ++i) {
+    importer_delete_queue(i);
   }
 
-  memset(&import_queue->queue, 0, sizeof(block_t) * IMPORT_MAX_SIZE);
-  import_queue->size = 0;
+  importer.count = 0;
+}
+
+import_block_t* import_block_init(block_t block) {
+  import_block_t* import_block;
+  import_block = (import_block_t*)malloc(sizeof(import_block_t));
+  memset(import_block, 0, sizeof(import_block_t));
+  assert(import_block);
+
+  import_block->block = block;
+  return import_block;
+}
+
+void import_block_delete(import_block_t* import_block) {
+  assert(import_block);
+  memset(import_block, 0, sizeof(import_block_t));
+  free(import_block);
+  return;
 }

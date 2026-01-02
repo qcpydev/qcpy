@@ -1,14 +1,8 @@
 #include <assert.h>
-#include <fcntl.h>
-#include <semaphore.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <sys/mman.h>
-#include <sys/stat.h>
-#include <unistd.h>
 #include <block.h>
 
 #pragma once
@@ -28,8 +22,6 @@
  * requests.
  */
 
-#define IMPORT_MAX_SIZE (uint64_t)16
-
 typedef enum {
   IMPORT_ERROR_NULL,
 } importer_error_e;
@@ -38,39 +30,31 @@ typedef enum {
   IMPORT_SORTED_ERROR_NULL,
 } import_sorted_error_e;
 
-typedef struct import_s {
-  sem_t empty;
-  sem_t full;
-  block_t queue[IMPORT_MAX_SIZE];
-  uint64_t size;
-} import_t;
-
-typedef struct imported_block_s imported_block_t;
-struct imported_block_s {
-  block_t* block;
-  imported_block_t* next_block;
+typedef struct import_block_s import_block_t;
+struct import_block_s {
+  block_t block;
+  import_block_t* next;
 };
 
-typedef struct import_sorted_s {
-  pthread_mutex_t sorting;
+typedef struct import_s {
+  pthread_mutex_t lock;
   uint64_t count;
-  pthread_mutex_t registers_lock[IMPORT_MAX_SIZE];
-  imported_block_t* registers[IMPORT_MAX_SIZE];
-  imported_block_t* registers_last[IMPORT_MAX_SIZE];
-} importer_t;
+  pthread_mutex_t queue_lock[IMPORT_MAX_SIZE];
+  import_block_t* queue[IMPORT_MAX_SIZE];
+  import_block_t* queue_last[IMPORT_MAX_SIZE];
+} import_t;
 
-extern import_t* import_queue;
-extern importer_t import_sorted;
 
-void port_import_init();
-void port_import_enqueue(block_t* block);
-imported_block_t* port_imported_init(block_t* reg);
 
-void port_imported_clear();
-uint64_t port_import_handler();
-void port_import_clear();
+void importer_init();
+void importer_append(block_t block);
+void importer_clear();
+void importer_delete_queue(uint64_t idx);
+void importer_sort_ported(port_t* port);
 
-uint64_t port_import_sort(block_t* cxt);
-void port_import_enqueue(block_t* ctx);
+import_block_t* import_block_init();
+void import_block_delete(import_block_t* import_block);
+
+extern import_t importer;
 
 #endif

@@ -88,7 +88,7 @@ void qlog_optimize_append(struct qlog_optimize_def* qlog_optimize, struct qlog_e
   ++qlog_optimize->qlog_optimize_size;
 
   if (qlog_optimize_running(qlog_optimize)) {
-    ++qlog_optimize->qlog_optimize_size; 
+    ++qlog_optimize->qlog_optimize_size;
     if (!qlog_optimize->qlog_optimize_backlog) {
       qlog_optimize->qlog_optimize_backlog = qlog_entry;
     }
@@ -112,7 +112,7 @@ bool qlog_optimize_stop(struct qlog_optimize_def* qlog_optimize) {
 bool qlog_optimize_run(struct qlog_optimize_def* qlog_optimize) {
 
   if (!qlog_optimize) {
-    return false;    
+    return false;
   }
 
   qlog_trigger_optimize(qlog_optimize->qlog_optimize_trigger);

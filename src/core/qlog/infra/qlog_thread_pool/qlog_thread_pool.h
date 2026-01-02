@@ -21,7 +21,6 @@
  * optimized, to reduce redundant work.
  * */
 
-
 typedef enum {
   QLOG_PROCESS_EMPTY,
   QLOG_PROCESS_START,
@@ -34,13 +33,13 @@ typedef enum {
 typedef struct qlog_worker_s {
   pthread_t thread;
   pthread_cond_t cond;
+  pthread_mutex_t lock;
   qlog_process_state_e state;
 } qlog_worker_t;
 
 typedef struct qlog_thread_pool_s {
   qlog_worker_t workers[IMPORT_MAX_SIZE];
   uint32_t running_workers;
-  pthread_mutex_t lock;
 } qlog_thread_pool_t;
 
 extern qlog_thread_pool_t qlog_thread_pool;
@@ -48,5 +47,6 @@ extern qlog_thread_pool_t qlog_thread_pool;
 void qlog_thread_pool_init();
 void* qlog_thread_pool_worker();
 void qlog_thread_pool_signal_worker(uint64_t key);
+void qlog_thread_pool_await();
 
 #endif

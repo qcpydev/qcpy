@@ -1,6 +1,5 @@
 #include <importer.h>
 #include <pthread.h>
-#include <qlog_register.h>
 #include <stdint.h>
 
 #pragma once

@@ -1,1 +1,1 @@
-from .boot import boot
+from .boot import qcpy_connect

@@ -1,6 +1,6 @@
 #include <error_importer.h>
 #include <importer.h>
-
+/*
 bool error_import_sorted(void *data, int error_type) {
   error_import_sorted_t *error_import_sorted;
 
@@ -82,3 +82,4 @@ void error_importer_delete(error_importer_t *error_importer) {
 
   free(error_importer);
 }
+*/

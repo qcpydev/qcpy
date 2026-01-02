@@ -22,19 +22,11 @@
  *
  */
 
-typedef struct ports_s {
-  pthread_t import_thread;
-  pthread_t export_thread;
-  pthread_mutex_t processing;
-} ports_t;
-
-extern ports_t ports;
-
-void port_init();
+void port_init(int argc, char** argv);
+void port_import_init(int argc, char** argv);
 void port_close();
 void *port_export();
 void *port_import();
-int port_create_cxt_request(block_t *ctx);
-int port_import_queue_size();
 
+extern pthread_t import_thread;
 #endif

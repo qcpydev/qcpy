@@ -5,9 +5,7 @@ target_include_directories(importer PUBLIC
 )
 
 target_link_libraries(importer PRIVATE
-
     block
+    qlog_infra
     qcpy_error
-    qlog
-    qlog_register
 )

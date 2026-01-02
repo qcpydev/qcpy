@@ -2,44 +2,74 @@
 #include <unistd.h>
 #include <qcpy_error.h>
 #include <assert.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <sys/mman.h>
+#include <pthread.h>
 
-void port_import_init() {
-  assert(!import_queue);
+port_t *port = NULL;
+sem_t *dock_sem;
+sem_t *port_sem;
+int shared_port_space = -1;
 
-  import_queue = mmap(NULL, sizeof(import_sorted_t), PROT_READ | PROT_WRITE,
-                      MAP_SHARED | MAP_ANONYMOUS, -1, 0);
-  if (!import_queue) {
+void dock_port_init() {
+  assert(!port);
+
+  shared_port_space = shm_open(QCPY_PORT, O_CREAT | O_RDWR, 0666);
+  if (shared_port_space < 0) {
     assert(0);
   }
 
-  memset(import_queue, 0, sizeof(import_sorted_t));
-  memset(&import_queue->queue, 0, sizeof(block_t) * IMPORT_MAX_SIZE);
-
-  sem_init(&import_queue->full, 1, 0);
-  sem_init(&import_queue->empty, 1, 1);
-
-  pthread_mutex_init(&import_sorted.sorting, NULL);
-
-  for (uint64_t i = 0; i < IMPORT_MAX_SIZE; ++i) {
-    pthread_mutex_init(&import_sorted.registers_lock[i], NULL);
+  if (ftruncate(shared_port_space, sizeof(port_t)) < 0) {
+    assert(0);
   }
 
+  port = mmap(NULL, sizeof(port_t), PROT_READ | PROT_WRITE, MAP_SHARED,
+              shared_port_space, 0);
+
+  memset(port, 0, sizeof(port_t));
+  if (port == MAP_FAILED) {
+    assert(0);
+  }
+
+  sem_unlink(DOCK_SEM);
+  dock_sem = sem_open(DOCK_SEM, O_CREAT, 0666, 1);
+
+  sem_unlink(PORT_SEM);
+  port_sem = sem_open(PORT_SEM, O_CREAT, 0666, 0);
 }
+
 char* dock_init(char* args[]) {
   if (!args) {
     return NULL;
   }
 
   char* exec_name = args[0];
-  ++args;
   return exec_name;
 }
 
-void dock_run_boot(char* boot_exec, char* args[]) {
-  pid_t pid = fork();
+void* dock_run_boot(void* empty) {
+  assert(!empty);
+  assert(boot_thread_args);
 
+  dock_port_init();
+
+  pid_t pid = fork();
   if (pid == 0) {
-    execvp(boot_exec, args);
+    // will parse args eventually and pass it to qcpy_core
+
+    char* args_test[] = {NULL};
+    execvp(boot_thread_args->exec_name, args_test);
   }
+
+  return NULL;
 }
 
+int dock_add(block_t* block) {
+  sem_wait(dock_sem);
+  port_add(block, port);
+  // if debug mode, use validate block
+  sem_post(port_sem);
+
+  return 1;
+}

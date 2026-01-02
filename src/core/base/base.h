@@ -4,8 +4,6 @@
 #include <stdlib.h>
 
 #ifndef GLOBAL_H
-extern bool qcpy_debug_mode;
-
 /*
  * A space to set any common or useful functions/types/etc.
  */

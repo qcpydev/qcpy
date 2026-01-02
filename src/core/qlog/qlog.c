@@ -1,4 +1,4 @@
-#include <qcpy_error.h>
+//#include <qcpy_error.h>
 #include <qlog.h>
 
 const char *replay_qlog_description[] = {
@@ -10,29 +10,25 @@ const char *replay_qlog_description[] = {
     [QLOG_DELETE_FAILED] = "qlog failed to delete"};
 
 qlog_t *qlog_init(uint8_t qubits) {
-
-  if (!qubits) {
-    return NULL;
-  }
-
-  qlog_t *qlog = (qlog_t *)malloc(sizeof(qlog_t));
-
+  assert(qubits);
+  qlog_t* qlog;
+  qlog = (qlog_t*)malloc(sizeof(qlog_t));
   if (!qlog) {
-    QCPY_ERROR(QCPY_ERROR_QLOG, qlog, QLOG_NULL);
+    //QCPY_ERROR(QCPY_ERROR_QLOG, qlog, QLOG_NULL);
   }
+  memset(qlog, 0, sizeof(qlog_t));
 
   qlog->qubit_count = qubits;
-  qlog->entry_count = 0;
-  qlog->entries = NULL;
-  qlog->last_entry = NULL;
+  qlog->graph = qlog_graph_init(qlog->qubit_count);
   // qlog->stats = qlog_stats_init();
   // qlog->optimizer = qlog_optimize_init(qlog);
+
   return qlog;
 }
 
 void qlog_delete(qlog_t *qlog) {
   if (!qlog) {
-    QCPY_ERROR(QCPY_ERROR_QLOG, qlog, QLOG_NULL);
+    //QCPY_ERROR(QCPY_ERROR_QLOG, qlog, QLOG_NULL);
   }
 
   for (uint16_t i = qlog->entry_count; i > 0; --i) {
@@ -43,7 +39,7 @@ void qlog_delete(qlog_t *qlog) {
     qlog_entry_delete(temp_ptr);
 
     if (temp_ptr) {
-      QCPY_ERROR(QCPY_ERROR_QLOG, qlog, QLOG_DELETE_FAILED);
+     // QCPY_ERROR(QCPY_ERROR_QLOG, qlog, QLOG_DELETE_FAILED);
     }
   }
 
@@ -56,7 +52,7 @@ void qlog_delete(qlog_t *qlog) {
 
 void qlog_clear(qlog_t *qlog) {
   if (!qlog) {
-    QCPY_ERROR(QCPY_ERROR_QLOG, qlog, QLOG_NULL);
+    //QCPY_ERROR(QCPY_ERROR_QLOG, qlog, QLOG_NULL);
   }
 
   qlog_entry_t *qlog_walker = qlog->entries;
@@ -75,45 +71,40 @@ void qlog_clear(qlog_t *qlog) {
   return;
 }
 
-bool qlog_append(qlog_t *qlog, uint8_t *qubits, uint8_t num_qubits, int type,
-                 int gate, float theta, float phi, float lambda) {
+void qlog_append(qlog_t *qlog, block_t block) {
+  assert(block.type == BLOCK_QLOG_ENTRY);
   if (!qlog) {
-    QCPY_ERROR(QCPY_ERROR_QLOG, qlog, QLOG_NULL);
+    //QCPY_ERROR(QCPY_ERROR_QLOG, qlog, QLOG_NULL);
   }
 
-  if (num_qubits > qlog->qubit_count) {
-    QCPY_ERROR(QCPY_ERROR_QLOG, qlog, QLOG_BAD_SIZING);
+  if (block.qubits > qlog->qubit_count) {
+    //QCPY_ERROR(QCPY_ERROR_QLOG, qlog, QLOG_BAD_SIZING);
   }
 
-  qlog->last_entry =
-      qlog_entry_init(qlog->entry_count, qlog->last_entry, qubits, num_qubits,
-                      type, gate, theta, phi, lambda);
+  if (!qlog->entries) {
+    qlog->entries = qlog_entry_init(qlog->entry_count, block);
+    qlog->last_entry = qlog->entries;
+  }
+  else {
+    qlog->entries = qlog_entry_init(qlog->entry_count, block);
+    qlog->last_entry->next_entry = qlog_entry_init(qlog->entry_count, block);
+
+    if (!qlog->last_entry->prev_entry) {
+      qlog->last_entry->next_entry->prev_entry = qlog->entries;
+    }
+    else {
+      qlog->last_entry->next_entry->prev_entry = qlog->last_entry;
+    }
+
+    qlog->last_entry = qlog->last_entry->next_entry;
+  }
+
 
   if (!qlog->last_entry) {
-    QCPY_ERROR(QCPY_ERROR_QLOG, qlog, QLOG_BAD_ENTRY);
+    //QCPY_ERROR(QCPY_ERROR_QLOG, qlog, QLOG_BAD_ENTRY);
   }
-
   ++(qlog->entry_count);
-  // qlog_optimize_append(qlog->optimizer, qlog->last_entry);
-
-  return true;
-}
-
-bool qlog_append_entry(qlog_t *qlog, qlog_entry_t *qlog_entry) {
-
-  if (!qlog_entry) {
-    QCPY_ERROR(QCPY_ERROR_QLOG, qlog, QLOG_NULL);
-  }
-
-  uint8_t *qubits = qlog_entry_deconstruct_qubits(qlog_entry);
-
-  float theta, phi, lambda;
-
-  theta = phi = lambda = 0.0;
-
-  return qlog_append(qlog, qubits, qlog_entry->qubit_count,
-                     qlog_entry->gate_type, qlog_entry->gate_name, theta, phi,
-                     lambda);
+  qlog_graph_append(qlog->graph, qlog->last_entry);
 }
 
 void qlog_dump_content(qlog_t *qlog, bool verbose) {
@@ -182,7 +173,7 @@ qlog_t *qlog_combine(qlog_t *qlog, qlog_t *to_add) {
     return to_add;
   }
 
-  if (!to_add || to_add->entry_count == 0) {
+  if (!to_add || !to_add->entry_count) {
     return qlog;
   }
 

@@ -3,8 +3,8 @@ from numpy import pi, log2, ndarray, cos, sin, linspace, ndarray
 import math
 import re
 from typing import Union
-from ..quantum_circuit import QuantumCircuit
-from ..errors import InvalidSavePathError
+from ..qc import QuantumCircuit
+from ..error import InvalidSavePathError
 from .base import (
     sphere,
     color_bar,
@@ -51,7 +51,6 @@ def q_sphere(
         bucket_array[right] += binomial_coeff / inc_segment * -1
         left += 1
         right -= 1
-    print(bucket_array)
     phi_values = linspace(0, pi, num_qubits + 1)
     for i in range(len(prob_values)):
         if prob_values[i] > 0:

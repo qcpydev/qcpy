@@ -1,5 +1,5 @@
-#include "optimize/qlog_optimize.h"
-#include "stats/qlog_stats.h"
+//#include "optimize/qlog_optimize.h"
+//#include "stats/qlog_stats.h"
 #include <assert.h>
 #include <qlog_entry.h>
 #include <stdbool.h>
@@ -7,6 +7,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <block.h>
+#include <qlog_graph.h>
 
 #pragma once
 #ifndef QLOG_H
@@ -20,12 +22,10 @@
 typedef struct qlog_t {
   qlog_entry_t *entries;               // qlog entries
   qlog_entry_t *last_entry;            // qlog last inserted item
-  struct qlog_stats_def *stats;        // qlog stats
-  struct qlog_optimize_def *optimizer; // qlog optimizer
+  qlog_graph_t* graph;                 // quantum circuit layout
+  uint64_t id;                         // id from the qlog_register
   uint16_t qubit_count;                // number of qubits
   uint16_t entry_count;                // number of entries in qlog
-  uint16_t id;                         // id from the qlog_register
-  bool can_optimize;                   // can do optimization
 } qlog_t;
 
 typedef enum {
@@ -37,10 +37,9 @@ typedef enum {
   QLOG_DELETE_FAILED
 } qlog_error_e;
 
-qlog_t *qlog_init(uint8_t qubits);
+qlog_t* qlog_init(uint8_t qubits);
 void qlog_delete(qlog_t *qlog);
-bool qlog_append(qlog_t *qlog, uint8_t *qubits, uint8_t num_qubits, int type,
-                 int gate, float theta, float phi, float lambda);
+void qlog_append(qlog_t *qlog, block_t block);
 bool qlog_append_entry(qlog_t *qlog, qlog_entry_t *qlog_entry);
 void qlog_clear();
 void qlog_dump_content(qlog_t *qlog, bool verbose);

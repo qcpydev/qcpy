@@ -16,16 +16,15 @@ qlog_trigger_optimize_sub_inits qlog_trigger_optimize_init_arr[] = {
   [QLOG_TRIGGER_SHRINK_HADAMARD_CONTROLLED] = qlog_trigger_optimize_sub_init_hadamard_controlled,
   [QLOG_TRIGGER_SHRINK_UNUSED_CONTROLLED] = qlog_trigger_optimize_sub_init_unused_controlled,
   [QLOG_TRIGGER_SHRINK_DUPLICATE_GATES] = qlog_trigger_optimize_sub_init_duplicate_gates,
-  [QLOG_TRIGGER_SHRINK_IDENTITY_GATES] = qlog_trigger_optimize_sub_init_identity_gates, 
+  [QLOG_TRIGGER_SHRINK_IDENTITY_GATES] = qlog_trigger_optimize_sub_init_identity_gates,
 };
 
 bool qlog_trigger_optimize(struct qlog_trigger_optimize_def* qlog_trigger_optimize) {
   if (!qlog_trigger_optimize) {
     return false;
-  }   
+  }
   qlog_trigger_optimize->qlog_trigger_optimize_parent->qlog_optimize->qlog_optimize_is_running = 1;
-  
-  
+
   return true;
 }
 
@@ -38,7 +37,7 @@ struct qlog_trigger_optimize_def* qlog_trigger_optimize_init(struct qlog_def* ql
   qlog_trigger_optimize->qlog_trigger_optimize_parent = qlog;
   qlog_trigger_optimize->qlog_trigger_optimize_gate_cnt = qlog->qlog_size;
   qlog_trigger_optimize->qlog_trigger_optimize_subs = (struct qlog_trigger_optimize_sub_def**) malloc(sizeof(struct qlog_trigger_optimize_sub_def*) * QLOG_TRIGGER_SHRINK_MAX - 1);
-  qlog_entry_def* entry_expand = (struct qlog_entry_def*) malloc(sizeof(struct qlog_entry_def));  
+  qlog_entry_def* entry_expand = (struct qlog_entry_def*) malloc(sizeof(struct qlog_entry_def));
 
   qlog_trigger_optimize->qlog_trigger_optimize_qubit_cnt = qlog->qlog_qubit_cnt;
   qlog_trigger_optimize->qlog_trigger_optimize_expand_queue = qlog_entry_dummy_init();
@@ -51,7 +50,7 @@ struct qlog_trigger_optimize_def* qlog_trigger_optimize_init(struct qlog_def* ql
     }
   }
 
-  qlog_trigger_optimize->qlog_trigger_optimize_graph = qlog_graph_init(qlog_trigger_optimize);  
+  qlog_trigger_optimize->qlog_trigger_optimize_graph = qlog_graph_init(qlog_trigger_optimize);
 
   return qlog_trigger_optimize;
 }
@@ -102,7 +101,7 @@ bool qlog_trigger_optimize_secure(struct qlog_trigger_optimize_def* qlog_trigger
   if (!qlog_trigger_optimize) {
     return false;
   }
-  
+
   return true;
 }
 

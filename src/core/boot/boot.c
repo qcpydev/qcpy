@@ -3,6 +3,7 @@
 #include <port.h>
 #include <qlog.h>
 #include <qlog_infra.h>
+#include <importer.h>
 #include <qlog_register.h>
 
 /*
@@ -21,10 +22,14 @@
 void boot_args_init() {}
 
 void boot_core_init() {
-  pthread_create(&ports.import_thread, NULL, port_import, NULL);
   qlog_infra_init();
+
+  pthread_create(&import_thread, NULL, port_import, NULL);
+  pthread_join(import_thread, NULL);
 }
 
-void boot_core() {
+void boot_core(int argc, char** argv) {
+  port_init(argc, argv);
   boot_args_init();
+  boot_core_init();
 }

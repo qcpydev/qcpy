@@ -3,33 +3,52 @@
 #include <qcpy_error.h>
 
 bool port_closed = false;
-ports_t ports = {0};
+import_t import_sorted;
+pthread_t import_thread;
+port_t* port = NULL;
+sem_t *dock_sem;
+sem_t *port_sem;
 
-int port_create_cxt_request(block_t *ctx) {
-  assert(ctx);
-  pthread_mutex_lock(&ports.processing);
+int shared_port_space = -1;
 
-  switch (ctx->type) {
-  case (IMPORTER_QLOG_ENTRY):
-    port_import_enqueue(ctx);
-    break;
-  default:
+void port_import_init(int argc, char** argv) {
+  if (!argv || !argc) {
     assert(0);
   }
 
-  pthread_mutex_unlock(&ports.processing);
-  return 0;
-}
+  int shared_port_space = shm_open(QCPY_PORT, O_RDWR, 0666);
 
+  port = mmap(NULL, sizeof(port_t), PROT_READ | PROT_WRITE, MAP_SHARED,
+              shared_port_space, 0);
+  if (port == MAP_FAILED) {
+    assert(0);
+  }
+
+  dock_sem = sem_open(DOCK_SEM, 0);
+  if (dock_sem == SEM_FAILED) {
+    perror("sem_open");
+    assert(0);
+  }
+
+  port_sem = sem_open(PORT_SEM, 0);
+  if (port_sem == SEM_FAILED) {
+    perror("sem_open");
+    assert(0);
+  }
+
+
+  // call import_sorted init
+}
 void *port_import() {
   while (!port_closed) {
-    pthread_mutex_lock(&ports.processing);
+    sem_wait(port_sem);
 
-    if (import_queue->size == IMPORT_MAX_SIZE) {
-      port_import_handler();
+    if (port->size == IMPORT_MAX_SIZE) {
+      importer_sort_ported(port);
+      port->size = 0;
     }
 
-    pthread_mutex_unlock(&ports.processing);
+    sem_post(dock_sem);
   }
 
   return NULL;
@@ -41,29 +60,10 @@ void *port_export() {
 }
 
 void port_close() {
-  pthread_mutex_lock(&ports.processing);
   port_closed = true;
-  pthread_mutex_lock(&ports.processing);
-
-  pthread_join(ports.export_thread, NULL);
-  pthread_join(ports.import_thread, NULL);
 }
 
-void port_init() {
-  port_import_init();
-  // port_export_init();
-
-  pthread_mutex_init(&ports.processing, NULL);
-
-  // pthread_create(&ports.export_thread, NULL, port_export, NULL);
+void port_init(int argc, char** argv) {
+  port_import_init(argc, argv);
 }
 
-int port_import_queue_size() {
-  uint64_t size = 0;
-  pthread_mutex_lock(&ports.processing);
-  pthread_mutex_lock(&import_sorted.sorting);
-  size = import_queue->size;
-  pthread_mutex_unlock(&import_sorted.sorting);
-  pthread_mutex_unlock(&ports.processing);
-  return size;
-}

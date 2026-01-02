@@ -12,7 +12,7 @@
 
 typedef struct {
   import_sorted_error_e error_code;
-  import_sorted_t *import_sorted;
+  //import_sorted_t *import_sorted;
 } error_import_sorted_t;
 
 typedef struct {
@@ -21,9 +21,9 @@ typedef struct {
 } error_importer_t;
 
 bool error_import_sorted(void *data, int error_type);
-error_import_sorted_t *
-error_import_sorted_init(import_sorted_t *import_sorted,
-                         import_sorted_error_e error_type);
+//error_import_sorted_t *
+//error_import_sorted_init(import_sorted_t *import_sorted,
+//                         import_sorted_error_e error_type);
 void error_import_sorted_delete(error_import_sorted_t *error_import_sorted);
 
 bool error_importer(void *data, int error_type);

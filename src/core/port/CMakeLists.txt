@@ -4,7 +4,6 @@ add_subdirectory(importer)
 add_subdirectory(exporter)
 
 target_link_libraries(port PUBLIC
-   qlog
    block
    qcpy_error
    importer

@@ -26,7 +26,7 @@
 typedef struct qlog_trigger_optimize_def {
   uint64_t qlog_trigger_optimize_gate_cnt;                            // gate count of current qlog_optimize
   struct qlog_graph_def* qlog_trigger_optimize_graph;                 // qlog optimize graph
-  struct qlog_trigger_optimize_sub_def** qlog_trigger_optimize_subs;  // optimize sub lists 
+  struct qlog_trigger_optimize_sub_def** qlog_trigger_optimize_subs;  // optimize sub lists
   struct qlog_def* qlog_trigger_optimize_parent;                      // parent of this qlog_trigger_optimize
   uint8_t qlog_trigger_optimize_qubit_cnt;                            // qubit count of this optimizer
   struct qlog_entry_def* qlog_trigger_optimize_expand_queue;          // queue of items to expand

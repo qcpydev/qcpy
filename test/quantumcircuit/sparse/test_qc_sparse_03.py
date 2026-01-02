@@ -9,5 +9,3 @@ def inc(x):
     for i in range(x):
         qc.t(i)
     return np.around(qc.state.flatten(), 3)
-
-

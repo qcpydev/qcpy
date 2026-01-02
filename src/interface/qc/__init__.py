@@ -1,1 +1,1 @@
-from .quantum_circuit import QuantumCircuit
+from .quantum_circuit import QuantumCircuit as quantumcircuit

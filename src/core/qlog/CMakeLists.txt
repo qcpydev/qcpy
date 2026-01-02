@@ -2,14 +2,15 @@ add_library(qlog qlog.c)
 
 add_subdirectory(entry)
 add_subdirectory(infra)
-add_subdirectory(register)
+add_subdirectory(graph)
+add_subdirectory(optimize)
 
 target_link_libraries(qlog PUBLIC
+   block
    qlog_entry
+   qlog_graph
+   qlog_optimize
    qcpy_error
-   replay_qlog
-   qlog_register
-   qlog_infra
 )
 
 target_include_directories(qlog PUBLIC

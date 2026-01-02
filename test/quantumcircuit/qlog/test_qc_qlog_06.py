@@ -8,12 +8,14 @@ def inc(x, n):
         for _ in range(n):
             qc.i(i)
 
+
 def test_03a():
     inc(5, 10)
+
 
 def test_03b():
     inc(5, 20)
 
+
 def test_03c():
     inc(5, 30)
-

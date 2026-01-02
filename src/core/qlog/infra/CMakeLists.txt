@@ -8,6 +8,7 @@ target_link_libraries(qlog_infra PUBLIC
    qlog_register
    qlog_scheduler
    qlog_thread_pool
+   qlog
    importer
 )
 

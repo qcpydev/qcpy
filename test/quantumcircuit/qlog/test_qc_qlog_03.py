@@ -11,14 +11,18 @@ def inc(x):
     for i in range(x):
         qc.h(i)
 
+
 def test_01a():
     inc(1)
+
 
 def test_01b():
     inc(2)
 
+
 def test_01c():
     inc(3)
+
 
 def test_01d():
     inc(4)

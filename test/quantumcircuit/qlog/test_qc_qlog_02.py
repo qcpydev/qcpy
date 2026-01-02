@@ -16,11 +16,14 @@ def inc(x, n):
 def test_01a():
     inc(1, 20)
 
+
 def test_01b():
     inc(2, 30)
 
+
 def test_01c():
     inc(3, 40)
+
 
 def test_01d():
     inc(4, 50)
