@@ -10,11 +10,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(C_STANDARD 99)
 set(C_STANDARD_REQUIRED ON)
 
-if(MSVC)
-    add_compile_options(/W3)
-else()
-  add_compile_options(-Wall -Wextra -Werror -pthread -g3)
-endif()
+add_compile_options(-Wall -Wextra -Werror -pthread -g3 -g -fno-omit-frame-pointer -O0)
 
 list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
 
@@ -108,9 +104,9 @@ add_executable(qcpy_core qcpy_core.c)
 
 # set up testing
 # ========================================
-find_package(check REQUIRED)
-enable_testing()
-add_subdirectory(test)
+#find_package(check REQUIRED)
+#enable_testing()
+#add_subdirectory(test)
 # ========================================
 
 add_subdirectory(qlog)

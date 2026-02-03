@@ -1,9 +1,7 @@
 #include <assert.h>
+#include <block.h>
 #include <stdbool.h>
 #include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <block.h>
 
 #pragma once
 #ifndef IMPORTER_H
@@ -22,26 +20,30 @@
  * requests.
  */
 
-typedef enum {
-  IMPORT_ERROR_NULL,
+typedef enum
+{
+    IMPORT_ERROR_NULL,
 } importer_error_e;
 
-typedef enum {
-  IMPORT_SORTED_ERROR_NULL,
+typedef enum
+{
+    IMPORT_SORTED_ERROR_NULL,
 } import_sorted_error_e;
 
 typedef struct import_block_s import_block_t;
-struct import_block_s {
-  block_t block;
-  import_block_t* next;
+struct import_block_s
+{
+    block_t block;
+    import_block_t* next;
 };
 
-typedef struct import_s {
-  pthread_mutex_t lock;
-  uint64_t count;
-  pthread_mutex_t queue_lock[IMPORT_MAX_SIZE];
-  import_block_t* queue[IMPORT_MAX_SIZE];
-  import_block_t* queue_last[IMPORT_MAX_SIZE];
+typedef struct import_s
+{
+    pthread_mutex_t lock;
+    uint64_t count;
+    pthread_mutex_t queue_lock[IMPORT_MAX_SIZE];
+    import_block_t* queue[IMPORT_MAX_SIZE];
+    import_block_t* queue_last[IMPORT_MAX_SIZE];
 } import_t;
 
 

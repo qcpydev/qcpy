@@ -1,3 +1,4 @@
+#include <block.h>
 #include <exporter.h>
 #include <fcntl.h>
 #include <importer.h>
@@ -9,7 +10,6 @@
 #include <sys/mman.h>
 #include <sys/stat.h>
 #include <unistd.h>
-#include <block.h>
 
 #pragma once
 #ifndef PORT_H
@@ -25,8 +25,8 @@
 void port_init(int argc, char** argv);
 void port_import_init(int argc, char** argv);
 void port_close();
-void *port_export();
-void *port_import();
+void* port_export();
+void* port_import(void* null);
 
 extern pthread_t import_thread;
 #endif
