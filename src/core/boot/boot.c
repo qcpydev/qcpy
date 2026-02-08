@@ -26,6 +26,7 @@ void boot_core_init()
     qlog_infra_init();
 
     pthread_create(&import_thread, NULL, port_import, NULL);
+    pthread_create(&export_thread, NULL, port_export, NULL);
     pthread_join(import_thread, NULL);
 }
 

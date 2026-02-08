@@ -16,11 +16,11 @@ bool validate_block(block_t* block)
     return true;
 }
 
-void port_add(block_t* block, port_t* port)
+void block_add(block_t* block, import_t* import)
 {
     assert(block && port);
-    // printf("content of block: %lu, %lu, %lu, %lu\n", block->reg, block->gate_type, block->qubits,
-    // block->qubit_bitmask);
-    port->queue[port->size] = *block;
-    ++port->size;
+    int idx = import->dock_idx % IMPORT_MAX_SIZE;
+    import->queue[idx] = *block;
+    import->queue[idx].used = true;
+    import->dock_idx++;
 }

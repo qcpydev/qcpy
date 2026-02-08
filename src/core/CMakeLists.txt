@@ -10,7 +10,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(C_STANDARD 99)
 set(C_STANDARD_REQUIRED ON)
 
-add_compile_options(-Wall -Wextra -Werror -pthread -g3 -g -fno-omit-frame-pointer -O0)
+add_compile_options(-g -O0 -Wall -Wextra -pthread -g3 -Werror -O2 -march=native)
 
 list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
 

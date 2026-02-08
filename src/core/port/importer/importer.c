@@ -1,74 +1,86 @@
+#include <block.h>
 #include <importer.h>
 #include <port.h>
 #include <qcpy_error.h>
 #include <qlog_infra.h>
 
-import_t importer;
+import_sort_t importer_sort;
 
-void importer_init()
+
+void importer_sort_init()
 {
-    pthread_mutex_init(&importer.lock, NULL);
+    pthread_mutex_init(&importer_sort.lock, NULL);
 
     for (uint64_t i = 0; i < IMPORTER_FUNNEL; ++i)
     {
-        pthread_mutex_init(&importer.queue_lock[i], NULL);
+        pthread_mutex_init(&importer_sort.queue_lock[i], NULL);
     }
 
-    memset(importer.queue, 0, sizeof(import_block_t*) * IMPORTER_FUNNEL);
-    memset(importer.queue_last, 0, sizeof(import_block_t*) * IMPORTER_FUNNEL);
+    memset(importer_sort.queue, 0, sizeof(import_block_t*) * IMPORTER_FUNNEL);
+    memset(importer_sort.queue_last, 0, sizeof(import_block_t*) * IMPORTER_FUNNEL);
 }
 
-void importer_append(block_t block)
+void importer_sort_append(block_t block)
 {
     import_block_t* import_block = import_block_init();
     assert(import_block);
     uint64_t index = block.reg % IMPORTER_FUNNEL;
 
-    if (!importer.queue[index])
+    if (!importer_sort.queue[index])
     {
-        importer.queue[index] = import_block;
-        importer.queue_last[index] = import_block;
+        importer_sort.queue[index] = import_block;
+        importer_sort.queue_last[index] = import_block;
     }
     else
     {
-        importer.queue_last[index]->next = import_block;
-        importer.queue_last[index] = importer.queue_last[index]->next;
+        importer_sort.queue_last[index]->next = import_block;
+        importer_sort.queue_last[index] = importer_sort.queue_last[index]->next;
     }
 
 
-    ++importer.count;
+    ++importer_sort.count;
 }
 
-void importer_sort_ported(port_t* port)
+void importer_sort_ported(import_t* importer)
 {
     assert(port);
-
-    for (uint64_t i = 0; i < IMPORTER_FUNNEL; ++i)
+    for (uint64_t i = 0; i < IMPORT_MAX_SIZE; ++i)
     {
-        pthread_mutex_lock(&importer.queue_lock[i]);
-        importer_append(port->queue[i]);
+        sem_wait(port_import_sem);
+        int idx = importer->port_idx % IMPORT_MAX_SIZE;
+        if (importer->queue[idx].used)
+        {
+            importer_sort_append(importer->queue[idx]);
+            importer->queue[idx].used = false;
+        }
+        importer->port_idx++;
+        sem_post(dock_import_sem);
     }
 
-    // lock enqueued indices, notify qlog_infra to handle whatever they need to
     for (uint64_t i = 0; i < IMPORTER_FUNNEL; ++i)
     {
-        pthread_mutex_unlock(&importer.queue_lock[i]);
-        if (importer.queue[i])
+        if (importer_sort.queue[i])
         {
+            if (importer->flushing && importer->flush_reg % IMPORTER_FUNNEL != i)
+            {
+                continue;
+            }
             pthread_cond_signal(&qlog_thread_pool.workers[i].cond);
         }
     }
-
     qlog_thread_pool_await();
+
+    importer->flushing = false;
+    importer->flush_reg = 0;
 }
 
 void importer_delete_queue(uint64_t idx)
 {
-    assert(idx < IMPORTER_FUNNEL);
+    assert(idx < importer_sort_FUNNEL);
 
-    import_block_t* import_block_queue = importer.queue[idx];
-    importer.queue[idx] = NULL;
-    importer.queue_last[idx] = NULL;
+    import_block_t* import_block_queue = importer_sort.queue[idx];
+    importer_sort.queue[idx] = NULL;
+    importer_sort.queue_last[idx] = NULL;
 
     while (import_block_queue)
     {
@@ -78,14 +90,14 @@ void importer_delete_queue(uint64_t idx)
     }
 }
 
-void importer_clear()
+void importer_sort_clear()
 {
     for (uint64_t i = 0; i < IMPORTER_FUNNEL; ++i)
     {
         importer_delete_queue(i);
     }
 
-    importer.count = 0;
+    importer_sort.count = 0;
 }
 
 import_block_t* import_block_init()

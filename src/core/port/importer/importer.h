@@ -37,14 +37,14 @@ struct import_block_s
     import_block_t* next;
 };
 
-typedef struct import_s
+typedef struct import_sort_s
 {
     pthread_mutex_t lock;
     uint64_t count;
-    pthread_mutex_t queue_lock[IMPORT_MAX_SIZE];
-    import_block_t* queue[IMPORT_MAX_SIZE];
-    import_block_t* queue_last[IMPORT_MAX_SIZE];
-} import_t;
+    pthread_mutex_t queue_lock[IMPORTER_FUNNEL];
+    import_block_t* queue[IMPORTER_FUNNEL];
+    import_block_t* queue_last[IMPORTER_FUNNEL];
+} import_sort_t;
 
 
 
@@ -52,11 +52,11 @@ void importer_init();
 void importer_append(block_t block);
 void importer_clear();
 void importer_delete_queue(uint64_t idx);
-void importer_sort_ported(port_t* port);
+void importer_sort_ported(import_t* importer);
 
 import_block_t* import_block_init();
 void import_block_delete(import_block_t* import_block);
 
-extern import_t importer;
+extern import_sort_t importer_sort;
 
 #endif

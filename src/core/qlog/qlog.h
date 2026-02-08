@@ -21,12 +21,13 @@
 
 typedef struct qlog_t
 {
+
+    uint64_t entry_count;     // number of entries in qlog
     qlog_entry_t* entries;    // qlog entries
     qlog_entry_t* last_entry; // qlog last inserted item
     qlog_graph_t* graph;      // quantum circuit layout
     uint64_t id;              // id from the qlog_register
     uint16_t qubit_count;     // number of qubits
-    uint16_t entry_count;     // number of entries in qlog
 } qlog_t;
 
 typedef enum

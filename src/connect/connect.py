@@ -1,6 +1,5 @@
 from typing import List
 import ctypes
-import subprocess
 import time
 from typing import List
 from .port_entry import Block, Block_Type
@@ -27,14 +26,18 @@ class Connect:
 
         for i, param in enumerate(encoded_args):
             c_array[i] = param
-
         self.qcpy_connect.qcpy_boot_connect(c_array)
-        self.qcpy_connect.dock_add.restype = ctypes.c_int
-        self.qcpy_connect.dock_add.argtypes = [ctypes.POINTER(Block)]
 
         time.sleep(
             0.1
         )  # << what the, aight FUCK it I am gonna have a bool saying ready on the backend, set up await/while loop until thats true
+
+        self.qcpy_connect.dock_add.restype = ctypes.c_int
+        self.qcpy_connect.dock_add.argtypes = [ctypes.POINTER(Block)]
+
+        self.qcpy_connect.dock_get_qc_state.argtypes = [ctypes.c_int, ctypes.c_bool]
+
+        #self.qcpy_connect.dock_get_qc_state.argtypes = [ctypes.c_int, ctypes.c_bool]
 
     def __create_qubit_bitmask__(self, to_bitmask: List[int]) -> int:
         bitmask = 0
@@ -139,3 +142,8 @@ class Connect:
         temp_count = self.quantum_circuit_count
         self.quantum_circuit_count += 1
         return temp_count
+
+    def get_quantum_circuit_state(self, reg: int, is_print: bool = False) -> None:
+        self.qcpy_connect.dock_get_qc_state(reg, is_print)
+        pass
+        #self.qcpy_connect.dock_get_qc_state(reg, is_print)

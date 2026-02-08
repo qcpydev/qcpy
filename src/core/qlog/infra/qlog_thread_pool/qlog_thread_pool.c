@@ -16,14 +16,15 @@ void* qlog_thread_pool_worker(void* thread_index)
 
     pthread_mutex_lock(&qlog_thread_pool.workers[key].lock);
 
+    qlog_thread_pool.workers[key].state = QLOG_PROCESS_EMPTY;
+
     while (qlog_thread_pool_open)
     {
         pthread_cond_wait(&qlog_thread_pool.workers[key].cond, &qlog_thread_pool.workers[key].lock);
         qlog_thread_pool.workers[key].state = QLOG_PROCESS_START;
 
-        import_block_t* block_queue = importer.queue[key];
+        import_block_t* block_queue = importer_sort.queue[key];
         assert(block_queue);
-
         while (block_queue)
         {
             qlog_thread_pool.workers[key].state = QLOG_PROCESS_APPENDING;
@@ -43,9 +44,7 @@ void* qlog_thread_pool_worker(void* thread_index)
         qlog_thread_pool.workers[key].state = QLOG_PROCESS_DONE;
 
         importer_delete_queue(key);
-        importer.count = 0;
-        // possibly make copy of contents of block in thread stack and then delete queue
-        // I like this idea more for the state machine we have
+        importer_sort.count = 0;
 
         qlog_thread_pool.workers[key].state = QLOG_PROCESS_EMPTY;
     }
@@ -68,15 +67,16 @@ void qlog_thread_pool_signal_worker(uint64_t key) { pthread_cond_signal(&qlog_th
 void qlog_thread_pool_await()
 {
     bool qlog_threads_done = false;
-    // notify somehow that this is awaiting for thread pools to finish, easy non
-    // lock holding method to wait before we allow more items to be added
-    // I guess if we have not done anything in a second we should crap out huh?
 
     while (!qlog_threads_done)
     {
         for (uint64_t i = 0; i < IMPORTER_FUNNEL; ++i)
         {
-            qlog_threads_done |= qlog_thread_pool.workers[i].state == QLOG_PROCESS_EMPTY;
+            qlog_threads_done = qlog_thread_pool.workers[i].state == QLOG_PROCESS_EMPTY;
+            if (!qlog_threads_done)
+            {
+                break;
+            }
         }
     }
 }

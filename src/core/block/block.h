@@ -2,8 +2,10 @@
 
 #ifndef BLOCK_H
 #define BLOCK_H
+#include <complex.h>
 #include <pthread.h>
 #include <semaphore.h>
+#include <stdatomic.h>
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -17,9 +19,19 @@
 #define IMPORT_MAX_SIZE (uint64_t)64
 #define IMPORTER_FUNNEL (uint64_t)4
 
-#define QCPY_PORT "/qcpy_port"
-#define PORT_SEM "/port_sem"
-#define DOCK_SEM "/dock_sem"
+#define QCPY_IMPORT "/qcpy_import"
+#define PORT_IMPORT_SEM "/port_import_sem"
+#define DOCK_IMPORT_SEM "/dock_import_sem"
+
+#define QCPY_EXPORT "/qcpy_export"
+#define PORT_EXPORT_SEM "/port_export_sem"
+#define DOCK_EXPORT_SEM "/dock_export_sem"
+
+
+#define OFLAG_SHARED_MEM_ARGS O_CREAT | O_RDWR
+#define MODE_SHARED_MEM 0666
+#define OFLAG_SHARED_SEM_ARGS O_CREAT | O_EXCL
+#define PROT_ARGS PROT_READ | PROT_WRITE
 
 typedef enum
 {
@@ -46,21 +58,39 @@ typedef struct block_s
     uint16_t target_count;
     bool inverted;
     bool big_endian;
+    bool used;
 } block_t;
 
-typedef struct port_s
+typedef struct import_s
 {
     block_t queue[IMPORT_MAX_SIZE];
-    uint64_t size;
-} port_t;
+    uint64_t flush_reg;
+    atomic_uint dock_idx;
+    atomic_uint port_idx;
+    bool flushing;
+} import_t;
 
-extern sem_t* dock_sem;
-extern sem_t* port_sem;
-extern port_t* port;
-extern int shared_port_space;
+typedef struct export_s
+{
+    float complex queue[IMPORT_MAX_SIZE];
+    atomic_uint dock_idx;
+    atomic_uint port_idx;
+    bool flushing;
+} export_t;
 
 bool validate_block(block_t* block);
-void port_add(block_t* block, port_t* port);
+void block_add(block_t* block, import_t* port);
 
-// get block weight down here
+
+extern import_t* importer;
+extern export_t* exporter;
+extern sem_t* dock_import_sem;
+extern sem_t* port_import_sem;
+
+extern sem_t* dock_export_sem;
+extern sem_t* port_export_sem;
+
+extern int shared_import_space;
+extern int shared_export_space;
+
 #endif // BLOCK_H

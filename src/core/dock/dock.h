@@ -1,16 +1,11 @@
 #define _GNU_SOURCE
-#include <stdint.h>
-#include <stdlib.h>
+#include <block.h>
 #include <fcntl.h>
 #include <semaphore.h>
 #include <stdbool.h>
 #include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
-#include <block.h>
 
 #pragma once
 #ifndef DOCK_H
@@ -23,9 +18,12 @@ void* dock_run_boot(void*);
 char* dock_init(char* args[]);
 void dock_port_init();
 
-typedef struct boot_thread_args_s {
-  char* exec_name;
-  char** args;
+void dock_get_qc_state(int flush_id, bool is_print);
+
+typedef struct boot_thread_args_s
+{
+    char* exec_name;
+    char** args;
 } boot_thread_args_t;
 
 

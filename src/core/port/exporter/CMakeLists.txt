@@ -5,7 +5,6 @@ target_include_directories(exporter PUBLIC
 )
 
 target_link_libraries(exporter PUBLIC
-    qlog
-    qlog_register
+    block
     qcpy_error
 )

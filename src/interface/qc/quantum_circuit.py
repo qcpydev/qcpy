@@ -61,7 +61,7 @@ class QuantumCircuit:
         Returns:
             bool: Boolean determinant if this is true or false.
         """
-        pass
+        return False
 
     def __add__(self, circuit) -> None:
         """Combine two quantum circuits together.
@@ -94,6 +94,7 @@ class QuantumCircuit:
     @property
     def state(self):
         """Get the state of the quantum circuit."""
+        qcpy_connect.get_quantum_circuit_state(self.reg, is_print=False)
         return
 
     @property

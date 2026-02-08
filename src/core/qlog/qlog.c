@@ -19,8 +19,6 @@ qlog_t* qlog_init(uint8_t qubits)
 
     qlog->qubit_count = qubits;
     qlog->graph = qlog_graph_init(qlog->qubit_count);
-    // qlog->stats = qlog_stats_init();
-    // qlog->optimizer = qlog_optimize_init(qlog);
 
     return qlog;
 }
@@ -118,6 +116,7 @@ void qlog_append(qlog_t* qlog, block_t block)
         // QCPY_ERROR(QCPY_ERROR_QLOG, qlog, QLOG_BAD_ENTRY);
     }
     ++(qlog->entry_count);
+
     qlog_graph_append(qlog->graph, qlog->last_entry);
 }
 
@@ -136,7 +135,6 @@ void qlog_dump_content(qlog_t* qlog, bool verbose)
 
     if (verbose)
     {
-        printf("qlog size: %d, number of qubits: %d\n", qlog->entry_count, qlog->qubit_count);
     }
 
     qlog_entry_t* qlog_walker = qlog->entries;
