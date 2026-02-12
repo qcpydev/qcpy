@@ -43,7 +43,7 @@ void importer_sort_append(block_t block)
 
 void importer_sort_ported(import_t* importer)
 {
-    assert(port);
+    assert(importer);
     for (uint64_t i = 0; i < IMPORT_MAX_SIZE; ++i)
     {
         sem_wait(port_import_sem);
@@ -76,7 +76,7 @@ void importer_sort_ported(import_t* importer)
 
 void importer_delete_queue(uint64_t idx)
 {
-    assert(idx < importer_sort_FUNNEL);
+    assert(idx < IMPORTER_FUNNEL);
 
     import_block_t* import_block_queue = importer_sort.queue[idx];
     importer_sort.queue[idx] = NULL;

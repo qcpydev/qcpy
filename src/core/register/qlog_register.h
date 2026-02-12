@@ -1,8 +1,7 @@
-#include <stdbool.h>
 #include <block.h>
-#include <stdint.h>
-#include <stdio.h>
 #include <qlog.h>
+#include <stdbool.h>
+#include <stdint.h>
 
 #pragma once
 #ifndef QLOG_REGISTER_H
@@ -17,21 +16,24 @@
 
 #define QLOG_REGISTER_BUF_SIZE 16
 
-typedef enum {
-  QLOG_REGISTER_NULL,
+typedef enum
+{
+    QLOG_REGISTER_NULL,
 } qlog_register_error_e;
 
 typedef struct qlog_register_s qlog_register_t;
-struct qlog_register_s {
-  qlog_t *qlog;
-  uint64_t id;
+struct qlog_register_s
+{
+    qlog_t* qlog;
+    uint64_t id;
 };
 
 typedef struct qlog_register_buf_s qlog_register_buf_t;
-struct qlog_register_buf_s {
-  qlog_register_t reg;
-  qlog_register_buf_t* next;
-  qlog_register_buf_t* last;
+struct qlog_register_buf_s
+{
+    qlog_register_t reg;
+    qlog_register_buf_t* next;
+    qlog_register_buf_t* last;
 };
 
 qlog_register_buf_t* qlog_register_buf_init(qlog_register_buf_t* qlog_buffer);

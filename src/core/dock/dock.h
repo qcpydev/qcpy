@@ -17,7 +17,7 @@ int dock_add(block_t* block);
 void* dock_run_boot(void*);
 char* dock_init(char* args[]);
 void dock_port_init();
-
+void dock_wait_for_boot();
 void dock_get_qc_state(int flush_id, bool is_print);
 
 typedef struct boot_thread_args_s

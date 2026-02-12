@@ -10,8 +10,8 @@
 #include <sys/prctl.h>
 #include <unistd.h>
 
-import_t* importer;
-export_t* exporter;
+import_t* importer = NULL;
+export_t* exporter = NULL;
 sem_t* dock_import_sem;
 sem_t* port_import_sem;
 
@@ -20,6 +20,12 @@ sem_t* port_export_sem;
 
 int shared_import_space;
 int shared_export_space;
+
+void dock_wait_for_boot()
+{
+    while (!importer || !exporter || !importer->ready || !exporter->ready)
+        ;
+}
 
 static void dock_create_importer()
 {
@@ -148,6 +154,7 @@ void* dock_run_boot(void* empty)
         _exit(1);
     }
 
+
     return NULL;
 }
 
@@ -176,7 +183,7 @@ void dock_get_qc_state(int flush_reg, bool is_print)
 {
 
     sem_wait(dock_import_sem);
-    assert(port);
+    assert(importer);
     importer->flushing = true;
     importer->flush_reg = flush_reg;
     dock_ship_to_port();

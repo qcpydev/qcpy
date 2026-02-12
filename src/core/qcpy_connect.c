@@ -14,5 +14,8 @@ int qcpy_boot_connect(char* args[])
     boot_thread_args->exec_name = exec_name;
 
     pthread_create(&boot_thread, NULL, dock_run_boot, NULL);
+    pthread_join(boot_thread, NULL);
+    dock_wait_for_boot();
+
     return 0;
 }

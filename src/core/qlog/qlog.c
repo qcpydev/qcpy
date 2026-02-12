@@ -8,7 +8,6 @@ const char* replay_qlog_description[] = {
 
 qlog_t* qlog_init(uint8_t qubits)
 {
-    assert(qubits);
     qlog_t* qlog;
     qlog = (qlog_t*)malloc(sizeof(qlog_t));
     if (!qlog)

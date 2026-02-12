@@ -68,6 +68,7 @@ typedef struct import_s
     atomic_uint dock_idx;
     atomic_uint port_idx;
     bool flushing;
+    bool ready;
 } import_t;
 
 typedef struct export_s
@@ -76,11 +77,11 @@ typedef struct export_s
     atomic_uint dock_idx;
     atomic_uint port_idx;
     bool flushing;
+    bool ready;
 } export_t;
 
 bool validate_block(block_t* block);
 void block_add(block_t* block, import_t* port);
-
 
 extern import_t* importer;
 extern export_t* exporter;

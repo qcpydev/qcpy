@@ -1,18 +1,38 @@
-cmake_minimum_required(VERSION 3.20)
+# GLOBAL
+# ========================================
+
+cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
 
 if ("${CMAKE_BINARY_DIR}" STREQUAL "${CMAKE_SOURCE_DIR}")
     message(FATAL_ERROR "In-source builds are not allowed.")
 endif()
 
-project(qcpy-core VERSION 0.1)
+project(qcpy-core VERSION 0.1 LANGUAGES C CXX)
+enable_language(CUDA OPTIONAL)
+
+
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(C_STANDARD 99)
-set(C_STANDARD_REQUIRED ON)
 
-add_compile_options(-g -O0 -Wall -Wextra -pthread -g3 -Werror -O2 -march=native)
+# C STANDARD
+set(CMAKE_C_STANDARD 99)
+set(CMAKE_C_STANDARD_REQUIRED ON)
+
+# C++ STANDARD
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# CUDA STANDARD
+set(CMAKE_CUDA_STANDARD 20)
+set(CMAKE_CUDA_STANDARD_REQUIRED ON)
+
+add_compile_options(-g -O0 -Wall -Wextra -pthread -g3)
+list(APPEND CUDA_NVCC_FLAGS "--compiler-options -fPIC")
 
 list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
+
+# END GLOBAL
+# ========================================
 
 # CLANG FORMAT
 # ========================================
@@ -23,6 +43,7 @@ file(GLOB_RECURSE CLANG_FORMAT_SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/*.m"
     "${CMAKE_CURRENT_SOURCE_DIR}/*.mm"
+    "${CMAKE_CURRENT_SOURCE_DIR}/*.cu"
 )
 
 set(CLANG_FORMAT_EXCLUDE_PATTERNS ${CLANG_FORMAT_EXCLUDE_PATTERNS} "/CMakeFiles/" "cmake" "build/")
@@ -49,6 +70,7 @@ if(CLANG_FORMAT_EXECUTABLE)
 else()
     message(FATAL_ERROR "clang-format not found. Code formatting target will not be available.")
 endif()
+
 # END CLANG FORMAT
 # ========================================
 
@@ -97,10 +119,18 @@ else()
 endif()
 
 
-# QLOG CORE SHARED LIBRARY
+# QCPY CORE SHARED LIBRARY
 # ========================================
 add_library(qcpy_connect SHARED qcpy_connect.c)
 add_executable(qcpy_core qcpy_core.c)
+add_executable(quack_core quack_core.cc)
+
+if (CMAKE_CUDA_COMPILER)
+    add_executable(quack_core_gpu quack_core_gpu.cu)
+endif()
+
+# QUACK SHARED LIBRARY
+# ========================================
 
 # set up testing
 # ========================================
@@ -109,6 +139,8 @@ add_executable(qcpy_core qcpy_core.c)
 #add_subdirectory(test)
 # ========================================
 
+# qcpy_core and qcpy_connect directories
+# ========================================
 add_subdirectory(qlog)
 add_subdirectory(register)
 add_subdirectory(error)
@@ -118,6 +150,14 @@ add_subdirectory(port)
 add_subdirectory(dock)
 add_subdirectory(block)
 
+# end qcpy_core and qcpy_connect directories
+# ========================================
+
+# quack_core and quack_core directories
+
+# QCPY CORE EXECUTABLE
+# ========================================
+
 target_link_libraries(qcpy_connect PUBLIC
     qcpy_error
     block
@@ -125,6 +165,7 @@ target_link_libraries(qcpy_connect PUBLIC
     dock
     args
 )
+target_compile_options(qcpy_connect PUBLIC -Werror)
 
 target_link_libraries(qcpy_core PRIVATE
     qcpy_error
@@ -135,6 +176,41 @@ target_link_libraries(qcpy_core PRIVATE
     boot
     port
 )
+target_compile_options(qcpy_core PRIVATE -Werror)
 
-# END QLOG CORE EXECUTABLE
+# END QCPY CORE EXECUTABLE
 # ========================================
+
+# QUACK DIRECTORIES
+# ========================================
+add_subdirectory(quack)
+# END QUACK DIRECTORIES
+# ========================================
+
+
+# QUACK CORE EXECUTABLE
+# ========================================
+
+target_link_libraries(quack_core PRIVATE
+    qcpy_error
+    quack
+)
+target_compile_options(qcpy_core PRIVATE -Werror)
+
+# END QUACK CORE EXECUTABLE
+# ========================================
+
+# QUACK CORE GPU EXECUTABLE
+# ========================================
+
+if (CMAKE_CUDA_COMPILER)
+    target_link_libraries(quack_core_gpu PRIVATE
+        qcpy_error
+        quack
+    )
+endif()
+
+# END QUACK CORE GPU EXECUTABLE
+# ========================================
+
+

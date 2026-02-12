@@ -6,8 +6,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-import_t* importer;
-export_t* exporter;
+import_t* importer = NULL;
+export_t* exporter = NULL;
+
 sem_t* dock_import_sem;
 sem_t* port_import_sem;
 
@@ -52,6 +53,8 @@ void port_import_init()
         perror("sem_open");
         assert(0);
     }
+
+    importer->ready = true;
 }
 
 void port_export_init()
@@ -85,6 +88,8 @@ void port_export_init()
         perror("sem_open");
         assert(0);
     }
+
+    exporter->ready = true;
 }
 
 void* port_import(void* null)

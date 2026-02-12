@@ -28,6 +28,7 @@ void boot_core_init()
     pthread_create(&import_thread, NULL, port_import, NULL);
     pthread_create(&export_thread, NULL, port_export, NULL);
     pthread_join(import_thread, NULL);
+    pthread_join(export_thread, NULL);
 }
 
 void boot_core(int argc, char** argv)
