@@ -1,9 +1,0 @@
-# pack-refs with: peeled fully-peeled sorted 
-c736b04a2ce497fdb235eaaa11bd6c3e39d247ba refs/remotes/origin/main
-64c2de90d7b748928fa8db3eed8e0596578bfdd3 refs/remotes/origin/maint/docstrings-for-circuit-drawing
-4b215518a5746d74c783959057d99c5cab31846c refs/tags/1.0.0
-e60ceeafa485a5d21801e2ed9be203363e85fc1a refs/tags/1.0.2
-38adcddb8d0485bef7ff8902206d74d5462808f3 refs/tags/1.0.3
-2d734a178682d37b78f3db9ef490917e2f290bbb refs/tags/1.1.0
-023cff60d1fd9afc88ec37bcce5494c8666f1f3f refs/tags/1.1.1
-964488c6656a668e0fa8a7b4fd6c24487eb007ed refs/tags/1.1.2
