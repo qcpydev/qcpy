@@ -12,6 +12,9 @@ from .drawings import (
     swap_point,
 )
 from .wire import Wire
+from .gate_names import convert_gate_name, convert_gate_type
+from ...connect.boot import qcpy_connect
+from ...connect.port_entry import Block
 
 
 class CircuitDrawingInsert:
@@ -49,22 +52,6 @@ class CircuitDrawing:
             "MULTI": self.add_multi,
             "BLOCK": self.add_block,
             "ALGORITHM": self.add_block,
-        }
-        self.internal_gates = {
-            "IDENTITY": "I",
-            "HADAMARD": "H",
-            "PAULIX": "X",
-            "PAULIZ": "Z",
-            "PAULIY": "Y",
-            "PHASE": "P",
-            "SDG": "S†",
-            "TDG": "T†",
-            "SXDG": "SX†",
-            "CUSTOM": "C",
-            "CUSTOMCONTROLLED": "CC",
-            "MULTI": "M",
-            "CUSTOMBLOCK": "B",
-            "CUSTOMALGORIHTM": "A",
         }
 
     def equal_length(self) -> None:
@@ -236,23 +223,45 @@ class CircuitDrawing:
                 bottom[-1] += wire[item][counter + size * 2]
         return "".join(top) + "\n" + "".join(middle) + "\n" + "".join(bottom) + "\n"
 
-    def make(self, qlog) -> str:
+    def make(self, entries: List[Block]) -> str:
         """Generates the entirety of the string to print.
         Returns:
             str: Combination of all qubit strings in a single string.
         """
-        types = qlog.get_types()
-        names = qlog.get_names()
-        qubits = qlog.get_qubits()
+        count = 0
+
+        types = []
+        names = []
+        qubits = []
+
+        for item in range(len(entries)):
+            if entries[item].used:
+                controlled = qcpy_connect.unpack_qubit_bitpack(
+                    entries[item].controlled_bitpack, entries[item].controlled_count
+                )
+                target = qcpy_connect.unpack_qubit_bitpack(
+                    entries[item].target_bitpack, entries[item].target_count
+                )
+                qubits.append(
+                    qcpy_connect.unpack_qubit_bitmask(entries[item].qubit_bitmask)
+                )
+
+                types.append(convert_gate_type(entries[item].gate))
+                names.append(convert_gate_name(entries[item].gate))
+
+                count += 1
+
         for i in range(len(qubits)):
             insert = CircuitDrawingInsert(name=names[i], qubits=qubits[i])
+
             if names[i] == "SWAP":
                 self.add_swap(insert)
             else:
-                if names[i] in self.internal_gates:
-                    insert.name = self.internal_gates[names[i]]
+                insert.name = names[i]
                 self.internal_types[types[i]](insert)
+
         output = ""
+
         for i in range(len(self.circuit_queue)):
             output += self.make_wire(self.circuit_queue[i].content, i)
         return output

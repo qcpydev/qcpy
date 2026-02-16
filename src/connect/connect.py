@@ -1,7 +1,7 @@
 from typing import List
 import ctypes
 from typing import List
-from .port_entry import Block, Block_Type
+from .port_entry import Block, Block_Type, IMPORT_MAX_SIZE
 
 
 class Connect:
@@ -32,6 +32,12 @@ class Connect:
 
         self.qcpy_connect.dock_get_qc_state.argtypes = [ctypes.c_int, ctypes.c_bool]
 
+        self.qcpy_connect.dock_get_qc_entries.argtypes = [
+            ctypes.c_int,
+            ctypes.POINTER(Block),
+        ]
+        self.qcpy_connect.dock_get_qc_entries.restype = ctypes.c_int
+
     def __create_qubit_bitmask__(self, to_bitmask: List[int]) -> int:
         bitmask = 0
 
@@ -58,8 +64,22 @@ class Connect:
 
         return bitpack
 
-    def __unpack_qubit_bitpack__(self, to_decode: int, size: int) -> List[int]:
+    def unpack_qubit_bitpack(self, to_decode: int, size: int) -> List[int]:
         return [(to_decode >> (i * 6)) & 0x3F for i in range(size)]
+
+    def unpack_qubit_bitmask(self, to_decode: int) -> List[int]:
+        res = []
+        bitmask = 0
+        qubit = 0
+        while bitmask < (1 << 64):
+            if to_decode & bitmask:
+                res.append((qubit - 1))
+
+            bitmask = 0
+            bitmask |= 1 << qubit
+            qubit += 1
+
+        return res
 
     def __validate_control_target_qubits__(
         self, control_list: List[int], target_list: List[int]
@@ -137,4 +157,20 @@ class Connect:
 
     def get_quantum_circuit_state(self, reg: int, is_print: bool = False) -> None:
         self.qcpy_connect.dock_get_qc_state(reg, is_print)
-        pass
+
+    def get_gates_for_circuit(self, reg: int):
+        entries = []
+        sub_entries = (Block * IMPORT_MAX_SIZE)()
+
+        output = self.qcpy_connect.dock_get_qc_entries(reg, sub_entries)
+        entries += sub_entries
+        count = output
+        """
+        while (output == IMPORT_MAX_SIZE):
+            count += output
+            output = self.qcpy_connect.dock_get_qc_entries(reg, sub_entries)
+            entries += sub_entries
+            print("looping")
+        """
+
+        return entries

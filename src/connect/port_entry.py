@@ -1,6 +1,8 @@
 from enum import IntEnum
 import ctypes
 
+IMPORT_MAX_SIZE = 64
+
 
 class QuantumGates(IntEnum):
     IDENTITY = 0
@@ -67,4 +69,5 @@ class Block(ctypes.Structure):
         ("target_count", ctypes.c_uint16),
         ("inverted", ctypes.c_bool),
         ("big_endian", ctypes.c_bool),
+        ("used", ctypes.c_bool),
     ]

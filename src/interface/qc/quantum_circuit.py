@@ -75,7 +75,9 @@ class QuantumCircuit:
         Returns:
             str: String output of the quantum circuit drawing.
         """
-        return ""
+        entries = qcpy_connect.get_gates_for_circuit(self.reg)
+        drawing = CircuitDrawing(self.qubits)
+        return drawing.make(entries)
 
     def __len__(self) -> int:
         """Amount of possible states in the quantum circuit (2^num_qubits).

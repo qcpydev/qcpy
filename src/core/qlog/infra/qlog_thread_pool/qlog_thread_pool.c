@@ -6,77 +6,94 @@
 qlog_thread_pool_t qlog_thread_pool;
 bool qlog_thread_pool_open = true;
 
-void* qlog_thread_pool_worker(void* thread_index)
-{
-    uint64_t key = (uint64_t)thread_index;
-    qlog_register_buf_t* qlog_buffer = qlog_register_buf_init(NULL);
-    assert(qlog_buffer);
+void *qlog_thread_pool_worker(void *thread_index) {
+  uint64_t key = (uint64_t)thread_index;
+  qlog_thread_pool.registers[key] = qlog_register_buf_init(NULL);
 
-    qlog_register_buf_t* qlog_buffer_find = qlog_buffer;
+  qlog_register_buf_t *qlog_buffer = qlog_thread_pool.registers[key];
+  assert(qlog_buffer);
 
-    pthread_mutex_lock(&qlog_thread_pool.workers[key].lock);
+  qlog_register_buf_t *qlog_buffer_find = qlog_buffer;
+
+  pthread_mutex_lock(&qlog_thread_pool.workers[key].lock);
+
+  qlog_thread_pool.workers[key].state = QLOG_PROCESS_EMPTY;
+
+  while (qlog_thread_pool_open) {
+    pthread_cond_wait(&qlog_thread_pool.workers[key].cond,
+                      &qlog_thread_pool.workers[key].lock);
+    qlog_thread_pool.workers[key].state = QLOG_PROCESS_START;
+
+    import_block_t *block_queue = importer_sort.queue[key];
+    assert(block_queue);
+    while (block_queue) {
+      qlog_thread_pool.workers[key].state = QLOG_PROCESS_APPENDING;
+
+      if (block_queue->block.reg != qlog_buffer_find->reg.id) {
+        qlog_buffer_find =
+            qlog_register_buf_find(qlog_buffer, block_queue->block.reg);
+      }
+
+      assert(qlog_buffer_find->reg.id == block_queue->block.reg);
+      assert(qlog_buffer_find);
+
+      qlog_register_add(qlog_buffer_find, block_queue->block);
+      block_queue = block_queue->next;
+    }
+
+    qlog_thread_pool.workers[key].state = QLOG_PROCESS_DONE;
+
+    importer_delete_queue(key);
+    importer_sort.count = 0;
 
     qlog_thread_pool.workers[key].state = QLOG_PROCESS_EMPTY;
+  }
+  pthread_mutex_unlock(&qlog_thread_pool.workers[key].lock);
 
-    while (qlog_thread_pool_open)
-    {
-        pthread_cond_wait(&qlog_thread_pool.workers[key].cond, &qlog_thread_pool.workers[key].lock);
-        qlog_thread_pool.workers[key].state = QLOG_PROCESS_START;
-
-        import_block_t* block_queue = importer_sort.queue[key];
-        assert(block_queue);
-        while (block_queue)
-        {
-            qlog_thread_pool.workers[key].state = QLOG_PROCESS_APPENDING;
-
-            if (block_queue->block.reg != qlog_buffer_find->reg.id)
-            {
-                qlog_buffer_find = qlog_register_buf_find(qlog_buffer, block_queue->block.reg);
-            }
-
-            assert(qlog_buffer_find->reg.id == block_queue->block.reg);
-            assert(qlog_buffer_find);
-
-            qlog_register_add(qlog_buffer_find, block_queue->block);
-            block_queue = block_queue->next;
-        }
-
-        qlog_thread_pool.workers[key].state = QLOG_PROCESS_DONE;
-
-        importer_delete_queue(key);
-        importer_sort.count = 0;
-
-        qlog_thread_pool.workers[key].state = QLOG_PROCESS_EMPTY;
-    }
-    pthread_mutex_unlock(&qlog_thread_pool.workers[key].lock);
-
-    return NULL;
+  return NULL;
 }
 
-void qlog_thread_pool_init()
-{
-    for (uint64_t i = 0; i < IMPORTER_FUNNEL; ++i)
-    {
-        pthread_mutex_init(&qlog_thread_pool.workers[i].lock, NULL);
-        pthread_create(&qlog_thread_pool.workers[i].thread, NULL, qlog_thread_pool_worker, (void*)(intptr_t)i);
-    }
+void qlog_thread_pool_init() {
+  for (uint64_t i = 0; i < IMPORTER_FUNNEL; ++i) {
+    pthread_mutex_init(&qlog_thread_pool.workers[i].lock, NULL);
+    pthread_create(&qlog_thread_pool.workers[i].thread, NULL,
+                   qlog_thread_pool_worker, (void *)(intptr_t)i);
+  }
 }
 
-void qlog_thread_pool_signal_worker(uint64_t key) { pthread_cond_signal(&qlog_thread_pool.workers[key].cond); }
+void qlog_thread_pool_signal_worker(uint64_t key) {
+  pthread_cond_signal(&qlog_thread_pool.workers[key].cond);
+}
 
-void qlog_thread_pool_await()
-{
-    bool qlog_threads_done = false;
+void qlog_thread_pool_await() {
+  bool qlog_threads_done = false;
 
-    while (!qlog_threads_done)
-    {
-        for (uint64_t i = 0; i < IMPORTER_FUNNEL; ++i)
-        {
-            qlog_threads_done = qlog_thread_pool.workers[i].state == QLOG_PROCESS_EMPTY;
-            if (!qlog_threads_done)
-            {
-                break;
-            }
-        }
+  while (!qlog_threads_done) {
+    for (uint64_t i = 0; i < IMPORTER_FUNNEL; ++i) {
+      qlog_threads_done =
+          qlog_thread_pool.workers[i].state == QLOG_PROCESS_EMPTY;
+      if (!qlog_threads_done) {
+        break;
+      }
     }
+  }
+}
+
+qlog_t *qlog_thread_pool_get_qlog(uint32_t reg) {
+  uint64_t key = reg % IMPORTER_FUNNEL;
+
+  assert(qlog_thread_pool.registers[key]);
+  qlog_t *qlog = NULL;
+
+  pthread_mutex_lock(&qlog_thread_pool.workers[key].lock);
+  qlog_register_buf_t *qlog_reg_buffer =
+      qlog_register_buf_find(qlog_thread_pool.registers[key], reg);
+  pthread_mutex_unlock(&qlog_thread_pool.workers[key].lock);
+
+  assert(qlog_reg_buffer);
+
+  qlog = qlog_reg_buffer->reg.qlog;
+
+  assert(qlog);
+  return qlog;
 }

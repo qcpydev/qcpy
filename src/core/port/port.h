@@ -19,12 +19,12 @@
  *
  */
 
-void port_init(int argc, char** argv);
+void port_init(int argc, char **argv);
 void port_import_init();
 void port_export_init();
 void port_close();
-void* port_export(void* null);
-void* port_import(void* null);
+void *port_export(void *null);
+void *port_import(void *null);
 
 extern pthread_t import_thread;
 extern pthread_t export_thread;

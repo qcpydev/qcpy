@@ -2,20 +2,20 @@
 #include <pthread.h>
 #include <stdlib.h>
 
-boot_thread_args_t* boot_thread_args = NULL;
+boot_thread_args_t *boot_thread_args = NULL;
 
-int qcpy_boot_connect(char* args[])
-{
-    pthread_t boot_thread;
-    char* exec_name = dock_init(args);
+static void qcpy_wait_for_boot() { dock_wait_for_boot(); }
 
-    boot_thread_args = (boot_thread_args_t*)malloc(sizeof(boot_thread_args_t));
-    boot_thread_args->args = args;
-    boot_thread_args->exec_name = exec_name;
+int qcpy_boot_connect(char *args[]) {
+  pthread_t boot_thread;
+  char *exec_name = dock_init(args);
 
-    pthread_create(&boot_thread, NULL, dock_run_boot, NULL);
-    pthread_join(boot_thread, NULL);
-    dock_wait_for_boot();
+  boot_thread_args = (boot_thread_args_t *)malloc(sizeof(boot_thread_args_t));
+  boot_thread_args->args = args;
+  boot_thread_args->exec_name = exec_name;
 
-    return 0;
+  pthread_create(&boot_thread, NULL, dock_run_boot, NULL);
+  pthread_join(boot_thread, NULL);
+  qcpy_wait_for_boot();
+  return 0;
 }
