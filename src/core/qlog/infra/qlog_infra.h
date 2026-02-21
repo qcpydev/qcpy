@@ -1,4 +1,5 @@
 #include <importer.h>
+#include <qlog_register.h>
 #include <qlog_scheduler.h>
 #include <qlog_thread_pool.h>
 
@@ -14,12 +15,14 @@
  * signal to compress threads to async work on the unprocessed segments of the
  * qlog.
  * Use qlog_infra_init to set up the thread pool/scheduler (weight distribution)
- * Use qlog_infra_process, which will await work to be done in the sorted entries
+ * Use qlog_infra_process, which will await work to be done in the sorted
+ * entries
  */
 
 void qlog_infra_init();
-void qlog_infra_schedule();
+void qlog_infra_schedule(import_sort_t *importer_sort);
 void qlog_infra_handler();
-void qlog_infra_process();
+void qlog_infra_process(import_sort_t *importer_sort);
+void qlog_infra_await_work_complete();
 
 #endif

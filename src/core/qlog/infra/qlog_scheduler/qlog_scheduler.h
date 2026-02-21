@@ -1,5 +1,6 @@
-#include <importer.h>
+#include <block.h>
 #include <pthread.h>
+#include <sched.h>
 #include <stdint.h>
 
 #pragma once
@@ -7,15 +8,25 @@
 #define QLOG_SCHEDULER_H
 
 /*
- * qlog scheduler is apart of qlog infra. It is designed to schedule and
- * prioritize threads apart of qlog threadpool. The scheduler will also set the
- * range of work each thread will handle based on hit entries in the sorted
- * queues. If the user is expecting a front end request from the library, we
- * expect to flush everything only for that specific qlog, so only one thread
- * will be running in qlog thread pool.
+ * qlog scheduler will consider the priority of threads
  */
 
+#define QLOG_SCHED_POLICY SCHED_RR
+
+#define QLOG_SCHED_MIN_PRIORITY 5
+#define QLOG_SCHED_MAX_PRIORITY 85
+
+typedef struct qlog_scheduler_s {
+  struct sched_param params[IMPORTER_FUNNEL];
+  pthread_attr_t attributes[IMPORTER_FUNNEL];
+  int policy;
+  bool balance;
+} qlog_scheduler_t;
+
+extern qlog_scheduler_t qlog_scheduler;
+
 void qlog_scheduler_init();
-void qlog_scheduler_set();
+void qlog_scheduler_set(pthread_t *qlog_worker, int weight_priority,
+                        uint64_t idx);
 
 #endif /* QLOG_SCHEDULER_H  */

@@ -43,4 +43,7 @@ bool qlog_register_buf_check_id(qlog_register_buf_t *qlog_register_buf,
 qlog_register_buf_t *qlog_register_buf_find(qlog_register_buf_t *qlog_buffer,
                                             uint64_t id);
 
+void qlog_register_buf_append_handler(qlog_register_buf_t *qlog_buf_finder,
+                                      qlog_register_buf_t *qlog_buffer,
+                                      block_t block);
 #endif // !QLOG_REGISTER_H

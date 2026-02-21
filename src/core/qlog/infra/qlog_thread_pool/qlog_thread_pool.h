@@ -23,7 +23,6 @@ typedef enum {
   QLOG_PROCESS_START,
   QLOG_PROCESS_APPENDING,
   QLOG_PROCESS_DONE,
-  QLOG_PROCESS_CLEANED_UP,
   QLOG_PROCESS_MAX
 } qlog_process_state_e;
 
@@ -37,15 +36,15 @@ typedef struct qlog_worker_s {
 typedef struct qlog_thread_pool_s {
   qlog_worker_t workers[IMPORTER_FUNNEL];
   qlog_register_buf_t *registers[IMPORTER_FUNNEL];
-  uint32_t running_workers;
 } qlog_thread_pool_t;
 
 extern qlog_thread_pool_t qlog_thread_pool;
 
-void qlog_thread_pool_init();
+void qlog_thread_pool_init(uint64_t idx, pthread_attr_t *attr);
 void *qlog_thread_pool_worker(void *thread_index);
 void qlog_thread_pool_signal_worker(uint64_t key);
 void qlog_thread_pool_await();
 qlog_t *qlog_thread_pool_get_qlog(uint32_t reg);
+void qlog_thread_pool_reset_current();
 
 #endif
