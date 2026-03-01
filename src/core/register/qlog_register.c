@@ -61,3 +61,18 @@ qlog_register_buf_t *qlog_register_buf_find(qlog_register_buf_t *qlog_buffer,
 
   return qlog_register_buf;
 }
+
+void qlog_register_buf_append_handler(qlog_register_buf_t *qlog_buf_finder,
+                                      qlog_register_buf_t *qlog_buffer,
+                                      block_t block) {
+  assert(qlog_buf_finder && qlog_buffer);
+
+  if (block.reg != qlog_buf_finder->reg.id) {
+    qlog_buf_finder = qlog_register_buf_find(qlog_buffer, block.reg);
+  }
+
+  assert(qlog_buf_finder);
+  assert(qlog_buf_finder->reg.id == block.reg);
+
+  qlog_register_add(qlog_buf_finder, block);
+}

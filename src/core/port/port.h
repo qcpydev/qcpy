@@ -25,6 +25,7 @@ void port_export_init();
 void port_close();
 void *port_export(void *null);
 void *port_import(void *null);
+void port_boot();
 
 extern pthread_t import_thread;
 extern pthread_t export_thread;

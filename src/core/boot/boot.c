@@ -19,14 +19,16 @@
 
 // TODO: SET BOOT ARGS TO TAKE IN CHAR ARRAY
 
+static void boot_quack_core();
+
 void boot_args_init() {}
+
+static void boot_quack_core() { int j; }
 
 void boot_core_init() {
   qlog_infra_init();
-  pthread_create(&import_thread, NULL, port_import, NULL);
-  pthread_create(&export_thread, NULL, port_export, NULL);
-  pthread_join(import_thread, NULL);
-  pthread_join(export_thread, NULL);
+  port_boot();
+  boot_quack_core();
 }
 
 void boot_core(int argc, char **argv) {

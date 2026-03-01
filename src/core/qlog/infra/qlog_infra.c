@@ -2,6 +2,40 @@
 #include <sched.h>
 
 void qlog_infra_init() {
-  qlog_thread_pool_init();
   qlog_scheduler_init();
+
+  for (uint64_t i = 0; i < IMPORTER_FUNNEL; ++i) {
+    qlog_thread_pool_init(i, &qlog_scheduler.attributes[i]);
+  }
+}
+
+void qlog_infra_set_priority(import_sort_t *importer_sort) {
+  assert(importer_sort);
+
+  for (uint64_t i = 0; i < IMPORTER_FUNNEL; ++i) {
+    uint32_t weight_priority =
+        (100 * importer_sort->queue_count[i]) / importer_sort->count;
+
+    if (weight_priority > QLOG_SCHED_MAX_PRIORITY) {
+      weight_priority = QLOG_SCHED_MAX_PRIORITY;
+    } else if (weight_priority < QLOG_SCHED_MIN_PRIORITY) {
+      weight_priority = QLOG_SCHED_MIN_PRIORITY;
+    }
+
+    qlog_scheduler_set(&qlog_thread_pool.workers[i].thread, weight_priority, i);
+  }
+}
+
+void qlog_infra_process(import_sort_t *importer_sort) {
+  qlog_infra_set_priority(importer_sort);
+
+  for (uint64_t i = 0; i < IMPORTER_FUNNEL; ++i) {
+    if (importer_sort->queue[i]) {
+      if (importer->flushing && importer->flush_reg % IMPORTER_FUNNEL != i) {
+        continue;
+      }
+
+      qlog_thread_pool_signal_worker(i);
+    }
+  }
 }

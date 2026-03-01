@@ -26,7 +26,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CUDA_STANDARD 20)
 set(CMAKE_CUDA_STANDARD_REQUIRED ON)
 
-add_compile_options(-g -O0 -Wall -Wextra -pthread -g3 -Werror)
+add_compile_options(-g -O0 -Wall -Wextra -pthread -g3)
 list(APPEND CUDA_NVCC_FLAGS "--compiler-options -fPIC -Werror")
 
 list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
@@ -128,13 +128,13 @@ target_compile_options(qcpy_connect PRIVATE
 
 add_executable(qcpy_core qcpy_core.c)
 target_compile_options(qcpy_core PRIVATE
-    -Wall -Wextra -Werror
+  $<$<COMPILE_LANGUAGE:C>:-Werror>
 )
 
-#add_executable(quack_core quack_core.cc)
+add_executable(quack_core quack_core.cc)
 
 if (CMAKE_CUDA_COMPILER)
-    #    add_executable(quack_core_gpu quack_core_gpu.cu)
+    add_executable(quack_core_gpu quack_core_gpu.cu)
 endif()
 
 # QUACK SHARED LIBRARY
@@ -191,7 +191,7 @@ target_link_libraries(qcpy_core PRIVATE
 
 # QUACK DIRECTORIES
 # ========================================
-#add_subdirectory(quack)
+add_subdirectory(quack)
 # END QUACK DIRECTORIES
 # ========================================
 
@@ -199,10 +199,11 @@ target_link_libraries(qcpy_core PRIVATE
 # QUACK CORE EXECUTABLE
 # ========================================
 
-#target_link_libraries(quack_core PRIVATE
-#    qcpy_error
-#    quack
-#)
+target_link_libraries(quack_core PRIVATE
+     qcpy_error
+     quack
+     block
+)
 
 # END QUACK CORE EXECUTABLE
 # ========================================
@@ -211,10 +212,11 @@ target_link_libraries(qcpy_core PRIVATE
 # ========================================
 
 if (CMAKE_CUDA_COMPILER)
-    #    target_link_libraries(quack_core_gpu PRIVATE
-    #    qcpy_error
-    #    quack
-    #)
+    target_link_libraries(quack_core_gpu PRIVATE
+    qcpy_error
+    quack
+    block
+    )
 endif()
 
 # END QUACK CORE GPU EXECUTABLE
