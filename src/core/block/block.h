@@ -2,10 +2,8 @@
 
 #ifndef BLOCK_H
 #define BLOCK_H
-#include <complex.h>
 #include <pthread.h>
 #include <semaphore.h>
-#include <stdatomic.h>
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -34,6 +32,14 @@
 
 typedef enum { BLOCK_QLOG_ENTRY, BLOCK_CLOG_ENTRY } block_type_e;
 
+#ifdef __cplusplus
+#include <complex>
+typedef std::complex<float> float_comp;
+#else
+#include <complex.h>
+typedef float complex float_comp;
+#endif
+
 typedef struct block_s {
   block_type_e type;
   uint64_t reg;
@@ -58,18 +64,21 @@ typedef struct block_s {
 typedef struct import_s {
   block_t queue[IMPORT_MAX_SIZE];
   uint64_t flush_reg;
-  atomic_uint dock_idx;
-  atomic_uint port_idx;
+  int dock_idx;
+  int port_idx;
   bool flushing;
   bool ready;
 } import_t;
 
 typedef struct export_s {
-  float complex queue[IMPORT_MAX_SIZE];
-  atomic_uint dock_idx;
-  atomic_uint port_idx;
+  float_comp queue[IMPORT_MAX_SIZE];
+  uint64_t reg;
+  int dock_idx;
+  int port_idx;
   bool flushing;
-  bool ready;
+  bool entries_ready;
+  bool qcpy_core_ready;
+  bool quack_core_ready;
 } export_t;
 
 bool validate_block(block_t *block);
@@ -85,4 +94,5 @@ extern sem_t *port_export_sem;
 
 extern int shared_import_space;
 extern int shared_export_space;
+
 #endif // BLOCK_H

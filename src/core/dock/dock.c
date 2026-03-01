@@ -25,7 +25,8 @@ int shared_export_space;
 dock_logger_t dock_log;
 
 void dock_wait_for_boot() {
-  while (!importer || !exporter || !importer->ready || !exporter->ready)
+  while (!importer || !exporter || !importer->ready ||
+         !exporter->qcpy_core_ready)
     ;
 }
 
@@ -125,14 +126,28 @@ char *dock_init(char *args[]) {
     return NULL;
   }
 
-  char *exec_name = args[0];
-  return exec_name;
+  return args[0];
 }
 
-void *dock_run_boot(void *empty) {
-  if (empty) {
+char *dock_quack_init(char *args[]) {
+  if (!args) {
+    return NULL;
   }
-  assert(!empty);
+
+  return args[1];
+}
+
+char *dock_quack_gpu_init(char *args[]) {
+  if (!args) {
+    return NULL;
+  }
+
+  return args[2];
+}
+
+bool dock_set_gpu_enabled(char *args[]) { return (!strcmp(args[3], "Y")); }
+
+void dock_run_boot() {
   assert(boot_thread_args);
 
   dock_port_init();
@@ -140,16 +155,31 @@ void *dock_run_boot(void *empty) {
   pid_t pid = fork();
   if (pid == 0) {
     prctl(PR_SET_PDEATHSIG, SIGTERM);
-    char *args_test[] = {NULL};
+    char *args_test[] = {boot_thread_args->exec_name, NULL};
     execvp(boot_thread_args->exec_name, args_test);
     perror("execvp failed");
     _exit(1);
   }
 
-  return NULL;
+  pid_t quack_pid = fork();
+  if (quack_pid == 0) {
+    prctl(PR_SET_PDEATHSIG, SIGTERM);
+    char *args_test[] = {boot_thread_args->quack_exec_name, NULL};
+
+    char *run_quack_version = boot_thread_args->is_gpu_enabled
+                                  ? boot_thread_args->quack_gpu_exec_name
+                                  : boot_thread_args->quack_exec_name;
+
+    execvp(run_quack_version, args_test);
+    perror("execvp failed");
+    _exit(1);
+  }
 }
 
-static void dock_ship_to_port() {
+static void dock_signal_export() {}
+static bool dock_await_export_entries() { return false; }
+
+static void dock_flush_entries() {
   for (uint64_t i = 0; i < IMPORT_MAX_SIZE; ++i) {
     sem_post(port_import_sem);
   }
@@ -163,13 +193,13 @@ int dock_add(block_t *block) {
   block_add(block, importer);
 
   if (importer->dock_idx % IMPORT_MAX_SIZE == 0 && importer->dock_idx != 0) {
-    dock_ship_to_port();
+    dock_flush_entries();
   }
 
   return 1;
 }
 
-void dock_get_qc_state(int flush_reg, bool is_print) {
+void dock_get_qc_state(int flush_reg) {
   assert(importer);
   sem_wait(dock_import_sem);
   assert(importer);
@@ -177,10 +207,18 @@ void dock_get_qc_state(int flush_reg, bool is_print) {
   importer->flushing = true;
   importer->flush_reg = flush_reg;
 
-  dock_ship_to_port();
+  dock_flush_entries();
+  /*
+   * TODO: exporter set register to use to grab entries from, signal exporter
+   * we are ready to get something
+   */
 
-  if (is_print) {
-  }
+  dock_signal_export();
+
+  /*
+   * TODO: await for exporter to let us know it is ready for us to consume data,
+   * use a do while loop to await for entries to be calculated
+   */
 }
 
 int dock_get_qc_entries(uint32_t reg, block_t *blocks) {

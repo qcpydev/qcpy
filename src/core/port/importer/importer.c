@@ -6,6 +6,36 @@
 
 import_sort_t importer_sort;
 
+void importer_init() {
+  shared_import_space = shm_open(QCPY_IMPORT, O_RDWR, MODE_SHARED_MEM);
+
+  if (shared_import_space == -1) {
+    perror("shm_open child");
+    exit(1);
+  }
+
+  importer = mmap(NULL, sizeof(*importer), PROT_ARGS, MAP_SHARED,
+                  shared_import_space, 0);
+  if (importer == MAP_FAILED) {
+    assert(0);
+  }
+
+  dock_import_sem = sem_open(DOCK_IMPORT_SEM, 0);
+  if (dock_import_sem == SEM_FAILED) {
+    perror("sem_open");
+    assert(0);
+  }
+
+  port_import_sem = sem_open(PORT_IMPORT_SEM, 0);
+
+  if (port_import_sem == SEM_FAILED) {
+    perror("sem_open");
+    assert(0);
+  }
+
+  importer->ready = true;
+}
+
 void importer_sort_init() {
   pthread_mutex_init(&importer_sort.lock, NULL);
 
@@ -39,11 +69,14 @@ void importer_sort_ported(import_t *importer) {
   assert(importer);
   for (uint64_t i = 0; i < IMPORT_MAX_SIZE; ++i) {
     sem_wait(port_import_sem);
+
     int idx = importer->port_idx % IMPORT_MAX_SIZE;
+
     if (importer->queue[idx].used) {
       importer_sort_append(importer->queue[idx]);
       importer->queue[idx].used = false;
     }
+
     importer->port_idx++;
     sem_post(dock_import_sem);
   }
