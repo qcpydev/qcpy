@@ -10,4 +10,5 @@ target_link_libraries(exporter PUBLIC
     block
     qcpy_error
     exporter_migrate
+    qlog_infra
 )

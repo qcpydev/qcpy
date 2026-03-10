@@ -20,6 +20,7 @@
 #define QCPY_IMPORT "/qcpy_import"
 #define PORT_IMPORT_SEM "/port_import_sem"
 #define DOCK_IMPORT_SEM "/dock_import_sem"
+#define DOCK_PORT_SEM "/dock_port_sem"
 
 #define QCPY_EXPORT "/qcpy_export"
 #define PORT_EXPORT_SEM "/port_export_sem"
@@ -64,8 +65,7 @@ typedef struct block_s {
 typedef struct import_s {
   block_t queue[IMPORT_MAX_SIZE];
   uint64_t flush_reg;
-  int dock_idx;
-  int port_idx;
+  int idx;
   bool flushing;
   bool ready;
 } import_t;
@@ -81,11 +81,27 @@ typedef struct export_s {
   bool quack_core_ready;
 } export_t;
 
+#define EXPORT_SIGNAL_SHARED_MEM "/qcpy_export_signal_shared_mem"
+
+#define EXPORT_SIGNAL_STOP "/qcpy_export_signal_sem_stop"
+#define EXPORT_SIGNAL_READY "/qcpy_export_signal_sem_ready"
+
+typedef struct export_signal_s {
+  int reg;
+  bool qcpy_core_ready;
+} export_signal_t;
+
+extern export_signal_t *export_signal;
+extern sem_t *export_sig_stop;
+extern sem_t *export_sig_ready;
+extern int shared_export_signal_space;
+
 bool validate_block(block_t *block);
 void block_add(block_t *block, import_t *port);
 
 extern import_t *importer;
 extern export_t *exporter;
+
 extern sem_t *dock_import_sem;
 extern sem_t *port_import_sem;
 

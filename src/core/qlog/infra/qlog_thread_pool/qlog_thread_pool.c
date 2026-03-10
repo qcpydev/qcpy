@@ -21,7 +21,6 @@ void *qlog_thread_pool_worker(void *thread_index) {
 
     import_block_t *block_queue = importer_sort.queue[key];
     assert(block_queue);
-
     while (block_queue) {
       qlog_thread_pool.workers[key].state = QLOG_PROCESS_APPENDING;
       qlog_register_buf_append_handler(qlog_buffer_find,

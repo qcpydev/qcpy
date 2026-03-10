@@ -32,7 +32,7 @@ void *port_import(void *not_used) {
 
 void *port_export(void *not_used) {
   while (!port_closed) {
-    exporter_quack(exporter);
+    exporter_process();
   }
 
   return not_used;

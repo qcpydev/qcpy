@@ -13,6 +13,10 @@ void qlog_infra_set_priority(import_sort_t *importer_sort) {
   assert(importer_sort);
 
   for (uint64_t i = 0; i < IMPORTER_FUNNEL; ++i) {
+    if (importer_sort->queue_count[i] == 0) {
+      continue;
+    }
+
     uint32_t weight_priority =
         (100 * importer_sort->queue_count[i]) / importer_sort->count;
 
@@ -26,16 +30,33 @@ void qlog_infra_set_priority(import_sort_t *importer_sort) {
   }
 }
 
+void qlog_infra_await_completion() {
+  bool still_running = true;
+  while (still_running) {
+    for (uint64_t i = 0; i < IMPORTER_FUNNEL; ++i) {
+      still_running =
+          !(qlog_thread_pool.workers[i].state == QLOG_PROCESS_EMPTY ||
+            qlog_thread_pool.workers[i].state == QLOG_PROCESS_DONE);
+
+      if (still_running) {
+        break;
+      }
+    }
+  }
+}
+
 void qlog_infra_process(import_sort_t *importer_sort) {
   qlog_infra_set_priority(importer_sort);
 
   for (uint64_t i = 0; i < IMPORTER_FUNNEL; ++i) {
     if (importer_sort->queue[i]) {
+
       if (importer->flushing && importer->flush_reg % IMPORTER_FUNNEL != i) {
         continue;
       }
 
       qlog_thread_pool_signal_worker(i);
+      qlog_infra_await_completion();
     }
   }
 }
