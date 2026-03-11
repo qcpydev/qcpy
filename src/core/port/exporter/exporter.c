@@ -1,8 +1,10 @@
 #include <assert.h>
 #include <exporter.h>
+#include <exporter_migrate.h>
 #include <port.h>
 #include <pthread.h>
 #include <qlog_infra.h>
+#include <qlog_optimize.h>
 #include <semaphore.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -49,8 +51,6 @@ static void exporter_signal_open() {
   export_signal->qcpy_core_ready = true;
 }
 
-void exporter_await_quack_start() {}
-
 // TODO: MOVE THIS TO QUACK_EXPORT. We will never actually need to use this
 // shared mem, so whats the point of opening it! We will use our own shared mem
 // for exporter to send info to quack. We are just the mediator for sending over
@@ -85,16 +85,36 @@ void exporter_init() {
   }
 
   exporter_signal_open();
-  exporter_await_quack_start();
+  exporter_migrate_init();
 
   exporter->qcpy_core_ready = true;
 }
 
 void exporter_process() {
-  sem_wait(export_sig_ready);
-
   qlog_infra_await_completion();
-  export_signal->reg = -1;
 
+  sem_wait(export_sig_ready);
+  qlog_node_t *qlog_nodes[EXPORTER_MIGRATE_MAX_SIZE];
+
+  qlog_t *qlog = qlog_infra_find_qlog(export_signal->reg);
+  assert(qlog);
+  qlog_graph_t *graph_to_process = qlog->graph;
+  bool force_flush = true;
+
+  assert(graph_to_process);
+  qlog_optimize(graph_to_process, force_flush);
+
+  // just in step 3, get round of nodes as a ptr array, send off to
+  // exporter_migrate exporter_migrate will either a) use sem_wait to pause
+  // adding more entries to allow quack to read it, or b) it will "ask for
+  // s'more", in which we will complete this until we are told by
+  // exporter_migrate c) there is no work more work to be done, so finish up
+  // what we are doing, set export_signal->reg to -1 and post
+  // export_sig_stop this should fucking work? single for loop? no internals
+  // unless we want to? ah, one more thing, we need to specify to qlog_graph
+  // to grab a chunk from a specfic region so 0-15 16 -... and we can pass
+  // in a qlog_node_t array
+
+  export_signal->reg = -1;
   sem_post(export_sig_stop);
 }

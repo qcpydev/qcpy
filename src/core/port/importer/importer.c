@@ -68,6 +68,8 @@ void importer_sort_append(block_t block) {
 void importer_sort_ported(import_t *importer) {
   assert(importer);
 
+  qlog_infra_await_completion();
+
   sem_wait(dock_import_sem);
 
   for (uint64_t i = 0; i < IMPORT_MAX_SIZE; ++i) {

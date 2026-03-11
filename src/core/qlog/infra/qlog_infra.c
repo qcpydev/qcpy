@@ -56,7 +56,15 @@ void qlog_infra_process(import_sort_t *importer_sort) {
       }
 
       qlog_thread_pool_signal_worker(i);
-      qlog_infra_await_completion();
     }
   }
+}
+
+qlog_t *qlog_infra_find_qlog(int reg) {
+  assert(reg != -1);
+
+  qlog_t *qlog = qlog_thread_pool_get_qlog(reg);
+
+  assert(qlog);
+  return qlog;
 }

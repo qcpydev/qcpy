@@ -56,8 +56,10 @@ qlog_t *qlog_thread_pool_get_qlog(uint32_t reg) {
   qlog_t *qlog = NULL;
 
   pthread_mutex_lock(&qlog_thread_pool.workers[key].lock);
+
   qlog_register_buf_t *qlog_reg_buffer =
       qlog_register_buf_find(qlog_thread_pool.registers[key], reg);
+
   pthread_mutex_unlock(&qlog_thread_pool.workers[key].lock);
 
   assert(qlog_reg_buffer);

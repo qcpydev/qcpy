@@ -74,11 +74,6 @@ static void dock_create_importer() {
     assert(0);
   }
 
-  if (!dock_import_sem) {
-    perror("import_sem_failed");
-    assert(0);
-  }
-
   if (!port_import_sem) {
     perror("import_sem_failed");
     assert(0);
