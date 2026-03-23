@@ -13,6 +13,7 @@
 
 import_t *importer = NULL;
 export_t *exporter = NULL;
+
 sem_t *dock_import_sem;
 sem_t *port_import_sem;
 
@@ -26,8 +27,8 @@ dock_logger_t dock_log;
 
 void dock_wait_for_boot() {
   while (!importer || !exporter || !importer->ready ||
-         !exporter->qcpy_core_ready)
-    ;
+         !exporter->qcpy_core_ready) {
+  }
 }
 
 static void dock_create_importer() {
@@ -54,9 +55,10 @@ static void dock_create_importer() {
   }
 
   memset(importer, 0, sizeof(import_t));
+
   sem_unlink(DOCK_IMPORT_SEM);
-  dock_import_sem = sem_open(DOCK_IMPORT_SEM, OFLAG_SHARED_SEM_ARGS,
-                             MODE_SHARED_MEM, IMPORT_MAX_SIZE);
+  dock_import_sem =
+      sem_open(DOCK_IMPORT_SEM, OFLAG_SHARED_SEM_ARGS, MODE_SHARED_MEM, 0);
 
   sem_unlink(PORT_IMPORT_SEM);
   port_import_sem =
@@ -161,7 +163,7 @@ void dock_run_boot() {
     _exit(1);
   }
 
-  pid_t quack_pid = fork();
+  pid_t quack_pid = 1;
   if (quack_pid == 0) {
     prctl(PR_SET_PDEATHSIG, SIGTERM);
     char *args_test[] = {boot_thread_args->quack_exec_name, NULL};
@@ -176,23 +178,18 @@ void dock_run_boot() {
   }
 }
 
-static void dock_signal_export() {}
-static bool dock_await_export_entries() { return false; }
-
 static void dock_flush_entries() {
-  for (uint64_t i = 0; i < IMPORT_MAX_SIZE; ++i) {
-    sem_post(port_import_sem);
-  }
+  sem_post(dock_import_sem);
+  sem_wait(port_import_sem);
+  assert(importer->idx == 0);
 }
 
 int dock_add(block_t *block) {
   dock_log_append(block->reg, block);
 
-  sem_wait(dock_import_sem);
-
   block_add(block, importer);
 
-  if (importer->dock_idx % IMPORT_MAX_SIZE == 0 && importer->dock_idx != 0) {
+  if (importer->idx == IMPORT_MAX_SIZE) {
     dock_flush_entries();
   }
 
@@ -200,20 +197,13 @@ int dock_add(block_t *block) {
 }
 
 void dock_get_qc_state(int flush_reg) {
-  assert(importer);
-  sem_wait(dock_import_sem);
-  assert(importer);
 
-  importer->flushing = true;
-  importer->flush_reg = flush_reg;
+  if (importer->idx > 0) {
+    importer->flushing = true;
+    importer->flush_reg = flush_reg;
 
-  dock_flush_entries();
-  /*
-   * TODO: exporter set register to use to grab entries from, signal exporter
-   * we are ready to get something
-   */
-
-  dock_signal_export();
+    dock_flush_entries();
+  }
 
   /*
    * TODO: await for exporter to let us know it is ready for us to consume data,

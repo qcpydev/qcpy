@@ -3,6 +3,7 @@ import ctypes
 from typing import List
 from .port_entry import Block, Block_Type, IMPORT_MAX_SIZE
 import subprocess
+import time
 
 
 class Connect:
@@ -16,12 +17,12 @@ class Connect:
         self.gpu_enabled = True
 
         self.quantum_circuit_count = 0
-
+        '''
         try:
             subprocess.check_output(["nvcc", "--version"]).decode()
         except FileNotFoundError:
             self.gpu_enabled = False
-
+        '''
         self.bootargs += "Y" if self.gpu_enabled else "N"
 
         self.qcpy_connect.qcpy_boot_connect.restype = ctypes.c_int

@@ -16,8 +16,7 @@ bool validate_block(block_t *block) {
 
 void block_add(block_t *block, import_t *importer) {
   assert(block && importer);
-  int idx = importer->dock_idx % IMPORT_MAX_SIZE;
-  importer->queue[idx] = *block;
-  importer->queue[idx].used = true;
-  importer->dock_idx++;
+  importer->queue[importer->idx] = *block;
+  importer->queue[importer->idx].used = true;
+  importer->idx++;
 }

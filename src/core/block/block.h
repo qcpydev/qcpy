@@ -20,6 +20,7 @@
 #define QCPY_IMPORT "/qcpy_import"
 #define PORT_IMPORT_SEM "/port_import_sem"
 #define DOCK_IMPORT_SEM "/dock_import_sem"
+#define DOCK_PORT_SEM "/dock_port_sem"
 
 #define QCPY_EXPORT "/qcpy_export"
 #define PORT_EXPORT_SEM "/port_export_sem"
@@ -64,8 +65,7 @@ typedef struct block_s {
 typedef struct import_s {
   block_t queue[IMPORT_MAX_SIZE];
   uint64_t flush_reg;
-  int dock_idx;
-  int port_idx;
+  int idx;
   bool flushing;
   bool ready;
 } import_t;
@@ -86,6 +86,7 @@ void block_add(block_t *block, import_t *port);
 
 extern import_t *importer;
 extern export_t *exporter;
+
 extern sem_t *dock_import_sem;
 extern sem_t *port_import_sem;
 

@@ -24,5 +24,9 @@ void qlog_infra_schedule(import_sort_t *importer_sort);
 void qlog_infra_handler();
 void qlog_infra_process(import_sort_t *importer_sort);
 void qlog_infra_await_work_complete();
+void qlog_infra_await_completion();
+void qlog_infra_await_completion_reg(int reg);
+
+qlog_t *qlog_infra_find_qlog(int reg);
 
 #endif

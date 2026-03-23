@@ -51,6 +51,8 @@ void importer_sort_init() {
 void importer_sort_append(block_t block) {
   import_block_t *import_block = import_block_init();
   assert(import_block);
+
+  import_block->block = block;
   uint64_t index = block.reg % IMPORTER_FUNNEL;
 
   if (!importer_sort.queue[index]) {
@@ -67,25 +69,21 @@ void importer_sort_append(block_t block) {
 
 void importer_sort_ported(import_t *importer) {
   assert(importer);
+
+  sem_wait(dock_import_sem);
+
   for (uint64_t i = 0; i < IMPORT_MAX_SIZE; ++i) {
-    sem_wait(port_import_sem);
-
-    int idx = importer->port_idx % IMPORT_MAX_SIZE;
-
-    if (importer->queue[idx].used) {
-      importer_sort_append(importer->queue[idx]);
-      importer->queue[idx].used = false;
+    if (importer->queue[i].used) {
+      assert(importer->queue[i].qubits != 0);
+      importer_sort_append(importer->queue[i]);
+      importer->queue[i].used = false;
     }
-
-    importer->port_idx++;
-    sem_post(dock_import_sem);
   }
 
   qlog_infra_process(&importer_sort);
 
-  importer->flushing = false;
-  importer->flush_reg = 0;
-  importer_sort.count = 0;
+  importer->idx = 0;
+  sem_post(port_import_sem);
 }
 
 void importer_delete_queue(uint64_t idx) {
