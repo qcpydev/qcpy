@@ -1,4 +1,5 @@
 #include <block.h>
+#include <exporter.h>
 #include <qcpy_error.h>
 #include <qlog_thread_pool.h>
 
@@ -12,11 +13,15 @@ void *qlog_thread_pool_worker(void *thread_index) {
   qlog_register_buf_t *qlog_buffer_find = qlog_thread_pool.registers[key];
 
   pthread_mutex_lock(&qlog_thread_pool.workers[key].lock);
-  qlog_thread_pool.workers[key].state = QLOG_PROCESS_EMPTY;
 
   while (qlog_thread_pool_open) {
     pthread_cond_wait(&qlog_thread_pool.workers[key].cond,
                       &qlog_thread_pool.workers[key].lock);
+
+    if (importer->flushing && importer->flush_reg % IMPORTER_FUNNEL == key) {
+      pthread_mutex_lock(&exporter_signal.lock);
+    }
+
     qlog_thread_pool.workers[key].state = QLOG_PROCESS_START;
 
     import_block_t *block_queue = importer_sort.queue[key];
@@ -31,7 +36,18 @@ void *qlog_thread_pool_worker(void *thread_index) {
 
     importer_delete_queue(key);
 
-    qlog_thread_pool.workers[key].state = QLOG_PROCESS_DONE;
+    if (importer->flushing && importer->flush_reg % IMPORTER_FUNNEL == key) {
+      qlog_thread_pool.workers[key].state = QLOG_PROCESS_READY;
+      exporter_signal_item_append(importer->flush_reg);
+
+      importer->flushing = false;
+      importer->flush_reg = -1;
+      pthread_mutex_unlock(&exporter_signal.lock);
+      printf("signaling exporter_signal\n");
+      pthread_cond_signal(&exporter_signal.cond);
+    }
+
+    qlog_thread_pool.workers[key].state = QLOG_PROCESS_EMPTY;
   }
 
   pthread_mutex_unlock(&qlog_thread_pool.workers[key].lock);
@@ -51,21 +67,12 @@ void qlog_thread_pool_signal_worker(uint64_t key) {
 
 qlog_t *qlog_thread_pool_get_qlog(uint32_t reg) {
   uint64_t key = reg % IMPORTER_FUNNEL;
-
   assert(qlog_thread_pool.registers[key]);
-  qlog_t *qlog = NULL;
-
-  pthread_mutex_lock(&qlog_thread_pool.workers[key].lock);
 
   qlog_register_buf_t *qlog_reg_buffer =
       qlog_register_buf_find(qlog_thread_pool.registers[key], reg);
 
-  pthread_mutex_unlock(&qlog_thread_pool.workers[key].lock);
-
   assert(qlog_reg_buffer);
 
-  qlog = qlog_reg_buffer->reg.qlog;
-
-  assert(qlog);
-  return qlog;
+  return qlog_reg_buffer->reg.qlog;
 }

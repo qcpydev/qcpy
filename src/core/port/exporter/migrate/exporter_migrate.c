@@ -4,6 +4,7 @@
 #include <pthread.h>
 #include <qcpy_error.h>
 #include <semaphore.h>
+#include <stdatomic.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/mman.h>
@@ -14,6 +15,7 @@ exporter_migrate_t *exporter_migrate;
 sem_t *exporter_migrate_ready;
 sem_t *exporter_migrate_empty;
 int exporter_migrate_shared;
+volatile _Atomic int counter = 0;
 
 void exporter_migrate_init() {
   assert(!exporter_migrate);
@@ -58,4 +60,67 @@ void exporter_migrate_init() {
     perror("exporter_migrate_empty_failed");
     assert(0);
   }
+}
+
+static bool exporter_migrate_single_work(qlog_node_t **qlog_nodes,
+                                         uint32_t size) {
+  assert(qlog_nodes);
+  bool single_work = false;
+  for (uint32_t i = 0; i < size; ++i) {
+    if (qlog_nodes[i] && (!qlog_nodes[i]->up && !qlog_nodes[i]->down)) {
+      atomic_fetch_add(&counter, 1);
+      single_work = true;
+      qlog_nodes[i] = qlog_nodes[i]->next;
+    }
+  }
+
+  return single_work;
+}
+
+static bool exporter_migrate_multi_work(qlog_node_t **qlog_nodes,
+                                        uint32_t size) {
+  assert(qlog_nodes);
+  bool multi_work = false;
+  for (uint32_t i = 0; i < size; ++i) {
+    if (qlog_nodes[i] && (qlog_nodes[i]->up || qlog_nodes[i]->down)) {
+
+      atomic_fetch_add(&counter, 1);
+      multi_work = true;
+
+      if (qlog_nodes[i]->up) {
+        qlog_nodes[i]->up = qlog_nodes[i]->up->next;
+      }
+
+      if (qlog_nodes[i]->down) {
+        qlog_nodes[i]->down = qlog_nodes[i]->down->next;
+      }
+
+      qlog_nodes[i] = qlog_nodes[i]->next;
+    }
+  }
+  return multi_work;
+}
+
+void exporter_migrate_fill_queue(qlog_node_t **qlog_nodes, uint32_t size) {
+
+  assert(qlog_nodes);
+
+  bool work_to_do = false;
+  do {
+    bool single_work = false;
+    do {
+      single_work = exporter_migrate_single_work(qlog_nodes, size);
+    } while (single_work);
+
+    bool multi_work = false;
+
+    do {
+      multi_work = exporter_migrate_multi_work(qlog_nodes, size);
+    } while (multi_work);
+
+    work_to_do = single_work || multi_work;
+  } while (work_to_do);
+
+  uint64_t test = atomic_fetch_add(&counter, 0);
+  printf("counter: %lu\n", test);
 }

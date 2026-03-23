@@ -13,48 +13,19 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-export_signal_t *export_signal;
-sem_t *export_sig_stop;
-sem_t *export_sig_ready;
-int shared_export_signal_space;
-
-static void exporter_signal_open() {
-  shared_export_signal_space =
-      shm_open(EXPORT_SIGNAL_SHARED_MEM, O_RDWR, MODE_SHARED_MEM);
-
-  if (shared_export_space == -1) {
-    perror("shm_open child");
-    exit(1);
-  }
-
-  export_signal = mmap(NULL, sizeof(*export_signal), PROT_ARGS, MAP_SHARED,
-                       shared_export_signal_space, 0);
-  if (export_signal == MAP_FAILED) {
-    assert(0);
-  }
-
-  memset(export_signal, 0, sizeof(export_signal_t));
-
-  export_sig_stop = sem_open(EXPORT_SIGNAL_STOP, 0);
-  if (export_sig_stop == SEM_FAILED) {
-    perror("sem_open");
-    assert(0);
-  }
-
-  export_sig_ready = sem_open(EXPORT_SIGNAL_READY, 0);
-  if (export_sig_ready == SEM_FAILED) {
-    perror("sem_open");
-    assert(0);
-  }
-
-  export_signal->reg = -1;
-  export_signal->qcpy_core_ready = true;
-}
+exporter_signal_t exporter_signal;
 
 // TODO: MOVE THIS TO QUACK_EXPORT. We will never actually need to use this
 // shared mem, so whats the point of opening it! We will use our own shared mem
 // for exporter to send info to quack. We are just the mediator for sending over
 // stuff to quack
+//
+
+void exporter_flush_init() { pthread_mutex_init(&exporter_signal.lock, NULL); }
+
+void exporter_flush_signal() {}
+
+void exporter_flush() {}
 
 void exporter_init() {
   shared_export_space = shm_open(QCPY_EXPORT, O_RDWR, MODE_SHARED_MEM);
@@ -84,37 +55,88 @@ void exporter_init() {
     assert(0);
   }
 
-  exporter_signal_open();
   exporter_migrate_init();
-
   exporter->qcpy_core_ready = true;
 }
 
 void exporter_process() {
-  qlog_infra_await_completion();
+  int to_process = exporter_signal_item_dequeue();
 
-  sem_wait(export_sig_ready);
-  qlog_node_t *qlog_nodes[EXPORTER_MIGRATE_MAX_SIZE];
+  qlog_t *qlog = qlog_infra_find_qlog(to_process);
 
-  qlog_t *qlog = qlog_infra_find_qlog(export_signal->reg);
   assert(qlog);
+
   qlog_graph_t *graph_to_process = qlog->graph;
-  bool force_flush = true;
-
   assert(graph_to_process);
-  qlog_optimize(graph_to_process, force_flush);
+  printf("qlog_graph->size: %lu\n", graph_to_process->node_count);
 
-  // just in step 3, get round of nodes as a ptr array, send off to
-  // exporter_migrate exporter_migrate will either a) use sem_wait to pause
-  // adding more entries to allow quack to read it, or b) it will "ask for
-  // s'more", in which we will complete this until we are told by
-  // exporter_migrate c) there is no work more work to be done, so finish up
-  // what we are doing, set export_signal->reg to -1 and post
-  // export_sig_stop this should fucking work? single for loop? no internals
-  // unless we want to? ah, one more thing, we need to specify to qlog_graph
-  // to grab a chunk from a specfic region so 0-15 16 -... and we can pass
-  // in a qlog_node_t array
+  bool force_flush = true;
+  // qlog_optimize(graph_to_process, force_flush);
 
-  export_signal->reg = -1;
-  sem_post(export_sig_stop);
+  uint32_t size = graph_to_process->size;
+
+  qlog_node_t **to_copy = graph_to_process->nodes;
+  qlog_node_t **qlog_nodes = NULL;
+
+  qlog_nodes = (qlog_node_t **)malloc(sizeof(qlog_node_t *) * size);
+  assert(qlog_nodes);
+
+  memcpy(qlog_nodes, to_copy, sizeof(qlog_node_t *) * size);
+
+  exporter_migrate_fill_queue(qlog_nodes, size);
+
+  free(qlog_nodes);
+}
+
+exporter_signal_item_t *exporter_signal_item_init(int flush_reg) {
+  exporter_signal_item_t *sig_item;
+
+  sig_item = (exporter_signal_item_t *)malloc(sizeof(exporter_signal_item_t));
+  assert(sig_item);
+
+  memset(sig_item, 0, sizeof(exporter_signal_item_t));
+
+  sig_item->reg = flush_reg;
+  return sig_item;
+}
+
+void exporter_signal_item_delete(exporter_signal_item_t *sig_item) {
+  assert(sig_item);
+  free(sig_item);
+  sig_item = NULL;
+}
+
+int exporter_signal_item_dequeue() {
+  assert(exporter_signal.items);
+  int reg = exporter_signal.items->reg;
+
+  exporter_signal_item_t *sig_item = exporter_signal.items;
+  bool was_last = sig_item == exporter_signal.last;
+
+  if (exporter_signal.items->next) {
+    exporter_signal.items = exporter_signal.items->next;
+  }
+
+  if (was_last) {
+    exporter_signal.items = NULL;
+    exporter_signal.last = NULL;
+  }
+
+  exporter_signal_item_delete(sig_item);
+
+  return reg;
+}
+
+void exporter_signal_item_append(int flush_reg) {
+  exporter_signal_item_t *sig_item = exporter_signal_item_init(flush_reg);
+
+  assert(sig_item);
+
+  if (!exporter_signal.items) {
+    exporter_signal.items = sig_item;
+    exporter_signal.last = sig_item;
+  } else {
+    exporter_signal.last->next = sig_item;
+    exporter_signal.last = exporter_signal.last->next;
+  }
 }

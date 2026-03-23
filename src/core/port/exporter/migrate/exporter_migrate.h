@@ -30,21 +30,13 @@
  * consumes by itself.
  */
 
-#define EXPORTER_MIGRATE_MAX_SIZE 16
-#define EXPORTER_MIGRATE_MAX_QUEUE_SIZE 16
-
-#define EXPORTER_MIGRATE_TOTAL_SIZE                                            \
-  EXPORTER_MIGRATE_MAX_SIZE *EXPORTER_MIGRATE_MAX_QUEUE_SIZE
-
 #define EXPORTER_MIGRATE_READY "/qcpy_exporter_migrate_ready_sem"
 #define EXPORTER_MIGRATE_EMPTY "/qcpy_exporter_migrate_empty_sem"
 #define EXPORTER_MIGRATE_SHARED_MEM "/qcpy_exporter_migrate_shared_mem"
 
 typedef struct exporter_migrate_s {
-  qlog_entry_t *qlog_node_t[EXPORTER_MIGRATE_TOTAL_SIZE];
-  uint32_t queue_idx[EXPORTER_MIGRATE_MAX_SIZE];
+  qlog_entry_t *entries[IMPORT_MAX_SIZE];
   uint32_t idx;
-  uint32_t start_range;
 } exporter_migrate_t;
 
 extern exporter_migrate_t *exporter_migrate;
@@ -53,6 +45,6 @@ extern sem_t *exporter_migrate_empty;
 extern int exporter_migrate_shared;
 
 void exporter_migrate_init();
-void exporter_migrate_fill_queue(qlog_graph_t *qlog_graph);
+void exporter_migrate_fill_queue(qlog_node_t **qlog_nodes, uint32_t size);
 
 #endif

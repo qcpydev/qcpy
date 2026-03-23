@@ -3,7 +3,6 @@
 #include <importer.h>
 #include <port.h>
 #include <qcpy_error.h>
-#include <stdio.h>
 #include <stdlib.h>
 
 import_t *importer = NULL;
@@ -20,6 +19,7 @@ int shared_export_space;
 
 pthread_t import_thread;
 pthread_t export_thread;
+
 bool port_closed = false;
 
 void *port_import(void *not_used) {
@@ -31,9 +31,18 @@ void *port_import(void *not_used) {
 }
 
 void *port_export(void *not_used) {
+  // lock
+  pthread_mutex_lock(&exporter_signal.lock);
+
   while (!port_closed) {
-    exporter_process();
+    pthread_cond_wait(&exporter_signal.cond, &exporter_signal.lock);
+
+    while (exporter_signal.items) {
+      exporter_process();
+    }
   }
+
+  pthread_mutex_unlock(&exporter_signal.lock);
 
   return not_used;
 }

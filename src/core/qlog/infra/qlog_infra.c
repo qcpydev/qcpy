@@ -34,6 +34,8 @@ void qlog_infra_await_completion() {
   bool still_running = true;
   while (still_running) {
     for (uint64_t i = 0; i < IMPORTER_FUNNEL; ++i) {
+      pthread_mutex_lock(&qlog_thread_pool.workers[i].lock);
+
       still_running =
           !(qlog_thread_pool.workers[i].state == QLOG_PROCESS_EMPTY ||
             qlog_thread_pool.workers[i].state == QLOG_PROCESS_DONE);
@@ -41,8 +43,24 @@ void qlog_infra_await_completion() {
       if (still_running) {
         break;
       }
+
+      pthread_mutex_unlock(&qlog_thread_pool.workers[i].lock);
     }
   }
+}
+
+void qlog_infra_await_completion_reg(int reg) {
+  assert(reg != -1);
+  uint64_t key = reg % IMPORTER_FUNNEL;
+
+  bool completed = false;
+
+  while (!completed) {
+    completed = qlog_thread_pool.workers[key].state &=
+        QLOG_PROCESS_READY | QLOG_PROCESS_DONE;
+  }
+
+  qlog_thread_pool.workers[key].state = QLOG_PROCESS_DONE;
 }
 
 void qlog_infra_process(import_sort_t *importer_sort) {
