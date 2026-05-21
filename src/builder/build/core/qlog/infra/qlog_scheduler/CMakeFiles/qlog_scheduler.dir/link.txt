@@ -1,0 +1,2 @@
+/usr/bin/ar qc libqlog_scheduler.a CMakeFiles/qlog_scheduler.dir/qlog_scheduler.c.o
+/usr/bin/ranlib libqlog_scheduler.a

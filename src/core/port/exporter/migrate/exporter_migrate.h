@@ -1,4 +1,5 @@
 #include <block.h>
+#include <importer.h>
 #include <qlog.h>
 #include <qlog_graph.h>
 #include <semaphore.h>

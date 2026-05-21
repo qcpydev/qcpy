@@ -1,6 +1,8 @@
 #include <assert.h>
+#include <base.h>
 #include <qlog_entry.h>
 #include <qlog_expand.h>
+#include <stdlib.h>
 
 typedef void (*qlog_expanders)(qlog_node_t *);
 
@@ -110,16 +112,18 @@ void qlog_expand_rzz(qlog_node_t *qlog_node) {
 void qlog_expand_ccx(qlog_node_t *qlog_node) {
   assert(qlog_node);
   qlog_entry_t *qlog_entry = qlog_node->qlog_entry;
+  /*
+  uint16_t *controlled = base_decompress_qubit_bitpack(
+      qlog_entry->controlled_count, qlog_entry->controlled_bitpack);
 
-  uint16_t *controlled = qlog_entry_unpack(qlog_entry->controlled_count,
-                                           qlog_entry->controlled_bitpack);
-  uint16_t *target =
-      qlog_entry_unpack(qlog_entry->target_count, qlog_entry->target_bitpack);
+  uint16_t *target = base_decompress_qubit_bitpack(qlog_entry->target_count,
+                                                   qlog_entry->target_bitpack);
 
   free(controlled);
   free(target);
   controlled = NULL;
   target = NULL;
+  */
 }
 
 bool qlog_expand(qlog_graph_t *qlog_graph) {

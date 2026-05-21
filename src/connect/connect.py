@@ -3,7 +3,6 @@ import ctypes
 from typing import List
 from .port_entry import Block, Block_Type, IMPORT_MAX_SIZE
 import subprocess
-import time
 
 
 class Connect:
@@ -117,17 +116,27 @@ class Connect:
             controlled_qubits, target_qubits
         ):
             return
+
         num_qubits = len(qubits)
 
         num_controlled = len(controlled_qubits)
         num_target = len(target_qubits)
 
+        '''
         qubit_bitmask = self.__create_qubit_bitmask__(qubits)
 
         controlled_bitmask = self.__create_qubit_bitmask__(controlled_qubits)
         target_bitmask = self.__create_qubit_bitmask__(target_qubits)
         controlled_bitpack = self.__create_qubit_bitpack__(controlled_qubits)
         target_bitpack = self.__create_qubit_bitpack__(target_qubits)
+        '''
+
+
+        qubit_bitmask = 1
+        controlled_bitmask = 1
+        controlled_bitpack = 1
+        target_bitpack = 1
+        target_bitmask = 1
 
         new_block = Block()
 
@@ -172,7 +181,6 @@ class Connect:
 
         output = self.qcpy_connect.dock_get_qc_entries(reg, sub_entries)
         entries += sub_entries
-        count = output
         """
         while (output == IMPORT_MAX_SIZE):
             count += output

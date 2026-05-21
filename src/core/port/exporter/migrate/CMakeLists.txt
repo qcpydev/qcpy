@@ -6,5 +6,6 @@ target_include_directories(exporter_migrate PUBLIC
 
 target_link_libraries(exporter_migrate PUBLIC
     qlog
+    importer
     qcpy_error
 )

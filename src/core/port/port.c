@@ -5,17 +5,10 @@
 #include <qcpy_error.h>
 #include <stdlib.h>
 
-import_t *importer = NULL;
 export_t *exporter = NULL;
-
-sem_t *dock_import_sem;
-sem_t *port_import_sem;
 
 sem_t *dock_export_sem;
 sem_t *port_export_sem;
-
-int shared_import_space;
-int shared_export_space;
 
 pthread_t import_thread;
 pthread_t export_thread;
@@ -53,7 +46,7 @@ void port_init(int argc, char **argv) {
   if (argc > 1 && argv) {
   }
 
-  importer_init();
+  importer_open();
   exporter_init();
 }
 

@@ -23,12 +23,8 @@ exporter_signal_t exporter_signal;
 
 void exporter_flush_init() { pthread_mutex_init(&exporter_signal.lock, NULL); }
 
-void exporter_flush_signal() {}
-
-void exporter_flush() {}
-
 void exporter_init() {
-  shared_export_space = shm_open(QCPY_EXPORT, O_RDWR, MODE_SHARED_MEM);
+  int shared_export_space = shm_open(QCPY_EXPORT, O_RDWR, MODE_SHARED_MEM);
 
   if (shared_export_space == -1) {
     perror("shm_open child");
@@ -68,10 +64,6 @@ void exporter_process() {
 
   qlog_graph_t *graph_to_process = qlog->graph;
   assert(graph_to_process);
-  printf("qlog_graph->size: %lu\n", graph_to_process->node_count);
-
-  bool force_flush = true;
-  // qlog_optimize(graph_to_process, force_flush);
 
   uint32_t size = graph_to_process->size;
 

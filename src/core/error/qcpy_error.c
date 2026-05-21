@@ -4,6 +4,8 @@
 #include <replay_qlog.h>
 #include <replay_qlog_entry.h>
 #include <replay_qlog_register.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 #define QCPY_URL "https://github.com/qcpydev/qcpy"
 

@@ -1,0 +1,2 @@
+/usr/bin/ar qc libexporter.a CMakeFiles/exporter.dir/exporter.c.o
+/usr/bin/ranlib libexporter.a

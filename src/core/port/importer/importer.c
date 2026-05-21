@@ -1,39 +1,40 @@
+#include <base_tools.h>
 #include <block.h>
 #include <importer.h>
 #include <port.h>
 #include <qcpy_error.h>
 #include <qlog_infra.h>
 
+import_t *importer;
+sem_t *dock_import_sem;
+sem_t *port_import_sem;
+
 import_sort_t importer_sort;
 
-void importer_init() {
-  shared_import_space = shm_open(QCPY_IMPORT, O_RDWR, MODE_SHARED_MEM);
+void importer_open() {
+  importer =
+      (import_t *)base_tools_open_shared_mem(sizeof(import_t), QCPY_IMPORT);
+  assert(importer);
 
-  if (shared_import_space == -1) {
-    perror("shm_open child");
-    exit(1);
-  }
+  dock_import_sem = base_tools_open_shared_sem(DOCK_IMPORT_SEM);
+  assert(dock_import_sem);
 
-  importer = mmap(NULL, sizeof(*importer), PROT_ARGS, MAP_SHARED,
-                  shared_import_space, 0);
-  if (importer == MAP_FAILED) {
-    assert(0);
-  }
-
-  dock_import_sem = sem_open(DOCK_IMPORT_SEM, 0);
-  if (dock_import_sem == SEM_FAILED) {
-    perror("sem_open");
-    assert(0);
-  }
-
-  port_import_sem = sem_open(PORT_IMPORT_SEM, 0);
-
-  if (port_import_sem == SEM_FAILED) {
-    perror("sem_open");
-    assert(0);
-  }
+  port_import_sem = base_tools_open_shared_sem(PORT_IMPORT_SEM);
+  assert(port_import_sem);
 
   importer->ready = true;
+}
+
+void importer_init() {
+  importer =
+      (import_t *)base_tools_create_shared_mem(sizeof(import_t), QCPY_IMPORT);
+  assert(importer);
+
+  port_import_sem = base_tools_create_shared_sem(PORT_IMPORT_SEM, 0);
+  assert(port_import_sem);
+
+  dock_import_sem = base_tools_create_shared_sem(DOCK_IMPORT_SEM, 0);
+  assert(dock_import_sem);
 }
 
 void importer_sort_init() {

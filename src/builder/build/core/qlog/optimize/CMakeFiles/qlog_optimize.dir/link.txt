@@ -1,0 +1,2 @@
+/usr/bin/ar qc libqlog_optimize.a CMakeFiles/qlog_optimize.dir/qlog_optimize.c.o
+/usr/bin/ranlib libqlog_optimize.a

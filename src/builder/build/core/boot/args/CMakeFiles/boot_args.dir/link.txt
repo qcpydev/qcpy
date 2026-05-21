@@ -1,0 +1,2 @@
+/usr/bin/ar qc libboot_args.a CMakeFiles/boot_args.dir/boot_args.c.o
+/usr/bin/ranlib libboot_args.a

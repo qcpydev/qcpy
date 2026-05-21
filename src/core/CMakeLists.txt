@@ -1,3 +1,4 @@
+#[[
 # GLOBAL
 # ========================================
 
@@ -9,7 +10,6 @@ endif()
 
 project(qcpy-core VERSION 0.1 LANGUAGES C CXX)
 enable_language(CUDA OPTIONAL)
-
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -85,37 +85,30 @@ set(CMAKE_MAP_IMPORTED_CONFIG_UBSAN RELEASE)
 
 set(CMAKE_PREFIX_PATH "/opt/check" ${CMAKE_PREFIX_PATH})
 
-if(MSVC)
-    if(NOT "Asan" IN_LIST CMAKE_CONFIGURATION_TYPES)
-        list(APPEND CMAKE_CONFIGURATION_TYPES Asan)
-    endif()
+set(CMAKE_C_FLAGS_ASAN
+    "-fsanitize=address -fno-optimize-sibling-calls -fsanitize-address-use-after-scope -fno-omit-frame-pointer -g -O1"
+    CACHE STRING "Build with AddressSanitizer"
+    FORCE)
 
-    set(CMAKE_EXE_LINKER_FLAGS_ASAN "/DEBUG /INCREMENTAL:NO")
-else()
-    set(CMAKE_C_FLAGS_ASAN
-        "-fsanitize=address -fno-optimize-sibling-calls -fsanitize-address-use-after-scope -fno-omit-frame-pointer -g -O1"
-        CACHE STRING "Build with AddressSanitizer"
-        FORCE)
+set(CMAKE_C_FLAGS_LSAN
+    "-fsanitize=leak -fno-omit-frame-pointer -g -O1"
+    CACHE STRING "Build with LeakSanitizer"
+    FORCE)
 
-    set(CMAKE_C_FLAGS_LSAN
-        "-fsanitize=leak -fno-omit-frame-pointer -g -O1"
-        CACHE STRING "Build with LeakSanitizer"
-        FORCE)
+set(CMAKE_CXX_FLAGS_TSAN
+    "-fsanitize=thread -g -O1"
+    CACHE STRING "Build with ThreadSanitizer"
+    FORCE)
 
-    set(CMAKE_CXX_FLAGS_TSAN
-        "-fsanitize=thread -g -O1"
-        CACHE STRING "Build with ThreadSanitizer"
-        FORCE)
+set(CMAKE_C_FLAGS_MSAN
+    "-fsanitize=memory -fno-optimize-sibling-calls -fsanitize-memory-track-origins=2 -fno-omit-frame-pointer -g -O2"
+    CACHE STRING "Build with MemorySanitizer"
+    FORCE)
 
-    set(CMAKE_C_FLAGS_MSAN
-        "-fsanitize=memory -fno-optimize-sibling-calls -fsanitize-memory-track-origins=2 -fno-omit-frame-pointer -g -O2"
-        CACHE STRING "Build with MemorySanitizer"
-        FORCE)
-
-    set(CMAKE_C_FLAGS_UBSAN
-        "-fsanitize=undefined"
-        CACHE STRING "Build with UndefinedBehaviourSanitizer"
-        FORCE)
+set(CMAKE_C_FLAGS_UBSAN
+    "-fsanitize=undefined"
+    CACHE STRING "Build with UndefinedBehaviourSanitizer"
+    FORCE)
 endif()
 
 
@@ -141,10 +134,9 @@ endif()
 # ========================================
 
 # set up testing
-# ========================================
 #find_package(check REQUIRED)
 #enable_testing()
-#add_subdirectory(test)
+# ========================================
 # ========================================
 
 # qcpy_core and qcpy_connect directories
@@ -171,7 +163,6 @@ target_link_libraries(qcpy_connect PUBLIC
     block
     qcpy_base
     dock
-    args
     qlog
     qlog_register
 )
@@ -221,5 +212,17 @@ endif()
 
 # END QUACK CORE GPU EXECUTABLE
 # ========================================
+]]
 
+add_subdirectory(base)
+add_subdirectory(block)
+add_subdirectory(error)
+add_subdirectory(boot)
+add_subdirectory(dock)
+add_subdirectory(port)
+add_subdirectory(qlog)
+add_subdirectory(register)
+add_subdirectory(quack)
 
+#TODO: FIX THIS
+#add_subdirectory(test)

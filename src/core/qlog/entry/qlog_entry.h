@@ -53,6 +53,5 @@ qlog_entry_t *qlog_entry_duplicates_to_clean(qlog_entry_t *qlog_entry);
 const char *get_qlog_entry_gate(qlog_entry_t *qlog_entry);
 const char *get_qlog_entry_gate_type(qlog_entry_t *qlog_entry);
 bool qlog_entry_compare(qlog_entry_t *qlog_entry, qlog_entry_t *to_compare);
-uint16_t *qlog_entry_unpack(uint8_t qubits, uint64_t bitpack);
 
 #endif // QLOG_ENTRY_H

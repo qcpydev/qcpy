@@ -1,9 +1,9 @@
 #include <stdbool.h>
 #include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
 
+#pragma once
 #ifndef GLOBAL_H
+#define GLOBAL_H
 /*
  * A space to set any common or useful functions/types/etc.
  */
@@ -59,4 +59,12 @@ typedef enum {
 
 const char *base_get_gate_str(int gate);
 const char *base_get_type_str(int type);
+
+uint64_t base_create_qubit_bitmask(uint64_t *to_bitmask);
+uint64_t base_create_qubit_bitpack(uint64_t *to_bitpack);
+
+uint64_t *base_unpack_qubit_bitmask(uint64_t bitmasked);
+
+uint16_t *base_decompress_qubit_bitpack(uint8_t qubits, uint64_t bitpacked);
+
 #endif // GLOBAL_H

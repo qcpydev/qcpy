@@ -1,4 +1,8 @@
 #include <base.h>
+#include <stdlib.h>
+
+#define BITPACK_MAX 0x3F
+#define BITPACK_RANGE 6
 
 const char *base_gate_strs[] = {
     [GATE_IDENTITY] = "IDENTITY",
@@ -41,12 +45,27 @@ const char *base_gate_strs[] = {
 };
 
 const char *base_type_strs[] = {
-    [TYPE_SINGLE] = "SINGLE",
-    [TYPE_CONTROLLED] = "CONTROLLED",
-    [TYPE_MULTI] = "MULTI",
-    [TYPE_BLOCK] = "BLOCK",
+    [TYPE_SINGLE] = "SINGLE",       [TYPE_CONTROLLED] = "CONTROLLED",
+    [TYPE_MULTI] = "MULTI",         [TYPE_BLOCK] = "BLOCK",
     [TYPE_ALGORITHM] = "ALGORITHM",
 };
 
 const char *base_get_gate_str(int gate) { return base_gate_strs[gate]; }
 const char *base_get_type_str(int type) { return base_type_strs[type]; }
+
+uint64_t base_create_qubit_bitmask(uint64_t *to_bitmask) {}
+
+uint64_t base_create_qubit_bitpack(uint64_t *to_bitpack) {}
+
+uint16_t *base_decompress_qubit_bitpack(uint8_t qubits, uint64_t bitpacked) {
+  uint16_t *unpacked = NULL;
+  unpacked = (uint16_t *)malloc(2 * sizeof(qubits));
+
+  for (uint16_t i = 0; i < qubits; ++i) {
+    unpacked[i] = (bitpacked >> (i * BITPACK_RANGE)) & BITPACK_MAX;
+  }
+
+  return unpacked;
+}
+
+uint64_t *base_decompress_qubit_bitmask(uint64_t bitmasked) {}

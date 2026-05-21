@@ -1,0 +1,2 @@
+/usr/bin/ar qc libdock_logger.a CMakeFiles/dock_logger.dir/dock_logger.c.o
+/usr/bin/ranlib libdock_logger.a

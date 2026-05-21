@@ -1,0 +1,2 @@
+/usr/bin/ar qc libqlog_thread_pool.a CMakeFiles/qlog_thread_pool.dir/qlog_thread_pool.c.o
+/usr/bin/ranlib libqlog_thread_pool.a

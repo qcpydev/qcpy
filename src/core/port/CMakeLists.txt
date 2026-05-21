@@ -8,6 +8,7 @@ target_link_libraries(port PUBLIC
    qcpy_error
    importer
    exporter
+   qlog
 )
 
 target_include_directories(port PUBLIC

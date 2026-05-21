@@ -1,0 +1,2 @@
+/usr/bin/ar qc libexporter_migrate.a CMakeFiles/exporter_migrate.dir/exporter_migrate.c.o
+/usr/bin/ranlib libexporter_migrate.a

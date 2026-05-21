@@ -4,9 +4,7 @@
 #include <qlog_entry.h>
 #include <stdint.h>
 #include <stdio.h>
-
-#define BITPACK_MAX 0x3F
-#define BITPACK_RANGE 6
+#include <stdlib.h>
 
 qlog_entry_t *qlog_entry_init(uint64_t id, block_t block) {
   qlog_entry_t *qlog_entry = (qlog_entry_t *)malloc(sizeof(qlog_entry_t));
@@ -183,15 +181,4 @@ bool qlog_entry_compare(qlog_entry_t *qlog_entry, qlog_entry_t *to_compare) {
          qlog_entry->gate_type == to_compare->gate_type &&
          qlog_entry->gate_name == to_compare->gate_name &&
          qlog_entry->qubit_bitmask == to_compare->qubit_bitmask;
-}
-
-uint16_t *qlog_entry_unpack(uint8_t qubits, uint64_t bitpack) {
-  uint16_t *unpacked = NULL;
-  unpacked = (uint16_t *)malloc(2 * sizeof(qubits));
-
-  for (uint16_t i = 0; i < qubits; ++i) {
-    unpacked[i] = (bitpack >> (i * BITPACK_RANGE)) & BITPACK_MAX;
-  }
-
-  return unpacked;
 }

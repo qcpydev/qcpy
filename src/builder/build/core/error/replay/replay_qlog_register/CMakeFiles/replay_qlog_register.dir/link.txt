@@ -1,0 +1,2 @@
+/usr/bin/ar qc libreplay_qlog_register.a CMakeFiles/replay_qlog_register.dir/replay_qlog_register.c.o
+/usr/bin/ranlib libreplay_qlog_register.a

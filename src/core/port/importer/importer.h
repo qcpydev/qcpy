@@ -46,6 +46,13 @@ typedef struct import_sort_s {
 void importer_init();
 void importer_append(block_t block);
 void importer_clear();
+
+void importer_open();
+
+extern import_t *importer;
+extern sem_t *dock_import_sem;
+extern sem_t *port_import_sem;
+
 void importer_delete_queue(uint64_t idx);
 void importer_sort_ported(import_t *importer);
 

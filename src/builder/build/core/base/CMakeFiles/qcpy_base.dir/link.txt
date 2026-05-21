@@ -1,0 +1,2 @@
+/usr/bin/ar qc libqcpy_base.a CMakeFiles/qcpy_base.dir/base.c.o
+/usr/bin/ranlib libqcpy_base.a

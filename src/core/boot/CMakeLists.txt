@@ -1,10 +1,10 @@
-add_subdirectory(args)
-
 add_library(boot boot.c)
+
+add_subdirectory(args)
 
 target_link_libraries(boot PUBLIC
    qcpy_error
-   args
+   boot_args
    port
    qlog_infra
 )

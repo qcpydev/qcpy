@@ -84,16 +84,9 @@ typedef struct export_s {
 bool validate_block(block_t *block);
 void block_add(block_t *block, import_t *port);
 
-extern import_t *importer;
 extern export_t *exporter;
-
-extern sem_t *dock_import_sem;
-extern sem_t *port_import_sem;
 
 extern sem_t *dock_export_sem;
 extern sem_t *port_export_sem;
-
-extern int shared_import_space;
-extern int shared_export_space;
 
 #endif // BLOCK_H

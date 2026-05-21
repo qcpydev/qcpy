@@ -1,0 +1,2 @@
+/usr/bin/ar qc libqlog_expand.a CMakeFiles/qlog_expand.dir/qlog_expand.c.o
+/usr/bin/ranlib libqlog_expand.a

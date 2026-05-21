@@ -1,5 +1,7 @@
 // #include <qcpy_error.h>
 #include <qlog.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 const char *replay_qlog_description[] = {
     [QLOG_NULL] = "qlog is null",

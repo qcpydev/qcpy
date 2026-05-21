@@ -43,7 +43,6 @@ void *qlog_thread_pool_worker(void *thread_index) {
       importer->flushing = false;
       importer->flush_reg = -1;
       pthread_mutex_unlock(&exporter_signal.lock);
-      printf("signaling exporter_signal\n");
       pthread_cond_signal(&exporter_signal.cond);
     }
 

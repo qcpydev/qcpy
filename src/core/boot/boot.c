@@ -1,5 +1,5 @@
-#include <args.h>
 #include <boot.h>
+#include <boot_args.h>
 #include <importer.h>
 #include <port.h>
 #include <qlog.h>
@@ -19,16 +19,11 @@
 
 // TODO: SET BOOT ARGS TO TAKE IN CHAR ARRAY
 
-static void boot_quack_core();
-
 void boot_args_init() {}
-
-static void boot_quack_core() { int j; }
 
 void boot_core_init() {
   qlog_infra_init();
   port_boot();
-  boot_quack_core();
 }
 
 void boot_core(int argc, char **argv) {

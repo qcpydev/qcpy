@@ -1,0 +1,2 @@
+/usr/bin/ar qc libqlog_entry.a CMakeFiles/qlog_entry.dir/qlog_entry.c.o
+/usr/bin/ranlib libqlog_entry.a

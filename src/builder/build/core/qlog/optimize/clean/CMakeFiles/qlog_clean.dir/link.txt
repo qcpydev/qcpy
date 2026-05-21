@@ -1,0 +1,2 @@
+/usr/bin/ar qc libqlog_clean.a CMakeFiles/qlog_clean.dir/qlog_clean.c.o
+/usr/bin/ranlib libqlog_clean.a

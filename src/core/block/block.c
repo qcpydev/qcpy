@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <base.h>
 #include <block.h>
 #include <qcpy_error.h>
 
@@ -16,6 +17,7 @@ bool validate_block(block_t *block) {
 
 void block_add(block_t *block, import_t *importer) {
   assert(block && importer);
+
   importer->queue[importer->idx] = *block;
   importer->queue[importer->idx].used = true;
   importer->idx++;

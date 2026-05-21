@@ -1,0 +1,2 @@
+/usr/bin/ar qc libqcpy_error.a CMakeFiles/qcpy_error.dir/qcpy_error.c.o
+/usr/bin/ranlib libqcpy_error.a

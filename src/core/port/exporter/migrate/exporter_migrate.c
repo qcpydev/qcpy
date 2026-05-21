@@ -68,7 +68,6 @@ static bool exporter_migrate_single_work(qlog_node_t **qlog_nodes,
   bool single_work = false;
   for (uint32_t i = 0; i < size; ++i) {
     if (qlog_nodes[i] && (!qlog_nodes[i]->up && !qlog_nodes[i]->down)) {
-      atomic_fetch_add(&counter, 1);
       single_work = true;
       qlog_nodes[i] = qlog_nodes[i]->next;
     }
@@ -83,8 +82,6 @@ static bool exporter_migrate_multi_work(qlog_node_t **qlog_nodes,
   bool multi_work = false;
   for (uint32_t i = 0; i < size; ++i) {
     if (qlog_nodes[i] && (qlog_nodes[i]->up || qlog_nodes[i]->down)) {
-
-      atomic_fetch_add(&counter, 1);
       multi_work = true;
 
       if (qlog_nodes[i]->up) {
@@ -120,7 +117,4 @@ void exporter_migrate_fill_queue(qlog_node_t **qlog_nodes, uint32_t size) {
 
     work_to_do = single_work || multi_work;
   } while (work_to_do);
-
-  uint64_t test = atomic_fetch_add(&counter, 0);
-  printf("counter: %lu\n", test);
 }

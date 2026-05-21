@@ -11,6 +11,7 @@ target_link_libraries(qlog PUBLIC
    qlog_graph
    qlog_optimize
    qcpy_error
+   qcpy_base
 )
 
 target_include_directories(qlog PUBLIC

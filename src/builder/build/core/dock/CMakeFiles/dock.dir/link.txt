@@ -1,0 +1,2 @@
+/usr/bin/ar qc libdock.a CMakeFiles/dock.dir/dock.c.o
+/usr/bin/ranlib libdock.a
