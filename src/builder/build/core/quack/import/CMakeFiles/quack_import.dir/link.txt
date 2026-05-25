@@ -1,2 +1,0 @@
-/usr/bin/ar qc libquack_import.a CMakeFiles/quack_import.dir/quack_import.cc.o
-/usr/bin/ranlib libquack_import.a

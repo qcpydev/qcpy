@@ -1,2 +1,0 @@
-/usr/bin/ar qc libboot.a CMakeFiles/boot.dir/boot.c.o
-/usr/bin/ranlib libboot.a

@@ -1,2 +1,0 @@
-/usr/bin/ar qc libbase_tools.a CMakeFiles/base_tools.dir/base_tools.c.o
-/usr/bin/ranlib libbase_tools.a

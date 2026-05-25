@@ -1,2 +1,0 @@
-/usr/bin/ar qc libquack_merge.a CMakeFiles/quack_merge.dir/quack_merge.cc.o
-/usr/bin/ranlib libquack_merge.a

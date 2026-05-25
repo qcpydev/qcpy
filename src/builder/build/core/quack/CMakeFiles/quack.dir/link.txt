@@ -1,2 +1,0 @@
-/usr/bin/ar qc libquack.a CMakeFiles/quack.dir/quack.cc.o
-/usr/bin/ranlib libquack.a

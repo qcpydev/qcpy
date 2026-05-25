@@ -1,2 +1,0 @@
-/usr/bin/ar qc libqlog_graph_stats.a CMakeFiles/qlog_graph_stats.dir/qlog_graph_stats.c.o
-/usr/bin/ranlib libqlog_graph_stats.a

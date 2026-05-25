@@ -1,7 +1,0 @@
-{
-	"InstallScripts" : 
-	[
-		"/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/CMakeFiles/CheckCUDA/cmake_install.cmake"
-	],
-	"Parallel" : false
-}

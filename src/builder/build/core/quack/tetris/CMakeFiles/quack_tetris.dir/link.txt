@@ -1,2 +1,0 @@
-/usr/bin/ar qc libquack_tetris.a CMakeFiles/quack_tetris.dir/quack_tetris.cc.o
-/usr/bin/ranlib libquack_tetris.a

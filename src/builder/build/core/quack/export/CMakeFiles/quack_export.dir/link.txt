@@ -1,2 +1,0 @@
-/usr/bin/ar qc libquack_export.a CMakeFiles/quack_export.dir/quack_export.cc.o
-/usr/bin/ranlib libquack_export.a

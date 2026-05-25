@@ -1,1 +1,0 @@
-. "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/conanrunenv-release-x86_64.sh"

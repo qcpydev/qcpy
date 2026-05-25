@@ -1,2 +1,0 @@
-/usr/bin/ar qc libimporter.a CMakeFiles/importer.dir/importer.c.o
-/usr/bin/ranlib libimporter.a

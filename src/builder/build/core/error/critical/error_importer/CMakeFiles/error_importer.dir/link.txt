@@ -1,2 +1,0 @@
-/usr/bin/ar qc liberror_importer.a CMakeFiles/error_importer.dir/error_importer.c.o
-/usr/bin/ranlib liberror_importer.a

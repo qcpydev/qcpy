@@ -1,2 +1,0 @@
-/usr/bin/ar qc libqlog_infra.a CMakeFiles/qlog_infra.dir/qlog_infra.c.o
-/usr/bin/ranlib libqlog_infra.a

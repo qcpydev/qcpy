@@ -1,2 +1,0 @@
-/usr/bin/ar qc libqlog_node.a CMakeFiles/qlog_node.dir/qlog_node.c.o
-/usr/bin/ranlib libqlog_node.a

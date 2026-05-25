@@ -1,2 +1,0 @@
-/usr/bin/ar qc libqlog_register.a CMakeFiles/qlog_register.dir/qlog_register.c.o
-/usr/bin/ranlib libqlog_register.a

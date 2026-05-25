@@ -1,2 +1,0 @@
-/usr/bin/ar qc libquack_hive.a CMakeFiles/quack_hive.dir/quack_hive.cc.o
-/usr/bin/ranlib libquack_hive.a

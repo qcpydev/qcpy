@@ -1,2 +1,0 @@
-/usr/bin/ar qc libquack_dense.a CMakeFiles/quack_dense.dir/quack_dense.cc.o
-/usr/bin/ranlib libquack_dense.a

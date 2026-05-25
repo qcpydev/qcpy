@@ -1,2 +1,0 @@
-/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/CMakeFiles/CheckCUDA/CMakeFiles/edit_cache.dir
-/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/CMakeFiles/CheckCUDA/CMakeFiles/rebuild_cache.dir

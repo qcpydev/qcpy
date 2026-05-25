@@ -1,2 +1,0 @@
-/usr/bin/ar qc libblock.a CMakeFiles/block.dir/block.c.o
-/usr/bin/ranlib libblock.a
