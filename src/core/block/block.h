@@ -7,8 +7,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-/*
- * blocks are used to communicate between the python API and the backend system.
+/* blocks are used to communicate between the python API and the backend system.
  * the goal is to create a universal space to accumulate entries / requests.
  * Eventually, it is needed to have blocks have "weights" where we can determine
  * when we need to flush to the backend / determine what needs to get flushed.
@@ -63,13 +62,12 @@ typedef struct block_s {
 } block_t;
 
 typedef struct import_s {
-  block_t queue[IMPORT_MAX_SIZE];
+  block_t queue[IMPORT_MAX_SIZE * 2];
   uint64_t flush_reg;
   int idx;
   bool flushing;
   bool ready;
 } import_t;
-
 typedef struct export_s {
   float_comp queue[IMPORT_MAX_SIZE];
   uint64_t reg;

@@ -1,3 +1,5 @@
+#include <assert.h>
+#include <qlog.h>
 #include <stdbool.h>
 
 #pragma once
@@ -7,26 +9,7 @@
 #define WARNING_FLAG 0x1
 #define DEBUG_FLAG 0x2
 
-#define QCPY_ASSERT(check, type, data, data_error)                             \
-  {                                                                            \
-    /*                                                                         \
-     * Not ideal obviously, but it helps with horrible constant jumps to this  \
-     * func                                                                    \
-     */                                                                        \
-    if (!check) {                                                              \
-      qcpy_error(type, data, data_error, ~(WARNING_FLAG | DEBUG_FLAG),         \
-                 __func__);                                                    \
-    }                                                                          \
-  }
-
-#define QCPY_DEBUG_ASSERT(type, data, data_error)                              \
-  (qcpy_error(type, data, data_error, ~(WARNING_FLAG), __func__))
-
-#define QCPY_WARN(type, data, data_error)                                      \
-  (qcpy_error(type, data, data_error, WARNING_FLAG, __func__))
-
-#define QCPY_DEBUG_WARN(type, data, data_error)                                \
-  (qcpy_error(type, data, data_error, (WARNING_FLAG | DEBUG_FLAG), __func__))
+#define QCPY_URL "https://github.com/qcpydev/qcpy"
 
 typedef enum {
   QCPY_ERROR_QLOG,
@@ -49,9 +32,60 @@ typedef struct {
   int error_flags;
 } qcpy_error_t;
 
-void qcpy_error(qcpy_error_e type, void *data, int data_error, int error_flags,
-                const char *error_location);
 void qcpy_error_create_issue(qcpy_error_t *qcpy_error);
+
+/*
+void qcpy_cause_error(qcpy_error_e type, void *data, int data_error,
+                      int error_flags, const char *error_location) {
+  qcpy_error_t *qcpy_error = (qcpy_error_t *)malloc(sizeof(qcpy_error_t));
+  if (!qcpy_error) {
+    return;
+  }
+
+  memset(qcpy_error, 0, sizeof(qcpy_error_t));
+
+  qcpy_error->error_flags = error_flags;
+  qcpy_error->error_location = error_location;
+  qcpy_error->error_type = type;
+
+  bool debug_mode = error_flags & WARNING_FLAG;
+  bool is_warning = error_flags & DEBUG_FLAG;
+
+  printf("\n%s QCPY %s\n", debug_mode ? "DEBUG" : "",
+         is_warning ? "WARNING" : "ERROR");
+
+  qcpy_error_create_issue(qcpy_error);
+
+  if (!is_warning) {
+    printf("There has been an internal breaking issue."
+           "Attempting to replay up until error.\n"
+           "Please file an issue using the generate template%s\n",
+           QCPY_URL);
+
+  } else {
+    printf("A warning has been detected, possibly leading to future issues.\n"
+           "Please file an issue at: %s\n."
+           "Warning Output:\n",
+           QCPY_URL);
+  }
+
+  if (debug_mode || (!debug_mode && !is_warning)) {
+    assert(!"Halting now...\n");
+  }
+}
+*/
+
+#define QCPY_ASSERT(check, type, data, data_error) ({})
+
+#define QCPY_DEBUG_ASSERT(type, data, data_error)                              \
+  (qcpy_error(type, data, data_error, ~(WARNING_FLAG), __func__))
+
+#define QCPY_WARN(type, data, data_error)                                      \
+  (qcpy_error(type, data, data_error, WARNING_FLAG, __func__))
+
+#define QCPY_DEBUG_WARN(type, data, data_error)                                \
+  (qcpy_error(type, data, data_error, (WARNING_FLAG | DEBUG_FLAG), __func__))
+
 void qcpy_error_delete(qcpy_error_t *qcpy_error);
 
 #endif

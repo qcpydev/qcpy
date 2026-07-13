@@ -5,6 +5,8 @@ target_include_directories(replay_qlog_entry PUBLIC
 )
 
 target_link_libraries(replay_qlog_entry PUBLIC
+    block
     qlog_entry
     qcpy_error
+    qcpy_base
 )

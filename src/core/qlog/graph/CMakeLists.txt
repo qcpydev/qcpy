@@ -4,6 +4,7 @@ add_subdirectory(node)
 add_subdirectory(stats)
 
 target_link_libraries(qlog_graph PUBLIC
+   block
    qlog_entry
    qlog_node
    qlog_graph_stats

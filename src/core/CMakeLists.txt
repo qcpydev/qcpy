@@ -225,4 +225,4 @@ add_subdirectory(register)
 add_subdirectory(quack)
 
 #TODO: FIX THIS
-#add_subdirectory(test)
+add_subdirectory(test)

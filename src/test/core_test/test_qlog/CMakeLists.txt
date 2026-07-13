@@ -11,13 +11,12 @@ set(QLOG_TEST_SOURCES
 
 add_executable(run_qlog_tests test_qlog_main.c ${QLOG_TEST_SOURCES})
 
-include_directories(${CHECK_INCLUDE_DIRS})
-
-link_directories(${CHECK_LIBRARY_DIRS})
+find_package(Check REQUIRED)
 
 target_link_libraries(run_qlog_tests PRIVATE
-  qlog
   Check::check
+  qlog
+  qcpy_base
 )
 
 add_test(NAME qlog_tests COMMAND run_qlog_tests)

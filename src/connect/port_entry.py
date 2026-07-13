@@ -71,3 +71,4 @@ class Block(ctypes.Structure):
         ("big_endian", ctypes.c_bool),
         ("used", ctypes.c_bool),
     ]
+

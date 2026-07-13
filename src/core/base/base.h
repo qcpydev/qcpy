@@ -60,7 +60,7 @@ typedef enum {
 const char *base_get_gate_str(int gate);
 const char *base_get_type_str(int type);
 
-uint64_t base_create_qubit_bitmask(uint64_t *to_bitmask);
+uint64_t base_create_qubit_bitmask(uint64_t *to_bitmask, uint64_t qubits);
 uint64_t base_create_qubit_bitpack(uint64_t *to_bitpack);
 
 uint64_t *base_unpack_qubit_bitmask(uint64_t bitmasked);

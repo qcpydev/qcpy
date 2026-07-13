@@ -9,11 +9,13 @@ add_library(qlog_tests
 
 target_link_libraries(qlog_tests PUBLIC
     test_common
-    test_qlog
+    qcpy_base
 )
 
 target_link_libraries(qlog_tests PRIVATE
-    Check::check qlog
+    Check::check
+    qcpy_base
+    qlog
 )
 
 add_test(NAME qlog_tests COMMAND run_qlog_tests)

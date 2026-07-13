@@ -15,6 +15,12 @@
 // turn importer structs here, create block directory which will own a block
 // request
 
+typedef struct dock_add_params_s {
+  uint64_t *qubits;
+  uint64_t *controlled_qubits;
+  uint64_t *target_qubits;
+} dock_add_params_t;
+
 int dock_add(block_t *block);
 void dock_run_boot();
 

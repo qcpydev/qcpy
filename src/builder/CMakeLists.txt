@@ -48,6 +48,9 @@ include(cmake/CompilerOptions.cmake)
 
 # END GLOBAL
 # ========================================
+#
+
+find_package(Check REQUIRED)
 enable_testing()
 add_subdirectory(test_build)
 

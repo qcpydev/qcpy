@@ -1,4 +1,6 @@
+#include <assert.h>
 #include <base.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 #define BITPACK_MAX 0x3F
@@ -53,7 +55,15 @@ const char *base_type_strs[] = {
 const char *base_get_gate_str(int gate) { return base_gate_strs[gate]; }
 const char *base_get_type_str(int type) { return base_type_strs[type]; }
 
-uint64_t base_create_qubit_bitmask(uint64_t *to_bitmask) {}
+uint64_t base_create_qubit_bitmask(uint64_t *to_bitmask, uint64_t qubits) {
+  uint64_t bitmask = 0;
+
+  for (uint64_t i = 0; i < qubits; ++i) {
+    bitmask |= 1 << to_bitmask[i];
+  }
+
+  return bitmask;
+}
 
 uint64_t base_create_qubit_bitpack(uint64_t *to_bitpack) {}
 

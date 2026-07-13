@@ -1,1 +1,0 @@
-. "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/deactivate_conanrunenv-release-x86_64.sh"

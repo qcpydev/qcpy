@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <base.h>
 #include <base_tools.h>
 #include <dock.h>
 #include <dock_logger.h>
@@ -29,8 +30,6 @@ void dock_wait_for_boot() {
   }
 }
 
-// TODO: Stupid undefined functions that I dont care to listen to right now,
-// keep this here for now
 static void dock_create_importer() {
   importer =
       (import_t *)base_tools_create_shared_mem(sizeof(import_t), QCPY_IMPORT);
@@ -43,8 +42,6 @@ static void dock_create_importer() {
   assert(dock_import_sem);
 }
 
-// TODO: Stupid undefined functions that I dont care to listen to right now,
-// keep this here for now
 static void dock_create_exporter() {
   assert(!exporter);
   exporter =

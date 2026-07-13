@@ -3,7 +3,8 @@ import ctypes
 from typing import List
 from .port_entry import Block, Block_Type, IMPORT_MAX_SIZE
 import subprocess
-import numpy as np
+from functools import reduce
+from operator import or_
 
 
 class Connect:
@@ -47,15 +48,7 @@ class Connect:
         self.qcpy_connect.dock_get_qc_entries.restype = ctypes.c_int
 
     def __create_qubit_bitmask__(self, to_bitmask: List[int]) -> int:
-        bitmask = 0
-
-        for val in to_bitmask:
-            if val >= 64:
-                return -1
-
-            bitmask |= 1 << val
-
-        return bitmask
+        return reduce(or_, (1 << i for i in to_bitmask),)
 
     def __create_qubit_bitpack__(self, to_bitpack: List[int]) -> int:
         bitpack = 0
@@ -125,12 +118,13 @@ class Connect:
         new_block = Block()
         new_block.qubit_bitmask = self.__create_qubit_bitmask__(qubits)
 
-        new_block.controlled_bitmask = self.__create_qubit_bitmask__(controlled_qubits)
-        new_block.target_bitmask = self.__create_qubit_bitmask__(target_qubits)
+        if (controlled_qubits):
+            new_block.controlled_bitmask = self.__create_qubit_bitmask__(controlled_qubits)
+            new_block.controlled_bitpack = self.__create_qubit_bitpack__(controlled_qubits)
 
-        new_block.controlled_bitpack = self.__create_qubit_bitpack__(controlled_qubits)
-
-        new_block.target_bitpack = self.__create_qubit_bitpack__(target_qubits)
+        if (target_qubits):
+            new_block.target_bitmask = self.__create_qubit_bitmask__(target_qubits)
+            new_block.target_bitpack = self.__create_qubit_bitpack__(target_qubits)
 
         new_block.type = Block_Type.QLOG_ENTRY
         new_block.reg = reg

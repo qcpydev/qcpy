@@ -1,6 +1,8 @@
 add_library(qlog_node qlog_node.c)
 
 target_link_libraries(qlog_node PRIVATE
+    block
+    qcpy_base
     qcpy_error
     qlog_entry
 )
