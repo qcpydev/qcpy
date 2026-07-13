@@ -1,4 +1,6 @@
-add_library(qlog_tests
+find_package(check REQUIRED)
+
+set(QLOG_TEST_SOURCES
   test_qlog_init.c
   test_qlog_append.c
   test_qlog_clear.c
@@ -7,17 +9,15 @@ add_library(qlog_tests
   test_qlog_delete.c
 )
 
-target_link_libraries(qlog_tests PUBLIC
-    test_qlog
-)
+add_executable(run_qlog_tests test_qlog_main.c ${QLOG_TEST_SOURCES})
 
-target_link_libraries(qlog_tests PRIVATE
-    Check::check qlog
+include_directories(${CHECK_INCLUDE_DIRS})
+
+link_directories(${CHECK_LIBRARY_DIRS})
+
+target_link_libraries(run_qlog_tests PRIVATE
+  qlog
+  Check::check
 )
 
 add_test(NAME qlog_tests COMMAND run_qlog_tests)
-
-target_include_directories(qlog_tests PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}
-)
-

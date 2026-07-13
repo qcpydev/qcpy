@@ -51,9 +51,8 @@ void qcpy_error_delete(qcpy_error_t *qcpy_error) {
   free(qcpy_error);
   qcpy_error = NULL;
 }
-
-void qcpy_error(qcpy_error_e type, void *data, int data_error, int error_flags,
-                const char *error_location) {
+inline void qcpy_error(qcpy_error_e type, void *data, int data_error,
+                       int error_flags, const char *error_location) {
   qcpy_error_t *qcpy_error = (qcpy_error_t *)malloc(sizeof(qcpy_error_t));
 
   if (!qcpy_error) {

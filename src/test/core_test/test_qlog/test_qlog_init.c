@@ -18,13 +18,14 @@ START_TEST(test_qlog_init_2) {
 END_TEST
 
 START_TEST(test_qlog_init_3) {
-  int qubits = 0;
+  int qubits = 3;
   qlog_t *qlog = qlog_init(qubits);
-  ck_assert(!qlog);
+  qlog_graph_t *qlog_graph = qlog->graph;
+  ck_assert(qlog && qlog_graph);
+  qlog_delete(qlog);
 }
-END_TEST
 
-void qlog_init_suite(void) {
+Suite *qlog_init_suite(void) {
   Suite *suite;
   TCase *tc_core;
 
@@ -36,4 +37,6 @@ void qlog_init_suite(void) {
   tcase_add_test(tc_core, test_qlog_init_2);
   tcase_add_test(tc_core, test_qlog_init_3);
   suite_add_tcase(suite, tc_core);
+
+  return suite;
 }

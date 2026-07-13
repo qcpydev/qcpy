@@ -32,10 +32,10 @@ if (ENABLE_CUDA)
 
   if (CMAKE_CUDA_COMPILER)
     enable_language(CUDA)
-    message("Enabling CUDA, version: ${CMAKE_CUDA_COMPILER")
+    message("Enabling CUDA, version: ${CMAKE_CUDA_COMPILER}")
 
     # CUDA STANDARD
-    set(CMAKE_CUDA_STANDARD 26)
+    set(CMAKE_CUDA_STANDARD 20)
     set(CMAKE_CUDA_STANDARD_REQUIRED ON)
   else()
     message("CUDA not found, disabling...")
@@ -48,6 +48,8 @@ include(cmake/CompilerOptions.cmake)
 
 # END GLOBAL
 # ========================================
+enable_testing()
+add_subdirectory(test_build)
 
 # Configure all builds
 # ========================================

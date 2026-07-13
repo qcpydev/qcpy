@@ -7,10 +7,19 @@
 #define WARNING_FLAG 0x1
 #define DEBUG_FLAG 0x2
 
-#define QCPY_ERROR(type, data, data_error)                                     \
-  (qcpy_error(type, data, data_error, ~(WARNING_FLAG | DEBUG_FLAG), __func__))
+#define QCPY_ASSERT(check, type, data, data_error)                             \
+  {                                                                            \
+    /*                                                                         \
+     * Not ideal obviously, but it helps with horrible constant jumps to this  \
+     * func                                                                    \
+     */                                                                        \
+    if (!check) {                                                              \
+      qcpy_error(type, data, data_error, ~(WARNING_FLAG | DEBUG_FLAG),         \
+                 __func__);                                                    \
+    }                                                                          \
+  }
 
-#define QCPY_DEBUG_ERROR(type, data, data_error)                               \
+#define QCPY_DEBUG_ASSERT(type, data, data_error)                              \
   (qcpy_error(type, data, data_error, ~(WARNING_FLAG), __func__))
 
 #define QCPY_WARN(type, data, data_error)                                      \

@@ -12,4 +12,4 @@ venv/
 ENV/
 env.bak/
 venv.bak/
-src/core/build/
+src/core/build/*

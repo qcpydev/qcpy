@@ -1,0 +1,3022 @@
+
+---
+events:
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineSystem.cmake:12 (find_program)"
+      - "CMakeLists.txt:5 (project)"
+    mode: "program"
+    variable: "CMAKE_UNAME"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "uname"
+    candidate_directories:
+      - "/home/brennanf/Projects/qcpy_dev/env/bin/"
+      - "/home/brennanf/.pyenv/shims/"
+      - "/opt/cuda/bin/"
+      - "/home/brennanf/.pyenv/bin/"
+      - "/home/brennanf/.local/bin/"
+      - "/home/brennanf/.cargo/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/usr/bin/"
+      - "/home/brennanf/.local/share/flatpak/exports/bin/"
+      - "/var/lib/flatpak/exports/bin/"
+      - "/usr/bin/site_perl/"
+      - "/usr/bin/vendor_perl/"
+      - "/usr/bin/core_perl/"
+      - "/bin/"
+    searched_directories:
+      - "/home/brennanf/Projects/qcpy_dev/env/bin/uname"
+      - "/home/brennanf/.pyenv/shims/uname"
+      - "/opt/cuda/bin/uname"
+      - "/home/brennanf/.pyenv/bin/uname"
+      - "/home/brennanf/.local/bin/uname"
+      - "/home/brennanf/.cargo/bin/uname"
+      - "/usr/local/sbin/uname"
+      - "/usr/local/bin/uname"
+    found: "/usr/bin/uname"
+    search_context:
+      ENV{PATH}:
+        - "/home/brennanf/Projects/qcpy_dev/env/bin"
+        - "/home/brennanf/.pyenv/shims"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.pyenv/bin"
+        - "/home/brennanf/.local/bin"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.pyenv/bin"
+        - "/home/brennanf/.local/bin"
+        - "/home/brennanf/.cargo/bin"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.local/share/flatpak/exports/bin"
+        - "/var/lib/flatpak/exports/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineSystem.cmake:212 (message)"
+      - "CMakeLists.txt:5 (project)"
+    message: |
+      The system is: Linux - 7.0.9-arch1-1 - x86_64
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeNinjaFindMake.cmake:5 (find_program)"
+      - "CMakeLists.txt:5 (project)"
+    mode: "program"
+    variable: "CMAKE_MAKE_PROGRAM"
+    description: "Program used to build from build.ninja files."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "ninja-build"
+      - "ninja"
+      - "samu"
+    candidate_directories:
+      - "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/bin/"
+      - "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/sbin/"
+      - "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/"
+      - "/home/brennanf/Projects/qcpy_dev/env/bin/"
+      - "/home/brennanf/.pyenv/shims/"
+      - "/opt/cuda/bin/"
+      - "/home/brennanf/.pyenv/bin/"
+      - "/home/brennanf/.local/bin/"
+      - "/home/brennanf/.cargo/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/usr/bin/"
+      - "/home/brennanf/.local/share/flatpak/exports/bin/"
+      - "/var/lib/flatpak/exports/bin/"
+      - "/usr/bin/site_perl/"
+      - "/usr/bin/vendor_perl/"
+      - "/usr/bin/core_perl/"
+    searched_directories:
+      - "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/bin/ninja-build"
+      - "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/bin/ninja"
+      - "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/bin/samu"
+      - "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/sbin/ninja-build"
+      - "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/sbin/ninja"
+      - "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/sbin/samu"
+      - "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/ninja-build"
+      - "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/ninja"
+      - "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/samu"
+      - "/home/brennanf/Projects/qcpy_dev/env/bin/ninja-build"
+      - "/home/brennanf/Projects/qcpy_dev/env/bin/ninja"
+      - "/home/brennanf/Projects/qcpy_dev/env/bin/samu"
+      - "/home/brennanf/.pyenv/shims/ninja-build"
+      - "/home/brennanf/.pyenv/shims/ninja"
+      - "/home/brennanf/.pyenv/shims/samu"
+      - "/opt/cuda/bin/ninja-build"
+      - "/opt/cuda/bin/ninja"
+      - "/opt/cuda/bin/samu"
+      - "/home/brennanf/.pyenv/bin/ninja-build"
+      - "/home/brennanf/.pyenv/bin/ninja"
+      - "/home/brennanf/.pyenv/bin/samu"
+      - "/home/brennanf/.local/bin/ninja-build"
+      - "/home/brennanf/.local/bin/ninja"
+      - "/home/brennanf/.local/bin/samu"
+      - "/home/brennanf/.cargo/bin/ninja-build"
+      - "/home/brennanf/.cargo/bin/ninja"
+      - "/home/brennanf/.cargo/bin/samu"
+      - "/usr/local/sbin/ninja-build"
+      - "/usr/local/sbin/ninja"
+      - "/usr/local/sbin/samu"
+      - "/usr/local/bin/ninja-build"
+      - "/usr/local/bin/ninja"
+      - "/usr/local/bin/samu"
+      - "/usr/bin/ninja-build"
+    found: "/usr/bin/ninja"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build"
+      ENV{PATH}:
+        - "/home/brennanf/Projects/qcpy_dev/env/bin"
+        - "/home/brennanf/.pyenv/shims"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.pyenv/bin"
+        - "/home/brennanf/.local/bin"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.pyenv/bin"
+        - "/home/brennanf/.local/bin"
+        - "/home/brennanf/.cargo/bin"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.local/share/flatpak/exports/bin"
+        - "/var/lib/flatpak/exports/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineCompiler.cmake:73 (find_program)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCCompiler.cmake:64 (_cmake_find_compiler)"
+      - "CMakeLists.txt:5 (project)"
+    mode: "program"
+    variable: "CMAKE_C_COMPILER"
+    description: "C compiler"
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "cc"
+      - "gcc"
+      - "cl"
+      - "bcc"
+      - "xlc"
+      - "icx"
+      - "clang"
+    candidate_directories:
+      - "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/bin/"
+      - "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/sbin/"
+      - "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/"
+      - "/home/brennanf/Projects/qcpy_dev/env/bin/"
+      - "/home/brennanf/.pyenv/shims/"
+      - "/opt/cuda/bin/"
+      - "/home/brennanf/.pyenv/bin/"
+      - "/home/brennanf/.local/bin/"
+      - "/home/brennanf/.cargo/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/usr/bin/"
+      - "/home/brennanf/.local/share/flatpak/exports/bin/"
+      - "/var/lib/flatpak/exports/bin/"
+      - "/usr/bin/site_perl/"
+      - "/usr/bin/vendor_perl/"
+      - "/usr/bin/core_perl/"
+    searched_directories:
+      - "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/bin/cc"
+      - "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/sbin/cc"
+      - "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/cc"
+      - "/home/brennanf/Projects/qcpy_dev/env/bin/cc"
+      - "/home/brennanf/.pyenv/shims/cc"
+      - "/opt/cuda/bin/cc"
+      - "/home/brennanf/.pyenv/bin/cc"
+      - "/home/brennanf/.local/bin/cc"
+      - "/home/brennanf/.cargo/bin/cc"
+      - "/usr/local/sbin/cc"
+      - "/usr/local/bin/cc"
+    found: "/usr/bin/cc"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build"
+      ENV{PATH}:
+        - "/home/brennanf/Projects/qcpy_dev/env/bin"
+        - "/home/brennanf/.pyenv/shims"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.pyenv/bin"
+        - "/home/brennanf/.local/bin"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.pyenv/bin"
+        - "/home/brennanf/.local/bin"
+        - "/home/brennanf/.cargo/bin"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.local/share/flatpak/exports/bin"
+        - "/var/lib/flatpak/exports/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerId.cmake:468 (find_file)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerId.cmake:506 (CMAKE_DETERMINE_COMPILER_ID_WRITE)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerId.cmake:8 (CMAKE_DETERMINE_COMPILER_ID_BUILD)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCCompiler.cmake:122 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:5 (project)"
+    mode: "file"
+    variable: "src_in"
+    description: "Path to a file."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "CMakeCCompilerId.c.in"
+    candidate_directories:
+      - "/usr/share/cmake/Modules/"
+      - "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/"
+    found: "/usr/share/cmake/Modules/CMakeCCompilerId.c.in"
+    search_context:
+      CMAKE_INCLUDE_PATH:
+        - "/home/brennanf/.conan2/p/b/libchf72436f84ba33/p/include"
+      CMAKE_PREFIX_PATH:
+        - "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build"
+      ENV{PATH}:
+        - "/home/brennanf/Projects/qcpy_dev/env/bin"
+        - "/home/brennanf/.pyenv/shims"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.pyenv/bin"
+        - "/home/brennanf/.local/bin"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.pyenv/bin"
+        - "/home/brennanf/.local/bin"
+        - "/home/brennanf/.cargo/bin"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.local/share/flatpak/exports/bin"
+        - "/var/lib/flatpak/exports/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCCompiler.cmake:122 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:5 (project)"
+    message: |
+      Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+      Compiler: /usr/bin/cc 
+      Build flags: -m64
+      Id flags:  
+      
+      The output was:
+      0
+      
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.out"
+      
+      The C compiler identification is GNU, found in:
+        /home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/CMakeFiles/4.3.2/CompilerIdC/a.out
+      
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeFindBinUtils.cmake:243 (find_program)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCCompiler.cmake:200 (include)"
+      - "CMakeLists.txt:5 (project)"
+    mode: "program"
+    variable: "CMAKE_AR"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "ar"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/home/brennanf/Projects/qcpy_dev/env/bin/"
+      - "/home/brennanf/.pyenv/shims/"
+      - "/opt/cuda/bin/"
+      - "/home/brennanf/.pyenv/bin/"
+      - "/home/brennanf/.local/bin/"
+      - "/home/brennanf/.cargo/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/home/brennanf/.local/share/flatpak/exports/bin/"
+      - "/var/lib/flatpak/exports/bin/"
+      - "/usr/bin/site_perl/"
+      - "/usr/bin/vendor_perl/"
+      - "/usr/bin/core_perl/"
+    found: "/usr/bin/ar"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build"
+      ENV{PATH}:
+        - "/home/brennanf/Projects/qcpy_dev/env/bin"
+        - "/home/brennanf/.pyenv/shims"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.pyenv/bin"
+        - "/home/brennanf/.local/bin"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.pyenv/bin"
+        - "/home/brennanf/.local/bin"
+        - "/home/brennanf/.cargo/bin"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.local/share/flatpak/exports/bin"
+        - "/var/lib/flatpak/exports/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeFindBinUtils.cmake:243 (find_program)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCCompiler.cmake:200 (include)"
+      - "CMakeLists.txt:5 (project)"
+    mode: "program"
+    variable: "CMAKE_RANLIB"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "ranlib"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/home/brennanf/Projects/qcpy_dev/env/bin/"
+      - "/home/brennanf/.pyenv/shims/"
+      - "/opt/cuda/bin/"
+      - "/home/brennanf/.pyenv/bin/"
+      - "/home/brennanf/.local/bin/"
+      - "/home/brennanf/.cargo/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/home/brennanf/.local/share/flatpak/exports/bin/"
+      - "/var/lib/flatpak/exports/bin/"
+      - "/usr/bin/site_perl/"
+      - "/usr/bin/vendor_perl/"
+      - "/usr/bin/core_perl/"
+    found: "/usr/bin/ranlib"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build"
+      ENV{PATH}:
+        - "/home/brennanf/Projects/qcpy_dev/env/bin"
+        - "/home/brennanf/.pyenv/shims"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.pyenv/bin"
+        - "/home/brennanf/.local/bin"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.pyenv/bin"
+        - "/home/brennanf/.local/bin"
+        - "/home/brennanf/.cargo/bin"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.local/share/flatpak/exports/bin"
+        - "/var/lib/flatpak/exports/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeFindBinUtils.cmake:243 (find_program)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCCompiler.cmake:200 (include)"
+      - "CMakeLists.txt:5 (project)"
+    mode: "program"
+    variable: "CMAKE_STRIP"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "strip"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/home/brennanf/Projects/qcpy_dev/env/bin/"
+      - "/home/brennanf/.pyenv/shims/"
+      - "/opt/cuda/bin/"
+      - "/home/brennanf/.pyenv/bin/"
+      - "/home/brennanf/.local/bin/"
+      - "/home/brennanf/.cargo/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/home/brennanf/.local/share/flatpak/exports/bin/"
+      - "/var/lib/flatpak/exports/bin/"
+      - "/usr/bin/site_perl/"
+      - "/usr/bin/vendor_perl/"
+      - "/usr/bin/core_perl/"
+    found: "/usr/bin/strip"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build"
+      ENV{PATH}:
+        - "/home/brennanf/Projects/qcpy_dev/env/bin"
+        - "/home/brennanf/.pyenv/shims"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.pyenv/bin"
+        - "/home/brennanf/.local/bin"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.pyenv/bin"
+        - "/home/brennanf/.local/bin"
+        - "/home/brennanf/.cargo/bin"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.local/share/flatpak/exports/bin"
+        - "/var/lib/flatpak/exports/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeFindBinUtils.cmake:243 (find_program)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCCompiler.cmake:200 (include)"
+      - "CMakeLists.txt:5 (project)"
+    mode: "program"
+    variable: "CMAKE_LINKER"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "ld"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/home/brennanf/Projects/qcpy_dev/env/bin/"
+      - "/home/brennanf/.pyenv/shims/"
+      - "/opt/cuda/bin/"
+      - "/home/brennanf/.pyenv/bin/"
+      - "/home/brennanf/.local/bin/"
+      - "/home/brennanf/.cargo/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/home/brennanf/.local/share/flatpak/exports/bin/"
+      - "/var/lib/flatpak/exports/bin/"
+      - "/usr/bin/site_perl/"
+      - "/usr/bin/vendor_perl/"
+      - "/usr/bin/core_perl/"
+    found: "/usr/bin/ld"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build"
+      ENV{PATH}:
+        - "/home/brennanf/Projects/qcpy_dev/env/bin"
+        - "/home/brennanf/.pyenv/shims"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.pyenv/bin"
+        - "/home/brennanf/.local/bin"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.pyenv/bin"
+        - "/home/brennanf/.local/bin"
+        - "/home/brennanf/.cargo/bin"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.local/share/flatpak/exports/bin"
+        - "/var/lib/flatpak/exports/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeFindBinUtils.cmake:243 (find_program)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCCompiler.cmake:200 (include)"
+      - "CMakeLists.txt:5 (project)"
+    mode: "program"
+    variable: "CMAKE_NM"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "nm"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/home/brennanf/Projects/qcpy_dev/env/bin/"
+      - "/home/brennanf/.pyenv/shims/"
+      - "/opt/cuda/bin/"
+      - "/home/brennanf/.pyenv/bin/"
+      - "/home/brennanf/.local/bin/"
+      - "/home/brennanf/.cargo/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/home/brennanf/.local/share/flatpak/exports/bin/"
+      - "/var/lib/flatpak/exports/bin/"
+      - "/usr/bin/site_perl/"
+      - "/usr/bin/vendor_perl/"
+      - "/usr/bin/core_perl/"
+    found: "/usr/bin/nm"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build"
+      ENV{PATH}:
+        - "/home/brennanf/Projects/qcpy_dev/env/bin"
+        - "/home/brennanf/.pyenv/shims"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.pyenv/bin"
+        - "/home/brennanf/.local/bin"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.pyenv/bin"
+        - "/home/brennanf/.local/bin"
+        - "/home/brennanf/.cargo/bin"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.local/share/flatpak/exports/bin"
+        - "/var/lib/flatpak/exports/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeFindBinUtils.cmake:243 (find_program)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCCompiler.cmake:200 (include)"
+      - "CMakeLists.txt:5 (project)"
+    mode: "program"
+    variable: "CMAKE_OBJDUMP"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "objdump"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/home/brennanf/Projects/qcpy_dev/env/bin/"
+      - "/home/brennanf/.pyenv/shims/"
+      - "/opt/cuda/bin/"
+      - "/home/brennanf/.pyenv/bin/"
+      - "/home/brennanf/.local/bin/"
+      - "/home/brennanf/.cargo/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/home/brennanf/.local/share/flatpak/exports/bin/"
+      - "/var/lib/flatpak/exports/bin/"
+      - "/usr/bin/site_perl/"
+      - "/usr/bin/vendor_perl/"
+      - "/usr/bin/core_perl/"
+    found: "/usr/bin/objdump"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build"
+      ENV{PATH}:
+        - "/home/brennanf/Projects/qcpy_dev/env/bin"
+        - "/home/brennanf/.pyenv/shims"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.pyenv/bin"
+        - "/home/brennanf/.local/bin"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.pyenv/bin"
+        - "/home/brennanf/.local/bin"
+        - "/home/brennanf/.cargo/bin"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.local/share/flatpak/exports/bin"
+        - "/var/lib/flatpak/exports/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeFindBinUtils.cmake:243 (find_program)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCCompiler.cmake:200 (include)"
+      - "CMakeLists.txt:5 (project)"
+    mode: "program"
+    variable: "CMAKE_OBJCOPY"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "objcopy"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/home/brennanf/Projects/qcpy_dev/env/bin/"
+      - "/home/brennanf/.pyenv/shims/"
+      - "/opt/cuda/bin/"
+      - "/home/brennanf/.pyenv/bin/"
+      - "/home/brennanf/.local/bin/"
+      - "/home/brennanf/.cargo/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/home/brennanf/.local/share/flatpak/exports/bin/"
+      - "/var/lib/flatpak/exports/bin/"
+      - "/usr/bin/site_perl/"
+      - "/usr/bin/vendor_perl/"
+      - "/usr/bin/core_perl/"
+    found: "/usr/bin/objcopy"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build"
+      ENV{PATH}:
+        - "/home/brennanf/Projects/qcpy_dev/env/bin"
+        - "/home/brennanf/.pyenv/shims"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.pyenv/bin"
+        - "/home/brennanf/.local/bin"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.pyenv/bin"
+        - "/home/brennanf/.local/bin"
+        - "/home/brennanf/.cargo/bin"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.local/share/flatpak/exports/bin"
+        - "/var/lib/flatpak/exports/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeFindBinUtils.cmake:243 (find_program)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCCompiler.cmake:200 (include)"
+      - "CMakeLists.txt:5 (project)"
+    mode: "program"
+    variable: "CMAKE_READELF"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "readelf"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/home/brennanf/Projects/qcpy_dev/env/bin/"
+      - "/home/brennanf/.pyenv/shims/"
+      - "/opt/cuda/bin/"
+      - "/home/brennanf/.pyenv/bin/"
+      - "/home/brennanf/.local/bin/"
+      - "/home/brennanf/.cargo/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/home/brennanf/.local/share/flatpak/exports/bin/"
+      - "/var/lib/flatpak/exports/bin/"
+      - "/usr/bin/site_perl/"
+      - "/usr/bin/vendor_perl/"
+      - "/usr/bin/core_perl/"
+    found: "/usr/bin/readelf"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build"
+      ENV{PATH}:
+        - "/home/brennanf/Projects/qcpy_dev/env/bin"
+        - "/home/brennanf/.pyenv/shims"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.pyenv/bin"
+        - "/home/brennanf/.local/bin"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.pyenv/bin"
+        - "/home/brennanf/.local/bin"
+        - "/home/brennanf/.cargo/bin"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.local/share/flatpak/exports/bin"
+        - "/var/lib/flatpak/exports/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeFindBinUtils.cmake:243 (find_program)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCCompiler.cmake:200 (include)"
+      - "CMakeLists.txt:5 (project)"
+    mode: "program"
+    variable: "CMAKE_DLLTOOL"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "dlltool"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/home/brennanf/Projects/qcpy_dev/env/bin/"
+      - "/home/brennanf/.pyenv/shims/"
+      - "/opt/cuda/bin/"
+      - "/home/brennanf/.pyenv/bin/"
+      - "/home/brennanf/.local/bin/"
+      - "/home/brennanf/.cargo/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/home/brennanf/.local/share/flatpak/exports/bin/"
+      - "/var/lib/flatpak/exports/bin/"
+      - "/usr/bin/site_perl/"
+      - "/usr/bin/vendor_perl/"
+      - "/usr/bin/core_perl/"
+    searched_directories:
+      - "/usr/bin/dlltool"
+      - "/home/brennanf/Projects/qcpy_dev/env/bin/dlltool"
+      - "/home/brennanf/.pyenv/shims/dlltool"
+      - "/opt/cuda/bin/dlltool"
+      - "/home/brennanf/.pyenv/bin/dlltool"
+      - "/home/brennanf/.local/bin/dlltool"
+      - "/home/brennanf/.cargo/bin/dlltool"
+      - "/usr/local/sbin/dlltool"
+      - "/usr/local/bin/dlltool"
+      - "/home/brennanf/.local/share/flatpak/exports/bin/dlltool"
+      - "/var/lib/flatpak/exports/bin/dlltool"
+      - "/usr/bin/site_perl/dlltool"
+      - "/usr/bin/vendor_perl/dlltool"
+      - "/usr/bin/core_perl/dlltool"
+    found: false
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build"
+      ENV{PATH}:
+        - "/home/brennanf/Projects/qcpy_dev/env/bin"
+        - "/home/brennanf/.pyenv/shims"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.pyenv/bin"
+        - "/home/brennanf/.local/bin"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.pyenv/bin"
+        - "/home/brennanf/.local/bin"
+        - "/home/brennanf/.cargo/bin"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.local/share/flatpak/exports/bin"
+        - "/var/lib/flatpak/exports/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeFindBinUtils.cmake:243 (find_program)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCCompiler.cmake:200 (include)"
+      - "CMakeLists.txt:5 (project)"
+    mode: "program"
+    variable: "CMAKE_ADDR2LINE"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "addr2line"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/home/brennanf/Projects/qcpy_dev/env/bin/"
+      - "/home/brennanf/.pyenv/shims/"
+      - "/opt/cuda/bin/"
+      - "/home/brennanf/.pyenv/bin/"
+      - "/home/brennanf/.local/bin/"
+      - "/home/brennanf/.cargo/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/home/brennanf/.local/share/flatpak/exports/bin/"
+      - "/var/lib/flatpak/exports/bin/"
+      - "/usr/bin/site_perl/"
+      - "/usr/bin/vendor_perl/"
+      - "/usr/bin/core_perl/"
+    found: "/usr/bin/addr2line"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build"
+      ENV{PATH}:
+        - "/home/brennanf/Projects/qcpy_dev/env/bin"
+        - "/home/brennanf/.pyenv/shims"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.pyenv/bin"
+        - "/home/brennanf/.local/bin"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.pyenv/bin"
+        - "/home/brennanf/.local/bin"
+        - "/home/brennanf/.cargo/bin"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.local/share/flatpak/exports/bin"
+        - "/var/lib/flatpak/exports/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeFindBinUtils.cmake:243 (find_program)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCCompiler.cmake:200 (include)"
+      - "CMakeLists.txt:5 (project)"
+    mode: "program"
+    variable: "CMAKE_TAPI"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "tapi"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/home/brennanf/Projects/qcpy_dev/env/bin/"
+      - "/home/brennanf/.pyenv/shims/"
+      - "/opt/cuda/bin/"
+      - "/home/brennanf/.pyenv/bin/"
+      - "/home/brennanf/.local/bin/"
+      - "/home/brennanf/.cargo/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/home/brennanf/.local/share/flatpak/exports/bin/"
+      - "/var/lib/flatpak/exports/bin/"
+      - "/usr/bin/site_perl/"
+      - "/usr/bin/vendor_perl/"
+      - "/usr/bin/core_perl/"
+    searched_directories:
+      - "/usr/bin/tapi"
+      - "/home/brennanf/Projects/qcpy_dev/env/bin/tapi"
+      - "/home/brennanf/.pyenv/shims/tapi"
+      - "/opt/cuda/bin/tapi"
+      - "/home/brennanf/.pyenv/bin/tapi"
+      - "/home/brennanf/.local/bin/tapi"
+      - "/home/brennanf/.cargo/bin/tapi"
+      - "/usr/local/sbin/tapi"
+      - "/usr/local/bin/tapi"
+      - "/home/brennanf/.local/share/flatpak/exports/bin/tapi"
+      - "/var/lib/flatpak/exports/bin/tapi"
+      - "/usr/bin/site_perl/tapi"
+      - "/usr/bin/vendor_perl/tapi"
+      - "/usr/bin/core_perl/tapi"
+    found: false
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build"
+      ENV{PATH}:
+        - "/home/brennanf/Projects/qcpy_dev/env/bin"
+        - "/home/brennanf/.pyenv/shims"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.pyenv/bin"
+        - "/home/brennanf/.local/bin"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.pyenv/bin"
+        - "/home/brennanf/.local/bin"
+        - "/home/brennanf/.cargo/bin"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.local/share/flatpak/exports/bin"
+        - "/var/lib/flatpak/exports/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/Compiler/GNU-FindBinUtils.cmake:18 (find_program)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCCompiler.cmake:201 (include)"
+      - "CMakeLists.txt:5 (project)"
+    mode: "program"
+    variable: "CMAKE_C_COMPILER_AR"
+    description: "A wrapper around 'ar' adding the appropriate '--plugin' option for the GCC compiler"
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "gcc-ar-16.1"
+      - "gcc-ar-16"
+      - "gcc-ar16"
+      - "gcc-ar"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/home/brennanf/Projects/qcpy_dev/env/bin/"
+      - "/home/brennanf/.pyenv/shims/"
+      - "/opt/cuda/bin/"
+      - "/home/brennanf/.pyenv/bin/"
+      - "/home/brennanf/.local/bin/"
+      - "/home/brennanf/.cargo/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/home/brennanf/.local/share/flatpak/exports/bin/"
+      - "/var/lib/flatpak/exports/bin/"
+      - "/usr/bin/site_perl/"
+      - "/usr/bin/vendor_perl/"
+      - "/usr/bin/core_perl/"
+    searched_directories:
+      - "/usr/bin/gcc-ar-16.1"
+      - "/home/brennanf/Projects/qcpy_dev/env/bin/gcc-ar-16.1"
+      - "/home/brennanf/.pyenv/shims/gcc-ar-16.1"
+      - "/opt/cuda/bin/gcc-ar-16.1"
+      - "/home/brennanf/.pyenv/bin/gcc-ar-16.1"
+      - "/home/brennanf/.local/bin/gcc-ar-16.1"
+      - "/home/brennanf/.cargo/bin/gcc-ar-16.1"
+      - "/usr/local/sbin/gcc-ar-16.1"
+      - "/usr/local/bin/gcc-ar-16.1"
+      - "/home/brennanf/.local/share/flatpak/exports/bin/gcc-ar-16.1"
+      - "/var/lib/flatpak/exports/bin/gcc-ar-16.1"
+      - "/usr/bin/site_perl/gcc-ar-16.1"
+      - "/usr/bin/vendor_perl/gcc-ar-16.1"
+      - "/usr/bin/core_perl/gcc-ar-16.1"
+      - "/usr/bin/gcc-ar-16"
+      - "/home/brennanf/Projects/qcpy_dev/env/bin/gcc-ar-16"
+      - "/home/brennanf/.pyenv/shims/gcc-ar-16"
+      - "/opt/cuda/bin/gcc-ar-16"
+      - "/home/brennanf/.pyenv/bin/gcc-ar-16"
+      - "/home/brennanf/.local/bin/gcc-ar-16"
+      - "/home/brennanf/.cargo/bin/gcc-ar-16"
+      - "/usr/local/sbin/gcc-ar-16"
+      - "/usr/local/bin/gcc-ar-16"
+      - "/home/brennanf/.local/share/flatpak/exports/bin/gcc-ar-16"
+      - "/var/lib/flatpak/exports/bin/gcc-ar-16"
+      - "/usr/bin/site_perl/gcc-ar-16"
+      - "/usr/bin/vendor_perl/gcc-ar-16"
+      - "/usr/bin/core_perl/gcc-ar-16"
+      - "/usr/bin/gcc-ar16"
+      - "/home/brennanf/Projects/qcpy_dev/env/bin/gcc-ar16"
+      - "/home/brennanf/.pyenv/shims/gcc-ar16"
+      - "/opt/cuda/bin/gcc-ar16"
+      - "/home/brennanf/.pyenv/bin/gcc-ar16"
+      - "/home/brennanf/.local/bin/gcc-ar16"
+      - "/home/brennanf/.cargo/bin/gcc-ar16"
+      - "/usr/local/sbin/gcc-ar16"
+      - "/usr/local/bin/gcc-ar16"
+      - "/home/brennanf/.local/share/flatpak/exports/bin/gcc-ar16"
+      - "/var/lib/flatpak/exports/bin/gcc-ar16"
+      - "/usr/bin/site_perl/gcc-ar16"
+      - "/usr/bin/vendor_perl/gcc-ar16"
+      - "/usr/bin/core_perl/gcc-ar16"
+    found: "/usr/bin/gcc-ar"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build"
+      ENV{PATH}:
+        - "/home/brennanf/Projects/qcpy_dev/env/bin"
+        - "/home/brennanf/.pyenv/shims"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.pyenv/bin"
+        - "/home/brennanf/.local/bin"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.pyenv/bin"
+        - "/home/brennanf/.local/bin"
+        - "/home/brennanf/.cargo/bin"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.local/share/flatpak/exports/bin"
+        - "/var/lib/flatpak/exports/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/Compiler/GNU-FindBinUtils.cmake:30 (find_program)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCCompiler.cmake:201 (include)"
+      - "CMakeLists.txt:5 (project)"
+    mode: "program"
+    variable: "CMAKE_C_COMPILER_RANLIB"
+    description: "A wrapper around 'ranlib' adding the appropriate '--plugin' option for the GCC compiler"
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "gcc-ranlib-16.1"
+      - "gcc-ranlib-16"
+      - "gcc-ranlib16"
+      - "gcc-ranlib"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/home/brennanf/Projects/qcpy_dev/env/bin/"
+      - "/home/brennanf/.pyenv/shims/"
+      - "/opt/cuda/bin/"
+      - "/home/brennanf/.pyenv/bin/"
+      - "/home/brennanf/.local/bin/"
+      - "/home/brennanf/.cargo/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/home/brennanf/.local/share/flatpak/exports/bin/"
+      - "/var/lib/flatpak/exports/bin/"
+      - "/usr/bin/site_perl/"
+      - "/usr/bin/vendor_perl/"
+      - "/usr/bin/core_perl/"
+    searched_directories:
+      - "/usr/bin/gcc-ranlib-16.1"
+      - "/home/brennanf/Projects/qcpy_dev/env/bin/gcc-ranlib-16.1"
+      - "/home/brennanf/.pyenv/shims/gcc-ranlib-16.1"
+      - "/opt/cuda/bin/gcc-ranlib-16.1"
+      - "/home/brennanf/.pyenv/bin/gcc-ranlib-16.1"
+      - "/home/brennanf/.local/bin/gcc-ranlib-16.1"
+      - "/home/brennanf/.cargo/bin/gcc-ranlib-16.1"
+      - "/usr/local/sbin/gcc-ranlib-16.1"
+      - "/usr/local/bin/gcc-ranlib-16.1"
+      - "/home/brennanf/.local/share/flatpak/exports/bin/gcc-ranlib-16.1"
+      - "/var/lib/flatpak/exports/bin/gcc-ranlib-16.1"
+      - "/usr/bin/site_perl/gcc-ranlib-16.1"
+      - "/usr/bin/vendor_perl/gcc-ranlib-16.1"
+      - "/usr/bin/core_perl/gcc-ranlib-16.1"
+      - "/usr/bin/gcc-ranlib-16"
+      - "/home/brennanf/Projects/qcpy_dev/env/bin/gcc-ranlib-16"
+      - "/home/brennanf/.pyenv/shims/gcc-ranlib-16"
+      - "/opt/cuda/bin/gcc-ranlib-16"
+      - "/home/brennanf/.pyenv/bin/gcc-ranlib-16"
+      - "/home/brennanf/.local/bin/gcc-ranlib-16"
+      - "/home/brennanf/.cargo/bin/gcc-ranlib-16"
+      - "/usr/local/sbin/gcc-ranlib-16"
+      - "/usr/local/bin/gcc-ranlib-16"
+      - "/home/brennanf/.local/share/flatpak/exports/bin/gcc-ranlib-16"
+      - "/var/lib/flatpak/exports/bin/gcc-ranlib-16"
+      - "/usr/bin/site_perl/gcc-ranlib-16"
+      - "/usr/bin/vendor_perl/gcc-ranlib-16"
+      - "/usr/bin/core_perl/gcc-ranlib-16"
+      - "/usr/bin/gcc-ranlib16"
+      - "/home/brennanf/Projects/qcpy_dev/env/bin/gcc-ranlib16"
+      - "/home/brennanf/.pyenv/shims/gcc-ranlib16"
+      - "/opt/cuda/bin/gcc-ranlib16"
+      - "/home/brennanf/.pyenv/bin/gcc-ranlib16"
+      - "/home/brennanf/.local/bin/gcc-ranlib16"
+      - "/home/brennanf/.cargo/bin/gcc-ranlib16"
+      - "/usr/local/sbin/gcc-ranlib16"
+      - "/usr/local/bin/gcc-ranlib16"
+      - "/home/brennanf/.local/share/flatpak/exports/bin/gcc-ranlib16"
+      - "/var/lib/flatpak/exports/bin/gcc-ranlib16"
+      - "/usr/bin/site_perl/gcc-ranlib16"
+      - "/usr/bin/vendor_perl/gcc-ranlib16"
+      - "/usr/bin/core_perl/gcc-ranlib16"
+    found: "/usr/bin/gcc-ranlib"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build"
+      ENV{PATH}:
+        - "/home/brennanf/Projects/qcpy_dev/env/bin"
+        - "/home/brennanf/.pyenv/shims"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.pyenv/bin"
+        - "/home/brennanf/.local/bin"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.pyenv/bin"
+        - "/home/brennanf/.local/bin"
+        - "/home/brennanf/.cargo/bin"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.local/share/flatpak/exports/bin"
+        - "/var/lib/flatpak/exports/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineCompiler.cmake:54 (find_program)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCXXCompiler.cmake:69 (_cmake_find_compiler)"
+      - "CMakeLists.txt:5 (project)"
+    mode: "program"
+    variable: "CMAKE_CXX_COMPILER"
+    description: "CXX compiler"
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "c++"
+      - "CC"
+      - "g++"
+      - "aCC"
+      - "cl"
+      - "bcc"
+      - "xlC"
+      - "icpx"
+      - "icx"
+      - "clang++"
+    candidate_directories:
+      - "/usr/bin/"
+    found: "/usr/bin/c++"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build"
+      ENV{PATH}:
+        - "/home/brennanf/Projects/qcpy_dev/env/bin"
+        - "/home/brennanf/.pyenv/shims"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.pyenv/bin"
+        - "/home/brennanf/.local/bin"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.pyenv/bin"
+        - "/home/brennanf/.local/bin"
+        - "/home/brennanf/.cargo/bin"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.local/share/flatpak/exports/bin"
+        - "/var/lib/flatpak/exports/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerId.cmake:468 (find_file)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerId.cmake:506 (CMAKE_DETERMINE_COMPILER_ID_WRITE)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerId.cmake:8 (CMAKE_DETERMINE_COMPILER_ID_BUILD)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCXXCompiler.cmake:125 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:5 (project)"
+    mode: "file"
+    variable: "src_in"
+    description: "Path to a file."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "CMakeCXXCompilerId.cpp.in"
+    candidate_directories:
+      - "/usr/share/cmake/Modules/"
+      - "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/"
+    found: "/usr/share/cmake/Modules/CMakeCXXCompilerId.cpp.in"
+    search_context:
+      CMAKE_INCLUDE_PATH:
+        - "/home/brennanf/.conan2/p/b/libchf72436f84ba33/p/include"
+      CMAKE_PREFIX_PATH:
+        - "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build"
+      ENV{PATH}:
+        - "/home/brennanf/Projects/qcpy_dev/env/bin"
+        - "/home/brennanf/.pyenv/shims"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.pyenv/bin"
+        - "/home/brennanf/.local/bin"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.pyenv/bin"
+        - "/home/brennanf/.local/bin"
+        - "/home/brennanf/.cargo/bin"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.local/share/flatpak/exports/bin"
+        - "/var/lib/flatpak/exports/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCXXCompiler.cmake:125 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:5 (project)"
+    message: |
+      Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+      Compiler: /usr/bin/c++ 
+      Build flags: -m64
+      Id flags:  
+      
+      The output was:
+      0
+      
+      
+      Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "a.out"
+      
+      The CXX compiler identification is GNU, found in:
+        /home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/CMakeFiles/4.3.2/CompilerIdCXX/a.out
+      
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/Compiler/GNU-FindBinUtils.cmake:18 (find_program)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCXXCompiler.cmake:207 (include)"
+      - "CMakeLists.txt:5 (project)"
+    mode: "program"
+    variable: "CMAKE_CXX_COMPILER_AR"
+    description: "A wrapper around 'ar' adding the appropriate '--plugin' option for the GCC compiler"
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "gcc-ar-16.1"
+      - "gcc-ar-16"
+      - "gcc-ar16"
+      - "gcc-ar"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/home/brennanf/Projects/qcpy_dev/env/bin/"
+      - "/home/brennanf/.pyenv/shims/"
+      - "/opt/cuda/bin/"
+      - "/home/brennanf/.pyenv/bin/"
+      - "/home/brennanf/.local/bin/"
+      - "/home/brennanf/.cargo/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/home/brennanf/.local/share/flatpak/exports/bin/"
+      - "/var/lib/flatpak/exports/bin/"
+      - "/usr/bin/site_perl/"
+      - "/usr/bin/vendor_perl/"
+      - "/usr/bin/core_perl/"
+    searched_directories:
+      - "/usr/bin/gcc-ar-16.1"
+      - "/home/brennanf/Projects/qcpy_dev/env/bin/gcc-ar-16.1"
+      - "/home/brennanf/.pyenv/shims/gcc-ar-16.1"
+      - "/opt/cuda/bin/gcc-ar-16.1"
+      - "/home/brennanf/.pyenv/bin/gcc-ar-16.1"
+      - "/home/brennanf/.local/bin/gcc-ar-16.1"
+      - "/home/brennanf/.cargo/bin/gcc-ar-16.1"
+      - "/usr/local/sbin/gcc-ar-16.1"
+      - "/usr/local/bin/gcc-ar-16.1"
+      - "/home/brennanf/.local/share/flatpak/exports/bin/gcc-ar-16.1"
+      - "/var/lib/flatpak/exports/bin/gcc-ar-16.1"
+      - "/usr/bin/site_perl/gcc-ar-16.1"
+      - "/usr/bin/vendor_perl/gcc-ar-16.1"
+      - "/usr/bin/core_perl/gcc-ar-16.1"
+      - "/usr/bin/gcc-ar-16"
+      - "/home/brennanf/Projects/qcpy_dev/env/bin/gcc-ar-16"
+      - "/home/brennanf/.pyenv/shims/gcc-ar-16"
+      - "/opt/cuda/bin/gcc-ar-16"
+      - "/home/brennanf/.pyenv/bin/gcc-ar-16"
+      - "/home/brennanf/.local/bin/gcc-ar-16"
+      - "/home/brennanf/.cargo/bin/gcc-ar-16"
+      - "/usr/local/sbin/gcc-ar-16"
+      - "/usr/local/bin/gcc-ar-16"
+      - "/home/brennanf/.local/share/flatpak/exports/bin/gcc-ar-16"
+      - "/var/lib/flatpak/exports/bin/gcc-ar-16"
+      - "/usr/bin/site_perl/gcc-ar-16"
+      - "/usr/bin/vendor_perl/gcc-ar-16"
+      - "/usr/bin/core_perl/gcc-ar-16"
+      - "/usr/bin/gcc-ar16"
+      - "/home/brennanf/Projects/qcpy_dev/env/bin/gcc-ar16"
+      - "/home/brennanf/.pyenv/shims/gcc-ar16"
+      - "/opt/cuda/bin/gcc-ar16"
+      - "/home/brennanf/.pyenv/bin/gcc-ar16"
+      - "/home/brennanf/.local/bin/gcc-ar16"
+      - "/home/brennanf/.cargo/bin/gcc-ar16"
+      - "/usr/local/sbin/gcc-ar16"
+      - "/usr/local/bin/gcc-ar16"
+      - "/home/brennanf/.local/share/flatpak/exports/bin/gcc-ar16"
+      - "/var/lib/flatpak/exports/bin/gcc-ar16"
+      - "/usr/bin/site_perl/gcc-ar16"
+      - "/usr/bin/vendor_perl/gcc-ar16"
+      - "/usr/bin/core_perl/gcc-ar16"
+    found: "/usr/bin/gcc-ar"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build"
+      ENV{PATH}:
+        - "/home/brennanf/Projects/qcpy_dev/env/bin"
+        - "/home/brennanf/.pyenv/shims"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.pyenv/bin"
+        - "/home/brennanf/.local/bin"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.pyenv/bin"
+        - "/home/brennanf/.local/bin"
+        - "/home/brennanf/.cargo/bin"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.local/share/flatpak/exports/bin"
+        - "/var/lib/flatpak/exports/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/Compiler/GNU-FindBinUtils.cmake:30 (find_program)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCXXCompiler.cmake:207 (include)"
+      - "CMakeLists.txt:5 (project)"
+    mode: "program"
+    variable: "CMAKE_CXX_COMPILER_RANLIB"
+    description: "A wrapper around 'ranlib' adding the appropriate '--plugin' option for the GCC compiler"
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "gcc-ranlib-16.1"
+      - "gcc-ranlib-16"
+      - "gcc-ranlib16"
+      - "gcc-ranlib"
+    candidate_directories:
+      - "/usr/bin/"
+      - "/home/brennanf/Projects/qcpy_dev/env/bin/"
+      - "/home/brennanf/.pyenv/shims/"
+      - "/opt/cuda/bin/"
+      - "/home/brennanf/.pyenv/bin/"
+      - "/home/brennanf/.local/bin/"
+      - "/home/brennanf/.cargo/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/home/brennanf/.local/share/flatpak/exports/bin/"
+      - "/var/lib/flatpak/exports/bin/"
+      - "/usr/bin/site_perl/"
+      - "/usr/bin/vendor_perl/"
+      - "/usr/bin/core_perl/"
+    searched_directories:
+      - "/usr/bin/gcc-ranlib-16.1"
+      - "/home/brennanf/Projects/qcpy_dev/env/bin/gcc-ranlib-16.1"
+      - "/home/brennanf/.pyenv/shims/gcc-ranlib-16.1"
+      - "/opt/cuda/bin/gcc-ranlib-16.1"
+      - "/home/brennanf/.pyenv/bin/gcc-ranlib-16.1"
+      - "/home/brennanf/.local/bin/gcc-ranlib-16.1"
+      - "/home/brennanf/.cargo/bin/gcc-ranlib-16.1"
+      - "/usr/local/sbin/gcc-ranlib-16.1"
+      - "/usr/local/bin/gcc-ranlib-16.1"
+      - "/home/brennanf/.local/share/flatpak/exports/bin/gcc-ranlib-16.1"
+      - "/var/lib/flatpak/exports/bin/gcc-ranlib-16.1"
+      - "/usr/bin/site_perl/gcc-ranlib-16.1"
+      - "/usr/bin/vendor_perl/gcc-ranlib-16.1"
+      - "/usr/bin/core_perl/gcc-ranlib-16.1"
+      - "/usr/bin/gcc-ranlib-16"
+      - "/home/brennanf/Projects/qcpy_dev/env/bin/gcc-ranlib-16"
+      - "/home/brennanf/.pyenv/shims/gcc-ranlib-16"
+      - "/opt/cuda/bin/gcc-ranlib-16"
+      - "/home/brennanf/.pyenv/bin/gcc-ranlib-16"
+      - "/home/brennanf/.local/bin/gcc-ranlib-16"
+      - "/home/brennanf/.cargo/bin/gcc-ranlib-16"
+      - "/usr/local/sbin/gcc-ranlib-16"
+      - "/usr/local/bin/gcc-ranlib-16"
+      - "/home/brennanf/.local/share/flatpak/exports/bin/gcc-ranlib-16"
+      - "/var/lib/flatpak/exports/bin/gcc-ranlib-16"
+      - "/usr/bin/site_perl/gcc-ranlib-16"
+      - "/usr/bin/vendor_perl/gcc-ranlib-16"
+      - "/usr/bin/core_perl/gcc-ranlib-16"
+      - "/usr/bin/gcc-ranlib16"
+      - "/home/brennanf/Projects/qcpy_dev/env/bin/gcc-ranlib16"
+      - "/home/brennanf/.pyenv/shims/gcc-ranlib16"
+      - "/opt/cuda/bin/gcc-ranlib16"
+      - "/home/brennanf/.pyenv/bin/gcc-ranlib16"
+      - "/home/brennanf/.local/bin/gcc-ranlib16"
+      - "/home/brennanf/.cargo/bin/gcc-ranlib16"
+      - "/usr/local/sbin/gcc-ranlib16"
+      - "/usr/local/bin/gcc-ranlib16"
+      - "/home/brennanf/.local/share/flatpak/exports/bin/gcc-ranlib16"
+      - "/var/lib/flatpak/exports/bin/gcc-ranlib16"
+      - "/usr/bin/site_perl/gcc-ranlib16"
+      - "/usr/bin/vendor_perl/gcc-ranlib16"
+      - "/usr/bin/core_perl/gcc-ranlib16"
+    found: "/usr/bin/gcc-ranlib"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build"
+      ENV{PATH}:
+        - "/home/brennanf/Projects/qcpy_dev/env/bin"
+        - "/home/brennanf/.pyenv/shims"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.pyenv/bin"
+        - "/home/brennanf/.local/bin"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.pyenv/bin"
+        - "/home/brennanf/.local/bin"
+        - "/home/brennanf/.cargo/bin"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.local/share/flatpak/exports/bin"
+        - "/var/lib/flatpak/exports/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:83 (try_compile)"
+      - "/usr/share/cmake/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:5 (project)"
+    checks:
+      - "Detecting C compiler ABI info"
+    directories:
+      source: "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/CMakeFiles/CMakeScratch/TryCompile-gJmveZ"
+      binary: "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/CMakeFiles/CMakeScratch/TryCompile-gJmveZ"
+    cmakeVariables:
+      CMAKE_CXX_STDLIB_MODULES_JSON: ""
+      CMAKE_C_FLAGS: "-m64"
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: "-m64"
+      CMAKE_MODULE_PATH: "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build"
+    buildResult:
+      variable: "CMAKE_C_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: '/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/CMakeFiles/CMakeScratch/TryCompile-gJmveZ'
+        
+        Run Build Command(s): /usr/bin/ninja -v cmTC_97702
+        [1/2] /usr/bin/cc   -m64    -v -o CMakeFiles/cmTC_97702.dir/CMakeCCompilerABI.c.o -c /usr/share/cmake/Modules/CMakeCCompilerABI.c
+        Using built-in specs.
+        COLLECT_GCC=/usr/bin/cc
+        Target: x86_64-pc-linux-gnu
+        Configured with: /build/gcc/src/gcc/configure --enable-languages=ada,c,c++,d,fortran,go,lto,m2,objc,obj-c++,rust,cobol --enable-bootstrap --prefix=/usr --libdir=/usr/lib --libexecdir=/usr/lib --mandir=/usr/share/man --infodir=/usr/share/info --with-bugurl=https://gitlab.archlinux.org/archlinux/packaging/packages/gcc/-/issues --with-build-config=bootstrap-lto --with-linker-hash-style=gnu --with-system-zlib --enable-cet=auto --enable-checking=release --enable-clocale=gnu --enable-default-pie --enable-default-ssp --enable-gnu-indirect-function --enable-gnu-unique-object --enable-libstdcxx-backtrace --enable-link-serialization=1 --enable-linker-build-id --enable-lto --enable-multilib --enable-plugin --enable-shared --enable-threads=posix --disable-libssp --disable-libstdcxx-pch --disable-werror --disable-fixincludes
+        Thread model: posix
+        Supported LTO compression algorithms: zlib zstd
+        gcc version 16.1.1 20260430 (GCC) 
+        COLLECT_GCC_OPTIONS='-m64' '-v' '-o' 'CMakeFiles/cmTC_97702.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_97702.dir/'
+         /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/cc1 -quiet -v /usr/share/cmake/Modules/CMakeCCompilerABI.c -quiet -dumpdir CMakeFiles/cmTC_97702.dir/ -dumpbase CMakeCCompilerABI.c.c -dumpbase-ext .c -m64 -mtune=generic -march=x86-64 -version -o /tmp/ccwNroNE.s
+        GNU C23 (GCC) version 16.1.1 20260430 (x86_64-pc-linux-gnu)
+        	compiled by GNU C version 16.1.1 20260430, GMP version 6.3.0, MPFR version 4.2.2, MPC version 1.4.1, isl version isl-0.27-GMP
+        
+        GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+        ignoring nonexistent directory "/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/include-fixed"
+        ignoring nonexistent directory "/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../x86_64-pc-linux-gnu/include"
+        #include "..." search starts here:
+        #include <...> search starts here:
+         /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/include
+         /usr/local/include
+         /usr/include
+        End of search list.
+        Compiler executable checksum: d640c2d0cc84ebd71ee43ed7e2df63fb
+        COLLECT_GCC_OPTIONS='-m64' '-v' '-o' 'CMakeFiles/cmTC_97702.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_97702.dir/'
+         as -v --64 -o CMakeFiles/cmTC_97702.dir/CMakeCCompilerABI.c.o /tmp/ccwNroNE.s
+        GNU assembler version 2.46.0 (x86_64-pc-linux-gnu) using BFD version (GNU Binutils) 2.46.0
+        COMPILER_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/:/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/
+        LIBRARY_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib/:/lib/../lib/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../:/lib/:/usr/lib/
+        COLLECT_GCC_OPTIONS='-m64' '-v' '-o' 'CMakeFiles/cmTC_97702.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_97702.dir/CMakeCCompilerABI.c.'
+        [2/2] : && /usr/bin/cc -m64 -m64 -v -Wl,-v CMakeFiles/cmTC_97702.dir/CMakeCCompilerABI.c.o -o cmTC_97702   && :
+        Using built-in specs.
+        COLLECT_GCC=/usr/bin/cc
+        COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/lto-wrapper
+        Target: x86_64-pc-linux-gnu
+        Configured with: /build/gcc/src/gcc/configure --enable-languages=ada,c,c++,d,fortran,go,lto,m2,objc,obj-c++,rust,cobol --enable-bootstrap --prefix=/usr --libdir=/usr/lib --libexecdir=/usr/lib --mandir=/usr/share/man --infodir=/usr/share/info --with-bugurl=https://gitlab.archlinux.org/archlinux/packaging/packages/gcc/-/issues --with-build-config=bootstrap-lto --with-linker-hash-style=gnu --with-system-zlib --enable-cet=auto --enable-checking=release --enable-clocale=gnu --enable-default-pie --enable-default-ssp --enable-gnu-indirect-function --enable-gnu-unique-object --enable-libstdcxx-backtrace --enable-link-serialization=1 --enable-linker-build-id --enable-lto --enable-multilib --enable-plugin --enable-shared --enable-threads=posix --disable-libssp --disable-libstdcxx-pch --disable-werror --disable-fixincludes
+        Thread model: posix
+        Supported LTO compression algorithms: zlib zstd
+        gcc version 16.1.1 20260430 (GCC) 
+        COMPILER_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/:/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/
+        LIBRARY_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib/:/lib/../lib/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../:/lib/:/usr/lib/
+        COLLECT_GCC_OPTIONS='-m64' '-v' '-o' 'cmTC_97702' '-mtune=generic' '-march=x86-64' '-dumpdir' 'cmTC_97702.'
+         /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/collect2 -plugin /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/lto-wrapper -plugin-opt=-fresolution=/tmp/ccfp76Xb.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s_asneeded -plugin-opt=-pass-through=-latomic_asneeded -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s_asneeded --build-id --eh-frame-hdr --hash-style=gnu -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -o cmTC_97702 /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib/Scrt1.o /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib/crti.o /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/crtbeginS.o -L/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1 -L/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib -L/lib/../lib -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../.. -L/lib -L/usr/lib -v CMakeFiles/cmTC_97702.dir/CMakeCCompilerABI.c.o -lgcc -lgcc_s_asneeded -latomic_asneeded -lc -lgcc -lgcc_s_asneeded /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/crtendS.o /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib/crtn.o
+        collect2 version 16.1.1 20260430
+        /usr/bin/ld -plugin /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/lto-wrapper -plugin-opt=-fresolution=/tmp/ccfp76Xb.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s_asneeded -plugin-opt=-pass-through=-latomic_asneeded -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s_asneeded --build-id --eh-frame-hdr --hash-style=gnu -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -o cmTC_97702 /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib/Scrt1.o /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib/crti.o /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/crtbeginS.o -L/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1 -L/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib -L/lib/../lib -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../.. -L/lib -L/usr/lib -v CMakeFiles/cmTC_97702.dir/CMakeCCompilerABI.c.o -lgcc -lgcc_s_asneeded -latomic_asneeded -lc -lgcc -lgcc_s_asneeded /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/crtendS.o /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib/crtn.o
+        GNU ld (GNU Binutils) 2.46.0
+        COLLECT_GCC_OPTIONS='-m64' '-v' '-o' 'cmTC_97702' '-mtune=generic' '-march=x86-64' '-dumpdir' 'cmTC_97702.'
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:217 (message)"
+      - "/usr/share/cmake/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:5 (project)"
+    message: |
+      Parsed C implicit include dir info: rv=done
+        found start of include info
+        found start of implicit include info
+          add: [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/include]
+          add: [/usr/local/include]
+          add: [/usr/include]
+        end of search list found
+        collapse include dir [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/include] ==> [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/include]
+        collapse include dir [/usr/local/include] ==> [/usr/local/include]
+        collapse include dir [/usr/include] ==> [/usr/include]
+        implicit include dirs: [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/include;/usr/local/include;/usr/include]
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:253 (message)"
+      - "/usr/share/cmake/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:5 (project)"
+    message: |
+      Parsed C implicit link information:
+        link line regex: [^( *|.*[/\\])(ld[0-9]*(|\\.[a-rt-z][a-z]*|\\.s[a-np-z][a-z]*|\\.so[a-z]+)|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        linker tool regex: [^[ 	]*(->|"|[0-9]+>[ 	-]*Build:[ 	0-9]+ ms[ 	]*)?[ 	]*(([^"]*[/\\])?(ld[0-9]*(|\\.[a-rt-z][a-z]*|\\.s[a-np-z][a-z]*|\\.so[a-z]+)))("|,| |$)]
+        ignore line: [Change Dir: '/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/CMakeFiles/CMakeScratch/TryCompile-gJmveZ']
+        ignore line: []
+        ignore line: [Run Build Command(s): /usr/bin/ninja -v cmTC_97702]
+        ignore line: [[1/2] /usr/bin/cc   -m64    -v -o CMakeFiles/cmTC_97702.dir/CMakeCCompilerABI.c.o -c /usr/share/cmake/Modules/CMakeCCompilerABI.c]
+        ignore line: [Using built-in specs.]
+        ignore line: [COLLECT_GCC=/usr/bin/cc]
+        ignore line: [Target: x86_64-pc-linux-gnu]
+        ignore line: [Configured with: /build/gcc/src/gcc/configure --enable-languages=ada c c++ d fortran go lto m2 objc obj-c++ rust cobol --enable-bootstrap --prefix=/usr --libdir=/usr/lib --libexecdir=/usr/lib --mandir=/usr/share/man --infodir=/usr/share/info --with-bugurl=https://gitlab.archlinux.org/archlinux/packaging/packages/gcc/-/issues --with-build-config=bootstrap-lto --with-linker-hash-style=gnu --with-system-zlib --enable-cet=auto --enable-checking=release --enable-clocale=gnu --enable-default-pie --enable-default-ssp --enable-gnu-indirect-function --enable-gnu-unique-object --enable-libstdcxx-backtrace --enable-link-serialization=1 --enable-linker-build-id --enable-lto --enable-multilib --enable-plugin --enable-shared --enable-threads=posix --disable-libssp --disable-libstdcxx-pch --disable-werror --disable-fixincludes]
+        ignore line: [Thread model: posix]
+        ignore line: [Supported LTO compression algorithms: zlib zstd]
+        ignore line: [gcc version 16.1.1 20260430 (GCC) ]
+        ignore line: [COLLECT_GCC_OPTIONS='-m64' '-v' '-o' 'CMakeFiles/cmTC_97702.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_97702.dir/']
+        ignore line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/cc1 -quiet -v /usr/share/cmake/Modules/CMakeCCompilerABI.c -quiet -dumpdir CMakeFiles/cmTC_97702.dir/ -dumpbase CMakeCCompilerABI.c.c -dumpbase-ext .c -m64 -mtune=generic -march=x86-64 -version -o /tmp/ccwNroNE.s]
+        ignore line: [GNU C23 (GCC) version 16.1.1 20260430 (x86_64-pc-linux-gnu)]
+        ignore line: [	compiled by GNU C version 16.1.1 20260430  GMP version 6.3.0  MPFR version 4.2.2  MPC version 1.4.1  isl version isl-0.27-GMP]
+        ignore line: []
+        ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
+        ignore line: [ignoring nonexistent directory "/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/include-fixed"]
+        ignore line: [ignoring nonexistent directory "/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../x86_64-pc-linux-gnu/include"]
+        ignore line: [#include "..." search starts here:]
+        ignore line: [#include <...> search starts here:]
+        ignore line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/include]
+        ignore line: [ /usr/local/include]
+        ignore line: [ /usr/include]
+        ignore line: [End of search list.]
+        ignore line: [Compiler executable checksum: d640c2d0cc84ebd71ee43ed7e2df63fb]
+        ignore line: [COLLECT_GCC_OPTIONS='-m64' '-v' '-o' 'CMakeFiles/cmTC_97702.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_97702.dir/']
+        ignore line: [ as -v --64 -o CMakeFiles/cmTC_97702.dir/CMakeCCompilerABI.c.o /tmp/ccwNroNE.s]
+        ignore line: [GNU assembler version 2.46.0 (x86_64-pc-linux-gnu) using BFD version (GNU Binutils) 2.46.0]
+        ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/:/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/]
+        ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib/:/lib/../lib/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../:/lib/:/usr/lib/]
+        ignore line: [COLLECT_GCC_OPTIONS='-m64' '-v' '-o' 'CMakeFiles/cmTC_97702.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_97702.dir/CMakeCCompilerABI.c.']
+        ignore line: [[2/2] : && /usr/bin/cc -m64 -m64 -v -Wl -v CMakeFiles/cmTC_97702.dir/CMakeCCompilerABI.c.o -o cmTC_97702   && :]
+        ignore line: [Using built-in specs.]
+        ignore line: [COLLECT_GCC=/usr/bin/cc]
+        ignore line: [COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/lto-wrapper]
+        ignore line: [Target: x86_64-pc-linux-gnu]
+        ignore line: [Configured with: /build/gcc/src/gcc/configure --enable-languages=ada c c++ d fortran go lto m2 objc obj-c++ rust cobol --enable-bootstrap --prefix=/usr --libdir=/usr/lib --libexecdir=/usr/lib --mandir=/usr/share/man --infodir=/usr/share/info --with-bugurl=https://gitlab.archlinux.org/archlinux/packaging/packages/gcc/-/issues --with-build-config=bootstrap-lto --with-linker-hash-style=gnu --with-system-zlib --enable-cet=auto --enable-checking=release --enable-clocale=gnu --enable-default-pie --enable-default-ssp --enable-gnu-indirect-function --enable-gnu-unique-object --enable-libstdcxx-backtrace --enable-link-serialization=1 --enable-linker-build-id --enable-lto --enable-multilib --enable-plugin --enable-shared --enable-threads=posix --disable-libssp --disable-libstdcxx-pch --disable-werror --disable-fixincludes]
+        ignore line: [Thread model: posix]
+        ignore line: [Supported LTO compression algorithms: zlib zstd]
+        ignore line: [gcc version 16.1.1 20260430 (GCC) ]
+        ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/:/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/]
+        ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib/:/lib/../lib/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../:/lib/:/usr/lib/]
+        ignore line: [COLLECT_GCC_OPTIONS='-m64' '-v' '-o' 'cmTC_97702' '-mtune=generic' '-march=x86-64' '-dumpdir' 'cmTC_97702.']
+        link line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/collect2 -plugin /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/lto-wrapper -plugin-opt=-fresolution=/tmp/ccfp76Xb.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s_asneeded -plugin-opt=-pass-through=-latomic_asneeded -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s_asneeded --build-id --eh-frame-hdr --hash-style=gnu -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -o cmTC_97702 /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib/Scrt1.o /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib/crti.o /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/crtbeginS.o -L/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1 -L/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib -L/lib/../lib -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../.. -L/lib -L/usr/lib -v CMakeFiles/cmTC_97702.dir/CMakeCCompilerABI.c.o -lgcc -lgcc_s_asneeded -latomic_asneeded -lc -lgcc -lgcc_s_asneeded /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/crtendS.o /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib/crtn.o]
+          arg [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/collect2] ==> ignore
+          arg [-plugin] ==> ignore
+          arg [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/liblto_plugin.so] ==> ignore
+          arg [-plugin-opt=/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/lto-wrapper] ==> ignore
+          arg [-plugin-opt=-fresolution=/tmp/ccfp76Xb.res] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc_s_asneeded] ==> ignore
+          arg [-plugin-opt=-pass-through=-latomic_asneeded] ==> ignore
+          arg [-plugin-opt=-pass-through=-lc] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc_s_asneeded] ==> ignore
+          arg [--build-id] ==> ignore
+          arg [--eh-frame-hdr] ==> ignore
+          arg [--hash-style=gnu] ==> ignore
+          arg [-m] ==> ignore
+          arg [elf_x86_64] ==> ignore
+          arg [-dynamic-linker] ==> ignore
+          arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
+          arg [-pie] ==> ignore
+          arg [-o] ==> ignore
+          arg [cmTC_97702] ==> ignore
+          arg [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib/Scrt1.o] ==> obj [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib/Scrt1.o]
+          arg [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib/crti.o] ==> obj [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib/crti.o]
+          arg [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/crtbeginS.o] ==> obj [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/crtbeginS.o]
+          arg [-L/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1] ==> dir [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1]
+          arg [-L/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib] ==> dir [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib]
+          arg [-L/lib/../lib] ==> dir [/lib/../lib]
+          arg [-L/usr/lib/../lib] ==> dir [/usr/lib/../lib]
+          arg [-L/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../..] ==> dir [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../..]
+          arg [-L/lib] ==> dir [/lib]
+          arg [-L/usr/lib] ==> dir [/usr/lib]
+          arg [-v] ==> ignore
+          arg [CMakeFiles/cmTC_97702.dir/CMakeCCompilerABI.c.o] ==> ignore
+          arg [-lgcc] ==> lib [gcc]
+          arg [-lgcc_s_asneeded] ==> lib [gcc_s_asneeded]
+          arg [-latomic_asneeded] ==> lib [atomic_asneeded]
+          arg [-lc] ==> lib [c]
+          arg [-lgcc] ==> lib [gcc]
+          arg [-lgcc_s_asneeded] ==> lib [gcc_s_asneeded]
+          arg [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/crtendS.o] ==> obj [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/crtendS.o]
+          arg [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib/crtn.o] ==> obj [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib/crtn.o]
+        ignore line: [collect2 version 16.1.1 20260430]
+        ignore line: [/usr/bin/ld -plugin /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/lto-wrapper -plugin-opt=-fresolution=/tmp/ccfp76Xb.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s_asneeded -plugin-opt=-pass-through=-latomic_asneeded -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s_asneeded --build-id --eh-frame-hdr --hash-style=gnu -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -o cmTC_97702 /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib/Scrt1.o /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib/crti.o /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/crtbeginS.o -L/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1 -L/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib -L/lib/../lib -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../.. -L/lib -L/usr/lib -v CMakeFiles/cmTC_97702.dir/CMakeCCompilerABI.c.o -lgcc -lgcc_s_asneeded -latomic_asneeded -lc -lgcc -lgcc_s_asneeded /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/crtendS.o /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib/crtn.o]
+        linker tool for 'C': /usr/bin/ld
+        collapse obj [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib/Scrt1.o] ==> [/usr/lib/Scrt1.o]
+        collapse obj [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib/crti.o] ==> [/usr/lib/crti.o]
+        collapse obj [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib/crtn.o] ==> [/usr/lib/crtn.o]
+        collapse library dir [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1] ==> [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1]
+        collapse library dir [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib] ==> [/usr/lib]
+        collapse library dir [/lib/../lib] ==> [/lib]
+        collapse library dir [/usr/lib/../lib] ==> [/usr/lib]
+        collapse library dir [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../..] ==> [/usr/lib]
+        collapse library dir [/lib] ==> [/lib]
+        collapse library dir [/usr/lib] ==> [/usr/lib]
+        implicit libs: [gcc;gcc_s_asneeded;atomic_asneeded;c;gcc;gcc_s_asneeded]
+        implicit objs: [/usr/lib/Scrt1.o;/usr/lib/crti.o;/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/crtbeginS.o;/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/crtendS.o;/usr/lib/crtn.o]
+        implicit dirs: [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1;/usr/lib;/lib]
+        implicit fwks: []
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/Internal/CMakeDetermineLinkerId.cmake:38 (message)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:299 (cmake_determine_linker_id)"
+      - "/usr/share/cmake/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:5 (project)"
+    message: |
+      Running the C compiler's linker: "/usr/bin/ld" "-v"
+      GNU ld (GNU Binutils) 2.46.0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:83 (try_compile)"
+      - "/usr/share/cmake/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:5 (project)"
+    checks:
+      - "Detecting CXX compiler ABI info"
+    directories:
+      source: "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/CMakeFiles/CMakeScratch/TryCompile-eECUdn"
+      binary: "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/CMakeFiles/CMakeScratch/TryCompile-eECUdn"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: "-m64"
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_CXX_SCAN_FOR_MODULES: "OFF"
+      CMAKE_CXX_STDLIB_MODULES_JSON: ""
+      CMAKE_EXE_LINKER_FLAGS: "-m64"
+      CMAKE_MODULE_PATH: "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build"
+    buildResult:
+      variable: "CMAKE_CXX_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: '/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/CMakeFiles/CMakeScratch/TryCompile-eECUdn'
+        
+        Run Build Command(s): /usr/bin/ninja -v cmTC_ade4d
+        [1/2] /usr/bin/c++   -m64  -std=gnu++17   -v -o CMakeFiles/cmTC_ade4d.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake/Modules/CMakeCXXCompilerABI.cpp
+        Using built-in specs.
+        COLLECT_GCC=/usr/bin/c++
+        Target: x86_64-pc-linux-gnu
+        Configured with: /build/gcc/src/gcc/configure --enable-languages=ada,c,c++,d,fortran,go,lto,m2,objc,obj-c++,rust,cobol --enable-bootstrap --prefix=/usr --libdir=/usr/lib --libexecdir=/usr/lib --mandir=/usr/share/man --infodir=/usr/share/info --with-bugurl=https://gitlab.archlinux.org/archlinux/packaging/packages/gcc/-/issues --with-build-config=bootstrap-lto --with-linker-hash-style=gnu --with-system-zlib --enable-cet=auto --enable-checking=release --enable-clocale=gnu --enable-default-pie --enable-default-ssp --enable-gnu-indirect-function --enable-gnu-unique-object --enable-libstdcxx-backtrace --enable-link-serialization=1 --enable-linker-build-id --enable-lto --enable-multilib --enable-plugin --enable-shared --enable-threads=posix --disable-libssp --disable-libstdcxx-pch --disable-werror --disable-fixincludes
+        Thread model: posix
+        Supported LTO compression algorithms: zlib zstd
+        gcc version 16.1.1 20260430 (GCC) 
+        COLLECT_GCC_OPTIONS='-m64' '-std=gnu++17' '-v' '-o' 'CMakeFiles/cmTC_ade4d.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_ade4d.dir/'
+         /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/cc1plus -quiet -v -D_GNU_SOURCE /usr/share/cmake/Modules/CMakeCXXCompilerABI.cpp -quiet -dumpdir CMakeFiles/cmTC_ade4d.dir/ -dumpbase CMakeCXXCompilerABI.cpp.cpp -dumpbase-ext .cpp -m64 -mtune=generic -march=x86-64 -std=gnu++17 -version -o /tmp/cciubDIO.s
+        GNU C++17 (GCC) version 16.1.1 20260430 (x86_64-pc-linux-gnu)
+        	compiled by GNU C version 16.1.1 20260430, GMP version 6.3.0, MPFR version 4.2.2, MPC version 1.4.1, isl version isl-0.27-GMP
+        
+        GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+        ignoring nonexistent directory "/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/include-fixed"
+        ignoring nonexistent directory "/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../x86_64-pc-linux-gnu/include"
+        #include "..." search starts here:
+        #include <...> search starts here:
+         /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../include/c++/16.1.1
+         /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../include/c++/16.1.1/x86_64-pc-linux-gnu
+         /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../include/c++/16.1.1/backward
+         /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/include
+         /usr/local/include
+         /usr/include
+        End of search list.
+        Compiler executable checksum: d47d0c990a24bc0dbaf3bd00656bd5f3
+        COLLECT_GCC_OPTIONS='-m64' '-std=gnu++17' '-v' '-o' 'CMakeFiles/cmTC_ade4d.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_ade4d.dir/'
+         as -v --64 -o CMakeFiles/cmTC_ade4d.dir/CMakeCXXCompilerABI.cpp.o /tmp/cciubDIO.s
+        GNU assembler version 2.46.0 (x86_64-pc-linux-gnu) using BFD version (GNU Binutils) 2.46.0
+        COMPILER_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/:/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/
+        LIBRARY_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib/:/lib/../lib/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../:/lib/:/usr/lib/
+        COLLECT_GCC_OPTIONS='-m64' '-std=gnu++17' '-v' '-o' 'CMakeFiles/cmTC_ade4d.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_ade4d.dir/CMakeCXXCompilerABI.cpp.'
+        [2/2] : && /usr/bin/c++ -m64 -m64 -v -Wl,-v CMakeFiles/cmTC_ade4d.dir/CMakeCXXCompilerABI.cpp.o -o cmTC_ade4d   && :
+        Using built-in specs.
+        COLLECT_GCC=/usr/bin/c++
+        COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/lto-wrapper
+        Target: x86_64-pc-linux-gnu
+        Configured with: /build/gcc/src/gcc/configure --enable-languages=ada,c,c++,d,fortran,go,lto,m2,objc,obj-c++,rust,cobol --enable-bootstrap --prefix=/usr --libdir=/usr/lib --libexecdir=/usr/lib --mandir=/usr/share/man --infodir=/usr/share/info --with-bugurl=https://gitlab.archlinux.org/archlinux/packaging/packages/gcc/-/issues --with-build-config=bootstrap-lto --with-linker-hash-style=gnu --with-system-zlib --enable-cet=auto --enable-checking=release --enable-clocale=gnu --enable-default-pie --enable-default-ssp --enable-gnu-indirect-function --enable-gnu-unique-object --enable-libstdcxx-backtrace --enable-link-serialization=1 --enable-linker-build-id --enable-lto --enable-multilib --enable-plugin --enable-shared --enable-threads=posix --disable-libssp --disable-libstdcxx-pch --disable-werror --disable-fixincludes
+        Thread model: posix
+        Supported LTO compression algorithms: zlib zstd
+        gcc version 16.1.1 20260430 (GCC) 
+        COMPILER_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/:/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/
+        LIBRARY_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib/:/lib/../lib/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../:/lib/:/usr/lib/
+        COLLECT_GCC_OPTIONS='-m64' '-v' '-o' 'cmTC_ade4d' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'cmTC_ade4d.'
+         /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/collect2 -plugin /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/lto-wrapper -plugin-opt=-fresolution=/tmp/ccNqDXL5.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-latomic_asneeded -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --eh-frame-hdr --hash-style=gnu -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -o cmTC_ade4d /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib/Scrt1.o /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib/crti.o /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/crtbeginS.o -L/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1 -L/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib -L/lib/../lib -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../.. -L/lib -L/usr/lib -v CMakeFiles/cmTC_ade4d.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -latomic_asneeded -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/crtendS.o /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib/crtn.o
+        collect2 version 16.1.1 20260430
+        /usr/bin/ld -plugin /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/lto-wrapper -plugin-opt=-fresolution=/tmp/ccNqDXL5.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-latomic_asneeded -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --eh-frame-hdr --hash-style=gnu -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -o cmTC_ade4d /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib/Scrt1.o /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib/crti.o /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/crtbeginS.o -L/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1 -L/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib -L/lib/../lib -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../.. -L/lib -L/usr/lib -v CMakeFiles/cmTC_ade4d.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -latomic_asneeded -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/crtendS.o /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib/crtn.o
+        GNU ld (GNU Binutils) 2.46.0
+        COLLECT_GCC_OPTIONS='-m64' '-v' '-o' 'cmTC_ade4d' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'cmTC_ade4d.'
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:217 (message)"
+      - "/usr/share/cmake/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:5 (project)"
+    message: |
+      Parsed CXX implicit include dir info: rv=done
+        found start of include info
+        found start of implicit include info
+          add: [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../include/c++/16.1.1]
+          add: [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../include/c++/16.1.1/x86_64-pc-linux-gnu]
+          add: [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../include/c++/16.1.1/backward]
+          add: [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/include]
+          add: [/usr/local/include]
+          add: [/usr/include]
+        end of search list found
+        collapse include dir [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../include/c++/16.1.1] ==> [/usr/include/c++/16.1.1]
+        collapse include dir [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../include/c++/16.1.1/x86_64-pc-linux-gnu] ==> [/usr/include/c++/16.1.1/x86_64-pc-linux-gnu]
+        collapse include dir [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../include/c++/16.1.1/backward] ==> [/usr/include/c++/16.1.1/backward]
+        collapse include dir [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/include] ==> [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/include]
+        collapse include dir [/usr/local/include] ==> [/usr/local/include]
+        collapse include dir [/usr/include] ==> [/usr/include]
+        implicit include dirs: [/usr/include/c++/16.1.1;/usr/include/c++/16.1.1/x86_64-pc-linux-gnu;/usr/include/c++/16.1.1/backward;/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/include;/usr/local/include;/usr/include]
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:253 (message)"
+      - "/usr/share/cmake/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:5 (project)"
+    message: |
+      Parsed CXX implicit link information:
+        link line regex: [^( *|.*[/\\])(ld[0-9]*(|\\.[a-rt-z][a-z]*|\\.s[a-np-z][a-z]*|\\.so[a-z]+)|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        linker tool regex: [^[ 	]*(->|"|[0-9]+>[ 	-]*Build:[ 	0-9]+ ms[ 	]*)?[ 	]*(([^"]*[/\\])?(ld[0-9]*(|\\.[a-rt-z][a-z]*|\\.s[a-np-z][a-z]*|\\.so[a-z]+)))("|,| |$)]
+        ignore line: [Change Dir: '/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/CMakeFiles/CMakeScratch/TryCompile-eECUdn']
+        ignore line: []
+        ignore line: [Run Build Command(s): /usr/bin/ninja -v cmTC_ade4d]
+        ignore line: [[1/2] /usr/bin/c++   -m64  -std=gnu++17   -v -o CMakeFiles/cmTC_ade4d.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake/Modules/CMakeCXXCompilerABI.cpp]
+        ignore line: [Using built-in specs.]
+        ignore line: [COLLECT_GCC=/usr/bin/c++]
+        ignore line: [Target: x86_64-pc-linux-gnu]
+        ignore line: [Configured with: /build/gcc/src/gcc/configure --enable-languages=ada c c++ d fortran go lto m2 objc obj-c++ rust cobol --enable-bootstrap --prefix=/usr --libdir=/usr/lib --libexecdir=/usr/lib --mandir=/usr/share/man --infodir=/usr/share/info --with-bugurl=https://gitlab.archlinux.org/archlinux/packaging/packages/gcc/-/issues --with-build-config=bootstrap-lto --with-linker-hash-style=gnu --with-system-zlib --enable-cet=auto --enable-checking=release --enable-clocale=gnu --enable-default-pie --enable-default-ssp --enable-gnu-indirect-function --enable-gnu-unique-object --enable-libstdcxx-backtrace --enable-link-serialization=1 --enable-linker-build-id --enable-lto --enable-multilib --enable-plugin --enable-shared --enable-threads=posix --disable-libssp --disable-libstdcxx-pch --disable-werror --disable-fixincludes]
+        ignore line: [Thread model: posix]
+        ignore line: [Supported LTO compression algorithms: zlib zstd]
+        ignore line: [gcc version 16.1.1 20260430 (GCC) ]
+        ignore line: [COLLECT_GCC_OPTIONS='-m64' '-std=gnu++17' '-v' '-o' 'CMakeFiles/cmTC_ade4d.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_ade4d.dir/']
+        ignore line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/cc1plus -quiet -v -D_GNU_SOURCE /usr/share/cmake/Modules/CMakeCXXCompilerABI.cpp -quiet -dumpdir CMakeFiles/cmTC_ade4d.dir/ -dumpbase CMakeCXXCompilerABI.cpp.cpp -dumpbase-ext .cpp -m64 -mtune=generic -march=x86-64 -std=gnu++17 -version -o /tmp/cciubDIO.s]
+        ignore line: [GNU C++17 (GCC) version 16.1.1 20260430 (x86_64-pc-linux-gnu)]
+        ignore line: [	compiled by GNU C version 16.1.1 20260430  GMP version 6.3.0  MPFR version 4.2.2  MPC version 1.4.1  isl version isl-0.27-GMP]
+        ignore line: []
+        ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
+        ignore line: [ignoring nonexistent directory "/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/include-fixed"]
+        ignore line: [ignoring nonexistent directory "/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../x86_64-pc-linux-gnu/include"]
+        ignore line: [#include "..." search starts here:]
+        ignore line: [#include <...> search starts here:]
+        ignore line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../include/c++/16.1.1]
+        ignore line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../include/c++/16.1.1/x86_64-pc-linux-gnu]
+        ignore line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../include/c++/16.1.1/backward]
+        ignore line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/include]
+        ignore line: [ /usr/local/include]
+        ignore line: [ /usr/include]
+        ignore line: [End of search list.]
+        ignore line: [Compiler executable checksum: d47d0c990a24bc0dbaf3bd00656bd5f3]
+        ignore line: [COLLECT_GCC_OPTIONS='-m64' '-std=gnu++17' '-v' '-o' 'CMakeFiles/cmTC_ade4d.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_ade4d.dir/']
+        ignore line: [ as -v --64 -o CMakeFiles/cmTC_ade4d.dir/CMakeCXXCompilerABI.cpp.o /tmp/cciubDIO.s]
+        ignore line: [GNU assembler version 2.46.0 (x86_64-pc-linux-gnu) using BFD version (GNU Binutils) 2.46.0]
+        ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/:/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/]
+        ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib/:/lib/../lib/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../:/lib/:/usr/lib/]
+        ignore line: [COLLECT_GCC_OPTIONS='-m64' '-std=gnu++17' '-v' '-o' 'CMakeFiles/cmTC_ade4d.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_ade4d.dir/CMakeCXXCompilerABI.cpp.']
+        ignore line: [[2/2] : && /usr/bin/c++ -m64 -m64 -v -Wl -v CMakeFiles/cmTC_ade4d.dir/CMakeCXXCompilerABI.cpp.o -o cmTC_ade4d   && :]
+        ignore line: [Using built-in specs.]
+        ignore line: [COLLECT_GCC=/usr/bin/c++]
+        ignore line: [COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/lto-wrapper]
+        ignore line: [Target: x86_64-pc-linux-gnu]
+        ignore line: [Configured with: /build/gcc/src/gcc/configure --enable-languages=ada c c++ d fortran go lto m2 objc obj-c++ rust cobol --enable-bootstrap --prefix=/usr --libdir=/usr/lib --libexecdir=/usr/lib --mandir=/usr/share/man --infodir=/usr/share/info --with-bugurl=https://gitlab.archlinux.org/archlinux/packaging/packages/gcc/-/issues --with-build-config=bootstrap-lto --with-linker-hash-style=gnu --with-system-zlib --enable-cet=auto --enable-checking=release --enable-clocale=gnu --enable-default-pie --enable-default-ssp --enable-gnu-indirect-function --enable-gnu-unique-object --enable-libstdcxx-backtrace --enable-link-serialization=1 --enable-linker-build-id --enable-lto --enable-multilib --enable-plugin --enable-shared --enable-threads=posix --disable-libssp --disable-libstdcxx-pch --disable-werror --disable-fixincludes]
+        ignore line: [Thread model: posix]
+        ignore line: [Supported LTO compression algorithms: zlib zstd]
+        ignore line: [gcc version 16.1.1 20260430 (GCC) ]
+        ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/:/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/]
+        ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib/:/lib/../lib/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../:/lib/:/usr/lib/]
+        ignore line: [COLLECT_GCC_OPTIONS='-m64' '-v' '-o' 'cmTC_ade4d' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'cmTC_ade4d.']
+        link line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/collect2 -plugin /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/lto-wrapper -plugin-opt=-fresolution=/tmp/ccNqDXL5.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-latomic_asneeded -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --eh-frame-hdr --hash-style=gnu -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -o cmTC_ade4d /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib/Scrt1.o /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib/crti.o /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/crtbeginS.o -L/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1 -L/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib -L/lib/../lib -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../.. -L/lib -L/usr/lib -v CMakeFiles/cmTC_ade4d.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -latomic_asneeded -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/crtendS.o /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib/crtn.o]
+          arg [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/collect2] ==> ignore
+          arg [-plugin] ==> ignore
+          arg [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/liblto_plugin.so] ==> ignore
+          arg [-plugin-opt=/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/lto-wrapper] ==> ignore
+          arg [-plugin-opt=-fresolution=/tmp/ccNqDXL5.res] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+          arg [-plugin-opt=-pass-through=-latomic_asneeded] ==> ignore
+          arg [-plugin-opt=-pass-through=-lc] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+          arg [--build-id] ==> ignore
+          arg [--eh-frame-hdr] ==> ignore
+          arg [--hash-style=gnu] ==> ignore
+          arg [-m] ==> ignore
+          arg [elf_x86_64] ==> ignore
+          arg [-dynamic-linker] ==> ignore
+          arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
+          arg [-pie] ==> ignore
+          arg [-o] ==> ignore
+          arg [cmTC_ade4d] ==> ignore
+          arg [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib/Scrt1.o] ==> obj [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib/Scrt1.o]
+          arg [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib/crti.o] ==> obj [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib/crti.o]
+          arg [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/crtbeginS.o] ==> obj [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/crtbeginS.o]
+          arg [-L/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1] ==> dir [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1]
+          arg [-L/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib] ==> dir [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib]
+          arg [-L/lib/../lib] ==> dir [/lib/../lib]
+          arg [-L/usr/lib/../lib] ==> dir [/usr/lib/../lib]
+          arg [-L/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../..] ==> dir [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../..]
+          arg [-L/lib] ==> dir [/lib]
+          arg [-L/usr/lib] ==> dir [/usr/lib]
+          arg [-v] ==> ignore
+          arg [CMakeFiles/cmTC_ade4d.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
+          arg [-lstdc++] ==> lib [stdc++]
+          arg [-lm] ==> lib [m]
+          arg [-lgcc_s] ==> lib [gcc_s]
+          arg [-lgcc] ==> lib [gcc]
+          arg [-latomic_asneeded] ==> lib [atomic_asneeded]
+          arg [-lc] ==> lib [c]
+          arg [-lgcc_s] ==> lib [gcc_s]
+          arg [-lgcc] ==> lib [gcc]
+          arg [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/crtendS.o] ==> obj [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/crtendS.o]
+          arg [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib/crtn.o] ==> obj [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib/crtn.o]
+        ignore line: [collect2 version 16.1.1 20260430]
+        ignore line: [/usr/bin/ld -plugin /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/lto-wrapper -plugin-opt=-fresolution=/tmp/ccNqDXL5.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-latomic_asneeded -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --eh-frame-hdr --hash-style=gnu -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -o cmTC_ade4d /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib/Scrt1.o /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib/crti.o /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/crtbeginS.o -L/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1 -L/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib -L/lib/../lib -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../.. -L/lib -L/usr/lib -v CMakeFiles/cmTC_ade4d.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -latomic_asneeded -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/crtendS.o /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib/crtn.o]
+        linker tool for 'CXX': /usr/bin/ld
+        collapse obj [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib/Scrt1.o] ==> [/usr/lib/Scrt1.o]
+        collapse obj [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib/crti.o] ==> [/usr/lib/crti.o]
+        collapse obj [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib/crtn.o] ==> [/usr/lib/crtn.o]
+        collapse library dir [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1] ==> [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1]
+        collapse library dir [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib] ==> [/usr/lib]
+        collapse library dir [/lib/../lib] ==> [/lib]
+        collapse library dir [/usr/lib/../lib] ==> [/usr/lib]
+        collapse library dir [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../..] ==> [/usr/lib]
+        collapse library dir [/lib] ==> [/lib]
+        collapse library dir [/usr/lib] ==> [/usr/lib]
+        implicit libs: [stdc++;m;gcc_s;gcc;atomic_asneeded;c;gcc_s;gcc]
+        implicit objs: [/usr/lib/Scrt1.o;/usr/lib/crti.o;/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/crtbeginS.o;/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/crtendS.o;/usr/lib/crtn.o]
+        implicit dirs: [/usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1;/usr/lib;/lib]
+        implicit fwks: []
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/Internal/CMakeDetermineLinkerId.cmake:38 (message)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:299 (cmake_determine_linker_id)"
+      - "/usr/share/cmake/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:5 (project)"
+    message: |
+      Running the CXX compiler's linker: "/usr/bin/ld" "-v"
+      GNU ld (GNU Binutils) 2.46.0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CheckLanguage.cmake:157 (message)"
+      - "CMakeLists.txt:31 (check_language)"
+    checks:
+      - "Looking for a CUDA compiler"
+    message: |
+      Looking for a CUDA compiler passed with the following output:
+      -- Using Conan toolchain: /home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/conan_toolchain.cmake
+      -- Conan toolchain: Defining architecture flag: -m64
+      -- Conan toolchain: C++ Standard 17 with extensions ON
+      -- The CUDA compiler identification is NVIDIA 13.2.78 with host compiler GNU 15.2.1
+      -- Detecting CUDA compiler ABI info
+      -- Detecting CUDA compiler ABI info - done
+      -- Check for working CUDA compiler: /opt/cuda/bin/nvcc - skipped
+      -- Detecting CUDA compile features
+      -- Detecting CUDA compile features - done
+      -- Configuring done (1.2s)
+      -- Generating done (0.0s)
+      -- Build files have been written to: /home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/CMakeFiles/CheckCUDA
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerId.cmake:1296 (message)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCUDACompiler.cmake:99 (CMAKE_DETERMINE_COMPILER_ID_VENDOR)"
+      - "CMakeLists.txt:34 (enable_language)"
+    message: |
+      Checking whether the CUDA compiler is NVIDIA using "" matched "nvcc: [^
+      ]+ Cuda compiler driver":
+      nvcc: NVIDIA (R) Cuda compiler driver
+      Copyright (c) 2005-2026 NVIDIA Corporation
+      Built on Thu_Mar_19_11:12:51_PM_PDT_2026
+      Cuda compilation tools, release 13.2, V13.2.78
+      Build cuda_13.2.r13.2/compiler.37668154_0
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerId.cmake:468 (find_file)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerId.cmake:506 (CMAKE_DETERMINE_COMPILER_ID_WRITE)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerId.cmake:8 (CMAKE_DETERMINE_COMPILER_ID_BUILD)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerId.cmake:53 (__determine_compiler_id_test)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCUDACompiler.cmake:163 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:34 (enable_language)"
+    mode: "file"
+    variable: "src_in"
+    description: "Path to a file."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "CMakeCUDACompilerId.cu.in"
+    candidate_directories:
+      - "/usr/share/cmake/Modules/"
+      - "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/"
+    found: "/usr/share/cmake/Modules/CMakeCUDACompilerId.cu.in"
+    search_context:
+      CMAKE_INCLUDE_PATH:
+        - "/home/brennanf/.conan2/p/b/libchf72436f84ba33/p/include"
+      CMAKE_PREFIX_PATH:
+        - "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build"
+      ENV{PATH}:
+        - "/home/brennanf/Projects/qcpy_dev/env/bin"
+        - "/home/brennanf/.pyenv/shims"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.pyenv/bin"
+        - "/home/brennanf/.local/bin"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.pyenv/bin"
+        - "/home/brennanf/.local/bin"
+        - "/home/brennanf/.cargo/bin"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.local/share/flatpak/exports/bin"
+        - "/var/lib/flatpak/exports/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+      CMAKE_INSTALL_PREFIX: "/usr/local"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "/usr/local"
+        - "/usr"
+        - "/"
+        - "/usr"
+        - "/usr/local"
+        - "/usr/X11R6"
+        - "/usr/pkg"
+        - "/opt"
+      CMAKE_SYSTEM_INCLUDE_PATH:
+        - "/usr/include/X11"
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerId.cmake:53 (__determine_compiler_id_test)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCUDACompiler.cmake:163 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:34 (enable_language)"
+    message: |
+      Compiling the CUDA compiler identification source file "CMakeCUDACompilerId.cu" succeeded.
+      Compiler: /opt/cuda/bin/nvcc 
+      Build flags: 
+      Id flags: --keep;--keep-dir;tmp -v
+      
+      The output was:
+      0
+      #$ _NVVM_BRANCH_=nvvm
+      #$ _SPACE_= 
+      #$ _CUDART_=cudart
+      #$ CUDA_ROOT=/opt/cuda/bin
+      #$ _HERE_=/opt/cuda/bin
+      #$ _THERE_=/opt/cuda/bin
+      #$ _TARGET_SIZE_=
+      #$ _TARGET_DIR_=
+      #$ _TARGET_DIR_=targets/x86_64-linux
+      #$ TOP=/opt/cuda/bin/..
+      #$ CICC_PATH=/opt/cuda/bin/../nvvm/bin
+      #$ NVVMIR_LIBRARY_DIR=/opt/cuda/bin/../nvvm/libdevice
+      #$ LD_LIBRARY_PATH=/opt/cuda/bin/../lib:
+      #$ PATH=/opt/cuda/bin/../nvvm/bin:/opt/cuda/bin:/home/brennanf/Projects/qcpy_dev/env/bin:/home/brennanf/.pyenv/shims:/opt/cuda/bin:/home/brennanf/.pyenv/bin:/home/brennanf/.local/bin:/opt/cuda/bin:/home/brennanf/.pyenv/bin:/home/brennanf/.local/bin:/home/brennanf/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/opt/cuda/bin:/home/brennanf/.local/share/flatpak/exports/bin:/var/lib/flatpak/exports/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl
+      #$ INCLUDES="-I/opt/cuda/bin/../targets/x86_64-linux/include"  
+      #$ SYSTEM_INCLUDES="-isystem" "/opt/cuda/bin/../targets/x86_64-linux/include/cccl"  
+      #$ LIBRARIES=  "-L/opt/cuda/bin/../targets/x86_64-linux/lib/stubs" "-L/opt/cuda/bin/../targets/x86_64-linux/lib"
+      #$ CUDAFE_FLAGS=
+      #$ PTXAS_FLAGS=
+      #$ rm tmp/a_dlink.reg.c
+      #$ "/usr/bin"/g++-15 -D__CUDA_ARCH_LIST__=750 -E -x c++ -D__CUDACC__ -D__NVCC__  "-I/opt/cuda/bin/../targets/x86_64-linux/include"   "-isystem" "/opt/cuda/bin/../targets/x86_64-linux/include/cccl"    -D__CUDACC_VER_MAJOR__=13 -D__CUDACC_VER_MINOR__=2 -D__CUDACC_VER_BUILD__=78 -D__CUDA_API_VER_MAJOR__=13 -D__CUDA_API_VER_MINOR__=2 -D__NVCC_DIAG_PRAGMA_SUPPORT__=1 -D__CUDACC_DEVICE_ATOMIC_BUILTINS__=1 -include "cuda_runtime.h" -m64 "CMakeCUDACompilerId.cu" -o "tmp/CMakeCUDACompilerId.cpp4.ii" 
+      #$ cudafe++ --c++17 --static-host-stub --device-hidden-visibility --gnu_version=150201 --display_error_number --orig_src_file_name "CMakeCUDACompilerId.cu" --orig_src_path_name "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/CMakeFiles/4.3.2/CompilerIdCUDA/CMakeCUDACompilerId.cu" --allow_managed  --m64 --parse_templates --gen_c_file_name "tmp/CMakeCUDACompilerId.cudafe1.cpp" --stub_file_name "CMakeCUDACompilerId.cudafe1.stub.c" --gen_module_id_file --module_id_file_name "tmp/CMakeCUDACompilerId.module_id" "tmp/CMakeCUDACompilerId.cpp4.ii" 
+      #$ "/usr/bin"/g++-15 -D__CUDA_ARCH__=750 -D__CUDA_ARCH_LIST__=750 -E -x c++  -DCUDA_DOUBLE_MATH_FUNCTIONS -D__CUDACC__ -D__NVCC__  "-I/opt/cuda/bin/../targets/x86_64-linux/include"   "-isystem" "/opt/cuda/bin/../targets/x86_64-linux/include/cccl"    -D__CUDACC_VER_MAJOR__=13 -D__CUDACC_VER_MINOR__=2 -D__CUDACC_VER_BUILD__=78 -D__CUDA_API_VER_MAJOR__=13 -D__CUDA_API_VER_MINOR__=2 -D__NVCC_DIAG_PRAGMA_SUPPORT__=1 -D__CUDACC_DEVICE_ATOMIC_BUILTINS__=1 -include "cuda_runtime.h" -m64 "CMakeCUDACompilerId.cu" -o "tmp/CMakeCUDACompilerId.cpp1.ii" 
+      #$ "$CICC_PATH/cicc" --c++17 --static-host-stub --device-hidden-visibility --gnu_version=150201 --display_error_number --orig_src_file_name "CMakeCUDACompilerId.cu" --orig_src_path_name "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/CMakeFiles/4.3.2/CompilerIdCUDA/CMakeCUDACompilerId.cu" --allow_managed   -arch compute_75 -m64 --no-version-ident -ftz=0 -prec_div=1 -prec_sqrt=1 -fmad=1 --include_file_name "CMakeCUDACompilerId.fatbin.c"  -tused --module_id_file_name "tmp/CMakeCUDACompilerId.module_id" --gen_c_file_name "tmp/CMakeCUDACompilerId.cudafe1.c" --stub_file_name "tmp/CMakeCUDACompilerId.cudafe1.stub.c" --gen_device_file_name "tmp/CMakeCUDACompilerId.cudafe1.gpu"  "tmp/CMakeCUDACompilerId.cpp1.ii" -o "tmp/CMakeCUDACompilerId.ptx"
+      #$ ptxas -arch=sm_75 -m64  "tmp/CMakeCUDACompilerId.ptx"  -o "tmp/CMakeCUDACompilerId.sm_75.cubin" 
+      #$ fatbinary --create="tmp/CMakeCUDACompilerId.fatbin" -64 --cicc-cmdline="-ftz=0 -prec_div=1 -prec_sqrt=1 -fmad=1 " "--image3=kind=elf,sm=75,file=tmp/CMakeCUDACompilerId.sm_75.cubin" "--image3=kind=ptx,sm=75,file=tmp/CMakeCUDACompilerId.ptx" --embedded-fatbin="tmp/CMakeCUDACompilerId.fatbin.c" 
+      #$ "/usr/bin"/g++-15 -D__CUDA_ARCH__=750 -D__CUDA_ARCH_LIST__=750 -c -x c++  -DCUDA_DOUBLE_MATH_FUNCTIONS -Wno-psabi "-I/opt/cuda/bin/../targets/x86_64-linux/include"   "-isystem" "/opt/cuda/bin/../targets/x86_64-linux/include/cccl"   -m64 "tmp/CMakeCUDACompilerId.cudafe1.cpp" -o "tmp/CMakeCUDACompilerId.o" 
+      #$ nvlink -m64 --arch=sm_75 --register-link-binaries="tmp/a_dlink.reg.c"    "-L/opt/cuda/bin/../targets/x86_64-linux/lib/stubs" "-L/opt/cuda/bin/../targets/x86_64-linux/lib" -cpu-arch=X86_64 "tmp/CMakeCUDACompilerId.o"  -lcudadevrt  -o "tmp/a_dlink.sm_75.cubin" --host-ccbin "/usr/bin/g++-15"
+      #$ fatbinary --create="tmp/a_dlink.fatbin" -64 --cicc-cmdline="-ftz=0 -prec_div=1 -prec_sqrt=1 -fmad=1 " -link "--image3=kind=elf,sm=75,file=tmp/a_dlink.sm_75.cubin" --embedded-fatbin="tmp/a_dlink.fatbin.c" 
+      #$ "/usr/bin"/g++-15 -D__CUDA_ARCH_LIST__=750 -c -x c++ -DFATBINFILE="\\"tmp/a_dlink.fatbin.c\\"" -DREGISTERLINKBINARYFILE="\\"tmp/a_dlink.reg.c\\""  -I. -D__NV_EXTRA_INITIALIZATION= -D__NV_EXTRA_FINALIZATION= -D__CUDA_INCLUDE_COMPILER_INTERNAL_HEADERS__  -Wno-psabi "-I/opt/cuda/bin/../targets/x86_64-linux/include"   "-isystem" "/opt/cuda/bin/../targets/x86_64-linux/include/cccl"    -D__CUDACC_VER_MAJOR__=13 -D__CUDACC_VER_MINOR__=2 -D__CUDACC_VER_BUILD__=78 -D__CUDA_API_VER_MAJOR__=13 -D__CUDA_API_VER_MINOR__=2 -D__NVCC_DIAG_PRAGMA_SUPPORT__=1 -D__CUDACC_DEVICE_ATOMIC_BUILTINS__=1 -m64 "/opt/cuda/bin/crt/link.stub" -o "tmp/a_dlink.o" 
+      #$ "/usr/bin"/g++-15 -D__CUDA_ARCH_LIST__=750 -m64 -Wl,--start-group "tmp/a_dlink.o" "tmp/CMakeCUDACompilerId.o"   "-L/opt/cuda/bin/../targets/x86_64-linux/lib/stubs" "-L/opt/cuda/bin/../targets/x86_64-linux/lib"  -lcudadevrt  -lcudart_static  -lrt -lpthread  -ldl  -Wl,--end-group -o "a.out" 
+      
+      
+      Compilation of the CUDA compiler identification source "CMakeCUDACompilerId.cu" produced "a.out"
+      
+      The CUDA compiler identification is NVIDIA, found in:
+        /home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/CMakeFiles/4.3.2/CompilerIdCUDA/a.out
+      The host compiler identification is GNU
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/Internal/CMakeNVCCParseImplicitInfo.cmake:149 (message)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCUDACompiler.cmake:295 (cmake_nvcc_parse_implicit_info)"
+      - "CMakeLists.txt:34 (enable_language)"
+    message: |
+      Parsed CUDA nvcc implicit link information:
+        found 'PATH=' string: [/opt/cuda/bin/../nvvm/bin:/opt/cuda/bin:/home/brennanf/Projects/qcpy_dev/env/bin:/home/brennanf/.pyenv/shims:/opt/cuda/bin:/home/brennanf/.pyenv/bin:/home/brennanf/.local/bin:/opt/cuda/bin:/home/brennanf/.pyenv/bin:/home/brennanf/.local/bin:/home/brennanf/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/opt/cuda/bin:/home/brennanf/.local/share/flatpak/exports/bin:/var/lib/flatpak/exports/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl]
+        found 'LIBRARIES=' string: ["-L/opt/cuda/bin/../targets/x86_64-linux/lib/stubs" "-L/opt/cuda/bin/../targets/x86_64-linux/lib"]
+        found 'INCLUDES=' string: ["-I/opt/cuda/bin/../targets/x86_64-linux/include"  ]
+        found 'SYSTEM_INCLUDES=' string: ["-isystem" "/opt/cuda/bin/../targets/x86_64-linux/include/cccl"  ]
+        considering line: [#$ rm tmp/a_dlink.reg.c]
+        considering line: ["/usr/bin"/g++-15 -D__CUDA_ARCH_LIST__=750 -E -x c++ -D__CUDACC__ -D__NVCC__  "-I/opt/cuda/bin/../targets/x86_64-linux/include"   "-isystem" "/opt/cuda/bin/../targets/x86_64-linux/include/cccl"    -D__CUDACC_VER_MAJOR__=13 -D__CUDACC_VER_MINOR__=2 -D__CUDACC_VER_BUILD__=78 -D__CUDA_API_VER_MAJOR__=13 -D__CUDA_API_VER_MINOR__=2 -D__NVCC_DIAG_PRAGMA_SUPPORT__=1 -D__CUDACC_DEVICE_ATOMIC_BUILTINS__=1 -include "cuda_runtime.h" -m64 "CMakeCUDACompilerId.cu" -o "tmp/CMakeCUDACompilerId.cpp4.ii" ]
+        considering line: [cudafe++ --c++17 --static-host-stub --device-hidden-visibility --gnu_version=150201 --display_error_number --orig_src_file_name "CMakeCUDACompilerId.cu" --orig_src_path_name "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/CMakeFiles/4.3.2/CompilerIdCUDA/CMakeCUDACompilerId.cu" --allow_managed  --m64 --parse_templates --gen_c_file_name "tmp/CMakeCUDACompilerId.cudafe1.cpp" --stub_file_name "CMakeCUDACompilerId.cudafe1.stub.c" --gen_module_id_file --module_id_file_name "tmp/CMakeCUDACompilerId.module_id" "tmp/CMakeCUDACompilerId.cpp4.ii" ]
+        considering line: ["/usr/bin"/g++-15 -D__CUDA_ARCH__=750 -D__CUDA_ARCH_LIST__=750 -E -x c++  -DCUDA_DOUBLE_MATH_FUNCTIONS -D__CUDACC__ -D__NVCC__  "-I/opt/cuda/bin/../targets/x86_64-linux/include"   "-isystem" "/opt/cuda/bin/../targets/x86_64-linux/include/cccl"    -D__CUDACC_VER_MAJOR__=13 -D__CUDACC_VER_MINOR__=2 -D__CUDACC_VER_BUILD__=78 -D__CUDA_API_VER_MAJOR__=13 -D__CUDA_API_VER_MINOR__=2 -D__NVCC_DIAG_PRAGMA_SUPPORT__=1 -D__CUDACC_DEVICE_ATOMIC_BUILTINS__=1 -include "cuda_runtime.h" -m64 "CMakeCUDACompilerId.cu" -o "tmp/CMakeCUDACompilerId.cpp1.ii" ]
+        considering line: ["$CICC_PATH/cicc" --c++17 --static-host-stub --device-hidden-visibility --gnu_version=150201 --display_error_number --orig_src_file_name "CMakeCUDACompilerId.cu" --orig_src_path_name "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/CMakeFiles/4.3.2/CompilerIdCUDA/CMakeCUDACompilerId.cu" --allow_managed   -arch compute_75 -m64 --no-version-ident -ftz=0 -prec_div=1 -prec_sqrt=1 -fmad=1 --include_file_name "CMakeCUDACompilerId.fatbin.c"  -tused --module_id_file_name "tmp/CMakeCUDACompilerId.module_id" --gen_c_file_name "tmp/CMakeCUDACompilerId.cudafe1.c" --stub_file_name "tmp/CMakeCUDACompilerId.cudafe1.stub.c" --gen_device_file_name "tmp/CMakeCUDACompilerId.cudafe1.gpu"  "tmp/CMakeCUDACompilerId.cpp1.ii" -o "tmp/CMakeCUDACompilerId.ptx"]
+        considering line: [ptxas -arch=sm_75 -m64  "tmp/CMakeCUDACompilerId.ptx"  -o "tmp/CMakeCUDACompilerId.sm_75.cubin" ]
+        considering line: [fatbinary --create="tmp/CMakeCUDACompilerId.fatbin" -64 --cicc-cmdline="-ftz=0 -prec_div=1 -prec_sqrt=1 -fmad=1 " "--image3=kind=elf,sm=75,file=tmp/CMakeCUDACompilerId.sm_75.cubin" "--image3=kind=ptx,sm=75,file=tmp/CMakeCUDACompilerId.ptx" --embedded-fatbin="tmp/CMakeCUDACompilerId.fatbin.c" ]
+        considering line: ["/usr/bin"/g++-15 -D__CUDA_ARCH__=750 -D__CUDA_ARCH_LIST__=750 -c -x c++  -DCUDA_DOUBLE_MATH_FUNCTIONS -Wno-psabi "-I/opt/cuda/bin/../targets/x86_64-linux/include"   "-isystem" "/opt/cuda/bin/../targets/x86_64-linux/include/cccl"   -m64 "tmp/CMakeCUDACompilerId.cudafe1.cpp" -o "tmp/CMakeCUDACompilerId.o" ]
+        considering line: [nvlink -m64 --arch=sm_75 --register-link-binaries="tmp/a_dlink.reg.c"    "-L/opt/cuda/bin/../targets/x86_64-linux/lib/stubs" "-L/opt/cuda/bin/../targets/x86_64-linux/lib" -cpu-arch=X86_64 "tmp/CMakeCUDACompilerId.o"  -lcudadevrt  -o "tmp/a_dlink.sm_75.cubin" --host-ccbin "/usr/bin/g++-15"]
+          ignoring nvlink line
+        considering line: [fatbinary --create="tmp/a_dlink.fatbin" -64 --cicc-cmdline="-ftz=0 -prec_div=1 -prec_sqrt=1 -fmad=1 " -link "--image3=kind=elf,sm=75,file=tmp/a_dlink.sm_75.cubin" --embedded-fatbin="tmp/a_dlink.fatbin.c" ]
+        considering line: ["/usr/bin"/g++-15 -D__CUDA_ARCH_LIST__=750 -c -x c++ -DFATBINFILE="\\"tmp/a_dlink.fatbin.c\\"" -DREGISTERLINKBINARYFILE="\\"tmp/a_dlink.reg.c\\""  -I. -D__NV_EXTRA_INITIALIZATION= -D__NV_EXTRA_FINALIZATION= -D__CUDA_INCLUDE_COMPILER_INTERNAL_HEADERS__  -Wno-psabi "-I/opt/cuda/bin/../targets/x86_64-linux/include"   "-isystem" "/opt/cuda/bin/../targets/x86_64-linux/include/cccl"    -D__CUDACC_VER_MAJOR__=13 -D__CUDACC_VER_MINOR__=2 -D__CUDACC_VER_BUILD__=78 -D__CUDA_API_VER_MAJOR__=13 -D__CUDA_API_VER_MINOR__=2 -D__NVCC_DIAG_PRAGMA_SUPPORT__=1 -D__CUDACC_DEVICE_ATOMIC_BUILTINS__=1 -m64 "/opt/cuda/bin/crt/link.stub" -o "tmp/a_dlink.o" ]
+        considering line: ["/usr/bin"/g++-15 -D__CUDA_ARCH_LIST__=750 -m64 -Wl,--start-group "tmp/a_dlink.o" "tmp/CMakeCUDACompilerId.o"   "-L/opt/cuda/bin/../targets/x86_64-linux/lib/stubs" "-L/opt/cuda/bin/../targets/x86_64-linux/lib"  -lcudadevrt  -lcudart_static  -lrt -lpthread  -ldl  -Wl,--end-group -o "a.out" ]
+          extracted link line: ["/usr/bin"/g++-15 -D__CUDA_ARCH_LIST__=750 -m64 -Wl,--start-group "tmp/a_dlink.o" "tmp/CMakeCUDACompilerId.o"   "-L/opt/cuda/bin/../targets/x86_64-linux/lib/stubs" "-L/opt/cuda/bin/../targets/x86_64-linux/lib"  -lcudadevrt  -lcudart_static  -lrt -lpthread  -ldl  -Wl,--end-group -o "a.out" ]
+        considering line: []
+        extracted link launcher absolute path: [/usr/bin/g++-15]
+      
+        link line regex: [^( *|.*[/\\])(ld[0-9]*(|\\.[a-rt-z][a-z]*|\\.s[a-np-z][a-z]*|\\.so[a-z]+)|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        link line: [cuda-fake-ld "/usr/bin"/g++-15 -D__CUDA_ARCH_LIST__=750 -m64 -Wl,--start-group "tmp/a_dlink.o" "tmp/CMakeCUDACompilerId.o"   "-L/opt/cuda/bin/../targets/x86_64-linux/lib/stubs" "-L/opt/cuda/bin/../targets/x86_64-linux/lib"  -lcudadevrt  -lcudart_static  -lrt -lpthread  -ldl  -Wl,--end-group -o "a.out" ]
+          arg [cuda-fake-ld] ==> ignore
+          arg [/usr/bin/g++-15] ==> ignore
+          arg [-D__CUDA_ARCH_LIST__=750] ==> ignore
+          arg [-m64] ==> ignore
+          arg [-Wl,--start-group] ==> ignore
+          arg [tmp/a_dlink.o] ==> ignore
+          arg [tmp/CMakeCUDACompilerId.o] ==> ignore
+          arg [-L/opt/cuda/bin/../targets/x86_64-linux/lib/stubs] ==> dir [/opt/cuda/bin/../targets/x86_64-linux/lib/stubs]
+          arg [-L/opt/cuda/bin/../targets/x86_64-linux/lib] ==> dir [/opt/cuda/bin/../targets/x86_64-linux/lib]
+          arg [-lcudadevrt] ==> lib [cudadevrt]
+          arg [-lcudart_static] ==> lib [cudart_static]
+          arg [-lrt] ==> lib [rt]
+          arg [-lpthread] ==> lib [pthread]
+          arg [-ldl] ==> lib [dl]
+          arg [-Wl,--end-group] ==> ignore
+          arg [-o] ==> ignore
+          arg [a.out] ==> ignore
+        collapse library dir [/opt/cuda/bin/../targets/x86_64-linux/lib/stubs] ==> [/opt/cuda/targets/x86_64-linux/lib/stubs]
+        collapse library dir [/opt/cuda/bin/../targets/x86_64-linux/lib] ==> [/opt/cuda/targets/x86_64-linux/lib]
+        implicit libs: [cudadevrt;cudart_static;rt;pthread;dl]
+        implicit objs: []
+        implicit dirs: [/opt/cuda/targets/x86_64-linux/lib/stubs;/opt/cuda/targets/x86_64-linux/lib]
+        implicit fwks: []
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/Internal/CMakeNVCCParseImplicitInfo.cmake:178 (message)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCUDACompiler.cmake:295 (cmake_nvcc_parse_implicit_info)"
+      - "CMakeLists.txt:34 (enable_language)"
+    message: |
+      Parsed CUDA nvcc include information:
+        found 'PATH=' string: [/opt/cuda/bin/../nvvm/bin:/opt/cuda/bin:/home/brennanf/Projects/qcpy_dev/env/bin:/home/brennanf/.pyenv/shims:/opt/cuda/bin:/home/brennanf/.pyenv/bin:/home/brennanf/.local/bin:/opt/cuda/bin:/home/brennanf/.pyenv/bin:/home/brennanf/.local/bin:/home/brennanf/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/opt/cuda/bin:/home/brennanf/.local/share/flatpak/exports/bin:/var/lib/flatpak/exports/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl]
+        found 'LIBRARIES=' string: ["-L/opt/cuda/bin/../targets/x86_64-linux/lib/stubs" "-L/opt/cuda/bin/../targets/x86_64-linux/lib"]
+        found 'INCLUDES=' string: ["-I/opt/cuda/bin/../targets/x86_64-linux/include"  ]
+        found 'SYSTEM_INCLUDES=' string: ["-isystem" "/opt/cuda/bin/../targets/x86_64-linux/include/cccl"  ]
+        considering line: [#$ rm tmp/a_dlink.reg.c]
+        considering line: ["/usr/bin"/g++-15 -D__CUDA_ARCH_LIST__=750 -E -x c++ -D__CUDACC__ -D__NVCC__  "-I/opt/cuda/bin/../targets/x86_64-linux/include"   "-isystem" "/opt/cuda/bin/../targets/x86_64-linux/include/cccl"    -D__CUDACC_VER_MAJOR__=13 -D__CUDACC_VER_MINOR__=2 -D__CUDACC_VER_BUILD__=78 -D__CUDA_API_VER_MAJOR__=13 -D__CUDA_API_VER_MINOR__=2 -D__NVCC_DIAG_PRAGMA_SUPPORT__=1 -D__CUDACC_DEVICE_ATOMIC_BUILTINS__=1 -include "cuda_runtime.h" -m64 "CMakeCUDACompilerId.cu" -o "tmp/CMakeCUDACompilerId.cpp4.ii" ]
+        considering line: [cudafe++ --c++17 --static-host-stub --device-hidden-visibility --gnu_version=150201 --display_error_number --orig_src_file_name "CMakeCUDACompilerId.cu" --orig_src_path_name "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/CMakeFiles/4.3.2/CompilerIdCUDA/CMakeCUDACompilerId.cu" --allow_managed  --m64 --parse_templates --gen_c_file_name "tmp/CMakeCUDACompilerId.cudafe1.cpp" --stub_file_name "CMakeCUDACompilerId.cudafe1.stub.c" --gen_module_id_file --module_id_file_name "tmp/CMakeCUDACompilerId.module_id" "tmp/CMakeCUDACompilerId.cpp4.ii" ]
+        considering line: ["/usr/bin"/g++-15 -D__CUDA_ARCH__=750 -D__CUDA_ARCH_LIST__=750 -E -x c++  -DCUDA_DOUBLE_MATH_FUNCTIONS -D__CUDACC__ -D__NVCC__  "-I/opt/cuda/bin/../targets/x86_64-linux/include"   "-isystem" "/opt/cuda/bin/../targets/x86_64-linux/include/cccl"    -D__CUDACC_VER_MAJOR__=13 -D__CUDACC_VER_MINOR__=2 -D__CUDACC_VER_BUILD__=78 -D__CUDA_API_VER_MAJOR__=13 -D__CUDA_API_VER_MINOR__=2 -D__NVCC_DIAG_PRAGMA_SUPPORT__=1 -D__CUDACC_DEVICE_ATOMIC_BUILTINS__=1 -include "cuda_runtime.h" -m64 "CMakeCUDACompilerId.cu" -o "tmp/CMakeCUDACompilerId.cpp1.ii" ]
+        considering line: ["$CICC_PATH/cicc" --c++17 --static-host-stub --device-hidden-visibility --gnu_version=150201 --display_error_number --orig_src_file_name "CMakeCUDACompilerId.cu" --orig_src_path_name "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/CMakeFiles/4.3.2/CompilerIdCUDA/CMakeCUDACompilerId.cu" --allow_managed   -arch compute_75 -m64 --no-version-ident -ftz=0 -prec_div=1 -prec_sqrt=1 -fmad=1 --include_file_name "CMakeCUDACompilerId.fatbin.c"  -tused --module_id_file_name "tmp/CMakeCUDACompilerId.module_id" --gen_c_file_name "tmp/CMakeCUDACompilerId.cudafe1.c" --stub_file_name "tmp/CMakeCUDACompilerId.cudafe1.stub.c" --gen_device_file_name "tmp/CMakeCUDACompilerId.cudafe1.gpu"  "tmp/CMakeCUDACompilerId.cpp1.ii" -o "tmp/CMakeCUDACompilerId.ptx"]
+        considering line: [ptxas -arch=sm_75 -m64  "tmp/CMakeCUDACompilerId.ptx"  -o "tmp/CMakeCUDACompilerId.sm_75.cubin" ]
+        considering line: [fatbinary --create="tmp/CMakeCUDACompilerId.fatbin" -64 --cicc-cmdline="-ftz=0 -prec_div=1 -prec_sqrt=1 -fmad=1 " "--image3=kind=elf,sm=75,file=tmp/CMakeCUDACompilerId.sm_75.cubin" "--image3=kind=ptx,sm=75,file=tmp/CMakeCUDACompilerId.ptx" --embedded-fatbin="tmp/CMakeCUDACompilerId.fatbin.c" ]
+        considering line: ["/usr/bin"/g++-15 -D__CUDA_ARCH__=750 -D__CUDA_ARCH_LIST__=750 -c -x c++  -DCUDA_DOUBLE_MATH_FUNCTIONS -Wno-psabi "-I/opt/cuda/bin/../targets/x86_64-linux/include"   "-isystem" "/opt/cuda/bin/../targets/x86_64-linux/include/cccl"   -m64 "tmp/CMakeCUDACompilerId.cudafe1.cpp" -o "tmp/CMakeCUDACompilerId.o" ]
+        considering line: [nvlink -m64 --arch=sm_75 --register-link-binaries="tmp/a_dlink.reg.c"    "-L/opt/cuda/bin/../targets/x86_64-linux/lib/stubs" "-L/opt/cuda/bin/../targets/x86_64-linux/lib" -cpu-arch=X86_64 "tmp/CMakeCUDACompilerId.o"  -lcudadevrt  -o "tmp/a_dlink.sm_75.cubin" --host-ccbin "/usr/bin/g++-15"]
+          ignoring nvlink line
+        considering line: [fatbinary --create="tmp/a_dlink.fatbin" -64 --cicc-cmdline="-ftz=0 -prec_div=1 -prec_sqrt=1 -fmad=1 " -link "--image3=kind=elf,sm=75,file=tmp/a_dlink.sm_75.cubin" --embedded-fatbin="tmp/a_dlink.fatbin.c" ]
+        considering line: ["/usr/bin"/g++-15 -D__CUDA_ARCH_LIST__=750 -c -x c++ -DFATBINFILE="\\"tmp/a_dlink.fatbin.c\\"" -DREGISTERLINKBINARYFILE="\\"tmp/a_dlink.reg.c\\""  -I. -D__NV_EXTRA_INITIALIZATION= -D__NV_EXTRA_FINALIZATION= -D__CUDA_INCLUDE_COMPILER_INTERNAL_HEADERS__  -Wno-psabi "-I/opt/cuda/bin/../targets/x86_64-linux/include"   "-isystem" "/opt/cuda/bin/../targets/x86_64-linux/include/cccl"    -D__CUDACC_VER_MAJOR__=13 -D__CUDACC_VER_MINOR__=2 -D__CUDACC_VER_BUILD__=78 -D__CUDA_API_VER_MAJOR__=13 -D__CUDA_API_VER_MINOR__=2 -D__NVCC_DIAG_PRAGMA_SUPPORT__=1 -D__CUDACC_DEVICE_ATOMIC_BUILTINS__=1 -m64 "/opt/cuda/bin/crt/link.stub" -o "tmp/a_dlink.o" ]
+        considering line: ["/usr/bin"/g++-15 -D__CUDA_ARCH_LIST__=750 -m64 -Wl,--start-group "tmp/a_dlink.o" "tmp/CMakeCUDACompilerId.o"   "-L/opt/cuda/bin/../targets/x86_64-linux/lib/stubs" "-L/opt/cuda/bin/../targets/x86_64-linux/lib"  -lcudadevrt  -lcudart_static  -lrt -lpthread  -ldl  -Wl,--end-group -o "a.out" ]
+          extracted link line: ["/usr/bin"/g++-15 -D__CUDA_ARCH_LIST__=750 -m64 -Wl,--start-group "tmp/a_dlink.o" "tmp/CMakeCUDACompilerId.o"   "-L/opt/cuda/bin/../targets/x86_64-linux/lib/stubs" "-L/opt/cuda/bin/../targets/x86_64-linux/lib"  -lcudadevrt  -lcudart_static  -lrt -lpthread  -ldl  -Wl,--end-group -o "a.out" ]
+        considering line: []
+        extracted link launcher absolute path: [/usr/bin/g++-15]
+      
+        link line regex: [^( *|.*[/\\])(ld[0-9]*(|\\.[a-rt-z][a-z]*|\\.s[a-np-z][a-z]*|\\.so[a-z]+)|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        link line: [cuda-fake-ld "/usr/bin"/g++-15 -D__CUDA_ARCH_LIST__=750 -m64 -Wl,--start-group "tmp/a_dlink.o" "tmp/CMakeCUDACompilerId.o"   "-L/opt/cuda/bin/../targets/x86_64-linux/lib/stubs" "-L/opt/cuda/bin/../targets/x86_64-linux/lib"  -lcudadevrt  -lcudart_static  -lrt -lpthread  -ldl  -Wl,--end-group -o "a.out" ]
+          arg [cuda-fake-ld] ==> ignore
+          arg [/usr/bin/g++-15] ==> ignore
+          arg [-D__CUDA_ARCH_LIST__=750] ==> ignore
+          arg [-m64] ==> ignore
+          arg [-Wl,--start-group] ==> ignore
+          arg [tmp/a_dlink.o] ==> ignore
+          arg [tmp/CMakeCUDACompilerId.o] ==> ignore
+          arg [-L/opt/cuda/bin/../targets/x86_64-linux/lib/stubs] ==> dir [/opt/cuda/bin/../targets/x86_64-linux/lib/stubs]
+          arg [-L/opt/cuda/bin/../targets/x86_64-linux/lib] ==> dir [/opt/cuda/bin/../targets/x86_64-linux/lib]
+          arg [-lcudadevrt] ==> lib [cudadevrt]
+          arg [-lcudart_static] ==> lib [cudart_static]
+          arg [-lrt] ==> lib [rt]
+          arg [-lpthread] ==> lib [pthread]
+          arg [-ldl] ==> lib [dl]
+          arg [-Wl,--end-group] ==> ignore
+          arg [-o] ==> ignore
+          arg [a.out] ==> ignore
+        collapse library dir [/opt/cuda/bin/../targets/x86_64-linux/lib/stubs] ==> [/opt/cuda/targets/x86_64-linux/lib/stubs]
+        collapse library dir [/opt/cuda/bin/../targets/x86_64-linux/lib] ==> [/opt/cuda/targets/x86_64-linux/lib]
+        implicit libs: [cudadevrt;cudart_static;rt;pthread;dl]
+        implicit objs: []
+        implicit dirs: [/opt/cuda/targets/x86_64-linux/lib/stubs;/opt/cuda/targets/x86_64-linux/lib]
+        implicit fwks: []
+      
+      
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:83 (try_compile)"
+      - "/usr/share/cmake/Modules/CMakeTestCUDACompiler.cmake:19 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:34 (enable_language)"
+    checks:
+      - "Detecting CUDA compiler ABI info"
+    directories:
+      source: "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/CMakeFiles/CMakeScratch/TryCompile-KLc1WX"
+      binary: "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/CMakeFiles/CMakeScratch/TryCompile-KLc1WX"
+    cmakeVariables:
+      CMAKE_CUDA_ARCHITECTURES: "75"
+      CMAKE_CUDA_FLAGS: ""
+      CMAKE_CUDA_FLAGS_DEBUG: "-g"
+      CMAKE_CUDA_RUNTIME_LIBRARY: "Static"
+      CMAKE_CXX_STDLIB_MODULES_JSON: ""
+      CMAKE_EXE_LINKER_FLAGS: "-m64"
+      CMAKE_MODULE_PATH: "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build"
+      CMAKE_POSITION_INDEPENDENT_CODE: "ON"
+    buildResult:
+      variable: "CMAKE_CUDA_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: '/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/CMakeFiles/CMakeScratch/TryCompile-KLc1WX'
+        
+        Run Build Command(s): /usr/bin/ninja -v cmTC_867ed
+        [1/2] /opt/cuda/bin/nvcc -forward-unknown-to-host-compiler   -std=c++17 "--generate-code=arch=compute_75,code=[compute_75,sm_75]" -Xcompiler=-fPIE   -Xcompiler=-v -MD -MT CMakeFiles/cmTC_867ed.dir/CMakeCUDACompilerABI.cu.o -MF CMakeFiles/cmTC_867ed.dir/CMakeCUDACompilerABI.cu.o.d -x cu -c /usr/share/cmake/Modules/CMakeCUDACompilerABI.cu -o CMakeFiles/cmTC_867ed.dir/CMakeCUDACompilerABI.cu.o
+        Using built-in specs.
+        COLLECT_GCC=/usr/bin/g++-15
+        Target: x86_64-pc-linux-gnu
+        Configured with: /build/gcc15/src/gcc15/configure --enable-languages=c,c++,fortran --enable-bootstrap --prefix=/usr --libdir=/usr/lib --libexecdir=/usr/lib --mandir=/usr/share/man --infodir=/usr/share/info --with-bugurl=https://gitlab.archlinux.org/archlinux/packaging/packages/gcc15/-/work_items --with-build-config=bootstrap-lto --with-linker-hash-style=gnu --with-system-zlib --enable-__cxa_atexit --enable-cet=auto --enable-checking=release --enable-clocale=gnu --enable-default-pie --enable-default-ssp --enable-gnu-indirect-function --enable-gnu-unique-object --enable-libstdcxx-backtrace --enable-link-serialization=1 --enable-linker-build-id --enable-lto --disable-multilib --enable-plugin --enable-shared --enable-threads=posix --disable-libssp --disable-libstdcxx-pch --disable-werror --program-suffix=-15 --enable-version-specific-runtime-libs
+        Thread model: posix
+        Supported LTO compression algorithms: zlib zstd
+        gcc version 15.2.1 20260506 (GCC) 
+        COLLECT_GCC_OPTIONS='-std=c++17' '-D' '__CUDA_ARCH__=750' '-D' '__CUDA_ARCH_LIST__=750' '-E' '-D' 'CUDA_DOUBLE_MATH_FUNCTIONS' '-D' '__CUDACC__' '-D' '__NVCC__' '-fPIE' '-v' '-I' '/opt/cuda/bin/../targets/x86_64-linux/include' '-isystem' '/opt/cuda/bin/../targets/x86_64-linux/include/cccl' '-D' '__CUDACC_VER_MAJOR__=13' '-D' '__CUDACC_VER_MINOR__=2' '-D' '__CUDACC_VER_BUILD__=78' '-D' '__CUDA_API_VER_MAJOR__=13' '-D' '__CUDA_API_VER_MINOR__=2' '-D' '__NVCC_DIAG_PRAGMA_SUPPORT__=1' '-D' '__CUDACC_DEVICE_ATOMIC_BUILTINS__=1' '-include' 'cuda_runtime.h' '-m64' '-o' '/tmp/tmpxft_00022d56_00000000-7_CMakeCUDACompilerABI.cpp1.ii' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' '/tmp/'
+         /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/cc1plus -E -quiet -v -I /opt/cuda/bin/../targets/x86_64-linux/include -D_GNU_SOURCE -D __CUDA_ARCH__=750 -D __CUDA_ARCH_LIST__=750 -D CUDA_DOUBLE_MATH_FUNCTIONS -D __CUDACC__ -D __NVCC__ -D __CUDACC_VER_MAJOR__=13 -D __CUDACC_VER_MINOR__=2 -D __CUDACC_VER_BUILD__=78 -D __CUDA_API_VER_MAJOR__=13 -D __CUDA_API_VER_MINOR__=2 -D __NVCC_DIAG_PRAGMA_SUPPORT__=1 -D __CUDACC_DEVICE_ATOMIC_BUILTINS__=1 -isystem /opt/cuda/bin/../targets/x86_64-linux/include/cccl -include cuda_runtime.h /usr/share/cmake/Modules/CMakeCUDACompilerABI.cu -o /tmp/tmpxft_00022d56_00000000-7_CMakeCUDACompilerABI.cpp1.ii -m64 -mtune=generic -march=x86-64 -std=c++17 -fPIE -dumpdir /tmp/ -dumpbase tmpxft_00022d56_00000000-7_CMakeCUDACompilerABI.cpp1.cu -dumpbase-ext .cu
+        ignoring nonexistent directory "/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../../x86_64-pc-linux-gnu/include"
+        #include "..." search starts here:
+        #include <...> search starts here:
+         /opt/cuda/bin/../targets/x86_64-linux/include
+         /opt/cuda/bin/../targets/x86_64-linux/include/cccl
+         /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/c++
+         /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/c++/x86_64-pc-linux-gnu
+         /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/c++/backward
+         /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include
+         /usr/local/include
+         /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include-fixed
+         /usr/include
+        End of search list.
+        COMPILER_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/:/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/
+        LIBRARY_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../../lib/:/lib/../lib/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../:/lib/:/usr/lib/
+        COLLECT_GCC_OPTIONS='-std=c++17' '-D' '__CUDA_ARCH__=750' '-D' '__CUDA_ARCH_LIST__=750' '-E' '-D' 'CUDA_DOUBLE_MATH_FUNCTIONS' '-D' '__CUDACC__' '-D' '__NVCC__' '-fPIE' '-v' '-I' '/opt/cuda/bin/../targets/x86_64-linux/include' '-isystem' '/opt/cuda/bin/../targets/x86_64-linux/include/cccl' '-D' '__CUDACC_VER_MAJOR__=13' '-D' '__CUDACC_VER_MINOR__=2' '-D' '__CUDACC_VER_BUILD__=78' '-D' '__CUDA_API_VER_MAJOR__=13' '-D' '__CUDA_API_VER_MINOR__=2' '-D' '__NVCC_DIAG_PRAGMA_SUPPORT__=1' '-D' '__CUDACC_DEVICE_ATOMIC_BUILTINS__=1' '-include' 'cuda_runtime.h' '-m64' '-o' '/tmp/tmpxft_00022d56_00000000-7_CMakeCUDACompilerABI.cpp1.ii' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' '/tmp/tmpxft_00022d56_00000000-7_CMakeCUDACompilerABI.cpp1.'
+        Using built-in specs.
+        COLLECT_GCC=/usr/bin/g++-15
+        Target: x86_64-pc-linux-gnu
+        Configured with: /build/gcc15/src/gcc15/configure --enable-languages=c,c++,fortran --enable-bootstrap --prefix=/usr --libdir=/usr/lib --libexecdir=/usr/lib --mandir=/usr/share/man --infodir=/usr/share/info --with-bugurl=https://gitlab.archlinux.org/archlinux/packaging/packages/gcc15/-/work_items --with-build-config=bootstrap-lto --with-linker-hash-style=gnu --with-system-zlib --enable-__cxa_atexit --enable-cet=auto --enable-checking=release --enable-clocale=gnu --enable-default-pie --enable-default-ssp --enable-gnu-indirect-function --enable-gnu-unique-object --enable-libstdcxx-backtrace --enable-link-serialization=1 --enable-linker-build-id --enable-lto --disable-multilib --enable-plugin --enable-shared --enable-threads=posix --disable-libssp --disable-libstdcxx-pch --disable-werror --program-suffix=-15 --enable-version-specific-runtime-libs
+        Thread model: posix
+        Supported LTO compression algorithms: zlib zstd
+        gcc version 15.2.1 20260506 (GCC) 
+        COLLECT_GCC_OPTIONS='-std=c++17' '-D' '__CUDA_ARCH_LIST__=750' '-E' '-D' '__CUDACC__' '-D' '__NVCC__' '-fPIE' '-v' '-I' '/opt/cuda/bin/../targets/x86_64-linux/include' '-isystem' '/opt/cuda/bin/../targets/x86_64-linux/include/cccl' '-D' '__CUDACC_VER_MAJOR__=13' '-D' '__CUDACC_VER_MINOR__=2' '-D' '__CUDACC_VER_BUILD__=78' '-D' '__CUDA_API_VER_MAJOR__=13' '-D' '__CUDA_API_VER_MINOR__=2' '-D' '__NVCC_DIAG_PRAGMA_SUPPORT__=1' '-D' '__CUDACC_DEVICE_ATOMIC_BUILTINS__=1' '-include' 'cuda_runtime.h' '-m64' '-o' '/tmp/tmpxft_00022d56_00000000-5_CMakeCUDACompilerABI.cpp4.ii' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' '/tmp/'
+         /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/cc1plus -E -quiet -v -I /opt/cuda/bin/../targets/x86_64-linux/include -D_GNU_SOURCE -D __CUDA_ARCH_LIST__=750 -D __CUDACC__ -D __NVCC__ -D __CUDACC_VER_MAJOR__=13 -D __CUDACC_VER_MINOR__=2 -D __CUDACC_VER_BUILD__=78 -D __CUDA_API_VER_MAJOR__=13 -D __CUDA_API_VER_MINOR__=2 -D __NVCC_DIAG_PRAGMA_SUPPORT__=1 -D __CUDACC_DEVICE_ATOMIC_BUILTINS__=1 -isystem /opt/cuda/bin/../targets/x86_64-linux/include/cccl -include cuda_runtime.h /usr/share/cmake/Modules/CMakeCUDACompilerABI.cu -o /tmp/tmpxft_00022d56_00000000-5_CMakeCUDACompilerABI.cpp4.ii -m64 -mtune=generic -march=x86-64 -std=c++17 -fPIE -dumpdir /tmp/ -dumpbase tmpxft_00022d56_00000000-5_CMakeCUDACompilerABI.cpp4.cu -dumpbase-ext .cu
+        ignoring nonexistent directory "/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../../x86_64-pc-linux-gnu/include"
+        #include "..." search starts here:
+        #include <...> search starts here:
+         /opt/cuda/bin/../targets/x86_64-linux/include
+         /opt/cuda/bin/../targets/x86_64-linux/include/cccl
+         /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/c++
+         /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/c++/x86_64-pc-linux-gnu
+         /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/c++/backward
+         /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include
+         /usr/local/include
+         /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include-fixed
+         /usr/include
+        End of search list.
+        COMPILER_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/:/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/
+        LIBRARY_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../../lib/:/lib/../lib/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../:/lib/:/usr/lib/
+        COLLECT_GCC_OPTIONS='-std=c++17' '-D' '__CUDA_ARCH_LIST__=750' '-E' '-D' '__CUDACC__' '-D' '__NVCC__' '-fPIE' '-v' '-I' '/opt/cuda/bin/../targets/x86_64-linux/include' '-isystem' '/opt/cuda/bin/../targets/x86_64-linux/include/cccl' '-D' '__CUDACC_VER_MAJOR__=13' '-D' '__CUDACC_VER_MINOR__=2' '-D' '__CUDACC_VER_BUILD__=78' '-D' '__CUDA_API_VER_MAJOR__=13' '-D' '__CUDA_API_VER_MINOR__=2' '-D' '__NVCC_DIAG_PRAGMA_SUPPORT__=1' '-D' '__CUDACC_DEVICE_ATOMIC_BUILTINS__=1' '-include' 'cuda_runtime.h' '-m64' '-o' '/tmp/tmpxft_00022d56_00000000-5_CMakeCUDACompilerABI.cpp4.ii' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' '/tmp/tmpxft_00022d56_00000000-5_CMakeCUDACompilerABI.cpp4.'
+        Using built-in specs.
+        COLLECT_GCC=/usr/bin/g++-15
+        Target: x86_64-pc-linux-gnu
+        Configured with: /build/gcc15/src/gcc15/configure --enable-languages=c,c++,fortran --enable-bootstrap --prefix=/usr --libdir=/usr/lib --libexecdir=/usr/lib --mandir=/usr/share/man --infodir=/usr/share/info --with-bugurl=https://gitlab.archlinux.org/archlinux/packaging/packages/gcc15/-/work_items --with-build-config=bootstrap-lto --with-linker-hash-style=gnu --with-system-zlib --enable-__cxa_atexit --enable-cet=auto --enable-checking=release --enable-clocale=gnu --enable-default-pie --enable-default-ssp --enable-gnu-indirect-function --enable-gnu-unique-object --enable-libstdcxx-backtrace --enable-link-serialization=1 --enable-linker-build-id --enable-lto --disable-multilib --enable-plugin --enable-shared --enable-threads=posix --disable-libssp --disable-libstdcxx-pch --disable-werror --program-suffix=-15 --enable-version-specific-runtime-libs
+        Thread model: posix
+        Supported LTO compression algorithms: zlib zstd
+        gcc version 15.2.1 20260506 (GCC) 
+        COLLECT_GCC_OPTIONS='-std=c++17' '-D' '__CUDA_ARCH__=750' '-D' '__CUDA_ARCH_LIST__=750' '-c' '-D' 'CUDA_DOUBLE_MATH_FUNCTIONS' '-fPIE' '-v' '-Wno-psabi' '-I' '/opt/cuda/bin/../targets/x86_64-linux/include' '-isystem' '/opt/cuda/bin/../targets/x86_64-linux/include/cccl' '-m64' '-o' 'CMakeFiles/cmTC_867ed.dir/CMakeCUDACompilerABI.cu.o' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_867ed.dir/'
+         /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/cc1plus -quiet -v -I /opt/cuda/bin/../targets/x86_64-linux/include -D_GNU_SOURCE -D __CUDA_ARCH__=750 -D __CUDA_ARCH_LIST__=750 -D CUDA_DOUBLE_MATH_FUNCTIONS -isystem /opt/cuda/bin/../targets/x86_64-linux/include/cccl /tmp/tmpxft_00022d56_00000000-6_CMakeCUDACompilerABI.cudafe1.cpp -quiet -dumpdir CMakeFiles/cmTC_867ed.dir/ -dumpbase CMakeCUDACompilerABI.cu.cpp -dumpbase-ext .cpp -m64 -mtune=generic -march=x86-64 -Wno-psabi -std=c++17 -version -fPIE -o /tmp/ccChC3ZG.s
+        GNU C++17 (GCC) version 15.2.1 20260506 (x86_64-pc-linux-gnu)
+        	compiled by GNU C version 15.2.1 20260506, GMP version 6.3.0, MPFR version 4.2.2, MPC version 1.4.1, isl version isl-0.27-GMP
+        
+        GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+        ignoring nonexistent directory "/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../../x86_64-pc-linux-gnu/include"
+        #include "..." search starts here:
+        #include <...> search starts here:
+         /opt/cuda/bin/../targets/x86_64-linux/include
+         /opt/cuda/bin/../targets/x86_64-linux/include/cccl
+         /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/c++
+         /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/c++/x86_64-pc-linux-gnu
+         /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/c++/backward
+         /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include
+         /usr/local/include
+         /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include-fixed
+         /usr/include
+        End of search list.
+        Compiler executable checksum: 7648dcd4d457023f2088445652bbe2be
+        COLLECT_GCC_OPTIONS='-std=c++17' '-D' '__CUDA_ARCH__=750' '-D' '__CUDA_ARCH_LIST__=750' '-c' '-D' 'CUDA_DOUBLE_MATH_FUNCTIONS' '-fPIE' '-v' '-Wno-psabi' '-I' '/opt/cuda/bin/../targets/x86_64-linux/include' '-isystem' '/opt/cuda/bin/../targets/x86_64-linux/include/cccl' '-m64' '-o' 'CMakeFiles/cmTC_867ed.dir/CMakeCUDACompilerABI.cu.o' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_867ed.dir/'
+         as -v -I /opt/cuda/bin/../targets/x86_64-linux/include --64 -o CMakeFiles/cmTC_867ed.dir/CMakeCUDACompilerABI.cu.o /tmp/ccChC3ZG.s
+        GNU assembler version 2.46.0 (x86_64-pc-linux-gnu) using BFD version (GNU Binutils) 2.46.0
+        COMPILER_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/:/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/
+        LIBRARY_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../../lib/:/lib/../lib/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../:/lib/:/usr/lib/
+        COLLECT_GCC_OPTIONS='-std=c++17' '-D' '__CUDA_ARCH__=750' '-D' '__CUDA_ARCH_LIST__=750' '-c' '-D' 'CUDA_DOUBLE_MATH_FUNCTIONS' '-fPIE' '-v' '-Wno-psabi' '-I' '/opt/cuda/bin/../targets/x86_64-linux/include' '-isystem' '/opt/cuda/bin/../targets/x86_64-linux/include/cccl' '-m64' '-o' 'CMakeFiles/cmTC_867ed.dir/CMakeCUDACompilerABI.cu.o' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_867ed.dir/CMakeCUDACompilerABI.cu.'
+        [2/2] : && /usr/bin/g++-15 -m64 -v -Wl,-v CMakeFiles/cmTC_867ed.dir/CMakeCUDACompilerABI.cu.o -o cmTC_867ed  -lcudadevrt  -lcudart_static  -lrt  -lpthread  -ldl -L"/opt/cuda/targets/x86_64-linux/lib/stubs" -L"/opt/cuda/targets/x86_64-linux/lib" && :
+        Using built-in specs.
+        COLLECT_GCC=/usr/bin/g++-15
+        COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/lto-wrapper
+        Target: x86_64-pc-linux-gnu
+        Configured with: /build/gcc15/src/gcc15/configure --enable-languages=c,c++,fortran --enable-bootstrap --prefix=/usr --libdir=/usr/lib --libexecdir=/usr/lib --mandir=/usr/share/man --infodir=/usr/share/info --with-bugurl=https://gitlab.archlinux.org/archlinux/packaging/packages/gcc15/-/work_items --with-build-config=bootstrap-lto --with-linker-hash-style=gnu --with-system-zlib --enable-__cxa_atexit --enable-cet=auto --enable-checking=release --enable-clocale=gnu --enable-default-pie --enable-default-ssp --enable-gnu-indirect-function --enable-gnu-unique-object --enable-libstdcxx-backtrace --enable-link-serialization=1 --enable-linker-build-id --enable-lto --disable-multilib --enable-plugin --enable-shared --enable-threads=posix --disable-libssp --disable-libstdcxx-pch --disable-werror --program-suffix=-15 --enable-version-specific-runtime-libs
+        Thread model: posix
+        Supported LTO compression algorithms: zlib zstd
+        gcc version 15.2.1 20260506 (GCC) 
+        COMPILER_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/:/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/
+        LIBRARY_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../../lib/:/lib/../lib/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../:/lib/:/usr/lib/
+        COLLECT_GCC_OPTIONS='-m64' '-v' '-o' 'cmTC_867ed' '-L/opt/cuda/targets/x86_64-linux/lib/stubs' '-L/opt/cuda/targets/x86_64-linux/lib' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'cmTC_867ed.'
+         /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/collect2 -plugin /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/lto-wrapper -plugin-opt=-fresolution=/tmp/cc4qmNiL.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --eh-frame-hdr --hash-style=gnu -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -o cmTC_867ed /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../../lib/Scrt1.o /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../../lib/crti.o /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/crtbeginS.o -L/opt/cuda/targets/x86_64-linux/lib/stubs -L/opt/cuda/targets/x86_64-linux/lib -L/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1 -L/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../../lib -L/lib/../lib -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../.. -L/lib -L/usr/lib -v CMakeFiles/cmTC_867ed.dir/CMakeCUDACompilerABI.cu.o -lcudadevrt -lcudart_static -lrt -lpthread -ldl -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/crtendS.o /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../../lib/crtn.o
+        collect2 version 15.2.1 20260506
+        /usr/bin/ld -plugin /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/lto-wrapper -plugin-opt=-fresolution=/tmp/cc4qmNiL.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --eh-frame-hdr --hash-style=gnu -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -o cmTC_867ed /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../../lib/Scrt1.o /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../../lib/crti.o /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/crtbeginS.o -L/opt/cuda/targets/x86_64-linux/lib/stubs -L/opt/cuda/targets/x86_64-linux/lib -L/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1 -L/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../../lib -L/lib/../lib -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../.. -L/lib -L/usr/lib -v CMakeFiles/cmTC_867ed.dir/CMakeCUDACompilerABI.cu.o -lcudadevrt -lcudart_static -lrt -lpthread -ldl -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/crtendS.o /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../../lib/crtn.o
+        GNU ld (GNU Binutils) 2.46.0
+        COLLECT_GCC_OPTIONS='-m64' '-v' '-o' 'cmTC_867ed' '-L/opt/cuda/targets/x86_64-linux/lib/stubs' '-L/opt/cuda/targets/x86_64-linux/lib' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'cmTC_867ed.'
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:217 (message)"
+      - "/usr/share/cmake/Modules/CMakeTestCUDACompiler.cmake:19 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:34 (enable_language)"
+    message: |
+      Parsed CUDA implicit include dir info: rv=done
+        found start of include info
+        found start of implicit include info
+          add: [/opt/cuda/bin/../targets/x86_64-linux/include]
+          add: [/opt/cuda/bin/../targets/x86_64-linux/include/cccl]
+          add: [/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/c++]
+          add: [/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/c++/x86_64-pc-linux-gnu]
+          add: [/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/c++/backward]
+          add: [/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include]
+          add: [/usr/local/include]
+          add: [/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include-fixed]
+          add: [/usr/include]
+        end of search list found
+        collapse include dir [/opt/cuda/bin/../targets/x86_64-linux/include] ==> [/opt/cuda/targets/x86_64-linux/include]
+        collapse include dir [/opt/cuda/bin/../targets/x86_64-linux/include/cccl] ==> [/opt/cuda/targets/x86_64-linux/include/cccl]
+        collapse include dir [/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/c++] ==> [/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/c++]
+        collapse include dir [/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/c++/x86_64-pc-linux-gnu] ==> [/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/c++/x86_64-pc-linux-gnu]
+        collapse include dir [/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/c++/backward] ==> [/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/c++/backward]
+        collapse include dir [/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include] ==> [/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include]
+        collapse include dir [/usr/local/include] ==> [/usr/local/include]
+        collapse include dir [/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include-fixed] ==> [/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include-fixed]
+        collapse include dir [/usr/include] ==> [/usr/include]
+        implicit include dirs: [/opt/cuda/targets/x86_64-linux/include;/opt/cuda/targets/x86_64-linux/include/cccl;/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/c++;/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/c++/x86_64-pc-linux-gnu;/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/c++/backward;/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include;/usr/local/include;/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include-fixed;/usr/include]
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:253 (message)"
+      - "/usr/share/cmake/Modules/CMakeTestCUDACompiler.cmake:19 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:34 (enable_language)"
+    message: |
+      Parsed CUDA implicit link information:
+        link line regex: [^( *|.*[/\\])(ld[0-9]*(|\\.[a-rt-z][a-z]*|\\.s[a-np-z][a-z]*|\\.so[a-z]+)|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        linker tool regex: [^[ 	]*(->|"|[0-9]+>[ 	-]*Build:[ 	0-9]+ ms[ 	]*)?[ 	]*(([^"]*[/\\])?(ld[0-9]*(|\\.[a-rt-z][a-z]*|\\.s[a-np-z][a-z]*|\\.so[a-z]+)))("|,| |$)]
+        ignore line: [Change Dir: '/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/CMakeFiles/CMakeScratch/TryCompile-KLc1WX']
+        ignore line: []
+        ignore line: [Run Build Command(s): /usr/bin/ninja -v cmTC_867ed]
+        ignore line: [[1/2] /opt/cuda/bin/nvcc -forward-unknown-to-host-compiler   -std=c++17 "--generate-code=arch=compute_75 code=[compute_75 sm_75]" -Xcompiler=-fPIE   -Xcompiler=-v -MD -MT CMakeFiles/cmTC_867ed.dir/CMakeCUDACompilerABI.cu.o -MF CMakeFiles/cmTC_867ed.dir/CMakeCUDACompilerABI.cu.o.d -x cu -c /usr/share/cmake/Modules/CMakeCUDACompilerABI.cu -o CMakeFiles/cmTC_867ed.dir/CMakeCUDACompilerABI.cu.o]
+        ignore line: [Using built-in specs.]
+        ignore line: [COLLECT_GCC=/usr/bin/g++-15]
+        ignore line: [Target: x86_64-pc-linux-gnu]
+        ignore line: [Configured with: /build/gcc15/src/gcc15/configure --enable-languages=c c++ fortran --enable-bootstrap --prefix=/usr --libdir=/usr/lib --libexecdir=/usr/lib --mandir=/usr/share/man --infodir=/usr/share/info --with-bugurl=https://gitlab.archlinux.org/archlinux/packaging/packages/gcc15/-/work_items --with-build-config=bootstrap-lto --with-linker-hash-style=gnu --with-system-zlib --enable-__cxa_atexit --enable-cet=auto --enable-checking=release --enable-clocale=gnu --enable-default-pie --enable-default-ssp --enable-gnu-indirect-function --enable-gnu-unique-object --enable-libstdcxx-backtrace --enable-link-serialization=1 --enable-linker-build-id --enable-lto --disable-multilib --enable-plugin --enable-shared --enable-threads=posix --disable-libssp --disable-libstdcxx-pch --disable-werror --program-suffix=-15 --enable-version-specific-runtime-libs]
+        ignore line: [Thread model: posix]
+        ignore line: [Supported LTO compression algorithms: zlib zstd]
+        ignore line: [gcc version 15.2.1 20260506 (GCC) ]
+        ignore line: [COLLECT_GCC_OPTIONS='-std=c++17' '-D' '__CUDA_ARCH__=750' '-D' '__CUDA_ARCH_LIST__=750' '-E' '-D' 'CUDA_DOUBLE_MATH_FUNCTIONS' '-D' '__CUDACC__' '-D' '__NVCC__' '-fPIE' '-v' '-I' '/opt/cuda/bin/../targets/x86_64-linux/include' '-isystem' '/opt/cuda/bin/../targets/x86_64-linux/include/cccl' '-D' '__CUDACC_VER_MAJOR__=13' '-D' '__CUDACC_VER_MINOR__=2' '-D' '__CUDACC_VER_BUILD__=78' '-D' '__CUDA_API_VER_MAJOR__=13' '-D' '__CUDA_API_VER_MINOR__=2' '-D' '__NVCC_DIAG_PRAGMA_SUPPORT__=1' '-D' '__CUDACC_DEVICE_ATOMIC_BUILTINS__=1' '-include' 'cuda_runtime.h' '-m64' '-o' '/tmp/tmpxft_00022d56_00000000-7_CMakeCUDACompilerABI.cpp1.ii' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' '/tmp/']
+        ignore line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/cc1plus -E -quiet -v -I /opt/cuda/bin/../targets/x86_64-linux/include -D_GNU_SOURCE -D __CUDA_ARCH__=750 -D __CUDA_ARCH_LIST__=750 -D CUDA_DOUBLE_MATH_FUNCTIONS -D __CUDACC__ -D __NVCC__ -D __CUDACC_VER_MAJOR__=13 -D __CUDACC_VER_MINOR__=2 -D __CUDACC_VER_BUILD__=78 -D __CUDA_API_VER_MAJOR__=13 -D __CUDA_API_VER_MINOR__=2 -D __NVCC_DIAG_PRAGMA_SUPPORT__=1 -D __CUDACC_DEVICE_ATOMIC_BUILTINS__=1 -isystem /opt/cuda/bin/../targets/x86_64-linux/include/cccl -include cuda_runtime.h /usr/share/cmake/Modules/CMakeCUDACompilerABI.cu -o /tmp/tmpxft_00022d56_00000000-7_CMakeCUDACompilerABI.cpp1.ii -m64 -mtune=generic -march=x86-64 -std=c++17 -fPIE -dumpdir /tmp/ -dumpbase tmpxft_00022d56_00000000-7_CMakeCUDACompilerABI.cpp1.cu -dumpbase-ext .cu]
+        ignore line: [ignoring nonexistent directory "/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../../x86_64-pc-linux-gnu/include"]
+        ignore line: [#include "..." search starts here:]
+        ignore line: [#include <...> search starts here:]
+        ignore line: [ /opt/cuda/bin/../targets/x86_64-linux/include]
+        ignore line: [ /opt/cuda/bin/../targets/x86_64-linux/include/cccl]
+        ignore line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/c++]
+        ignore line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/c++/x86_64-pc-linux-gnu]
+        ignore line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/c++/backward]
+        ignore line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include]
+        ignore line: [ /usr/local/include]
+        ignore line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include-fixed]
+        ignore line: [ /usr/include]
+        ignore line: [End of search list.]
+        ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/:/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/]
+        ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../../lib/:/lib/../lib/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../:/lib/:/usr/lib/]
+        ignore line: [COLLECT_GCC_OPTIONS='-std=c++17' '-D' '__CUDA_ARCH__=750' '-D' '__CUDA_ARCH_LIST__=750' '-E' '-D' 'CUDA_DOUBLE_MATH_FUNCTIONS' '-D' '__CUDACC__' '-D' '__NVCC__' '-fPIE' '-v' '-I' '/opt/cuda/bin/../targets/x86_64-linux/include' '-isystem' '/opt/cuda/bin/../targets/x86_64-linux/include/cccl' '-D' '__CUDACC_VER_MAJOR__=13' '-D' '__CUDACC_VER_MINOR__=2' '-D' '__CUDACC_VER_BUILD__=78' '-D' '__CUDA_API_VER_MAJOR__=13' '-D' '__CUDA_API_VER_MINOR__=2' '-D' '__NVCC_DIAG_PRAGMA_SUPPORT__=1' '-D' '__CUDACC_DEVICE_ATOMIC_BUILTINS__=1' '-include' 'cuda_runtime.h' '-m64' '-o' '/tmp/tmpxft_00022d56_00000000-7_CMakeCUDACompilerABI.cpp1.ii' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' '/tmp/tmpxft_00022d56_00000000-7_CMakeCUDACompilerABI.cpp1.']
+        ignore line: [Using built-in specs.]
+        ignore line: [COLLECT_GCC=/usr/bin/g++-15]
+        ignore line: [Target: x86_64-pc-linux-gnu]
+        ignore line: [Configured with: /build/gcc15/src/gcc15/configure --enable-languages=c c++ fortran --enable-bootstrap --prefix=/usr --libdir=/usr/lib --libexecdir=/usr/lib --mandir=/usr/share/man --infodir=/usr/share/info --with-bugurl=https://gitlab.archlinux.org/archlinux/packaging/packages/gcc15/-/work_items --with-build-config=bootstrap-lto --with-linker-hash-style=gnu --with-system-zlib --enable-__cxa_atexit --enable-cet=auto --enable-checking=release --enable-clocale=gnu --enable-default-pie --enable-default-ssp --enable-gnu-indirect-function --enable-gnu-unique-object --enable-libstdcxx-backtrace --enable-link-serialization=1 --enable-linker-build-id --enable-lto --disable-multilib --enable-plugin --enable-shared --enable-threads=posix --disable-libssp --disable-libstdcxx-pch --disable-werror --program-suffix=-15 --enable-version-specific-runtime-libs]
+        ignore line: [Thread model: posix]
+        ignore line: [Supported LTO compression algorithms: zlib zstd]
+        ignore line: [gcc version 15.2.1 20260506 (GCC) ]
+        ignore line: [COLLECT_GCC_OPTIONS='-std=c++17' '-D' '__CUDA_ARCH_LIST__=750' '-E' '-D' '__CUDACC__' '-D' '__NVCC__' '-fPIE' '-v' '-I' '/opt/cuda/bin/../targets/x86_64-linux/include' '-isystem' '/opt/cuda/bin/../targets/x86_64-linux/include/cccl' '-D' '__CUDACC_VER_MAJOR__=13' '-D' '__CUDACC_VER_MINOR__=2' '-D' '__CUDACC_VER_BUILD__=78' '-D' '__CUDA_API_VER_MAJOR__=13' '-D' '__CUDA_API_VER_MINOR__=2' '-D' '__NVCC_DIAG_PRAGMA_SUPPORT__=1' '-D' '__CUDACC_DEVICE_ATOMIC_BUILTINS__=1' '-include' 'cuda_runtime.h' '-m64' '-o' '/tmp/tmpxft_00022d56_00000000-5_CMakeCUDACompilerABI.cpp4.ii' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' '/tmp/']
+        ignore line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/cc1plus -E -quiet -v -I /opt/cuda/bin/../targets/x86_64-linux/include -D_GNU_SOURCE -D __CUDA_ARCH_LIST__=750 -D __CUDACC__ -D __NVCC__ -D __CUDACC_VER_MAJOR__=13 -D __CUDACC_VER_MINOR__=2 -D __CUDACC_VER_BUILD__=78 -D __CUDA_API_VER_MAJOR__=13 -D __CUDA_API_VER_MINOR__=2 -D __NVCC_DIAG_PRAGMA_SUPPORT__=1 -D __CUDACC_DEVICE_ATOMIC_BUILTINS__=1 -isystem /opt/cuda/bin/../targets/x86_64-linux/include/cccl -include cuda_runtime.h /usr/share/cmake/Modules/CMakeCUDACompilerABI.cu -o /tmp/tmpxft_00022d56_00000000-5_CMakeCUDACompilerABI.cpp4.ii -m64 -mtune=generic -march=x86-64 -std=c++17 -fPIE -dumpdir /tmp/ -dumpbase tmpxft_00022d56_00000000-5_CMakeCUDACompilerABI.cpp4.cu -dumpbase-ext .cu]
+        ignore line: [ignoring nonexistent directory "/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../../x86_64-pc-linux-gnu/include"]
+        ignore line: [#include "..." search starts here:]
+        ignore line: [#include <...> search starts here:]
+        ignore line: [ /opt/cuda/bin/../targets/x86_64-linux/include]
+        ignore line: [ /opt/cuda/bin/../targets/x86_64-linux/include/cccl]
+        ignore line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/c++]
+        ignore line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/c++/x86_64-pc-linux-gnu]
+        ignore line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/c++/backward]
+        ignore line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include]
+        ignore line: [ /usr/local/include]
+        ignore line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include-fixed]
+        ignore line: [ /usr/include]
+        ignore line: [End of search list.]
+        ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/:/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/]
+        ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../../lib/:/lib/../lib/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../:/lib/:/usr/lib/]
+        ignore line: [COLLECT_GCC_OPTIONS='-std=c++17' '-D' '__CUDA_ARCH_LIST__=750' '-E' '-D' '__CUDACC__' '-D' '__NVCC__' '-fPIE' '-v' '-I' '/opt/cuda/bin/../targets/x86_64-linux/include' '-isystem' '/opt/cuda/bin/../targets/x86_64-linux/include/cccl' '-D' '__CUDACC_VER_MAJOR__=13' '-D' '__CUDACC_VER_MINOR__=2' '-D' '__CUDACC_VER_BUILD__=78' '-D' '__CUDA_API_VER_MAJOR__=13' '-D' '__CUDA_API_VER_MINOR__=2' '-D' '__NVCC_DIAG_PRAGMA_SUPPORT__=1' '-D' '__CUDACC_DEVICE_ATOMIC_BUILTINS__=1' '-include' 'cuda_runtime.h' '-m64' '-o' '/tmp/tmpxft_00022d56_00000000-5_CMakeCUDACompilerABI.cpp4.ii' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' '/tmp/tmpxft_00022d56_00000000-5_CMakeCUDACompilerABI.cpp4.']
+        ignore line: [Using built-in specs.]
+        ignore line: [COLLECT_GCC=/usr/bin/g++-15]
+        ignore line: [Target: x86_64-pc-linux-gnu]
+        ignore line: [Configured with: /build/gcc15/src/gcc15/configure --enable-languages=c c++ fortran --enable-bootstrap --prefix=/usr --libdir=/usr/lib --libexecdir=/usr/lib --mandir=/usr/share/man --infodir=/usr/share/info --with-bugurl=https://gitlab.archlinux.org/archlinux/packaging/packages/gcc15/-/work_items --with-build-config=bootstrap-lto --with-linker-hash-style=gnu --with-system-zlib --enable-__cxa_atexit --enable-cet=auto --enable-checking=release --enable-clocale=gnu --enable-default-pie --enable-default-ssp --enable-gnu-indirect-function --enable-gnu-unique-object --enable-libstdcxx-backtrace --enable-link-serialization=1 --enable-linker-build-id --enable-lto --disable-multilib --enable-plugin --enable-shared --enable-threads=posix --disable-libssp --disable-libstdcxx-pch --disable-werror --program-suffix=-15 --enable-version-specific-runtime-libs]
+        ignore line: [Thread model: posix]
+        ignore line: [Supported LTO compression algorithms: zlib zstd]
+        ignore line: [gcc version 15.2.1 20260506 (GCC) ]
+        ignore line: [COLLECT_GCC_OPTIONS='-std=c++17' '-D' '__CUDA_ARCH__=750' '-D' '__CUDA_ARCH_LIST__=750' '-c' '-D' 'CUDA_DOUBLE_MATH_FUNCTIONS' '-fPIE' '-v' '-Wno-psabi' '-I' '/opt/cuda/bin/../targets/x86_64-linux/include' '-isystem' '/opt/cuda/bin/../targets/x86_64-linux/include/cccl' '-m64' '-o' 'CMakeFiles/cmTC_867ed.dir/CMakeCUDACompilerABI.cu.o' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_867ed.dir/']
+        ignore line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/cc1plus -quiet -v -I /opt/cuda/bin/../targets/x86_64-linux/include -D_GNU_SOURCE -D __CUDA_ARCH__=750 -D __CUDA_ARCH_LIST__=750 -D CUDA_DOUBLE_MATH_FUNCTIONS -isystem /opt/cuda/bin/../targets/x86_64-linux/include/cccl /tmp/tmpxft_00022d56_00000000-6_CMakeCUDACompilerABI.cudafe1.cpp -quiet -dumpdir CMakeFiles/cmTC_867ed.dir/ -dumpbase CMakeCUDACompilerABI.cu.cpp -dumpbase-ext .cpp -m64 -mtune=generic -march=x86-64 -Wno-psabi -std=c++17 -version -fPIE -o /tmp/ccChC3ZG.s]
+        ignore line: [GNU C++17 (GCC) version 15.2.1 20260506 (x86_64-pc-linux-gnu)]
+        ignore line: [	compiled by GNU C version 15.2.1 20260506  GMP version 6.3.0  MPFR version 4.2.2  MPC version 1.4.1  isl version isl-0.27-GMP]
+        ignore line: []
+        ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
+        ignore line: [ignoring nonexistent directory "/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../../x86_64-pc-linux-gnu/include"]
+        ignore line: [#include "..." search starts here:]
+        ignore line: [#include <...> search starts here:]
+        ignore line: [ /opt/cuda/bin/../targets/x86_64-linux/include]
+        ignore line: [ /opt/cuda/bin/../targets/x86_64-linux/include/cccl]
+        ignore line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/c++]
+        ignore line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/c++/x86_64-pc-linux-gnu]
+        ignore line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/c++/backward]
+        ignore line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include]
+        ignore line: [ /usr/local/include]
+        ignore line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include-fixed]
+        ignore line: [ /usr/include]
+        ignore line: [End of search list.]
+        ignore line: [Compiler executable checksum: 7648dcd4d457023f2088445652bbe2be]
+        ignore line: [COLLECT_GCC_OPTIONS='-std=c++17' '-D' '__CUDA_ARCH__=750' '-D' '__CUDA_ARCH_LIST__=750' '-c' '-D' 'CUDA_DOUBLE_MATH_FUNCTIONS' '-fPIE' '-v' '-Wno-psabi' '-I' '/opt/cuda/bin/../targets/x86_64-linux/include' '-isystem' '/opt/cuda/bin/../targets/x86_64-linux/include/cccl' '-m64' '-o' 'CMakeFiles/cmTC_867ed.dir/CMakeCUDACompilerABI.cu.o' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_867ed.dir/']
+        ignore line: [ as -v -I /opt/cuda/bin/../targets/x86_64-linux/include --64 -o CMakeFiles/cmTC_867ed.dir/CMakeCUDACompilerABI.cu.o /tmp/ccChC3ZG.s]
+        ignore line: [GNU assembler version 2.46.0 (x86_64-pc-linux-gnu) using BFD version (GNU Binutils) 2.46.0]
+        ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/:/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/]
+        ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../../lib/:/lib/../lib/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../:/lib/:/usr/lib/]
+        ignore line: [COLLECT_GCC_OPTIONS='-std=c++17' '-D' '__CUDA_ARCH__=750' '-D' '__CUDA_ARCH_LIST__=750' '-c' '-D' 'CUDA_DOUBLE_MATH_FUNCTIONS' '-fPIE' '-v' '-Wno-psabi' '-I' '/opt/cuda/bin/../targets/x86_64-linux/include' '-isystem' '/opt/cuda/bin/../targets/x86_64-linux/include/cccl' '-m64' '-o' 'CMakeFiles/cmTC_867ed.dir/CMakeCUDACompilerABI.cu.o' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_867ed.dir/CMakeCUDACompilerABI.cu.']
+        ignore line: [[2/2] : && /usr/bin/g++-15 -m64 -v -Wl,-v CMakeFiles/cmTC_867ed.dir/CMakeCUDACompilerABI.cu.o -o cmTC_867ed  -lcudadevrt  -lcudart_static  -lrt  -lpthread  -ldl -L"/opt/cuda/targets/x86_64-linux/lib/stubs" -L"/opt/cuda/targets/x86_64-linux/lib" && :]
+        ignore line: [Using built-in specs.]
+        ignore line: [COLLECT_GCC=/usr/bin/g++-15]
+        ignore line: [COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/lto-wrapper]
+        ignore line: [Target: x86_64-pc-linux-gnu]
+        ignore line: [Configured with: /build/gcc15/src/gcc15/configure --enable-languages=c c++ fortran --enable-bootstrap --prefix=/usr --libdir=/usr/lib --libexecdir=/usr/lib --mandir=/usr/share/man --infodir=/usr/share/info --with-bugurl=https://gitlab.archlinux.org/archlinux/packaging/packages/gcc15/-/work_items --with-build-config=bootstrap-lto --with-linker-hash-style=gnu --with-system-zlib --enable-__cxa_atexit --enable-cet=auto --enable-checking=release --enable-clocale=gnu --enable-default-pie --enable-default-ssp --enable-gnu-indirect-function --enable-gnu-unique-object --enable-libstdcxx-backtrace --enable-link-serialization=1 --enable-linker-build-id --enable-lto --disable-multilib --enable-plugin --enable-shared --enable-threads=posix --disable-libssp --disable-libstdcxx-pch --disable-werror --program-suffix=-15 --enable-version-specific-runtime-libs]
+        ignore line: [Thread model: posix]
+        ignore line: [Supported LTO compression algorithms: zlib zstd]
+        ignore line: [gcc version 15.2.1 20260506 (GCC) ]
+        ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/:/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/]
+        ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../../lib/:/lib/../lib/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../:/lib/:/usr/lib/]
+        ignore line: [COLLECT_GCC_OPTIONS='-m64' '-v' '-o' 'cmTC_867ed' '-L/opt/cuda/targets/x86_64-linux/lib/stubs' '-L/opt/cuda/targets/x86_64-linux/lib' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'cmTC_867ed.']
+        link line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/collect2 -plugin /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/lto-wrapper -plugin-opt=-fresolution=/tmp/cc4qmNiL.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --eh-frame-hdr --hash-style=gnu -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -o cmTC_867ed /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../../lib/Scrt1.o /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../../lib/crti.o /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/crtbeginS.o -L/opt/cuda/targets/x86_64-linux/lib/stubs -L/opt/cuda/targets/x86_64-linux/lib -L/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1 -L/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../../lib -L/lib/../lib -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../.. -L/lib -L/usr/lib -v CMakeFiles/cmTC_867ed.dir/CMakeCUDACompilerABI.cu.o -lcudadevrt -lcudart_static -lrt -lpthread -ldl -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/crtendS.o /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../../lib/crtn.o]
+          arg [/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/collect2] ==> ignore
+          arg [-plugin] ==> ignore
+          arg [/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/liblto_plugin.so] ==> ignore
+          arg [-plugin-opt=/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/lto-wrapper] ==> ignore
+          arg [-plugin-opt=-fresolution=/tmp/cc4qmNiL.res] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+          arg [-plugin-opt=-pass-through=-lc] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+          arg [--build-id] ==> ignore
+          arg [--eh-frame-hdr] ==> ignore
+          arg [--hash-style=gnu] ==> ignore
+          arg [-m] ==> ignore
+          arg [elf_x86_64] ==> ignore
+          arg [-dynamic-linker] ==> ignore
+          arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
+          arg [-pie] ==> ignore
+          arg [-o] ==> ignore
+          arg [cmTC_867ed] ==> ignore
+          arg [/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../../lib/Scrt1.o] ==> obj [/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../../lib/Scrt1.o]
+          arg [/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../../lib/crti.o] ==> obj [/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../../lib/crti.o]
+          arg [/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/crtbeginS.o] ==> obj [/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/crtbeginS.o]
+          arg [-L/opt/cuda/targets/x86_64-linux/lib/stubs] ==> dir [/opt/cuda/targets/x86_64-linux/lib/stubs]
+          arg [-L/opt/cuda/targets/x86_64-linux/lib] ==> dir [/opt/cuda/targets/x86_64-linux/lib]
+          arg [-L/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1] ==> dir [/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1]
+          arg [-L/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../../lib] ==> dir [/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../../lib]
+          arg [-L/lib/../lib] ==> dir [/lib/../lib]
+          arg [-L/usr/lib/../lib] ==> dir [/usr/lib/../lib]
+          arg [-L/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../..] ==> dir [/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../..]
+          arg [-L/lib] ==> dir [/lib]
+          arg [-L/usr/lib] ==> dir [/usr/lib]
+          arg [-v] ==> ignore
+          arg [CMakeFiles/cmTC_867ed.dir/CMakeCUDACompilerABI.cu.o] ==> ignore
+          arg [-lcudadevrt] ==> lib [cudadevrt]
+          arg [-lcudart_static] ==> lib [cudart_static]
+          arg [-lrt] ==> lib [rt]
+          arg [-lpthread] ==> lib [pthread]
+          arg [-ldl] ==> lib [dl]
+          arg [-lstdc++] ==> lib [stdc++]
+          arg [-lm] ==> lib [m]
+          arg [-lgcc_s] ==> lib [gcc_s]
+          arg [-lgcc] ==> lib [gcc]
+          arg [-lc] ==> lib [c]
+          arg [-lgcc_s] ==> lib [gcc_s]
+          arg [-lgcc] ==> lib [gcc]
+          arg [/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/crtendS.o] ==> obj [/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/crtendS.o]
+          arg [/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../../lib/crtn.o] ==> obj [/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../../lib/crtn.o]
+        ignore line: [collect2 version 15.2.1 20260506]
+        ignore line: [/usr/bin/ld -plugin /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/lto-wrapper -plugin-opt=-fresolution=/tmp/cc4qmNiL.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --eh-frame-hdr --hash-style=gnu -m elf_x86_64 -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -o cmTC_867ed /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../../lib/Scrt1.o /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../../lib/crti.o /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/crtbeginS.o -L/opt/cuda/targets/x86_64-linux/lib/stubs -L/opt/cuda/targets/x86_64-linux/lib -L/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1 -L/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../../lib -L/lib/../lib -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../.. -L/lib -L/usr/lib -v CMakeFiles/cmTC_867ed.dir/CMakeCUDACompilerABI.cu.o -lcudadevrt -lcudart_static -lrt -lpthread -ldl -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/crtendS.o /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../../lib/crtn.o]
+        linker tool for 'CUDA': /usr/bin/ld
+        collapse obj [/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../../lib/Scrt1.o] ==> [/usr/lib/Scrt1.o]
+        collapse obj [/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../../lib/crti.o] ==> [/usr/lib/crti.o]
+        collapse obj [/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../../lib/crtn.o] ==> [/usr/lib/crtn.o]
+        collapse library dir [/opt/cuda/targets/x86_64-linux/lib/stubs] ==> [/opt/cuda/targets/x86_64-linux/lib/stubs]
+        collapse library dir [/opt/cuda/targets/x86_64-linux/lib] ==> [/opt/cuda/targets/x86_64-linux/lib]
+        collapse library dir [/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1] ==> [/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1]
+        collapse library dir [/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../../../lib] ==> [/usr/lib]
+        collapse library dir [/lib/../lib] ==> [/lib]
+        collapse library dir [/usr/lib/../lib] ==> [/usr/lib]
+        collapse library dir [/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/../../..] ==> [/usr/lib]
+        collapse library dir [/lib] ==> [/lib]
+        collapse library dir [/usr/lib] ==> [/usr/lib]
+        implicit libs: [cudadevrt;cudart_static;rt;pthread;dl;stdc++;m;gcc_s;gcc;c;gcc_s;gcc]
+        implicit objs: [/usr/lib/Scrt1.o;/usr/lib/crti.o;/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/crtbeginS.o;/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/crtendS.o;/usr/lib/crtn.o]
+        implicit dirs: [/opt/cuda/targets/x86_64-linux/lib/stubs;/opt/cuda/targets/x86_64-linux/lib;/usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1;/usr/lib;/lib]
+        implicit fwks: []
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/Internal/CMakeDetermineLinkerId.cmake:38 (message)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:299 (cmake_determine_linker_id)"
+      - "/usr/share/cmake/Modules/CMakeTestCUDACompiler.cmake:19 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:34 (enable_language)"
+    message: |
+      Running the CUDA compiler's linker: "/usr/bin/ld" "-v"
+      GNU ld (GNU Binutils) 2.46.0
+  -
+    kind: "find-v1"
+    backtrace:
+      - "cmake/CompilerOptions.cmake:21 (find_program)"
+      - "CMakeLists.txt:47 (include)"
+    mode: "program"
+    variable: "CLANG_FORMAT_EXECUTABLE"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "clang-format"
+    candidate_directories:
+      - "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/bin/"
+      - "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/sbin/"
+      - "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/"
+      - "/home/brennanf/Projects/qcpy_dev/env/bin/"
+      - "/home/brennanf/.pyenv/shims/"
+      - "/opt/cuda/bin/"
+      - "/home/brennanf/.pyenv/bin/"
+      - "/home/brennanf/.local/bin/"
+      - "/home/brennanf/.cargo/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/local/bin/"
+      - "/usr/bin/"
+      - "/home/brennanf/.local/share/flatpak/exports/bin/"
+      - "/var/lib/flatpak/exports/bin/"
+      - "/usr/bin/site_perl/"
+      - "/usr/bin/vendor_perl/"
+      - "/usr/bin/core_perl/"
+      - "/usr/local/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/local/"
+      - "/usr/bin/"
+      - "/usr/sbin/"
+      - "/usr/"
+      - "/bin/"
+      - "/sbin/"
+      - "/usr/X11R6/bin/"
+      - "/usr/X11R6/sbin/"
+      - "/usr/X11R6/"
+      - "/usr/pkg/bin/"
+      - "/usr/pkg/sbin/"
+      - "/usr/pkg/"
+      - "/opt/bin/"
+      - "/opt/sbin/"
+      - "/opt/"
+    searched_directories:
+      - "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/bin/clang-format"
+      - "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/sbin/clang-format"
+      - "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/clang-format"
+      - "/home/brennanf/Projects/qcpy_dev/env/bin/clang-format"
+      - "/home/brennanf/.pyenv/shims/clang-format"
+      - "/opt/cuda/bin/clang-format"
+      - "/home/brennanf/.pyenv/bin/clang-format"
+      - "/home/brennanf/.local/bin/clang-format"
+      - "/home/brennanf/.cargo/bin/clang-format"
+      - "/usr/local/sbin/clang-format"
+      - "/usr/local/bin/clang-format"
+    found: "/usr/bin/clang-format"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build"
+      ENV{PATH}:
+        - "/home/brennanf/Projects/qcpy_dev/env/bin"
+        - "/home/brennanf/.pyenv/shims"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.pyenv/bin"
+        - "/home/brennanf/.local/bin"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.pyenv/bin"
+        - "/home/brennanf/.local/bin"
+        - "/home/brennanf/.cargo/bin"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.local/share/flatpak/exports/bin"
+        - "/var/lib/flatpak/exports/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+      CMAKE_INSTALL_PREFIX: "/usr/local"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "/usr/local"
+        - "/usr"
+        - "/"
+        - "/usr"
+        - "/usr/local"
+        - "/usr/X11R6"
+        - "/usr/pkg"
+        - "/opt"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "build/cmakedeps_macros.cmake:32 (find_library)"
+      - "build/check-Target-release.cmake:23 (conan_package_library_targets)"
+      - "build/checkTargets.cmake:24 (include)"
+      - "build/check-config.cmake:16 (include)"
+      - "/home/brennanf/Projects/qcpy_dev/qcpy/src/test/core_test/test_qlog/CMakeLists.txt:1 (find_package)"
+    mode: "library"
+    variable: "CONAN_FOUND_LIBRARY"
+    description: "Path to a library."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "check"
+    candidate_directories:
+      - "/home/brennanf/.conan2/p/b/libchf72436f84ba33/p/lib/"
+    found: "/home/brennanf/.conan2/p/b/libchf72436f84ba33/p/lib/libcheck.a"
+    search_context:
+      CMAKE_LIBRARY_PATH:
+        - "/home/brennanf/.conan2/p/b/libchf72436f84ba33/p/lib"
+      CMAKE_PREFIX_PATH:
+        - "/opt/check"
+        - "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build"
+      ENV{PATH}:
+        - "/home/brennanf/Projects/qcpy_dev/env/bin"
+        - "/home/brennanf/.pyenv/shims"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.pyenv/bin"
+        - "/home/brennanf/.local/bin"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.pyenv/bin"
+        - "/home/brennanf/.local/bin"
+        - "/home/brennanf/.cargo/bin"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.local/share/flatpak/exports/bin"
+        - "/var/lib/flatpak/exports/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+      CMAKE_INSTALL_PREFIX: "/usr/local"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "/usr/local"
+        - "/usr"
+        - "/"
+        - "/usr"
+        - "/usr/local"
+        - "/usr/X11R6"
+        - "/usr/pkg"
+        - "/opt"
+      CMAKE_SYSTEM_LIBRARY_PATH:
+        - "/usr/lib/X11"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "build/cmakedeps_macros.cmake:32 (find_library)"
+      - "build/check-Target-release.cmake:60 (conan_package_library_targets)"
+      - "build/checkTargets.cmake:24 (include)"
+      - "build/check-config.cmake:16 (include)"
+      - "/home/brennanf/Projects/qcpy_dev/qcpy/src/test/core_test/test_qlog/CMakeLists.txt:1 (find_package)"
+    mode: "library"
+    variable: "CONAN_FOUND_LIBRARY"
+    description: "Path to a library."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "check"
+    candidate_directories:
+      - "/home/brennanf/.conan2/p/b/libchf72436f84ba33/p/lib/"
+    found: "/home/brennanf/.conan2/p/b/libchf72436f84ba33/p/lib/libcheck.a"
+    search_context:
+      CMAKE_LIBRARY_PATH:
+        - "/home/brennanf/.conan2/p/b/libchf72436f84ba33/p/lib"
+      CMAKE_PREFIX_PATH:
+        - "/opt/check"
+        - "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build"
+      ENV{PATH}:
+        - "/home/brennanf/Projects/qcpy_dev/env/bin"
+        - "/home/brennanf/.pyenv/shims"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.pyenv/bin"
+        - "/home/brennanf/.local/bin"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.pyenv/bin"
+        - "/home/brennanf/.local/bin"
+        - "/home/brennanf/.cargo/bin"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.local/share/flatpak/exports/bin"
+        - "/var/lib/flatpak/exports/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+      CMAKE_INSTALL_PREFIX: "/usr/local"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "/usr/local"
+        - "/usr"
+        - "/"
+        - "/usr"
+        - "/usr/local"
+        - "/usr/X11R6"
+        - "/usr/pkg"
+        - "/opt"
+      CMAKE_SYSTEM_LIBRARY_PATH:
+        - "/usr/lib/X11"
+  -
+    kind: "find_package-v1"
+    backtrace:
+      - "/home/brennanf/Projects/qcpy_dev/qcpy/src/test/core_test/test_qlog/CMakeLists.txt:1 (find_package)"
+    name: "check"
+    configs:
+      -
+        filename: "check.cps"
+        kind: "cps"
+      -
+        filename: "checkConfig.cmake"
+        kind: "cmake"
+      -
+        filename: "check-config.cmake"
+        kind: "cmake"
+    version_request:
+      exact: false
+    settings:
+      required: "required_explicit"
+      quiet: false
+      global: false
+      policy_scope: true
+      bypass_provider: false
+      names:
+        - "check"
+      path_suffixes:
+        - ""
+      paths:
+        CMAKE_FIND_USE_CMAKE_PATH: true
+        CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+        CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+        CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+        CMAKE_FIND_USE_INSTALL_PREFIX: true
+        CMAKE_FIND_USE_PACKAGE_ROOT_PATH: true
+        CMAKE_FIND_USE_CMAKE_PACKAGE_REGISTRY: true
+        CMAKE_FIND_USE_SYSTEM_PACKAGE_REGISTRY: true
+        CMAKE_FIND_ROOT_PATH_MODE: "BOTH"
+    candidates:
+      -
+        path: "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/CMakeFiles/pkgRedirects/checkConfig.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/CMakeFiles/pkgRedirects/check-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/CMakeFiles/pkgRedirects/lib/cps/check.cps"
+        mode: "cps"
+        reason: "no_exist"
+      -
+        path: "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/CMakeFiles/pkgRedirects/share/cps/check.cps"
+        mode: "cps"
+        reason: "no_exist"
+      -
+        path: "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/checkConfig.cmake"
+        mode: "config"
+        reason: "no_exist"
+    found:
+      path: "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build/check-config.cmake"
+      mode: "config"
+      version: "0.15.2"
+    search_context:
+      CMAKE_PREFIX_PATH:
+        - "/opt/check"
+        - "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build"
+      ENV{PATH}:
+        - "/home/brennanf/Projects/qcpy_dev/env/bin"
+        - "/home/brennanf/.pyenv/shims"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.pyenv/bin"
+        - "/home/brennanf/.local/bin"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.pyenv/bin"
+        - "/home/brennanf/.local/bin"
+        - "/home/brennanf/.cargo/bin"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.local/share/flatpak/exports/bin"
+        - "/var/lib/flatpak/exports/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+      CMAKE_INSTALL_PREFIX: "/usr/local"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "/usr/local"
+        - "/usr"
+        - "/"
+        - "/usr"
+        - "/usr/local"
+        - "/usr/X11R6"
+        - "/usr/pkg"
+        - "/opt"
+      CMAKE_MODULE_PATH:
+        - "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build"
+...
+
+---
+events:
+  -
+    kind: "find-v1"
+    backtrace:
+      - "build/cmakedeps_macros.cmake:32 (find_library)"
+      - "build/check-Target-release.cmake:23 (conan_package_library_targets)"
+      - "build/checkTargets.cmake:24 (include)"
+      - "build/check-config.cmake:16 (include)"
+      - "/home/brennanf/Projects/qcpy_dev/qcpy/src/test/core_test/test_qlog/CMakeLists.txt:1 (find_package)"
+    mode: "library"
+    variable: "CONAN_FOUND_LIBRARY"
+    description: "Path to a library."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "check"
+    candidate_directories:
+      - "/home/brennanf/.conan2/p/b/libchf72436f84ba33/p/lib/"
+    found: "/home/brennanf/.conan2/p/b/libchf72436f84ba33/p/lib/libcheck.a"
+    search_context:
+      CMAKE_LIBRARY_PATH:
+        - "/home/brennanf/.conan2/p/b/libchf72436f84ba33/p/lib"
+      CMAKE_PREFIX_PATH:
+        - "/opt/check"
+        - "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build"
+      ENV{PATH}:
+        - "/home/brennanf/Projects/qcpy_dev/env/bin"
+        - "/home/brennanf/.pyenv/shims"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.pyenv/bin"
+        - "/home/brennanf/.local/bin"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.pyenv/bin"
+        - "/home/brennanf/.local/bin"
+        - "/home/brennanf/.cargo/bin"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.local/share/flatpak/exports/bin"
+        - "/var/lib/flatpak/exports/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+      CMAKE_INSTALL_PREFIX: "/usr/local"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "/usr/local"
+        - "/usr"
+        - "/"
+        - "/usr"
+        - "/usr/local"
+        - "/usr/X11R6"
+        - "/usr/pkg"
+        - "/opt"
+      CMAKE_SYSTEM_LIBRARY_PATH:
+        - "/usr/lib/X11"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "build/cmakedeps_macros.cmake:32 (find_library)"
+      - "build/check-Target-release.cmake:60 (conan_package_library_targets)"
+      - "build/checkTargets.cmake:24 (include)"
+      - "build/check-config.cmake:16 (include)"
+      - "/home/brennanf/Projects/qcpy_dev/qcpy/src/test/core_test/test_qlog/CMakeLists.txt:1 (find_package)"
+    mode: "library"
+    variable: "CONAN_FOUND_LIBRARY"
+    description: "Path to a library."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "check"
+    candidate_directories:
+      - "/home/brennanf/.conan2/p/b/libchf72436f84ba33/p/lib/"
+    found: "/home/brennanf/.conan2/p/b/libchf72436f84ba33/p/lib/libcheck.a"
+    search_context:
+      CMAKE_LIBRARY_PATH:
+        - "/home/brennanf/.conan2/p/b/libchf72436f84ba33/p/lib"
+      CMAKE_PREFIX_PATH:
+        - "/opt/check"
+        - "/home/brennanf/Projects/qcpy_dev/qcpy/src/builder/build"
+      ENV{PATH}:
+        - "/home/brennanf/Projects/qcpy_dev/env/bin"
+        - "/home/brennanf/.pyenv/shims"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.pyenv/bin"
+        - "/home/brennanf/.local/bin"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.pyenv/bin"
+        - "/home/brennanf/.local/bin"
+        - "/home/brennanf/.cargo/bin"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/opt/cuda/bin"
+        - "/home/brennanf/.local/share/flatpak/exports/bin"
+        - "/var/lib/flatpak/exports/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+      CMAKE_INSTALL_PREFIX: "/usr/local"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "/usr/local"
+        - "/usr"
+        - "/"
+        - "/usr"
+        - "/usr/local"
+        - "/usr/X11R6"
+        - "/usr/pkg"
+        - "/opt"
+      CMAKE_SYSTEM_LIBRARY_PATH:
+        - "/usr/lib/X11"
+...

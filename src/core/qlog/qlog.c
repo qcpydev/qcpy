@@ -1,4 +1,4 @@
-// #include <qcpy_error.h>
+#include <qcpy_error.h>
 #include <qlog.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -12,11 +12,12 @@ const char *replay_qlog_description[] = {
     [QLOG_DELETE_FAILED] = "qlog failed to delete"};
 
 qlog_t *qlog_init(uint8_t qubits) {
-  qlog_t *qlog;
+  qlog_t *qlog = NULL;
+
   qlog = (qlog_t *)malloc(sizeof(qlog_t));
-  if (!qlog) {
-    // QCPY_ERROR(QCPY_ERROR_QLOG, qlog, QLOG_NULL);
-  }
+
+  QCPY_ASSERT(qlog, QCPY_ERROR_QLOG, qlog, QLOG_NULL);
+
   memset(qlog, 0, sizeof(qlog_t));
 
   qlog->qubit_count = qubits;
@@ -26,9 +27,8 @@ qlog_t *qlog_init(uint8_t qubits) {
 }
 
 void qlog_delete(qlog_t *qlog) {
-  if (!qlog) {
-    // QCPY_ERROR(QCPY_ERROR_QLOG, qlog, QLOG_NULL);
-  }
+
+  QCPY_ASSERT(!qlog, QCPY_ERROR_QLOG, qlog, QLOG_NULL);
 
   for (uint16_t i = qlog->entry_count; i > 0; --i) {
     qlog_entry_t *temp_ptr = qlog->last_entry;
@@ -37,9 +37,7 @@ void qlog_delete(qlog_t *qlog) {
 
     qlog_entry_delete(temp_ptr);
 
-    if (temp_ptr) {
-      // QCPY_ERROR(QCPY_ERROR_QLOG, qlog, QLOG_DELETE_FAILED);
-    }
+    QCPY_ASSERT(!temp_ptr, QCPY_ERROR_QLOG, qlog, QLOG_DELETE_FAILED);
   }
 
   // qlog_stats_delete(qlog->stats);
@@ -50,9 +48,7 @@ void qlog_delete(qlog_t *qlog) {
 }
 
 void qlog_clear(qlog_t *qlog) {
-  if (!qlog) {
-    // QCPY_ERROR(QCPY_ERROR_QLOG, qlog, QLOG_NULL);
-  }
+  QCPY_ASSERT(qlog, QCPY_ERROR_QLOG, qlog, QLOG_NULL);
 
   qlog_entry_t *qlog_walker = qlog->entries;
 
@@ -73,13 +69,11 @@ void qlog_clear(qlog_t *qlog) {
 void qlog_append(qlog_t *qlog, block_t block) {
   assert(block.type == BLOCK_QLOG_ENTRY);
 
-  if (!qlog) {
-    // QCPY_ERROR(QCPY_ERROR_QLOG, qlog, QLOG_NULL);
-  }
+  QCPY_ASSERT(qlog, QCPY_ERROR_QLOG, qlog, QLOG_NULL);
 
-  if (block.qubits > qlog->qubit_count) {
-    // QCPY_ERROR(QCPY_ERROR_QLOG, qlog, QLOG_BAD_SIZING);
-  }
+  QCPY_ASSERT((block.qubits > qlog->qubit_count), QCPY_ERROR_QLOG, qlog,
+              QLOG_BAD_SIZING);
+
   if (!qlog->entries) {
     qlog->entries = qlog_entry_init(qlog->entry_count, block);
     qlog->last_entry = qlog->entries;
@@ -96,9 +90,8 @@ void qlog_append(qlog_t *qlog, block_t block) {
     qlog->last_entry = qlog->last_entry->next_entry;
   }
 
-  if (!qlog->last_entry) {
-    // QCPY_ERROR(QCPY_ERROR_QLOG, qlog, QLOG_BAD_ENTRY);
-  }
+  QCPY_ASSERT(qlog->last_entry, QCPY_ERROR_QLOG, qlog, QLOG_BAD_ENTRY);
+
   ++(qlog->entry_count);
 
   qlog_graph_append(qlog->graph, qlog->last_entry);

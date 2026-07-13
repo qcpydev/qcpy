@@ -9,6 +9,7 @@ configure:
 build: configure
 	cmake --build $(BUILD_DIR)
 	ctest --output-on-failure
+	ctest --output-on-failure --test-dir build
 
 clean:
 	rm -rf $(BUILD_DIR)

@@ -25,7 +25,7 @@ Suite *qlog_append_suite(void) {
   return suite;
 }
 
-int main() {
+int qlog_append_runner() {
   int number_failed;
   Suite *suite;
   SRunner *suite_runner;
