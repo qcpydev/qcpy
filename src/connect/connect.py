@@ -6,6 +6,7 @@ import subprocess
 from functools import reduce
 from operator import or_
 
+CACHELINE = 64
 
 class Connect:
     def __init__(self, bootargs: List[str], qcpy_connect: str, qcpy_core: str, quack_core: str, quack_gpu_core: str):
@@ -38,14 +39,15 @@ class Connect:
 
         self.qcpy_connect.dock_add.restype = ctypes.c_int
         self.qcpy_connect.dock_add.argtypes = [ctypes.POINTER(Block)]
-
         self.qcpy_connect.dock_get_qc_state.argtypes = [ctypes.c_int]
+        '''
 
         self.qcpy_connect.dock_get_qc_entries.argtypes = [
             ctypes.c_int,
             ctypes.POINTER(Block),
         ]
         self.qcpy_connect.dock_get_qc_entries.restype = ctypes.c_int
+        '''
 
     def __create_qubit_bitmask__(self, to_bitmask: List[int]) -> int:
         return reduce(or_, (1 << i for i in to_bitmask),)
@@ -116,6 +118,7 @@ class Connect:
         num_target = len(target_qubits)
 
         new_block = Block()
+
         new_block.qubit_bitmask = self.__create_qubit_bitmask__(qubits)
 
         if (controlled_qubits):
@@ -156,7 +159,6 @@ class Connect:
         entries = []
         sub_entries = (Block * IMPORT_MAX_SIZE)()
 
-        output = self.qcpy_connect.dock_get_qc_entries(reg, sub_entries)
         entries += sub_entries
         """
         while (output == IMPORT_MAX_SIZE):

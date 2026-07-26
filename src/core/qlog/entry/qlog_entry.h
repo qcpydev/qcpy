@@ -13,25 +13,27 @@
  * */
 
 typedef struct qlog_entry_t qlog_entry_t;
+typedef uint64_t qlog_entry_id_t;
 
 struct qlog_entry_t {
-  uint64_t entry_id;           // Unique ID, each id is (qlog, qlog_entry)
-  qlog_entry_t *prev_entry;    // prev node for the qlog
-  qlog_entry_t *next_entry;    // next node
-  uint64_t qubit_bitmask;      // bitmask that stores the qubits
-  uint64_t controlled_bitmask; // bitmask for all controlled qubits
-  uint64_t controlled_bitpack; // bitpacking for controlled qubits array
-  uint64_t target_bitmask;     // bitmask for target qubits
-  uint64_t target_bitpack;     // bitpacking for target qubits array
-  float theta;                 // theta value
-  float phi;                   // phi value
-  float lambda;                // lambda value
-  base_gate_e gate_name;       // name of the gate
-  base_type_e gate_type;       // type of the gate
-  uint8_t qubit_count;         // number of qubits
-  uint8_t controlled_count;    // number of controlled qubits
-  uint8_t target_count;        // number of target qubits
-  bool inverted;               // (target qubit < control qubit)
+  qlog_entry_id_t entry_id;     // Unique ID, each id is (qlog, qlog_entry)
+  qlog_entry_t *prev_entry;     // prev node for the qlog
+  qlog_entry_t *next_entry;     // next node
+  bitmask_t qubit_bitmask;      // bitmask that stores the qubits
+  bitmask_t controlled_bitmask; // bitmask for all controlled qubits
+  bitpack_t controlled_bitpack; // bitpacking for controlled qubits array
+  bitmask_t target_bitmask;     // bitmask for target qubits
+  bitpack_t target_bitpack;     // bitpacking for target qubits array
+  param_t theta;                // theta value
+  param_t phi;                  // phi value
+  param_t lambda;               // lambda value
+  base_gate_e gate_name : (sizeof(base_gate_e) * 8); // name of the gate
+  base_type_e gate_type : (sizeof(base_gate_e) * 8); // type of the gate
+  qubit_t qubit_count : (sizeof(qubit_t) * 8);       // number of qubits
+  qubit_t controlled_count
+      : (sizeof(qubit_t) * 8);                  // number of controlled qubits
+  qubit_t target_count : (sizeof(qubit_t) * 8); // number of target qubits
+  bool inverted : 1; // (target qubit < control qubit)
 };
 
 typedef enum {

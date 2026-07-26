@@ -52,9 +52,6 @@ class Block_Type(IntEnum):
 
 class Block(ctypes.Structure):
     _fields_ = [
-        ("type", ctypes.c_int),
-        ("reg", ctypes.c_uint64),
-        ("qubits", ctypes.c_uint64),
         ("qubit_bitmask", ctypes.c_uint64),
         ("controlled_bitmask", ctypes.c_uint64),
         ("controlled_bitpack", ctypes.c_uint64),
@@ -63,12 +60,15 @@ class Block(ctypes.Structure):
         ("theta", ctypes.c_float),
         ("phi", ctypes.c_float),
         ("lmbda", ctypes.c_float),
-        ("gate", ctypes.c_int),
-        ("size", ctypes.c_uint16),
-        ("controlled_count", ctypes.c_uint16),
-        ("target_count", ctypes.c_uint16),
-        ("inverted", ctypes.c_bool),
-        ("big_endian", ctypes.c_bool),
-        ("used", ctypes.c_bool),
+        ("reg", ctypes.c_uint16),
+        ("gate", ctypes.c_uint8, 8),
+        ("qubits", ctypes.c_uint8, 8),
+        ("size", ctypes.c_uint16, 8),
+        ("controlled_count", ctypes.c_uint8, 8),
+        ("target_count", ctypes.c_uint8, 8),
+        ("type", ctypes.c_int, 4),
+        ("inverted", ctypes.c_bool, 1),
+        ("big_endian", ctypes.c_bool, 1),
+        ("used", ctypes.c_bool, 1),
     ]
 

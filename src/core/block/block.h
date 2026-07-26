@@ -14,12 +14,15 @@
  */
 
 #define IMPORT_MAX_SIZE (uint64_t)64
+
 #define IMPORTER_FUNNEL (uint64_t)4
 
 #define QCPY_IMPORT "/qcpy_import"
-#define PORT_IMPORT_SEM "/port_import_sem"
-#define DOCK_IMPORT_SEM "/dock_import_sem"
-#define DOCK_PORT_SEM "/dock_port_sem"
+#define PORT_IMPORT_SEM_ONE "/port_import_sem_one"
+#define DOCK_IMPORT_SEM_ONE "/dock_import_sem_one"
+
+#define PORT_IMPORT_SEM_TWO "/port_import_sem_two"
+#define DOCK_IMPORT_SEM_TWO "/dock_import_sem_two"
 
 #define QCPY_EXPORT "/qcpy_export"
 #define PORT_EXPORT_SEM "/port_export_sem"
@@ -40,34 +43,42 @@ typedef std::complex<float> float_comp;
 typedef float complex float_comp;
 #endif
 
+typedef uint16_t reg_t;
+typedef uint64_t bitmask_t;
+typedef uint64_t bitpack_t;
+typedef float param_t;
+typedef uint8_t qubit_t;
+typedef uint8_t gate_t;
+
 typedef struct block_s {
-  block_type_e type;
-  uint64_t reg;
-  uint64_t qubits;
-  uint64_t qubit_bitmask;
-  uint64_t controlled_bitmask;
-  uint64_t controlled_bitpack;
-  uint64_t target_bitmask;
-  uint64_t target_bitpack;
-  float theta;
-  float phi;
-  float lmbda;
-  int gate;
-  uint16_t size;
-  uint16_t controlled_count;
-  uint16_t target_count;
-  bool inverted;
-  bool big_endian;
-  bool used;
+  bitmask_t qubit_bitmask;
+  bitpack_t controlled_bitpack;
+  bitmask_t controlled_bitmask;
+  bitmask_t target_bitmask;
+  bitpack_t target_bitpack;
+  param_t theta;
+  param_t phi;
+  param_t lmbda;
+  reg_t reg : (sizeof(reg_t) * 8);
+  gate_t gate : (sizeof(gate_t) * 8);
+  qubit_t qubits : (sizeof(qubit_t) * 8);
+  qubit_t size : (sizeof(qubit_t) * 8);
+  qubit_t controlled_count : (sizeof(qubit_t) * 8);
+  qubit_t target_count : (sizeof(qubit_t) * 8);
+  block_type_e type : 4;
+  bool inverted : 1;
+  bool big_endian : 1;
+  bool used : 1;
 } block_t;
 
 typedef struct import_s {
-  block_t queue[IMPORT_MAX_SIZE * 2];
+  block_t queue[IMPORT_MAX_SIZE];
   uint64_t flush_reg;
   int idx;
   bool flushing;
   bool ready;
 } import_t;
+
 typedef struct export_s {
   float_comp queue[IMPORT_MAX_SIZE];
   uint64_t reg;

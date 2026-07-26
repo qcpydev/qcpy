@@ -77,10 +77,12 @@ int dock_log_fill_array(dock_log_t *log, block_t *blocks) {
   return count;
 }
 
+/*
 int dock_get_qc_entries(uint32_t reg, block_t *blocks) {
   dock_log_t *dock_logger = dock_log_find(reg);
   return dock_log_fill_array(dock_logger, blocks);
 }
+*/
 
 dock_log_t *dock_log_init(uint32_t reg, block_t *block) {
   assert(block);

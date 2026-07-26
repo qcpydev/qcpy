@@ -32,7 +32,6 @@ bool dock_set_gpu_enabled(char *args[]);
 void dock_port_init();
 void dock_wait_for_boot();
 
-int dock_get_qc_entries(uint32_t reg, block_t *blocks);
 void dock_free_qc_entries(block_t *blocks);
 
 typedef struct boot_thread_args_s {

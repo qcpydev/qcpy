@@ -44,7 +44,7 @@ if (ENABLE_CUDA)
 
 endif()
 
-include(cmake/CompilerOptions.cmake)
+include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/CompilerOptions.cmake)
 
 # END GLOBAL
 # ========================================

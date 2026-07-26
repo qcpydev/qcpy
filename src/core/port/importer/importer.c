@@ -6,6 +6,7 @@
 #include <qlog_infra.h>
 
 import_t *importer;
+
 sem_t *dock_import_sem;
 sem_t *port_import_sem;
 
@@ -16,10 +17,10 @@ void importer_open() {
       (import_t *)base_tools_open_shared_mem(sizeof(import_t), QCPY_IMPORT);
   assert(importer);
 
-  dock_import_sem = base_tools_open_shared_sem(DOCK_IMPORT_SEM);
+  dock_import_sem = base_tools_open_shared_sem(DOCK_IMPORT_SEM_ONE);
   assert(dock_import_sem);
 
-  port_import_sem = base_tools_open_shared_sem(PORT_IMPORT_SEM);
+  port_import_sem = base_tools_open_shared_sem(PORT_IMPORT_SEM_ONE);
   assert(port_import_sem);
 
   importer->ready = true;
@@ -30,10 +31,10 @@ void importer_init() {
       (import_t *)base_tools_create_shared_mem(sizeof(import_t), QCPY_IMPORT);
   assert(importer);
 
-  port_import_sem = base_tools_create_shared_sem(PORT_IMPORT_SEM, 0);
+  port_import_sem = base_tools_create_shared_sem(PORT_IMPORT_SEM_ONE, 0);
   assert(port_import_sem);
 
-  dock_import_sem = base_tools_create_shared_sem(DOCK_IMPORT_SEM, 0);
+  dock_import_sem = base_tools_create_shared_sem(DOCK_IMPORT_SEM_ONE, 0);
   assert(dock_import_sem);
 }
 
@@ -50,10 +51,9 @@ void importer_sort_init() {
 }
 
 void importer_sort_append(block_t block) {
-  import_block_t *import_block = import_block_init();
+  import_block_t *import_block = import_block_init(block);
   assert(import_block);
 
-  import_block->block = block;
   uint64_t index = block.reg % IMPORTER_FUNNEL;
 
   if (!importer_sort.queue[index]) {
@@ -73,7 +73,7 @@ void importer_sort_ported(import_t *importer) {
 
   sem_wait(dock_import_sem);
 
-  for (uint64_t i = 0; i < IMPORT_MAX_SIZE; ++i) {
+  for (uint64_t i = 0; i < importer->idx; ++i) {
     if (importer->queue[i].used) {
       assert(importer->queue[i].qubits != 0);
       importer_sort_append(importer->queue[i]);
@@ -84,6 +84,7 @@ void importer_sort_ported(import_t *importer) {
   qlog_infra_process(&importer_sort);
 
   importer->idx = 0;
+
   sem_post(port_import_sem);
 }
 
@@ -111,11 +112,12 @@ void importer_sort_clear() {
   importer_sort.count = 0;
 }
 
-import_block_t *import_block_init() {
+import_block_t *import_block_init(block_t block) {
   import_block_t *import_block;
   import_block = (import_block_t *)malloc(sizeof(import_block_t));
   memset(import_block, 0, sizeof(import_block_t));
   assert(import_block);
+  import_block->block = block;
 
   return import_block;
 }

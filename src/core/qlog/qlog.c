@@ -98,6 +98,8 @@ void qlog_append(qlog_t *qlog, block_t block) {
 }
 
 void qlog_dump_content(qlog_t *qlog, bool verbose) {
+  // stupid ahh build system, qlog_optimize n
+  (void)base_decompress_qubit_bitpack(0, 0);
   if (!qlog) {
     return;
   }

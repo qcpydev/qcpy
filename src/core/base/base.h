@@ -8,7 +8,7 @@
  * A space to set any common or useful functions/types/etc.
  */
 
-typedef enum {
+typedef enum : uint8_t {
   GATE_IDENTITY,
   GATE_HADAMARD,
   GATE_PAULIX,

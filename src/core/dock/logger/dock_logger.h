@@ -36,6 +36,8 @@ int dock_log_fill_array(dock_log_t *dock_log, block_t *block);
 
 void dock_log_append(uint32_t reg, block_t *block);
 
+// int dock_get_qc_entries(uint32_t reg, block_t *blocks);
+
 extern dock_logger_t dock_log;
 
 #endif

@@ -112,7 +112,6 @@ void qlog_expand_rzz(qlog_node_t *qlog_node) {
 void qlog_expand_ccx(qlog_node_t *qlog_node) {
   assert(qlog_node);
   qlog_entry_t *qlog_entry = qlog_node->qlog_entry;
-  /*
   uint16_t *controlled = base_decompress_qubit_bitpack(
       qlog_entry->controlled_count, qlog_entry->controlled_bitpack);
 
@@ -123,7 +122,6 @@ void qlog_expand_ccx(qlog_node_t *qlog_node) {
   free(target);
   controlled = NULL;
   target = NULL;
-  */
 }
 
 bool qlog_expand(qlog_graph_t *qlog_graph) {

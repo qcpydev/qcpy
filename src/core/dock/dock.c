@@ -14,8 +14,8 @@
 #include <unistd.h>
 
 export_t *exporter = NULL;
-
 import_t *importer = NULL;
+
 sem_t *dock_import_sem;
 sem_t *port_import_sem;
 
@@ -35,10 +35,10 @@ static void dock_create_importer() {
       (import_t *)base_tools_create_shared_mem(sizeof(import_t), QCPY_IMPORT);
   assert(importer);
 
-  port_import_sem = base_tools_create_shared_sem(PORT_IMPORT_SEM, 0);
+  port_import_sem = base_tools_create_shared_sem(PORT_IMPORT_SEM_ONE, 0);
   assert(port_import_sem);
 
-  dock_import_sem = base_tools_create_shared_sem(DOCK_IMPORT_SEM, 0);
+  dock_import_sem = base_tools_create_shared_sem(DOCK_IMPORT_SEM_ONE, 0);
   assert(dock_import_sem);
 }
 
@@ -121,10 +121,10 @@ static void dock_flush_entries() {
 }
 
 int dock_add(block_t *block) {
-  dock_log_append(block->reg, block);
+  // this is the problem and it sucks here, we can do better.
+  // dock_log_append(block->reg, block);
 
   block_add(block, importer);
-
   if (importer->idx == IMPORT_MAX_SIZE) {
     dock_flush_entries();
   }
@@ -138,7 +138,12 @@ void dock_get_qc_state(int flush_reg) {
     importer->flushing = true;
     importer->flush_reg = flush_reg;
 
-    dock_flush_entries();
+    // come back to this later, we are causing some shitty perf issues with
+    // allowing the dock_logger to run like that
+    // most likely we will need to break some rules potentially, and have a
+    // grabby process to grab info from the qcpy_core that isnt important,
+    // qcpy_logger?
+    //   dock_flush_entries();
   }
 
   /*

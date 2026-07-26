@@ -1,5 +1,3 @@
-// #include <math.h>
-//  #include <qcpy_error.h>
 #include <assert.h>
 #include <qlog_entry.h>
 #include <stdint.h>
@@ -13,19 +11,20 @@ qlog_entry_t *qlog_entry_init(uint64_t id, block_t block) {
   qlog_entry->qubit_bitmask = block.qubit_bitmask;
   qlog_entry->controlled_bitmask = block.controlled_bitmask;
   qlog_entry->target_bitmask = block.target_bitmask;
-  qlog_entry->inverted = block.inverted;
-  qlog_entry->gate_name = (base_gate_e)block.gate;
-  qlog_entry->gate_type = (base_type_e)block.type;
-  qlog_entry->qubit_count = block.qubits;
   qlog_entry->controlled_bitpack = block.controlled_bitpack;
   qlog_entry->target_bitpack = block.target_bitpack;
+  qlog_entry->theta = block.theta;
+  qlog_entry->phi = block.phi;
+  qlog_entry->lambda = block.lmbda;
+
   qlog_entry->controlled_count = block.controlled_count;
   qlog_entry->target_count = block.target_count;
 
-  // qlog_entry->gate_params = quantum_gate_params_init(gate, theta, phi,
-  // lambda);
-  if (block.theta || block.phi || block.lmbda) {
-  }
+  qlog_entry->gate_name = (base_gate_e)block.gate;
+  qlog_entry->gate_type = (base_type_e)block.type;
+  qlog_entry->qubit_count = block.qubits;
+
+  qlog_entry->inverted = block.inverted;
 
   return qlog_entry;
 }

@@ -2,7 +2,7 @@ add_library(qcpy_base base.c)
 
 add_subdirectory(tools)
 
-target_link_libraries(qcpy_base PRIVATE
+target_link_libraries(qcpy_base PUBLIC
   base_tools
 )
 

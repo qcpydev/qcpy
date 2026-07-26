@@ -9,18 +9,19 @@ export_t *exporter = NULL;
 
 sem_t *dock_export_sem;
 sem_t *port_export_sem;
+pthread_t export_thread;
 
 pthread_t import_thread;
-pthread_t export_thread;
 
 bool port_closed = false;
 
 void *port_import(void *not_used) {
+  (void)not_used;
   while (!port_closed) {
     importer_sort_ported(importer);
   }
 
-  return not_used;
+  return NULL;
 }
 
 void *port_export(void *not_used) {
@@ -51,7 +52,9 @@ void port_init(int argc, char **argv) {
 }
 
 void port_boot() {
+
   pthread_create(&import_thread, NULL, port_import, NULL);
+
   pthread_create(&export_thread, NULL, port_export, NULL);
 
   pthread_join(import_thread, NULL);

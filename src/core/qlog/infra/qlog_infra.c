@@ -67,12 +67,11 @@ void qlog_infra_process(import_sort_t *importer_sort) {
   qlog_infra_set_priority(importer_sort);
 
   for (uint64_t i = 0; i < IMPORTER_FUNNEL; ++i) {
+    if (importer->flushing && importer->flush_reg % IMPORTER_FUNNEL != i) {
+      continue;
+    }
+
     if (importer_sort->queue[i]) {
-
-      if (importer->flushing && importer->flush_reg % IMPORTER_FUNNEL != i) {
-        continue;
-      }
-
       qlog_thread_pool_signal_worker(i);
     }
   }

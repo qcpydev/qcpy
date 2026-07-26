@@ -1,6 +1,5 @@
 #include <assert.h>
 #include <base.h>
-#include <stdio.h>
 #include <stdlib.h>
 
 #define BITPACK_MAX 0x3F
@@ -65,7 +64,7 @@ uint64_t base_create_qubit_bitmask(uint64_t *to_bitmask, uint64_t qubits) {
   return bitmask;
 }
 
-uint64_t base_create_qubit_bitpack(uint64_t *to_bitpack) {}
+uint64_t base_create_qubit_bitpack(uint64_t *to_bitpack) { return 0; }
 
 uint16_t *base_decompress_qubit_bitpack(uint8_t qubits, uint64_t bitpacked) {
   uint16_t *unpacked = NULL;
@@ -78,4 +77,4 @@ uint16_t *base_decompress_qubit_bitpack(uint8_t qubits, uint64_t bitpacked) {
   return unpacked;
 }
 
-uint64_t *base_decompress_qubit_bitmask(uint64_t bitmasked) {}
+uint16_t *base_decompress_qubit_bitmask(uint64_t bitmasked) { return 0; }

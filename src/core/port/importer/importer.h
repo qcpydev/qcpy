@@ -50,13 +50,17 @@ void importer_clear();
 void importer_open();
 
 extern import_t *importer;
-extern sem_t *dock_import_sem;
-extern sem_t *port_import_sem;
+
+extern sem_t *dock_import_sem_one;
+extern sem_t *port_import_sem_one;
+
+extern sem_t *dock_import_sem_two;
+extern sem_t *port_import_sem_two;
 
 void importer_delete_queue(uint64_t idx);
 void importer_sort_ported(import_t *importer);
 
-import_block_t *import_block_init();
+import_block_t *import_block_init(block_t block);
 void import_block_delete(import_block_t *import_block);
 
 extern import_sort_t importer_sort;

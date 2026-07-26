@@ -1,9 +1,9 @@
 add_library(qlog_expand qlog_expand.c)
 
 target_link_libraries(qlog_expand PUBLIC
+    qcpy_base
     block
     qcpy_error
-    qcpy_base
     qlog_node
     qlog_entry
     qlog_graph
