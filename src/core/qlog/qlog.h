@@ -16,8 +16,6 @@
  * organization.
  */
 
-#define QLOG_MAX_QUBITS 64
-
 typedef struct qlog_t {
   uint64_t entry_count;     // number of entries in qlog
   qlog_entry_t *entries;    // qlog entries

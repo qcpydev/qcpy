@@ -51,30 +51,34 @@ const char *base_type_strs[] = {
     [TYPE_ALGORITHM] = "ALGORITHM",
 };
 
-const char *base_get_gate_str(int gate) { return base_gate_strs[gate]; }
-const char *base_get_type_str(int type) { return base_type_strs[type]; }
+const char *base_get_gate_str(base_gate_e gate) { return base_gate_strs[gate]; }
+const char *base_get_type_str(base_type_e type) { return base_type_strs[type]; }
 
-uint64_t base_create_qubit_bitmask(uint64_t *to_bitmask, uint64_t qubits) {
-  uint64_t bitmask = 0;
+bitmask_t base_create_qubit_bitmask(qubit_t *to_bitmask, qubit_t qubits) {
+  bitmask_t bitmask = 0;
 
-  for (uint64_t i = 0; i < qubits; ++i) {
-    bitmask |= 1 << to_bitmask[i];
+  for (qubit_t i = 0; i < qubits; ++i) {
+    bitmask |= (bitmask_t)1 << to_bitmask[i];
   }
 
   return bitmask;
 }
 
-uint64_t base_create_qubit_bitpack(uint64_t *to_bitpack) { return 0; }
+bitpack_t base_create_qubit_bitpack(qubit_t *to_bitpack, qubit_t count) {
+  return 0;
+}
 
-uint16_t *base_decompress_qubit_bitpack(uint8_t qubits, uint64_t bitpacked) {
-  uint16_t *unpacked = NULL;
-  unpacked = (uint16_t *)malloc(2 * sizeof(qubits));
+qubit_t *base_decompress_qubit_bitpack(qubit_t qubits, bitpack_t bitpacked) {
+  qubit_t *unpacked = NULL;
+  unpacked = (qubit_t *)malloc(2 * sizeof(qubits));
 
-  for (uint16_t i = 0; i < qubits; ++i) {
+  for (qubit_t i = 0; i < qubits; ++i) {
     unpacked[i] = (bitpacked >> (i * BITPACK_RANGE)) & BITPACK_MAX;
   }
 
   return unpacked;
 }
 
-uint16_t *base_decompress_qubit_bitmask(uint64_t bitmasked) { return 0; }
+qubit_t *base_unpack_qubit_bitmask(bitmask_t bitmasked, qubit_t count) {
+  return 0;
+}

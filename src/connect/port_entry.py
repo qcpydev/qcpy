@@ -3,7 +3,6 @@ import ctypes
 
 IMPORT_MAX_SIZE = 64
 
-
 class QuantumGates(IntEnum):
     IDENTITY = 0
     HADAMARD = 1
@@ -43,12 +42,12 @@ class QuantumGates(IntEnum):
     MULTI = 35
     CUSTOMBLOCK = 36
     CUSTOMALGORITHM = 37
+    MAX = 38
 
 
 class Block_Type(IntEnum):
     QLOG_ENTRY = 0
     CLOG_ENTRY = 1
-
 
 class Block(ctypes.Structure):
     _fields_ = [
@@ -63,10 +62,10 @@ class Block(ctypes.Structure):
         ("reg", ctypes.c_uint16),
         ("gate", ctypes.c_uint8, 8),
         ("qubits", ctypes.c_uint8, 8),
-        ("size", ctypes.c_uint16, 8),
+        ("size", ctypes.c_uint8, 8),
         ("controlled_count", ctypes.c_uint8, 8),
         ("target_count", ctypes.c_uint8, 8),
-        ("type", ctypes.c_int, 4),
+        ("type", ctypes.c_int8, 4),
         ("inverted", ctypes.c_bool, 1),
         ("big_endian", ctypes.c_bool, 1),
         ("used", ctypes.c_bool, 1),

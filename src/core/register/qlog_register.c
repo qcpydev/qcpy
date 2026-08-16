@@ -1,5 +1,6 @@
 #include <qlog_register.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 
 qlog_register_buf_t *qlog_register_buf_init(qlog_register_buf_t *qlog_buffer) {

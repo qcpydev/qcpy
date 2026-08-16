@@ -2,6 +2,7 @@
 #include <qlog.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 const char *replay_qlog_description[] = {
     [QLOG_NULL] = "qlog is null",
@@ -98,8 +99,10 @@ void qlog_append(qlog_t *qlog, block_t block) {
 }
 
 void qlog_dump_content(qlog_t *qlog, bool verbose) {
-  // stupid ahh build system, qlog_optimize n
+  // stupid ahh build system, dont remove I guess???
+  //
   (void)base_decompress_qubit_bitpack(0, 0);
+
   if (!qlog) {
     return;
   }

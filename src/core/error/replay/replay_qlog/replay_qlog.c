@@ -1,5 +1,6 @@
 #include "replay_qlog.h"
 #include <stdlib.h>
+#include <string.h>
 
 void replay_qlog_delete(replay_qlog_t *replay_qlog) {
   free(replay_qlog);

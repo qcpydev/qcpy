@@ -15,6 +15,16 @@
 typedef struct qlog_entry_t qlog_entry_t;
 typedef uint64_t qlog_entry_id_t;
 
+#define QLOG_ENTRY_DUMMY_ID (0);
+
+#define QLOG_ENTRY_MIN_QUBIT(qubit_a, qubit_b)                                 \
+  (qubit_a <= qubit_b ? qubit_a : qubit_b)
+
+#define QLOG_ENTRY_MAX_QUBIT(qubit_a, qubit_b)                                 \
+  (qubit_a > qubit_b ? qubit_a : qubit_b)
+
+#define QLOG_MAX_QUBITS 64
+
 struct qlog_entry_t {
   qlog_entry_id_t entry_id;     // Unique ID, each id is (qlog, qlog_entry)
   qlog_entry_t *prev_entry;     // prev node for the qlog
@@ -27,13 +37,14 @@ struct qlog_entry_t {
   param_t theta;                // theta value
   param_t phi;                  // phi value
   param_t lambda;               // lambda value
-  base_gate_e gate_name : (sizeof(base_gate_e) * 8); // name of the gate
-  base_type_e gate_type : (sizeof(base_gate_e) * 8); // type of the gate
-  qubit_t qubit_count : (sizeof(qubit_t) * 8);       // number of qubits
-  qubit_t controlled_count
-      : (sizeof(qubit_t) * 8);                  // number of controlled qubits
-  qubit_t target_count : (sizeof(qubit_t) * 8); // number of target qubits
-  bool inverted : 1; // (target qubit < control qubit)
+  base_gate_e gate_name;        // name of the gate
+  base_type_e gate_type;        // type of the gate
+  qubit_t qubit_count;          // number of qubits
+  qubit_t controlled_count;
+  qubit_t target_count; // number of target qubits
+  qubit_t max_qubit;
+  qubit_t min_qubit;
+  bool inverted; // (target qubit < control qubit)
 };
 
 typedef enum {
@@ -55,5 +66,32 @@ qlog_entry_t *qlog_entry_duplicates_to_clean(qlog_entry_t *qlog_entry);
 const char *get_qlog_entry_gate(qlog_entry_t *qlog_entry);
 const char *get_qlog_entry_gate_type(qlog_entry_t *qlog_entry);
 bool qlog_entry_compare(qlog_entry_t *qlog_entry, qlog_entry_t *to_compare);
+
+typedef struct qlog_entry_init_params_s {
+  qubit_t *qubits;
+  qubit_t *controls;
+  qubit_t *targets;
+  param_t theta;
+  param_t phi;
+  param_t lambda;
+  base_gate_e gate_name;
+  base_type_e gate_type;
+  qubit_t qubit_count;
+  qubit_t controlled_count;
+  qubit_t target_count;
+  bool inverted;
+} qlog_entry_init_params_t;
+
+qlog_entry_t *
+qlog_entry_init_hadamard_gate(qlog_entry_init_params_t *qlog_entry_params);
+
+qlog_entry_t *
+qlog_entry_init_t_gate(qlog_entry_init_params_t *qlog_entry_params);
+
+qlog_entry_t *
+qlog_entry_init_tdg_gate(qlog_entry_init_params_t *qlog_entry_params);
+
+qlog_entry_t *
+qlog_entry_init_cx_gate(qlog_entry_init_params_t *qlog_entry_params);
 
 #endif // QLOG_ENTRY_H

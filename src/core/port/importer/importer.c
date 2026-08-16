@@ -4,6 +4,7 @@
 #include <port.h>
 #include <qcpy_error.h>
 #include <qlog_infra.h>
+#include <string.h>
 
 import_t *importer;
 

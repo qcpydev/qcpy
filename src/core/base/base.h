@@ -1,3 +1,4 @@
+#include <block.h>
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -46,7 +47,8 @@ typedef enum : uint8_t {
   GATE_CUSTOMCONTROLLED,
   GATE_MULTI,
   GATE_CUSTOMBLOCK,
-  GATE_CUSTOMALGORITHM
+  GATE_CUSTOMALGORITHM,
+  GATE_MAX
 } base_gate_e;
 
 typedef enum {
@@ -57,14 +59,13 @@ typedef enum {
   TYPE_ALGORITHM,
 } base_type_e;
 
-const char *base_get_gate_str(int gate);
-const char *base_get_type_str(int type);
+const char *base_get_gate_str(base_gate_e gate);
+const char *base_get_type_str(base_type_e type);
 
-uint64_t base_create_qubit_bitmask(uint64_t *to_bitmask, uint64_t qubits);
-uint64_t base_create_qubit_bitpack(uint64_t *to_bitpack);
+bitmask_t base_create_qubit_bitmask(qubit_t *to_bitmask, qubit_t qubits);
+qubit_t *base_unpack_qubit_bitmask(bitmask_t bitmasked, qubit_t qubits);
 
-uint64_t *base_unpack_qubit_bitmask(uint64_t bitmasked);
-
-uint16_t *base_decompress_qubit_bitpack(uint8_t qubits, uint64_t bitpacked);
+bitpack_t base_create_qubit_bitpack(qubit_t *to_bitpack, qubit_t count);
+qubit_t *base_decompress_qubit_bitpack(qubit_t qubits, bitpack_t bitpacked);
 
 #endif // GLOBAL_H

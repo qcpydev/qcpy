@@ -4,6 +4,7 @@ add_subdirectory(tools)
 
 target_link_libraries(qcpy_base PUBLIC
   base_tools
+  block
 )
 
 target_include_directories(qcpy_base PUBLIC

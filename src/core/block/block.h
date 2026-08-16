@@ -33,7 +33,9 @@
 #define OFLAG_SHARED_SEM_ARGS O_CREAT | O_EXCL
 #define PROT_ARGS PROT_READ | PROT_WRITE
 
-typedef enum { BLOCK_QLOG_ENTRY, BLOCK_CLOG_ENTRY } block_type_e;
+typedef enum : uint8_t { BLOCK_QLOG_ENTRY, BLOCK_CLOG_ENTRY } block_type_e;
+
+#define BLOCK_BITMASK_MAX ((bitmask_t)1 << 63)
 
 #ifdef __cplusplus
 #include <complex>
@@ -52,8 +54,8 @@ typedef uint8_t gate_t;
 
 typedef struct block_s {
   bitmask_t qubit_bitmask;
-  bitpack_t controlled_bitpack;
   bitmask_t controlled_bitmask;
+  bitpack_t controlled_bitpack;
   bitmask_t target_bitmask;
   bitpack_t target_bitpack;
   param_t theta;

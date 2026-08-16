@@ -50,7 +50,15 @@ class Connect:
         '''
 
     def __create_qubit_bitmask__(self, to_bitmask: List[int]) -> int:
-        return reduce(or_, (1 << i for i in to_bitmask),)
+        bitmask = 0
+
+        for val in to_bitmask:
+            if val >= 64:
+                return -1
+
+            bitmask |= 1 << val
+
+        return bitmask
 
     def __create_qubit_bitpack__(self, to_bitpack: List[int]) -> int:
         bitpack = 0
