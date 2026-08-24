@@ -3,6 +3,7 @@
 #include <importer.h>
 #include <port.h>
 #include <qcpy_error.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 export_t *exporter = NULL;
@@ -25,15 +26,15 @@ void *port_import(void *not_used) {
 }
 
 void *port_export(void *not_used) {
-  // lock
+
   pthread_mutex_lock(&exporter_signal.lock);
 
   while (!port_closed) {
     pthread_cond_wait(&exporter_signal.cond, &exporter_signal.lock);
-
-    while (exporter_signal.items) {
-      exporter_process();
-    }
+    printf("exporter got the trigger\n");
+    // while (exporter_signal.items) {
+    //  exporter_process();
+    //}
   }
 
   pthread_mutex_unlock(&exporter_signal.lock);

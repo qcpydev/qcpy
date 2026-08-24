@@ -17,8 +17,10 @@
  *
  * NOTE: The author isnt very appealed with this implementation, this is a
  * simply a basic intro into expanding gates, each gate is equally as annoying
- * to expand as the next. The internals of the API need to be examined again
- * soon.
+ * to expand as the next. The internals of the API need to be examined again.
+ *
+ * NOTE: Another thing, yes...all the gates that expand are backwards in the
+ * codebase...
  */
 void qlog_expand_qft(qlog_graph_t *qlog_graph, qlog_node_t *qlog_node);
 void qlog_expand_rccx(qlog_graph_t *qlog_graph, qlog_node_t *qlog_node);

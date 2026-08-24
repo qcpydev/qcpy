@@ -42,8 +42,9 @@ void qlog_register_add(qlog_register_buf_t *qlog_register_buf, block_t block) {
     qlog_register_buf->reg.qlog = qlog_init(qubits);
   }
 
-  assert(qlog_register_buf->reg.qlog);
   qlog_t *qlog = qlog_register_buf->reg.qlog;
+
+  assert(qlog_register_buf->reg.qlog);
   qlog_append(qlog, block);
 }
 

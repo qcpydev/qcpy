@@ -23,6 +23,7 @@ typedef struct qlog_t {
   qlog_graph_t *graph;      // quantum circuit layout
   uint64_t id;              // id from the qlog_register
   uint16_t qubit_count;     // number of qubits
+  pthread_mutex_t lock;     // lock for exporting and importing
 } qlog_t;
 
 typedef enum {

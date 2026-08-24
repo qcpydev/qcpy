@@ -45,7 +45,6 @@ void exporter_init() {
   }
 
   port_export_sem = sem_open(PORT_EXPORT_SEM, 0);
-
   if (port_export_sem == SEM_FAILED) {
     perror("sem_open");
     assert(0);
@@ -59,6 +58,7 @@ void exporter_process() {
   int to_process = exporter_signal_item_dequeue();
 
   qlog_t *qlog = qlog_infra_find_qlog(to_process);
+  pthread_mutex_lock(&qlog->lock);
 
   assert(qlog);
 
@@ -75,9 +75,10 @@ void exporter_process() {
 
   memcpy(qlog_nodes, to_copy, sizeof(qlog_node_t *) * size);
 
-  exporter_migrate_fill_queue(qlog_nodes, size);
-
+  // exporter_migrate_fill_queue(qlog_nodes, size);
   free(qlog_nodes);
+
+  pthread_mutex_unlock(&qlog->lock);
 }
 
 exporter_signal_item_t *exporter_signal_item_init(int flush_reg) {

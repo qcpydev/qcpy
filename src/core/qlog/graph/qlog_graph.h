@@ -36,6 +36,6 @@ void qlog_graph_update_checkpoint(qlog_graph_t *qlog_graph);
 
 void qlog_graph_get_batch(qlog_node_t **qlog_nodes, uint32_t size);
 
-qlog_node_t *qlog_graph_insert(qlog_graph_t *qlog_graph, qlog_node_t *qlog_node,
-                               qlog_entry_t *qlog_entry);
+void qlog_graph_insert(qlog_graph_t *qlog_graph, qlog_node_t *qlog_node,
+                       qlog_entry_t *qlog_entry);
 #endif

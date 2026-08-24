@@ -2,7 +2,6 @@
 #include <base.h>
 #include <qlog_entry.h>
 #include <qlog_expand.h>
-#include <stdio.h>
 #include <stdlib.h>
 
 typedef void (*qlog_expanders)(qlog_graph_t *, qlog_node_t *);
@@ -67,11 +66,293 @@ static bool qlog_expand_previous_gate_is_equal(qlog_node_t *qlog_node) {
 }
 
 void qlog_expand_qft(qlog_graph_t *qlog_graph, qlog_node_t *qlog_node) {}
-void qlog_expand_rccx(qlog_graph_t *qlog_graph, qlog_node_t *qlog_node) {}
-void qlog_expand_rc3x(qlog_graph_t *qlog_graph, qlog_node_t *qlog_node) {}
-void qlog_expand_swap(qlog_graph_t *qlog_graph, qlog_node_t *qlog_node) {}
-void qlog_expand_rzz(qlog_graph_t *qlog_graph, qlog_node_t *qlog_node) {}
-void qlog_expand_rxx(qlog_graph_t *qlog_graph, qlog_node_t *qlog_node) {}
+
+void qlog_expand_rccx(qlog_graph_t *qlog_graph, qlog_node_t *qlog_node) {
+  assert(qlog_node);
+  qlog_entry_t *qlog_entry = qlog_node->qlog_entry;
+
+  assert(qlog_entry->qubit_count == 3 && qlog_entry->controlled_count == 2 &&
+         qlog_entry->target_count == 1);
+
+  qubit_t *controls = base_decompress_qubit_bitpack(
+      qlog_entry->controlled_count, qlog_entry->controlled_bitpack);
+
+  qubit_t *target = base_decompress_qubit_bitpack(qlog_entry->target_count,
+                                                  qlog_entry->target_bitpack);
+  qubit_t control_one[1] = {controls[0]};
+  qubit_t control_two[1] = {controls[1]};
+  qubit_t target_qubit[1] = {target[0]};
+
+  qlog_entry_init_params_t qlog_params_single = {.qubits = target,
+                                                 .qubit_count = 1};
+
+  qlog_entry_t *qlog_entry_hadamard =
+      qlog_entry_init_hadamard_gate(&qlog_params_single);
+  qlog_graph_insert(qlog_graph, qlog_node, qlog_entry_hadamard);
+
+  qlog_entry_t *qlog_entry_tdg = qlog_entry_init_tdg_gate(&qlog_params_single);
+  qlog_graph_insert(qlog_graph, qlog_node, qlog_entry_tdg);
+
+  qubit_t qubits_cx[2] = {control_two[0], target[0]};
+  qlog_entry_init_params_t qlog_params_cx = {.qubits = qubits_cx,
+                                             .qubit_count = 2,
+                                             .controls = control_two,
+                                             .controlled_count = 1,
+                                             .targets = target,
+                                             .target_count = 1};
+  qlog_entry_t *qlog_entry_cx = qlog_entry_init_cx_gate(&qlog_params_cx);
+  qlog_graph_insert(qlog_graph, qlog_node, qlog_entry_cx);
+
+  qlog_entry_t *qlog_entry_t_gate = qlog_entry_init_t_gate(&qlog_params_single);
+  qlog_graph_insert(qlog_graph, qlog_node, qlog_entry_t_gate);
+
+  qlog_params_cx.controls = control_one;
+  qlog_params_cx.qubits[0] = control_one[0];
+  qlog_entry_cx = qlog_entry_init_cx_gate(&qlog_params_cx);
+  qlog_graph_insert(qlog_graph, qlog_node, qlog_entry_cx);
+
+  qlog_entry_tdg = qlog_entry_init_tdg_gate(&qlog_params_single);
+  qlog_graph_insert(qlog_graph, qlog_node, qlog_entry_tdg);
+
+  qlog_params_cx.controls = control_two;
+  qlog_params_cx.qubits[0] = control_two[0];
+  qlog_entry_cx = qlog_entry_init_cx_gate(&qlog_params_cx);
+  qlog_graph_insert(qlog_graph, qlog_node, qlog_entry_cx);
+
+  qlog_entry_t_gate = qlog_entry_init_t_gate(&qlog_params_single);
+  qlog_graph_insert(qlog_graph, qlog_node, qlog_entry_t_gate);
+
+  qlog_entry_hadamard = qlog_entry_init_hadamard_gate(&qlog_params_single);
+  qlog_graph_insert(qlog_graph, qlog_node, qlog_entry_hadamard);
+
+  free(controls);
+  free(target);
+}
+
+void qlog_expand_rc3x(qlog_graph_t *qlog_graph, qlog_node_t *qlog_node) {
+  assert(qlog_node);
+  qlog_entry_t *qlog_entry = qlog_node->qlog_entry;
+
+  assert(qlog_entry->qubit_count == 4 && qlog_entry->controlled_count == 3 &&
+         qlog_entry->target_count == 1);
+
+  qubit_t *controls = base_decompress_qubit_bitpack(
+      qlog_entry->controlled_count, qlog_entry->controlled_bitpack);
+
+  qubit_t *target = base_decompress_qubit_bitpack(qlog_entry->target_count,
+                                                  qlog_entry->target_bitpack);
+
+  qubit_t control_one[1] = {controls[0]};
+  qubit_t control_two[1] = {controls[1]};
+  qubit_t control_three[1] = {controls[2]};
+  qubit_t target_qubit[1] = {target[0]};
+
+  qlog_entry_init_params_t qlog_params_single = {.qubits = target,
+                                                 .qubit_count = 1};
+  qlog_entry_t *qlog_entry_hadamard =
+      qlog_entry_init_hadamard_gate(&qlog_params_single);
+  qlog_graph_insert(qlog_graph, qlog_node, qlog_entry_hadamard);
+
+  qlog_entry_t *qlog_entry_tdg = qlog_entry_init_tdg_gate(&qlog_params_single);
+  qlog_graph_insert(qlog_graph, qlog_node, qlog_entry_tdg);
+
+  qubit_t qubits_cx[2] = {control_three[0], control_two[0]};
+  qlog_entry_init_params_t qlog_params_cx = {.qubits = qubits_cx,
+                                             .qubit_count = 2,
+                                             .controls = control_three,
+                                             .controlled_count = 1,
+                                             .targets = control_two,
+                                             .target_count = 1};
+  qlog_entry_t *qlog_entry_cx = qlog_entry_init_cx_gate(&qlog_params_cx);
+  qlog_graph_insert(qlog_graph, qlog_node, qlog_entry_cx);
+
+  qlog_entry_t *qlog_entry_t_gate = qlog_entry_init_t_gate(&qlog_params_single);
+  qlog_graph_insert(qlog_graph, qlog_node, qlog_entry_t_gate);
+
+  qlog_entry_hadamard = qlog_entry_init_hadamard_gate(&qlog_params_single);
+  qlog_graph_insert(qlog_graph, qlog_node, qlog_entry_hadamard);
+
+  qlog_entry_tdg = qlog_entry_init_tdg_gate(&qlog_params_single);
+  qlog_graph_insert(qlog_graph, qlog_node, qlog_entry_tdg);
+
+  qlog_params_cx.controls = control_two;
+  qlog_params_cx.qubits[0] = control_two[0];
+  qlog_entry_cx = qlog_entry_init_cx_gate(&qlog_params_cx);
+  qlog_graph_insert(qlog_graph, qlog_node, qlog_entry_cx);
+
+  qlog_entry_t_gate = qlog_entry_init_t_gate(&qlog_params_single);
+  qlog_graph_insert(qlog_graph, qlog_node, qlog_entry_t_gate);
+
+  qlog_params_cx.controls = control_one;
+  qlog_params_cx.qubits[0] = control_one[0];
+  qlog_entry_cx = qlog_entry_init_cx_gate(&qlog_params_cx);
+  qlog_graph_insert(qlog_graph, qlog_node, qlog_entry_cx);
+
+  qlog_entry_tdg = qlog_entry_init_tdg_gate(&qlog_params_single);
+  qlog_graph_insert(qlog_graph, qlog_node, qlog_entry_tdg);
+
+  qlog_params_cx.controls = control_two;
+  qlog_params_cx.qubits[0] = control_two[0];
+  qlog_entry_cx = qlog_entry_init_cx_gate(&qlog_params_cx);
+  qlog_graph_insert(qlog_graph, qlog_node, qlog_entry_cx);
+
+  qlog_entry_t_gate = qlog_entry_init_t_gate(&qlog_params_single);
+  qlog_graph_insert(qlog_graph, qlog_node, qlog_entry_tdg);
+
+  qlog_params_cx.controls = control_one;
+  qlog_params_cx.qubits[0] = control_one[0];
+  qlog_entry_cx = qlog_entry_init_cx_gate(&qlog_params_cx);
+  qlog_graph_insert(qlog_graph, qlog_node, qlog_entry_cx);
+
+  qlog_entry_hadamard = qlog_entry_init_hadamard_gate(&qlog_params_single);
+  qlog_graph_insert(qlog_graph, qlog_node, qlog_entry_hadamard);
+
+  qlog_entry_tdg = qlog_entry_init_tdg_gate(&qlog_params_single);
+  qlog_graph_insert(qlog_graph, qlog_node, qlog_entry_tdg);
+
+  qlog_params_cx.controls = control_three;
+  qlog_params_cx.qubits[0] = control_three[0];
+  qlog_entry_cx = qlog_entry_init_cx_gate(&qlog_params_cx);
+  qlog_graph_insert(qlog_graph, qlog_node, qlog_entry_cx);
+
+  qlog_entry_t_gate = qlog_entry_init_t_gate(&qlog_params_single);
+  qlog_graph_insert(qlog_graph, qlog_node, qlog_entry_t_gate);
+
+  qlog_entry_hadamard = qlog_entry_init_hadamard_gate(&qlog_params_single);
+  qlog_graph_insert(qlog_graph, qlog_node, qlog_entry_hadamard);
+
+  free(controls);
+  free(target);
+}
+
+void qlog_expand_swap(qlog_graph_t *qlog_graph, qlog_node_t *qlog_node) {
+  assert(qlog_node);
+  qlog_entry_t *qlog_entry = qlog_node->qlog_entry;
+
+  assert(qlog_entry->qubit_count == 2 && qlog_entry->controlled_count == 1 &&
+         qlog_entry->target_count == 1);
+
+  qubit_t *qubit_one = base_decompress_qubit_bitpack(
+      qlog_entry->controlled_count, qlog_entry->controlled_bitpack);
+  qubit_t *qubit_two = base_decompress_qubit_bitpack(
+      qlog_entry->target_count, qlog_entry->target_bitpack);
+
+  qubit_t qubits_cx[2] = {qubit_one[0], qubit_two[0]};
+  qlog_entry_init_params_t qlog_params_cx = {.qubits = qubits_cx,
+                                             .qubit_count = 2,
+                                             .controls = qubit_one,
+                                             .controlled_count = 1,
+                                             .targets = qubit_two,
+                                             .target_count = 1};
+  qlog_entry_t *qlog_entry_cx = qlog_entry_init_cx_gate(&qlog_params_cx);
+  qlog_graph_insert(qlog_graph, qlog_node, qlog_entry_cx);
+
+  qlog_params_cx.qubits[0] = qubit_two[0];
+  qlog_params_cx.qubits[1] = qubit_one[0];
+  qlog_params_cx.controls = qubit_two;
+  qlog_params_cx.targets = qubit_one;
+
+  qlog_entry_cx = qlog_entry_init_cx_gate(&qlog_params_cx);
+  qlog_graph_insert(qlog_graph, qlog_node, qlog_entry_cx);
+
+  qlog_params_cx.qubits[0] = qubit_one[0];
+  qlog_params_cx.qubits[1] = qubit_two[0];
+  qlog_params_cx.controls = qubit_one;
+  qlog_params_cx.targets = qubit_two;
+  qlog_entry_cx = qlog_entry_init_cx_gate(&qlog_params_cx);
+  qlog_graph_insert(qlog_graph, qlog_node, qlog_entry_cx);
+
+  free(qubit_one);
+  free(qubit_two);
+}
+
+void qlog_expand_rzz(qlog_graph_t *qlog_graph, qlog_node_t *qlog_node) {
+  assert(qlog_node);
+  qlog_entry_t *qlog_entry = qlog_node->qlog_entry;
+
+  assert(qlog_entry->qubit_count == 2 && qlog_entry->controlled_count == 1 &&
+         qlog_entry->target_count == 1);
+
+  qubit_t *qubit_one = base_decompress_qubit_bitpack(
+      qlog_entry->controlled_count, qlog_entry->controlled_bitpack);
+  qubit_t *qubit_two = base_decompress_qubit_bitpack(
+      qlog_entry->target_count, qlog_entry->target_bitpack);
+
+  qubit_t qubits_cx[2] = {qubit_one[0], qubit_two[0]};
+  qlog_entry_init_params_t qlog_params_cx = {.qubits = qubits_cx,
+                                             .qubit_count = 2,
+                                             .controls = qubit_one,
+                                             .controlled_count = 1,
+                                             .targets = qubit_two,
+                                             .target_count = 1};
+  qlog_entry_t *qlog_entry_cx = qlog_entry_init_cx_gate(&qlog_params_cx);
+  qlog_graph_insert(qlog_graph, qlog_node, qlog_entry_cx);
+
+  qlog_entry_init_params_t qlog_params_rz = {.qubits = qubit_two,
+                                             .qubit_count = 1,
+                                             .theta =
+                                                 qlog_node->qlog_entry->theta};
+  qlog_entry_t *qlog_entry_rz = qlog_entry_init_rz_gate(&qlog_params_rz);
+  qlog_graph_insert(qlog_graph, qlog_node, qlog_entry_rz);
+
+  qlog_entry_cx = qlog_entry_init_cx_gate(&qlog_params_cx);
+  qlog_graph_insert(qlog_graph, qlog_node, qlog_entry_cx);
+
+  free(qubit_one);
+  free(qubit_two);
+}
+
+void qlog_expand_rxx(qlog_graph_t *qlog_graph, qlog_node_t *qlog_node) {
+  assert(qlog_node);
+  qlog_entry_t *qlog_entry = qlog_node->qlog_entry;
+
+  assert(qlog_entry->qubit_count == 2 && qlog_entry->controlled_count == 1 &&
+         qlog_entry->target_count == 1);
+
+  qubit_t *qubit_one = base_decompress_qubit_bitpack(
+      qlog_entry->controlled_count, qlog_entry->controlled_bitpack);
+  qubit_t *qubit_two = base_decompress_qubit_bitpack(
+      qlog_entry->target_count, qlog_entry->target_bitpack);
+
+  qlog_entry_init_params_t qlog_params_single = {.qubits = qubit_two,
+                                                 .qubit_count = 1};
+  qlog_entry_t *qlog_entry_h =
+      qlog_entry_init_hadamard_gate(&qlog_params_single);
+  qlog_graph_insert(qlog_graph, qlog_node, qlog_entry_h);
+
+  qlog_params_single.qubits = qubit_one;
+  qlog_entry_h = qlog_entry_init_hadamard_gate(&qlog_params_single);
+
+  qubit_t qubits_cx[2] = {qubit_one[0], qubit_two[0]};
+  qlog_entry_init_params_t qlog_params_cx = {.qubits = qubits_cx,
+                                             .qubit_count = 2,
+                                             .controls = qubit_one,
+                                             .controlled_count = 1,
+                                             .targets = qubit_two,
+                                             .target_count = 1};
+
+  qlog_entry_t *qlog_entry_cx = qlog_entry_init_cx_gate(&qlog_params_cx);
+  qlog_graph_insert(qlog_graph, qlog_node, qlog_entry_cx);
+
+  qlog_params_single.qubits = qubit_two;
+  qlog_params_single.theta = qlog_node->qlog_entry->theta;
+  qlog_entry_t *qlog_entry_rz = qlog_entry_init_rz_gate(&qlog_params_single);
+  qlog_graph_insert(qlog_graph, qlog_node, qlog_entry_rz);
+  qlog_params_single.theta = 0;
+
+  qlog_entry_cx = qlog_entry_init_cx_gate(&qlog_params_cx);
+  qlog_graph_insert(qlog_graph, qlog_node, qlog_entry_cx);
+
+  qlog_entry_h = qlog_entry_init_hadamard_gate(&qlog_params_single);
+  qlog_graph_insert(qlog_graph, qlog_node, qlog_entry_h);
+
+  qlog_params_single.qubits = qubit_one;
+  qlog_entry_h = qlog_entry_init_hadamard_gate(&qlog_params_single);
+  qlog_graph_insert(qlog_graph, qlog_node, qlog_entry_h);
+
+  free(qubit_one);
+  free(qubit_two);
+}
 
 void qlog_expand_ccx(qlog_graph_t *qlog_graph, qlog_node_t *qlog_node) {
   assert(qlog_node);
@@ -86,32 +367,79 @@ void qlog_expand_ccx(qlog_graph_t *qlog_graph, qlog_node_t *qlog_node) {
   qubit_t *target = base_decompress_qubit_bitpack(qlog_entry->target_count,
                                                   qlog_entry->target_bitpack);
 
-  qubit_t control_one = controlled[0];
-  qubit_t control_two = controlled[1];
-  qubit_t target_qubit = target[0];
+  qubit_t control_one[1] = {controlled[0]};
+  qubit_t control_two[1] = {controlled[1]};
+  qubit_t target_qubit[1] = {target[0]};
 
-  qlog_entry_init_params_t qlog_params_hadamard_one = {.qubits = target,
-                                                       .qubit_count = 1};
+  qlog_entry_init_params_t qlog_params_single = {.qubits = control_two,
+                                                 .qubit_count = 1};
 
-  qlog_entry_t *qlog_entry_h =
-      qlog_entry_init_hadamard_gate(&qlog_params_hadamard_one);
+  qubit_t qubits_cx[2] = {control_one[0], control_two[0]};
+  qlog_entry_init_params_t qlog_params_cx = {.qubits = qubits_cx,
+                                             .qubit_count = 2,
+                                             .controls = control_one,
+                                             .controlled_count = 1,
+                                             .targets = control_two,
+                                             .target_count = 1};
 
-  qubit_t qubits_cx_one[2] = {control_two, target[0]};
-  qubit_t qubits_cx_one_controlled[1] = {control_two};
-  qlog_entry_init_params_t qlog_params_cx_one = {.qubits = qubits_cx_one,
-                                                 .qubit_count = 2,
-                                                 .controls =
-                                                     qubits_cx_one_controlled,
-                                                 .controlled_count = 1,
-                                                 .targets = target,
-                                                 .target_count = 1};
-
-  qlog_entry_t *qlog_entry_cx = qlog_entry_init_cx_gate(&qlog_params_cx_one);
-
+  qlog_entry_t *qlog_entry_cx = qlog_entry_init_cx_gate(&qlog_params_cx);
   qlog_graph_insert(qlog_graph, qlog_node, qlog_entry_cx);
+
+  qlog_entry_t *qlog_entry_tdg = qlog_entry_init_tdg_gate(&qlog_params_single);
+  qlog_graph_insert(qlog_graph, qlog_node, qlog_entry_tdg);
+
+  qlog_params_single.qubits = control_one;
+  qlog_entry_t *qlog_entry_t_gate = qlog_entry_init_t_gate(&qlog_params_single);
+  qlog_graph_insert(qlog_graph, qlog_node, qlog_entry_t_gate);
+
+  qlog_entry_cx = qlog_entry_init_cx_gate(&qlog_params_cx);
+  qlog_graph_insert(qlog_graph, qlog_node, qlog_entry_cx);
+
+  qlog_params_single.qubits = target;
+  qlog_entry_t *qlog_entry_h =
+      qlog_entry_init_hadamard_gate(&qlog_params_single);
   qlog_graph_insert(qlog_graph, qlog_node, qlog_entry_h);
-  printf("YUM:%lu, NODES REMOVED: %lu\n", qlog_graph->node_count,
-         qlog_graph->total_nodes_removed);
+
+  qlog_entry_t_gate = qlog_entry_init_t_gate(&qlog_params_single);
+  qlog_graph_insert(qlog_graph, qlog_node, qlog_entry_t_gate);
+
+  qlog_params_single.qubits = control_two;
+  qlog_entry_t_gate = qlog_entry_init_t_gate(&qlog_params_single);
+  qlog_graph_insert(qlog_graph, qlog_node, qlog_entry_t_gate);
+
+  qlog_params_cx.targets = target;
+  qlog_params_cx.qubits[1] = target[0];
+  qlog_entry_cx = qlog_entry_init_cx_gate(&qlog_params_cx);
+  qlog_graph_insert(qlog_graph, qlog_node, qlog_entry_cx);
+
+  qlog_params_single.qubits = target;
+  qlog_entry_tdg = qlog_entry_init_tdg_gate(&qlog_params_single);
+  qlog_graph_insert(qlog_graph, qlog_node, qlog_entry_tdg);
+
+  qlog_params_cx.controls = control_two;
+  qlog_params_cx.qubits[0] = control_two[0];
+  qlog_entry_cx = qlog_entry_init_cx_gate(&qlog_params_cx);
+  qlog_graph_insert(qlog_graph, qlog_node, qlog_entry_cx);
+
+  qlog_entry_t_gate = qlog_entry_init_t_gate(&qlog_params_single);
+  qlog_graph_insert(qlog_graph, qlog_node, qlog_entry_t_gate);
+
+  qlog_params_cx.controls = control_one;
+  qlog_params_cx.qubits[0] = control_one[0];
+  qlog_entry_cx = qlog_entry_init_cx_gate(&qlog_params_cx);
+  qlog_graph_insert(qlog_graph, qlog_node, qlog_entry_cx);
+
+  qlog_entry_tdg = qlog_entry_init_tdg_gate(&qlog_params_single);
+  qlog_graph_insert(qlog_graph, qlog_node, qlog_entry_tdg);
+
+  qlog_params_cx.controls = control_two;
+  qlog_params_cx.qubits[0] = control_two[0];
+  qlog_entry_cx = qlog_entry_init_cx_gate(&qlog_params_cx);
+  qlog_graph_insert(qlog_graph, qlog_node, qlog_entry_cx);
+
+  qlog_params_single.qubits = target;
+  qlog_entry_h = qlog_entry_init_hadamard_gate(&qlog_params_single);
+  qlog_graph_insert(qlog_graph, qlog_node, qlog_entry_h);
 
   free(controlled);
   free(target);

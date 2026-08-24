@@ -271,9 +271,28 @@ qlog_entry_t *qlog_entry_init_t_gate(qlog_entry_init_params_t *qlog_params) {
 
 qlog_entry_t *qlog_entry_init_tdg_gate(qlog_entry_init_params_t *qlog_params) {
   assert(qlog_params);
-
   qlog_entry_t *qlog_entry = qlog_entry_init_base(
       qlog_params->qubits, qlog_params->qubit_count, GATE_TDG, TYPE_SINGLE);
+  return qlog_entry;
+}
+qlog_entry_t *qlog_entry_init_rz_gate(qlog_entry_init_params_t *qlog_params) {
+  assert(qlog_params);
+
+  qlog_entry_t *qlog_entry = qlog_entry_init_base(
+      qlog_params->qubits, qlog_params->qubit_count, GATE_RZ, TYPE_SINGLE);
+
+  qlog_entry->theta = qlog_params->theta;
+
+  return qlog_entry;
+}
+
+qlog_entry_t *qlog_entry_init_rx_gate(qlog_entry_init_params_t *qlog_params) {
+  assert(qlog_params);
+
+  qlog_entry_t *qlog_entry = qlog_entry_init_base(
+      qlog_params->qubits, qlog_params->qubit_count, GATE_RX, TYPE_SINGLE);
+
+  qlog_entry->theta = qlog_params->theta;
 
   return qlog_entry;
 }

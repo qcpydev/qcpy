@@ -188,11 +188,14 @@ void qlog_graph_get_batch(qlog_node_t **qlog_nodes, uint32_t size) {
 static inline qlog_node_t *
 qlog_graph_insert_get_iter_qubit(qlog_node_t *qlog_node,
                                  qubit_t to_insert_qubit) {
-  assert(qlog_node && to_insert_qubit);
+  assert(qlog_node);
+
+  if (qlog_node->qubit == to_insert_qubit) {
+    return qlog_node;
+  }
+
   qlog_node_t *node_up = qlog_node->up;
   qlog_node_t *node_down = qlog_node->down;
-
-  assert(node_up || node_down);
 
   qlog_node_t *found_node = NULL;
 
@@ -231,13 +234,9 @@ static inline void qlog_graph_stitch_node(qlog_node_t *begin_node,
   }
 }
 
-qlog_node_t *qlog_graph_insert(qlog_graph_t *qlog_graph, qlog_node_t *qlog_node,
-                               qlog_entry_t *qlog_entry) {
+void qlog_graph_insert(qlog_graph_t *qlog_graph, qlog_node_t *qlog_node,
+                       qlog_entry_t *qlog_entry) {
   assert(qlog_graph && qlog_node);
-  qlog_node_t *inserted_node = (qlog_node_t *)malloc(sizeof(qlog_node_t));
-  assert(inserted_node);
-  memset(inserted_node, 0, sizeof(qlog_node_t));
-
   bitmask_t i = 1;
 
   for (qubit_t qubit = 0; qubit < QLOG_MAX_QUBITS; ++qubit) {
@@ -247,6 +246,7 @@ qlog_node_t *qlog_graph_insert(qlog_graph_t *qlog_graph, qlog_node_t *qlog_node,
 
       qlog_node_t *to_insert =
           qlog_node_init(qlog_entry, qlog_graph->total_node_count, qubit, true);
+
       qlog_graph_stitch_node(curr_node, to_insert, curr_node->next);
     }
 
@@ -255,6 +255,4 @@ qlog_node_t *qlog_graph_insert(qlog_graph_t *qlog_graph, qlog_node_t *qlog_node,
 
   ++qlog_graph->total_node_count;
   ++qlog_graph->node_count;
-
-  return inserted_node;
 }

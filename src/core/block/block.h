@@ -18,11 +18,8 @@
 #define IMPORTER_FUNNEL (uint64_t)4
 
 #define QCPY_IMPORT "/qcpy_import"
-#define PORT_IMPORT_SEM_ONE "/port_import_sem_one"
-#define DOCK_IMPORT_SEM_ONE "/dock_import_sem_one"
-
-#define PORT_IMPORT_SEM_TWO "/port_import_sem_two"
-#define DOCK_IMPORT_SEM_TWO "/dock_import_sem_two"
+#define PORT_IMPORT_SEM "/port_import_sem"
+#define DOCK_IMPORT_SEM "/dock_import_sem"
 
 #define QCPY_EXPORT "/qcpy_export"
 #define PORT_EXPORT_SEM "/port_export_sem"

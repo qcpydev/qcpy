@@ -80,5 +80,14 @@ qubit_t *base_decompress_qubit_bitpack(qubit_t qubits, bitpack_t bitpacked) {
 }
 
 qubit_t *base_unpack_qubit_bitmask(bitmask_t bitmasked, qubit_t count) {
-  return 0;
+  qubit_t *qubits = (qubit_t *)malloc(sizeof(qubit_t) * count);
+
+  qubit_t qubit = 0;
+  for (bitmask_t i = 0; i < count; i <<= 1) {
+    if (i & bitmasked) {
+      qubits[i] = qubit;
+    }
+    ++qubit;
+  }
+  return qubits;
 }

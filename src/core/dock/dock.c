@@ -35,10 +35,10 @@ static void dock_create_importer() {
       (import_t *)base_tools_create_shared_mem(sizeof(import_t), QCPY_IMPORT);
   assert(importer);
 
-  port_import_sem = base_tools_create_shared_sem(PORT_IMPORT_SEM_ONE, 0);
+  port_import_sem = base_tools_create_shared_sem(PORT_IMPORT_SEM, 0);
   assert(port_import_sem);
 
-  dock_import_sem = base_tools_create_shared_sem(DOCK_IMPORT_SEM_ONE, 0);
+  dock_import_sem = base_tools_create_shared_sem(DOCK_IMPORT_SEM, 0);
   assert(dock_import_sem);
 }
 
@@ -46,6 +46,7 @@ static void dock_create_exporter() {
   assert(!exporter);
   exporter =
       (export_t *)base_tools_create_shared_mem(sizeof(export_t), QCPY_EXPORT);
+  assert(exporter);
 
   port_export_sem = base_tools_create_shared_sem(PORT_EXPORT_SEM, 0);
   assert(port_export_sem);
@@ -55,8 +56,8 @@ static void dock_create_exporter() {
 }
 
 void dock_port_init() {
-  dock_create_exporter();
   dock_create_importer();
+  dock_create_exporter();
 }
 
 char *dock_init(char *args[]) {
@@ -117,6 +118,10 @@ void dock_run_boot() {
 static void dock_flush_entries() {
   sem_post(dock_import_sem);
   sem_wait(port_import_sem);
+
+  importer->flushing = false;
+  importer->flush_reg = 0;
+
   assert(importer->idx == 0);
 }
 
@@ -125,6 +130,7 @@ int dock_add(block_t *block) {
   // dock_log_append(block->reg, block);
 
   block_add(block, importer);
+
   if (importer->idx == IMPORT_MAX_SIZE) {
     dock_flush_entries();
   }
@@ -134,16 +140,12 @@ int dock_add(block_t *block) {
 
 void dock_get_qc_state(int flush_reg) {
 
-  if (importer->idx > 0) {
-    importer->flushing = true;
-    importer->flush_reg = flush_reg;
+  importer->flushing = true;
+  importer->flush_reg = flush_reg;
+  assert(!"what...\n");
 
-    // come back to this later, we are causing some shitty perf issues with
-    // allowing the dock_logger to run like that
-    // most likely we will need to break some rules potentially, and have a
-    // grabby process to grab info from the qcpy_core that isnt important,
-    // qcpy_logger?
-    //   dock_flush_entries();
+  if (importer->idx > 0) {
+    dock_flush_entries();
   }
 
   /*

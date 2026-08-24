@@ -70,6 +70,8 @@ static bool exporter_migrate_single_work(qlog_node_t **qlog_nodes,
     if (qlog_nodes[i] && (!qlog_nodes[i]->up && !qlog_nodes[i]->down)) {
       single_work = true;
       qlog_nodes[i] = qlog_nodes[i]->next;
+      ++counter;
+      printf("counter: %d\n", counter);
     }
   }
 
@@ -80,6 +82,7 @@ static bool exporter_migrate_multi_work(qlog_node_t **qlog_nodes,
                                         uint32_t size) {
   assert(qlog_nodes);
   bool multi_work = false;
+
   for (uint32_t i = 0; i < size; ++i) {
     if (qlog_nodes[i] && (qlog_nodes[i]->up || qlog_nodes[i]->down)) {
       multi_work = true;
@@ -94,7 +97,10 @@ static bool exporter_migrate_multi_work(qlog_node_t **qlog_nodes,
 
       qlog_nodes[i] = qlog_nodes[i]->next;
     }
+    ++counter;
+    printf("counter: %d\n", counter);
   }
+
   return multi_work;
 }
 
@@ -102,19 +108,17 @@ void exporter_migrate_fill_queue(qlog_node_t **qlog_nodes, uint32_t size) {
 
   assert(qlog_nodes);
 
-  bool work_to_do = false;
+  bool single_work = false;
+  bool multi_work = false;
+
   do {
-    bool single_work = false;
     do {
       single_work = exporter_migrate_single_work(qlog_nodes, size);
     } while (single_work);
-
-    bool multi_work = false;
 
     do {
       multi_work = exporter_migrate_multi_work(qlog_nodes, size);
     } while (multi_work);
 
-    work_to_do = single_work || multi_work;
-  } while (work_to_do);
+  } while (single_work || multi_work);
 }

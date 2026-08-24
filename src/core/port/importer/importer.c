@@ -18,10 +18,10 @@ void importer_open() {
       (import_t *)base_tools_open_shared_mem(sizeof(import_t), QCPY_IMPORT);
   assert(importer);
 
-  dock_import_sem = base_tools_open_shared_sem(DOCK_IMPORT_SEM_ONE);
+  dock_import_sem = base_tools_open_shared_sem(DOCK_IMPORT_SEM);
   assert(dock_import_sem);
 
-  port_import_sem = base_tools_open_shared_sem(PORT_IMPORT_SEM_ONE);
+  port_import_sem = base_tools_open_shared_sem(PORT_IMPORT_SEM);
   assert(port_import_sem);
 
   importer->ready = true;
@@ -32,15 +32,14 @@ void importer_init() {
       (import_t *)base_tools_create_shared_mem(sizeof(import_t), QCPY_IMPORT);
   assert(importer);
 
-  port_import_sem = base_tools_create_shared_sem(PORT_IMPORT_SEM_ONE, 0);
+  port_import_sem = base_tools_create_shared_sem(PORT_IMPORT_SEM, 0);
   assert(port_import_sem);
 
-  dock_import_sem = base_tools_create_shared_sem(DOCK_IMPORT_SEM_ONE, 0);
+  dock_import_sem = base_tools_create_shared_sem(DOCK_IMPORT_SEM, 0);
   assert(dock_import_sem);
 }
 
 void importer_sort_init() {
-  pthread_mutex_init(&importer_sort.lock, NULL);
 
   for (uint64_t i = 0; i < IMPORTER_FUNNEL; ++i) {
     pthread_mutex_init(&importer_sort.queue_lock[i], NULL);
@@ -57,6 +56,8 @@ void importer_sort_append(block_t block) {
 
   uint64_t index = block.reg % IMPORTER_FUNNEL;
 
+  pthread_mutex_lock(&importer_sort.queue_lock[index]);
+
   if (!importer_sort.queue[index]) {
     importer_sort.queue[index] = import_block;
     importer_sort.queue_last[index] = import_block;
@@ -67,6 +68,7 @@ void importer_sort_append(block_t block) {
 
   ++importer_sort.queue_count[index];
   ++importer_sort.count;
+  pthread_mutex_unlock(&importer_sort.queue_lock[index]);
 }
 
 void importer_sort_ported(import_t *importer) {
@@ -92,6 +94,8 @@ void importer_sort_ported(import_t *importer) {
 void importer_delete_queue(uint64_t idx) {
   assert(idx < IMPORTER_FUNNEL);
 
+  pthread_mutex_lock(&importer_sort.queue_lock[idx]);
+
   import_block_t *import_block_queue = importer_sort.queue[idx];
   importer_sort.queue[idx] = NULL;
   importer_sort.queue_last[idx] = NULL;
@@ -103,6 +107,8 @@ void importer_delete_queue(uint64_t idx) {
   }
 
   importer_sort.queue_count[idx] = 0;
+
+  pthread_mutex_unlock(&importer_sort.queue_lock[idx]);
 }
 
 void importer_sort_clear() {

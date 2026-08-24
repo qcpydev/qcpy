@@ -94,4 +94,8 @@ qlog_entry_init_tdg_gate(qlog_entry_init_params_t *qlog_entry_params);
 qlog_entry_t *
 qlog_entry_init_cx_gate(qlog_entry_init_params_t *qlog_entry_params);
 
+qlog_entry_t *qlog_entry_init_rz_gate(qlog_entry_init_params_t *qlog_params);
+
+qlog_entry_t *qlog_entry_init_rx_gate(qlog_entry_init_params_t *qlog_params);
+
 #endif // QLOG_ENTRY_H
