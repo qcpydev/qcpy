@@ -4,6 +4,7 @@
 #include <port.h>
 #include <qcpy_error.h>
 #include <qlog_infra.h>
+#include <stdio.h>
 #include <string.h>
 
 import_t *importer;
@@ -57,7 +58,6 @@ void importer_sort_append(block_t block) {
   uint64_t index = block.reg % IMPORTER_FUNNEL;
 
   pthread_mutex_lock(&importer_sort.queue_lock[index]);
-
   if (!importer_sort.queue[index]) {
     importer_sort.queue[index] = import_block;
     importer_sort.queue_last[index] = import_block;
@@ -79,7 +79,9 @@ void importer_sort_ported(import_t *importer) {
   for (uint64_t i = 0; i < importer->idx; ++i) {
     if (importer->queue[i].used) {
       assert(importer->queue[i].qubits != 0);
+
       importer_sort_append(importer->queue[i]);
+
       importer->queue[i].used = false;
     }
   }
@@ -91,32 +93,20 @@ void importer_sort_ported(import_t *importer) {
   sem_post(port_import_sem);
 }
 
-void importer_delete_queue(uint64_t idx) {
+void importer_delete_queue(uint64_t idx, uint64_t count) {
   assert(idx < IMPORTER_FUNNEL);
-
-  pthread_mutex_lock(&importer_sort.queue_lock[idx]);
 
   import_block_t *import_block_queue = importer_sort.queue[idx];
   importer_sort.queue[idx] = NULL;
   importer_sort.queue_last[idx] = NULL;
 
-  while (import_block_queue) {
+  for (uint64_t i = 0; i < importer_sort.queue_count[idx]; ++i) {
     import_block_t *delete_block = import_block_queue;
     import_block_queue = import_block_queue->next;
     import_block_delete(delete_block);
   }
 
   importer_sort.queue_count[idx] = 0;
-
-  pthread_mutex_unlock(&importer_sort.queue_lock[idx]);
-}
-
-void importer_sort_clear() {
-  for (uint64_t i = 0; i < IMPORTER_FUNNEL; ++i) {
-    importer_delete_queue(i);
-  }
-
-  importer_sort.count = 0;
 }
 
 import_block_t *import_block_init(block_t block) {
@@ -126,6 +116,25 @@ import_block_t *import_block_init(block_t block) {
   assert(import_block);
   import_block->block = block;
 
+  return import_block;
+}
+
+import_block_t *import_block_dequeue(uint64_t index) {
+  import_block_t *import_block = NULL;
+
+  pthread_mutex_lock(&importer_sort.queue_lock[index]);
+
+  assert(importer_sort.queue_count[index]);
+  import_block = importer_sort.queue[index];
+  importer_sort.queue[index] = importer_sort.queue[index]->next;
+  if (importer_sort.queue_last[index] == import_block) {
+    importer_sort.queue_last[index] = importer_sort.queue[index];
+  }
+  importer_sort.queue_count[index]--;
+
+  pthread_mutex_unlock(&importer_sort.queue_lock[index]);
+
+  assert(import_block);
   return import_block;
 }
 

@@ -53,8 +53,10 @@ extern import_t *importer;
 extern sem_t *dock_import_sem;
 extern sem_t *port_import_sem;
 
-void importer_delete_queue(uint64_t idx);
+void importer_delete_queue(uint64_t idx, uint64_t count);
 void importer_sort_ported(import_t *importer);
+
+import_block_t *import_block_dequeue(uint64_t index);
 
 import_block_t *import_block_init(block_t block);
 void import_block_delete(import_block_t *import_block);

@@ -1,6 +1,5 @@
 #include <qlog_infra.h>
 #include <sched.h>
-#include <stdio.h>
 
 void qlog_infra_init() {
   qlog_scheduler_init();
@@ -30,19 +29,6 @@ void qlog_infra_set_priority(import_sort_t *importer_sort) {
   }
 }
 
-void qlog_infra_await_completion_reg(int reg) {
-  assert(reg != -1);
-  uint64_t key = reg % IMPORTER_FUNNEL;
-
-  qlog_process_state_e completed = QLOG_PROCESS_MAX;
-
-  do {
-    pthread_mutex_lock(&qlog_thread_pool.workers[key].lock);
-    completed = qlog_thread_pool.workers[key].state;
-    pthread_mutex_unlock(&qlog_thread_pool.workers[key].lock);
-  } while (completed != QLOG_PROCESS_READY);
-}
-
 void qlog_infra_process(import_sort_t *importer_sort) {
   // qlog_infra_set_priority(importer_sort);
 
@@ -54,6 +40,7 @@ void qlog_infra_process(import_sort_t *importer_sort) {
     }
     return;
   }
+
   uint64_t key = importer->flush_reg % IMPORTER_FUNNEL;
 
   qlog_thread_pool_signal_worker(key);

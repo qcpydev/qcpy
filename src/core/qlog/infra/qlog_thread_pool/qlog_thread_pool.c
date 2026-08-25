@@ -7,14 +7,13 @@
 qlog_thread_pool_t qlog_thread_pool;
 bool qlog_thread_pool_open = true;
 
+bool ready[IMPORTER_FUNNEL];
+
 static inline void qlog_thread_pool_exporter_signal(uint64_t key) {
-  return;
-  if (importer->flush_reg % IMPORTER_FUNNEL != key) {
+  if (!importer->flushing || importer->flush_reg % IMPORTER_FUNNEL != key) {
     return;
   }
-  printf("importer->flush_reg: %lu\n", importer->flush_reg);
-  printf("shouldnt happen!\n");
-  assert(!"WHAT\n");
+  assert(!"what...\n");
 
   exporter_signal_item_append(importer->flush_reg);
 
@@ -28,27 +27,36 @@ void *qlog_thread_pool_worker(void *thread_index) {
   qlog_register_buf_t *qlog_buffer_find = qlog_thread_pool.registers[key];
 
   pthread_mutex_lock(&qlog_thread_pool.workers[key].lock);
+  uint64_t total = 0;
 
   while (qlog_thread_pool_open) {
-    pthread_cond_wait(&qlog_thread_pool.workers[key].cond,
-                      &qlog_thread_pool.workers[key].lock);
+    while (!importer_sort.queue_count[key]) {
+      pthread_cond_wait(&qlog_thread_pool.workers[key].cond,
+                        &qlog_thread_pool.workers[key].lock);
+    }
 
     qlog_thread_pool.workers[key].state = QLOG_PROCESS_START;
 
-    import_block_t *block_queue = importer_sort.queue[key];
+    pthread_mutex_lock(&importer_sort.queue_lock[key]);
+    assert(importer_sort.queue_count[key] && importer_sort.queue[key]);
+    uint64_t count = importer_sort.queue_count[key];
+    total += count;
+    pthread_mutex_unlock(&importer_sort.queue_lock[key]);
 
-    while (block_queue) {
+    for (uint64_t i = 0; i < count; ++i) {
       qlog_thread_pool.workers[key].state = QLOG_PROCESS_APPENDING;
+      import_block_t *import_block = import_block_dequeue(key);
+
       qlog_register_buf_append_handler(qlog_buffer_find,
                                        qlog_thread_pool.registers[key],
-                                       block_queue->block);
-      block_queue = block_queue->next;
+                                       import_block->block);
+
+      import_block_delete(import_block);
     }
 
-    qlog_thread_pool_exporter_signal(key);
+    // qlog_thread_pool_exporter_signal(key);
 
     qlog_thread_pool.workers[key].state = QLOG_PROCESS_READY;
-    importer_delete_queue(key);
   }
 
   pthread_mutex_unlock(&qlog_thread_pool.workers[key].lock);
@@ -63,9 +71,7 @@ void qlog_thread_pool_init(uint64_t idx, pthread_attr_t *attr) {
 }
 
 void qlog_thread_pool_signal_worker(uint64_t key) {
-  pthread_mutex_lock(&qlog_thread_pool.workers[key].lock);
   pthread_cond_signal(&qlog_thread_pool.workers[key].cond);
-  pthread_mutex_unlock(&qlog_thread_pool.workers[key].lock);
 }
 
 qlog_t *qlog_thread_pool_get_qlog(uint32_t reg) {

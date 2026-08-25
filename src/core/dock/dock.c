@@ -142,7 +142,6 @@ void dock_get_qc_state(int flush_reg) {
 
   importer->flushing = true;
   importer->flush_reg = flush_reg;
-  assert(!"what...\n");
 
   if (importer->idx > 0) {
     dock_flush_entries();
