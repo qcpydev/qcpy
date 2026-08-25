@@ -105,7 +105,6 @@ void qlog_append(qlog_t *qlog, block_t block) {
 
   qlog_graph_append(qlog->graph, qlog->last_entry);
 
-  printf("qlog->entry_count: %lu\n", qlog->entry_count);
   pthread_mutex_unlock(&qlog->lock);
 }
 
