@@ -6,7 +6,7 @@
 START_TEST(test_qlog_append_1) {
 
   uint8_t qubits = 1;
-  qlog_t *qlog = qlog_init(qubits);
+  qlog_t *qlog = qlog_init(qubits, 0);
   qlog_delete(qlog);
 }
 END_TEST

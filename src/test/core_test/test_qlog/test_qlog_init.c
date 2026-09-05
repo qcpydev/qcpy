@@ -3,7 +3,7 @@
 
 START_TEST(test_qlog_init_1) {
   int qubits = 3;
-  qlog_t *qlog = qlog_init(qubits);
+  qlog_t *qlog = qlog_init(qubits, 0);
   ck_assert(qlog);
   qlog_delete(qlog);
 }
@@ -11,7 +11,7 @@ END_TEST
 
 START_TEST(test_qlog_init_2) {
   int qubits = 20;
-  qlog_t *qlog = qlog_init(qubits);
+  qlog_t *qlog = qlog_init(qubits, 0);
   ck_assert(qlog);
   qlog_delete(qlog);
 }
@@ -19,7 +19,7 @@ END_TEST
 
 START_TEST(test_qlog_init_3) {
   int qubits = 3;
-  qlog_t *qlog = qlog_init(qubits);
+  qlog_t *qlog = qlog_init(qubits, 0);
   qlog_graph_t *qlog_graph = qlog->graph;
   ck_assert(qlog && qlog_graph);
   qlog_delete(qlog);
