@@ -13,7 +13,7 @@ const char *replay_qlog_description[] = {
     [QLOG_BAD_SIZING] = "qlog bad sizing",
     [QLOG_DELETE_FAILED] = "qlog failed to delete"};
 
-qlog_t *qlog_init(uint8_t qubits) {
+qlog_t *qlog_init(uint8_t qubits, uint16_t reg) {
   qlog_t *qlog = NULL;
 
   qlog = (qlog_t *)malloc(sizeof(qlog_t));
@@ -24,6 +24,7 @@ qlog_t *qlog_init(uint8_t qubits) {
 
   qlog->qubit_count = qubits;
   qlog->graph = qlog_graph_init(qlog->qubit_count);
+  qlog->id = reg;
 
   pthread_mutex_init(&qlog->lock, NULL);
 
@@ -105,6 +106,7 @@ void qlog_append(qlog_t *qlog, block_t block) {
 
   qlog_graph_append(qlog->graph, qlog->last_entry);
 
+  printf("qlog: %lu, entry_count: %lu\n", qlog->id, qlog->entry_count);
   pthread_mutex_unlock(&qlog->lock);
 }
 

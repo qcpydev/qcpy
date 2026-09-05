@@ -7,8 +7,6 @@
 qlog_thread_pool_t qlog_thread_pool;
 bool qlog_thread_pool_open = true;
 
-bool ready[IMPORTER_FUNNEL];
-
 static inline void qlog_thread_pool_exporter_signal(uint64_t key) {
   if (!importer->flushing || importer->flush_reg % IMPORTER_FUNNEL != key) {
     return;
@@ -40,7 +38,6 @@ void *qlog_thread_pool_worker(void *thread_index) {
     pthread_mutex_lock(&importer_sort.queue_lock[key]);
     assert(importer_sort.queue_count[key] && importer_sort.queue[key]);
     uint64_t count = importer_sort.queue_count[key];
-    total += count;
     pthread_mutex_unlock(&importer_sort.queue_lock[key]);
 
     for (uint64_t i = 0; i < count; ++i) {
@@ -54,9 +51,7 @@ void *qlog_thread_pool_worker(void *thread_index) {
       import_block_delete(import_block);
     }
 
-    // qlog_thread_pool_exporter_signal(key);
-
-    qlog_thread_pool.workers[key].state = QLOG_PROCESS_READY;
+    qlog_thread_pool_exporter_signal(key);
   }
 
   pthread_mutex_unlock(&qlog_thread_pool.workers[key].lock);

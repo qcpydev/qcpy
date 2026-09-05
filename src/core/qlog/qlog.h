@@ -35,7 +35,7 @@ typedef enum {
   QLOG_DELETE_FAILED
 } qlog_error_e;
 
-qlog_t *qlog_init(uint8_t qubits);
+qlog_t *qlog_init(uint8_t qubits, uint16_t reg);
 void qlog_delete(qlog_t *qlog);
 void qlog_append(qlog_t *qlog, block_t block);
 bool qlog_append_entry(qlog_t *qlog, qlog_entry_t *qlog_entry);

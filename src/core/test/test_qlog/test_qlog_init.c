@@ -1,7 +1,5 @@
 #include <check.h>
 #include <qlog.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include <test_common.h>
 
 START_TEST(test_qlog_init_1) {

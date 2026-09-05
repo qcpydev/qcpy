@@ -4,7 +4,6 @@
 #include <port.h>
 #include <qcpy_error.h>
 #include <qlog_infra.h>
-#include <stdio.h>
 #include <string.h>
 
 import_t *importer;
@@ -127,9 +126,15 @@ import_block_t *import_block_dequeue(uint64_t index) {
   assert(importer_sort.queue_count[index]);
   import_block = importer_sort.queue[index];
   importer_sort.queue[index] = importer_sort.queue[index]->next;
+
   if (importer_sort.queue_last[index] == import_block) {
+    assert(importer_sort.queue_count[index] == 1);
     importer_sort.queue_last[index] = importer_sort.queue[index];
   }
+
+  import_block->next = NULL;
+
+  assert(importer_sort.queue_count[index] > 0);
   importer_sort.queue_count[index]--;
 
   pthread_mutex_unlock(&importer_sort.queue_lock[index]);
@@ -140,7 +145,7 @@ import_block_t *import_block_dequeue(uint64_t index) {
 
 void import_block_delete(import_block_t *import_block) {
   assert(import_block);
-  memset(import_block, 0, sizeof(import_block_t));
   free(import_block);
+  import_block = NULL;
   return;
 }

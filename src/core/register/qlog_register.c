@@ -39,7 +39,7 @@ void qlog_register_add(qlog_register_buf_t *qlog_register_buf, block_t block) {
   assert(qlog_register_buf->reg.id == block.reg);
 
   if (!qlog_register_buf->reg.qlog) {
-    qlog_register_buf->reg.qlog = qlog_init(qubits);
+    qlog_register_buf->reg.qlog = qlog_init(qubits, block.reg);
   }
 
   qlog_t *qlog = qlog_register_buf->reg.qlog;
