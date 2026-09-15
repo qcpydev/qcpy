@@ -7,7 +7,6 @@ from functools import reduce
 from operator import or_
 
 CACHELINE = 64
-
 class Connect:
     def __init__(self, bootargs: List[str], qcpy_connect: str, qcpy_core: str, quack_core: str, quack_gpu_core: str):
         self.qcpy_core_bin_name = qcpy_core

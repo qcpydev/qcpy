@@ -47,5 +47,6 @@ void qlog_thread_pool_signal_worker(uint64_t key);
 void qlog_thread_pool_await();
 qlog_t *qlog_thread_pool_get_qlog(uint32_t reg);
 void qlog_thread_pool_reset_current();
+void qlog_thread_join(uint64_t idx);
 
 #endif

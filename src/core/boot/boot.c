@@ -22,8 +22,9 @@
 void boot_args_init() {}
 
 void boot_core_init() {
-  qlog_infra_init();
   port_boot();
+  qlog_infra_init();
+  qlog_infra_await_finish();
 }
 
 void boot_core(int argc, char **argv) {

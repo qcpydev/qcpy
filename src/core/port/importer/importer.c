@@ -85,8 +85,6 @@ void importer_sort_ported(import_t *importer) {
     }
   }
 
-  qlog_infra_process(&importer_sort);
-
   importer->idx = 0;
 
   sem_post(port_import_sem);

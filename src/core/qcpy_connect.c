@@ -1,6 +1,5 @@
 #include <dock.h>
 #include <pthread.h>
-#include <stdio.h>
 #include <stdlib.h>
 
 boot_thread_args_t *boot_thread_args = NULL;

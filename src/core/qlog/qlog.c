@@ -78,7 +78,6 @@ void qlog_clear(qlog_t *qlog) {
 void qlog_append(qlog_t *qlog, block_t block) {
   assert(block.type == BLOCK_QLOG_ENTRY);
 
-  pthread_mutex_lock(&qlog->lock);
   QCPY_ASSERT(qlog, QCPY_ERROR_QLOG, qlog, QLOG_NULL);
 
   QCPY_ASSERT((block.qubits > qlog->qubit_count), QCPY_ERROR_QLOG, qlog,
@@ -105,9 +104,6 @@ void qlog_append(qlog_t *qlog, block_t block) {
   ++(qlog->entry_count);
 
   qlog_graph_append(qlog->graph, qlog->last_entry);
-
-  printf("qlog: %lu, entry_count: %lu\n", qlog->id, qlog->entry_count);
-  pthread_mutex_unlock(&qlog->lock);
 }
 
 void qlog_dump_content(qlog_t *qlog, bool verbose) {
@@ -120,7 +116,6 @@ void qlog_dump_content(qlog_t *qlog, bool verbose) {
   }
 
   if (qlog->entry_count == 0) {
-    printf("qlog is empty\n.");
     return;
   }
 

@@ -51,8 +51,8 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/CompilerOptions.cmake)
 #
 
 find_package(Check REQUIRED)
-#enable_testing()
-#add_subdirectory(test_build)
+enable_testing()
+add_subdirectory(test_build)
 
 # Configure all builds
 # ========================================

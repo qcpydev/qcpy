@@ -29,5 +29,6 @@ void port_boot();
 
 extern pthread_t import_thread;
 extern pthread_t export_thread;
+extern block_buffer_global_t *block_buffer_global_queues;
 
 #endif

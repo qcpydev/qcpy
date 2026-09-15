@@ -223,6 +223,3 @@ add_subdirectory(port)
 add_subdirectory(qlog)
 add_subdirectory(register)
 add_subdirectory(quack)
-
-#TODO: FIX THIS
-add_subdirectory(test)

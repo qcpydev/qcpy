@@ -59,7 +59,7 @@ class Block(ctypes.Structure):
         ("theta", ctypes.c_float),
         ("phi", ctypes.c_float),
         ("lmbda", ctypes.c_float),
-        ("reg", ctypes.c_uint16),
+        ("reg", ctypes.c_uint16, 16),
         ("gate", ctypes.c_uint8, 8),
         ("qubits", ctypes.c_uint8, 8),
         ("size", ctypes.c_uint8, 8),
