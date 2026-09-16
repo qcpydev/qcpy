@@ -4,12 +4,14 @@ add_subdirectory(clean)
 add_subdirectory(expand)
 add_subdirectory(stats)
 
-target_link_libraries(qlog_optimize PUBLIC
-   qcpy_error
-   qlog_entry
-   qlog_clean
-   qlog_expand
-   qlog_optimize_stats
+target_link_libraries(qlog_optimize PRIVATE
+  qcpy_error
+  qcpy_base
+  block
+  qlog_entry
+  qlog_clean
+  qlog_expand
+  qlog_optimize_stats
 )
 
 target_include_directories(qlog_optimize PUBLIC

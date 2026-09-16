@@ -28,5 +28,6 @@ void qlog_infra_await_completion();
 void qlog_infra_await_completion_reg(int reg);
 
 qlog_t *qlog_infra_find_qlog(int reg);
+void qlog_infra_await_finish();
 
 #endif

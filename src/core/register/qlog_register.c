@@ -1,4 +1,6 @@
 #include <qlog_register.h>
+#include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 
 qlog_register_buf_t *qlog_register_buf_init(qlog_register_buf_t *qlog_buffer) {
@@ -37,11 +39,12 @@ void qlog_register_add(qlog_register_buf_t *qlog_register_buf, block_t block) {
   assert(qlog_register_buf->reg.id == block.reg);
 
   if (!qlog_register_buf->reg.qlog) {
-    qlog_register_buf->reg.qlog = qlog_init(qubits);
+    qlog_register_buf->reg.qlog = qlog_init(qubits, block.reg);
   }
 
-  assert(qlog_register_buf->reg.qlog);
   qlog_t *qlog = qlog_register_buf->reg.qlog;
+
+  assert(qlog_register_buf->reg.qlog);
   qlog_append(qlog, block);
 }
 

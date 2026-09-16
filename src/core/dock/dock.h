@@ -12,8 +12,18 @@
 #ifndef DOCK_H
 #define DOCK_H
 
-// turn importer structs here, create block directory which will own a block
-// request
+/*
+ * Dock has the core goal of dispatching data for other processes to consume. It
+ * also has the ability to signal another process to handle different tasks,
+ * such as quack_core to do calculations on a quantum circuit.
+ * There is a thread pool that live on the process. The main Python/ctypes
+ * thread will enqueue the block onto a thread via an LL, in which the
+ */
+typedef struct dock_add_params_s {
+  uint64_t *qubits;
+  uint64_t *controlled_qubits;
+  uint64_t *target_qubits;
+} dock_add_params_t;
 
 int dock_add(block_t *block);
 void dock_run_boot();
@@ -26,7 +36,6 @@ bool dock_set_gpu_enabled(char *args[]);
 void dock_port_init();
 void dock_wait_for_boot();
 
-int dock_get_qc_entries(uint32_t reg, block_t *blocks);
 void dock_free_qc_entries(block_t *blocks);
 
 typedef struct boot_thread_args_s {
@@ -39,35 +48,36 @@ typedef struct boot_thread_args_s {
 
 extern boot_thread_args_t *boot_thread_args;
 
-typedef struct dock_log_item_t dock_log_item_t;
-struct dock_log_item_t {
-  block_t block;
-  dock_log_item_t *next;
+typedef struct dock_queue_item_t dock_queue_item_t;
+
+struct dock_queue_item_t {
+  block_t *block;
+  dock_queue_item_t *next;
 };
 
-typedef struct dock_log_t dock_log_t;
-struct dock_log_t {
-  dock_log_item_t *queue;
-  dock_log_t *next;
-  dock_log_item_t *last;
-  dock_log_item_t *checkpoint;
-  uint32_t reg;
-};
+typedef struct dock_queue_s {
+  dock_queue_item_t *head;
+  dock_queue_item_t *tail;
+  size_t item_count;
+  pthread_mutex_t lock;
+  pthread_cond_t cond;
+} dock_queue_t;
 
-typedef struct dock_logger_s {
-  dock_log_t *logs;
-  dock_log_t *last;
-  dock_log_t *last_used;
-} dock_logger_t;
+#define DOCK_QUEUES_TOTAL (BLOCK_QUEUES_TOTAL / 4)
 
-dock_log_t *dock_log_init(uint32_t reg, block_t *block);
-dock_log_item_t *dock_log_item_init(block_t *block);
-void dock_log_append(uint32_t reg, block_t *block);
+typedef struct dock_thread_pool_s {
+  pthread_t threads[DOCK_QUEUES_TOTAL];
+  dock_queue_t queue[DOCK_QUEUES_TOTAL];
+  pthread_t boot_thread;
+} dock_thread_pool_t;
 
-dock_log_t *dock_log_find(uint32_t reg);
+void dock_queue_init(dock_queue_t *dock_queue);
+void dock_enqueue(block_t *block);
+block_t *dock_dequeue(dock_queue_t *dock_queue);
+void *dock_thread_pool_init(void *not_used);
+void dock_thread_pool_delete();
+void dock_thread_pool_launch();
 
-int dock_log_fill_array(dock_log_t *dock_log, block_t *block);
-
-extern dock_logger_t dock_log;
+extern dock_thread_pool_t dock_thread_pool;
 
 #endif // DOCK_H

@@ -1,5 +1,9 @@
-// #include <qcpy_error.h>
+#include <pthread.h>
+#include <qcpy_error.h>
 #include <qlog.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 const char *replay_qlog_description[] = {
     [QLOG_NULL] = "qlog is null",
@@ -9,24 +13,29 @@ const char *replay_qlog_description[] = {
     [QLOG_BAD_SIZING] = "qlog bad sizing",
     [QLOG_DELETE_FAILED] = "qlog failed to delete"};
 
-qlog_t *qlog_init(uint8_t qubits) {
-  qlog_t *qlog;
+qlog_t *qlog_init(uint8_t qubits, uint16_t reg) {
+  qlog_t *qlog = NULL;
+
   qlog = (qlog_t *)malloc(sizeof(qlog_t));
-  if (!qlog) {
-    // QCPY_ERROR(QCPY_ERROR_QLOG, qlog, QLOG_NULL);
-  }
+
+  QCPY_ASSERT(qlog, QCPY_ERROR_QLOG, qlog, QLOG_NULL);
+
   memset(qlog, 0, sizeof(qlog_t));
 
   qlog->qubit_count = qubits;
   qlog->graph = qlog_graph_init(qlog->qubit_count);
+  qlog->id = reg;
+
+  pthread_mutex_init(&qlog->lock, NULL);
 
   return qlog;
 }
 
 void qlog_delete(qlog_t *qlog) {
-  if (!qlog) {
-    // QCPY_ERROR(QCPY_ERROR_QLOG, qlog, QLOG_NULL);
-  }
+
+  QCPY_ASSERT(!qlog, QCPY_ERROR_QLOG, qlog, QLOG_NULL);
+
+  pthread_mutex_lock(&qlog->lock);
 
   for (uint16_t i = qlog->entry_count; i > 0; --i) {
     qlog_entry_t *temp_ptr = qlog->last_entry;
@@ -35,35 +44,33 @@ void qlog_delete(qlog_t *qlog) {
 
     qlog_entry_delete(temp_ptr);
 
-    if (temp_ptr) {
-      // QCPY_ERROR(QCPY_ERROR_QLOG, qlog, QLOG_DELETE_FAILED);
-    }
+    QCPY_ASSERT(!temp_ptr, QCPY_ERROR_QLOG, qlog, QLOG_DELETE_FAILED);
   }
 
-  // qlog_stats_delete(qlog->stats);
+  pthread_mutex_unlock(&qlog->lock);
 
+  // qlog_stats_delete(qlog->stats);
+  pthread_mutex_destroy(&qlog->lock);
   free(qlog);
   qlog = NULL;
   return;
 }
 
 void qlog_clear(qlog_t *qlog) {
-  if (!qlog) {
-    // QCPY_ERROR(QCPY_ERROR_QLOG, qlog, QLOG_NULL);
-  }
+  QCPY_ASSERT(qlog, QCPY_ERROR_QLOG, qlog, QLOG_NULL);
 
+  pthread_mutex_lock(&qlog->lock);
   qlog_entry_t *qlog_walker = qlog->entries;
 
   while (qlog_walker) {
     qlog_entry_t *temp_walker = qlog_walker;
     qlog_walker = qlog_walker->next_entry;
     qlog_entry_delete(temp_walker);
-
-    if (temp_walker) {
-    }
   }
 
   qlog->entry_count = 0;
+
+  pthread_mutex_lock(&qlog->lock);
 
   return;
 }
@@ -71,13 +78,11 @@ void qlog_clear(qlog_t *qlog) {
 void qlog_append(qlog_t *qlog, block_t block) {
   assert(block.type == BLOCK_QLOG_ENTRY);
 
-  if (!qlog) {
-    // QCPY_ERROR(QCPY_ERROR_QLOG, qlog, QLOG_NULL);
-  }
+  QCPY_ASSERT(qlog, QCPY_ERROR_QLOG, qlog, QLOG_NULL);
 
-  if (block.qubits > qlog->qubit_count) {
-    // QCPY_ERROR(QCPY_ERROR_QLOG, qlog, QLOG_BAD_SIZING);
-  }
+  QCPY_ASSERT((block.qubits > qlog->qubit_count), QCPY_ERROR_QLOG, qlog,
+              QLOG_BAD_SIZING);
+
   if (!qlog->entries) {
     qlog->entries = qlog_entry_init(qlog->entry_count, block);
     qlog->last_entry = qlog->entries;
@@ -94,21 +99,23 @@ void qlog_append(qlog_t *qlog, block_t block) {
     qlog->last_entry = qlog->last_entry->next_entry;
   }
 
-  if (!qlog->last_entry) {
-    // QCPY_ERROR(QCPY_ERROR_QLOG, qlog, QLOG_BAD_ENTRY);
-  }
+  QCPY_ASSERT(qlog->last_entry, QCPY_ERROR_QLOG, qlog, QLOG_BAD_ENTRY);
+
   ++(qlog->entry_count);
 
   qlog_graph_append(qlog->graph, qlog->last_entry);
 }
 
 void qlog_dump_content(qlog_t *qlog, bool verbose) {
+  // stupid ahh build system, dont remove I guess???
+  //
+  (void)base_decompress_qubit_bitpack(0, 0);
+
   if (!qlog) {
     return;
   }
 
   if (qlog->entry_count == 0) {
-    printf("qlog is empty\n.");
     return;
   }
 

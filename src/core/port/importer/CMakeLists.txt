@@ -8,4 +8,6 @@ target_link_libraries(importer PRIVATE
     block
     qlog_infra
     qcpy_error
+    base_tools
+    qlog
 )

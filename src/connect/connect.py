@@ -3,9 +3,10 @@ import ctypes
 from typing import List
 from .port_entry import Block, Block_Type, IMPORT_MAX_SIZE
 import subprocess
-import time
+from functools import reduce
+from operator import or_
 
-
+CACHELINE = 64
 class Connect:
     def __init__(self, bootargs: List[str], qcpy_connect: str, qcpy_core: str, quack_core: str, quack_gpu_core: str):
         self.qcpy_core_bin_name = qcpy_core
@@ -37,14 +38,15 @@ class Connect:
 
         self.qcpy_connect.dock_add.restype = ctypes.c_int
         self.qcpy_connect.dock_add.argtypes = [ctypes.POINTER(Block)]
-
         self.qcpy_connect.dock_get_qc_state.argtypes = [ctypes.c_int]
+        '''
 
         self.qcpy_connect.dock_get_qc_entries.argtypes = [
             ctypes.c_int,
             ctypes.POINTER(Block),
         ]
         self.qcpy_connect.dock_get_qc_entries.restype = ctypes.c_int
+        '''
 
     def __create_qubit_bitmask__(self, to_bitmask: List[int]) -> int:
         bitmask = 0
@@ -117,32 +119,26 @@ class Connect:
             controlled_qubits, target_qubits
         ):
             return
-        num_qubits = len(qubits)
 
+        num_qubits = len(qubits)
         num_controlled = len(controlled_qubits)
         num_target = len(target_qubits)
 
-        qubit_bitmask = self.__create_qubit_bitmask__(qubits)
-
-        controlled_bitmask = self.__create_qubit_bitmask__(controlled_qubits)
-        target_bitmask = self.__create_qubit_bitmask__(target_qubits)
-        controlled_bitpack = self.__create_qubit_bitpack__(controlled_qubits)
-        target_bitpack = self.__create_qubit_bitpack__(target_qubits)
-
         new_block = Block()
+
+        new_block.qubit_bitmask = self.__create_qubit_bitmask__(qubits)
+
+        if (controlled_qubits):
+            new_block.controlled_bitmask = self.__create_qubit_bitmask__(controlled_qubits)
+            new_block.controlled_bitpack = self.__create_qubit_bitpack__(controlled_qubits)
+
+        if (target_qubits):
+            new_block.target_bitmask = self.__create_qubit_bitmask__(target_qubits)
+            new_block.target_bitpack = self.__create_qubit_bitpack__(target_qubits)
 
         new_block.type = Block_Type.QLOG_ENTRY
         new_block.reg = reg
         new_block.qubits = num_qubits
-
-        new_block.qubit_bitmask = qubit_bitmask
-
-        new_block.controlled_bitmask = controlled_bitmask
-        new_block.controlled_bitpack = controlled_bitpack
-
-        new_block.target_bitmask = target_bitmask
-        new_block.target_bitpack = target_bitpack
-
         new_block.theta = theta
         new_block.phi = phi
         new_block.lmbda = lmbda
@@ -170,9 +166,7 @@ class Connect:
         entries = []
         sub_entries = (Block * IMPORT_MAX_SIZE)()
 
-        output = self.qcpy_connect.dock_get_qc_entries(reg, sub_entries)
         entries += sub_entries
-        count = output
         """
         while (output == IMPORT_MAX_SIZE):
             count += output

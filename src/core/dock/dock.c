@@ -1,18 +1,20 @@
 #include <assert.h>
+#include <base.h>
+#include <base_tools.h>
 #include <dock.h>
+#include <dock_logger.h>
 #include <fcntl.h>
 #include <pthread.h>
 #include <qcpy_error.h>
 #include <signal.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #include <sys/mman.h>
 #include <sys/prctl.h>
 #include <unistd.h>
 
-import_t *importer = NULL;
 export_t *exporter = NULL;
+import_t *importer = NULL;
 
 sem_t *dock_import_sem;
 sem_t *port_import_sem;
@@ -20,107 +22,59 @@ sem_t *port_import_sem;
 sem_t *dock_export_sem;
 sem_t *port_export_sem;
 
-int shared_import_space;
 int shared_export_space;
 
-dock_logger_t dock_log;
+block_buffer_global_t *block_buffer_global_queues = NULL;
+int global_queues_shared_fd = -1;
+
+dock_thread_pool_t dock_thread_pool;
 
 void dock_wait_for_boot() {
-  while (!importer || !exporter || !importer->ready ||
-         !exporter->qcpy_core_ready) {
-  }
+  atomic_size_t total = 0;
+  do {
+    total = atomic_load_explicit(&block_buffer_global_queues->total_queues,
+                                 memory_order_relaxed);
+  } while (total + 1 != IMPORTER_FUNNEL);
 }
 
 static void dock_create_importer() {
-  assert(!importer);
-  shared_import_space =
-      shm_open(QCPY_IMPORT, OFLAG_SHARED_MEM_ARGS, MODE_SHARED_MEM);
-  if (shared_import_space < 0) {
-    perror("shm_open");
-    _exit(1);
-    assert(0);
-  }
+  importer =
+      (import_t *)base_tools_create_shared_mem(sizeof(import_t), QCPY_IMPORT);
+  assert(importer);
 
-  if (ftruncate(shared_import_space, sizeof(import_t)) < 0) {
-    perror("ftruncate");
-    assert(0);
-  }
+  port_import_sem = base_tools_create_shared_sem(PORT_IMPORT_SEM, 0);
+  assert(port_import_sem);
 
-  importer = mmap(NULL, sizeof(*importer), PROT_ARGS, MAP_SHARED,
-                  shared_import_space, 0);
-
-  if (importer == MAP_FAILED) {
-    perror("map_failed");
-    assert(0);
-  }
-
-  memset(importer, 0, sizeof(import_t));
-
-  sem_unlink(DOCK_IMPORT_SEM);
-  dock_import_sem =
-      sem_open(DOCK_IMPORT_SEM, OFLAG_SHARED_SEM_ARGS, MODE_SHARED_MEM, 0);
-
-  sem_unlink(PORT_IMPORT_SEM);
-  port_import_sem =
-      sem_open(PORT_IMPORT_SEM, OFLAG_SHARED_SEM_ARGS, MODE_SHARED_MEM, 0);
-
-  if (!dock_import_sem) {
-    perror("import_sem_failed");
-    assert(0);
-  }
-
-  if (!port_import_sem) {
-    perror("import_sem_failed");
-    assert(0);
-  }
+  dock_import_sem = base_tools_create_shared_sem(DOCK_IMPORT_SEM, 0);
+  assert(dock_import_sem);
 }
 
 static void dock_create_exporter() {
   assert(!exporter);
-  shared_export_space =
-      shm_open(QCPY_EXPORT, OFLAG_SHARED_MEM_ARGS, MODE_SHARED_MEM);
-  if (shared_export_space < 0) {
-    perror("shm_open");
-    _exit(1);
-    assert(0);
-  }
+  exporter =
+      (export_t *)base_tools_create_shared_mem(sizeof(export_t), QCPY_EXPORT);
+  assert(exporter);
 
-  if (ftruncate(shared_export_space, sizeof(export_t)) < 0) {
-    perror("ftruncate");
-    assert(0);
-  }
+  port_export_sem = base_tools_create_shared_sem(PORT_EXPORT_SEM, 0);
+  assert(port_export_sem);
 
-  exporter = mmap(NULL, sizeof(*exporter), PROT_ARGS, MAP_SHARED,
-                  shared_export_space, 0);
-
-  if (exporter == MAP_FAILED) {
-    perror("map_failed");
-    assert(0);
-  }
-
-  memset(exporter, 0, sizeof(export_t));
-  sem_unlink(DOCK_EXPORT_SEM);
-  dock_export_sem = sem_open(DOCK_EXPORT_SEM, OFLAG_SHARED_SEM_ARGS,
-                             MODE_SHARED_MEM, IMPORT_MAX_SIZE);
-
-  sem_unlink(PORT_EXPORT_SEM);
-  port_export_sem =
-      sem_open(PORT_EXPORT_SEM, OFLAG_SHARED_SEM_ARGS, MODE_SHARED_MEM, 0);
-
-  if (!dock_export_sem) {
-    perror("export_sem_failed");
-    assert(0);
-  }
-
-  if (!port_export_sem) {
-    perror("export_sem_failed");
-    assert(0);
-  }
+  dock_export_sem = base_tools_create_shared_sem(DOCK_EXPORT_SEM, 0);
+  assert(dock_export_sem);
 }
 
 void dock_port_init() {
-  dock_create_exporter();
-  dock_create_importer();
+  assert(!block_buffer_global_queues);
+  global_queues_shared_fd = base_tools_create_shared_mem_new(
+      sizeof(block_buffer_global_t), BLOCK_BUFFER_QUEUE_GLOBAL_NAME,
+      (void **)&block_buffer_global_queues);
+
+  assert(block_buffer_global_queues);
+  assert(global_queues_shared_fd != -1);
+
+  // dock_create_importer();
+  // dock_create_exporter();
+
+  dock_thread_pool_launch();
 }
 
 char *dock_init(char *args[]) {
@@ -143,7 +97,6 @@ char *dock_quack_gpu_init(char *args[]) {
   if (!args) {
     return NULL;
   }
-
   return args[2];
 }
 
@@ -151,13 +104,14 @@ bool dock_set_gpu_enabled(char *args[]) { return (!strcmp(args[3], "Y")); }
 
 void dock_run_boot() {
   assert(boot_thread_args);
-
   dock_port_init();
-
   pid_t pid = fork();
   if (pid == 0) {
     prctl(PR_SET_PDEATHSIG, SIGTERM);
-    char *args_test[] = {boot_thread_args->exec_name, NULL};
+    char shared_mem_fd[20];
+    snprintf(shared_mem_fd, sizeof(shared_mem_fd), "%d",
+             global_queues_shared_fd);
+    char *args_test[] = {boot_thread_args->exec_name, shared_mem_fd, NULL};
     execvp(boot_thread_args->exec_name, args_test);
     perror("execvp failed");
     _exit(1);
@@ -181,157 +135,121 @@ void dock_run_boot() {
 static void dock_flush_entries() {
   sem_post(dock_import_sem);
   sem_wait(port_import_sem);
+
+  importer->flushing = false;
+  importer->flush_reg = 0;
+
   assert(importer->idx == 0);
 }
 
-int dock_add(block_t *block) {
-  dock_log_append(block->reg, block);
+void dock_get_qc_state(int flush_reg) {}
 
-  block_add(block, importer);
+void dock_thread_pool_launch() {
+  pthread_create(&dock_thread_pool.boot_thread, NULL, dock_thread_pool_init,
+                 NULL);
+}
 
-  if (importer->idx == IMPORT_MAX_SIZE) {
-    dock_flush_entries();
+static struct dock_queue_item_t *dock_queue_item_init(block_t *block) {
+  struct dock_queue_item_t *dock_queue_item =
+      (struct dock_queue_item_t *)malloc(sizeof(struct dock_queue_item_t));
+
+  dock_queue_item->block = block;
+  dock_queue_item->next = NULL;
+
+  return dock_queue_item;
+}
+
+void dock_enqueue(block_t *block) {
+  struct dock_queue_item_t *dock_queue_item = dock_queue_item_init(block);
+  assert(&dock_queue_item);
+
+  size_t idx = block->reg % DOCK_QUEUES_TOTAL;
+  dock_queue_t *dock_queue = &dock_thread_pool.queue[idx];
+
+  pthread_mutex_lock(&dock_queue->lock);
+
+  if (!dock_queue->head) {
+    dock_queue->head = dock_queue_item;
+    dock_queue->tail = dock_queue_item;
+  } else {
+    dock_queue->tail->next = dock_queue_item;
+    dock_queue->tail = dock_queue->tail->next;
   }
 
+  ++dock_queue->item_count;
+
+  pthread_cond_signal(&dock_queue->cond);
+
+  pthread_mutex_unlock(&dock_queue->lock);
+}
+
+int dock_add(block_t *block) {
+  dock_enqueue(block);
   return 1;
 }
 
-void dock_get_qc_state(int flush_reg) {
-
-  if (importer->idx > 0) {
-    importer->flushing = true;
-    importer->flush_reg = flush_reg;
-
-    dock_flush_entries();
-  }
-
-  /*
-   * TODO: await for exporter to let us know it is ready for us to consume data,
-   * use a do while loop to await for entries to be calculated
-   */
+void dock_queue_init(dock_queue_t *dock_queue) {
+  assert(dock_queue);
+  pthread_mutex_init(&dock_queue->lock, NULL);
+  pthread_cond_init(&dock_queue->cond, NULL);
 }
 
-int dock_get_qc_entries(uint32_t reg, block_t *blocks) {
-  dock_log_t *dock_logger = dock_log_find(reg);
-  return dock_log_fill_array(dock_logger, blocks);
+block_t *dock_dequeue(dock_queue_t *dock_queue) {
+  assert(dock_queue);
+  block_t *block = NULL;
+
+  pthread_mutex_lock(&dock_queue->lock);
+
+  while (dock_queue->item_count == 0) {
+    pthread_cond_wait(&dock_queue->cond, &dock_queue->lock);
+  }
+
+  dock_queue_item_t *head = dock_queue->head;
+
+  assert(head);
+
+  block = head->block;
+
+  dock_queue->head = head->next;
+
+  if (!dock_queue->head) {
+    dock_queue->tail = NULL;
+  }
+
+  assert(dock_queue->item_count > 0);
+  --dock_queue->item_count;
+
+  pthread_mutex_unlock(&dock_queue->lock);
+
+  free(head);
+
+  return block;
 }
 
-dock_log_t *dock_log_init(uint32_t reg, block_t *block) {
-  assert(block);
+static void *dock_queue_dequeue_worker_thread(void *queue_id) {
+  assert(&queue_id);
+  size_t id = (size_t)queue_id;
+  assert(id < DOCK_QUEUES_TOTAL && id >= 0);
+  dock_queue_t *dock_queue = &dock_thread_pool.queue[id];
 
-  dock_log_t *new_dock_log = (dock_log_t *)malloc(sizeof(dock_log_t));
-  memset(new_dock_log, 0, sizeof(dock_log_t));
-
-  new_dock_log->reg = reg;
-
-  if (!dock_log.logs) {
-    dock_log.logs = new_dock_log;
-    dock_log.last = new_dock_log;
-  } else {
-    assert(dock_log.logs);
-    dock_log.last->next = new_dock_log;
-    dock_log.last = dock_log.last->next;
-  }
-
-  dock_log.last->queue = dock_log_item_init(block);
-  assert(dock_log.last->queue);
-  return new_dock_log;
-}
-
-dock_log_item_t *dock_log_item_init(block_t *block) {
-  assert(block);
-
-  dock_log_item_t *dock_log_item = NULL;
-
-  dock_log_item = (dock_log_item_t *)malloc(sizeof(dock_log_item_t));
-  memset(dock_log_item, 0, sizeof(dock_log_item_t));
-  memcpy(&dock_log_item->block, block, sizeof(block_t));
-
-  return dock_log_item;
-}
-
-dock_log_t *dock_log_find(uint32_t reg) {
-  if (dock_log.last_used && dock_log.last_used->reg == reg) {
-    return dock_log.last_used;
-  }
-
-  dock_log_t *dock_log_walker = dock_log.logs->next;
-
-  while (dock_log_walker && dock_log_walker->reg != reg) {
-    dock_log_walker = dock_log_walker->next;
-  }
-
-  if (dock_log_walker) {
-    dock_log.last_used = dock_log_walker;
-  }
-
-  return dock_log_walker;
-}
-
-void dock_log_append(uint32_t reg, block_t *block) {
-  assert(block);
-  dock_log_t *to_append = dock_log.logs;
-
-  if (!to_append) {
-    to_append = dock_log_init(reg, block);
-    dock_log.last_used = to_append;
-    return;
-  }
-
-  to_append = dock_log_find(reg);
-
-  if (!to_append) {
-    to_append = dock_log_init(reg, block);
-    dock_log.last_used = to_append;
-    return;
-  }
-
-  assert(to_append && to_append->queue);
-
-  dock_log_item_t *item = dock_log_item_init(block);
-
-  if (!to_append->queue->next) {
-    to_append->queue->next = item;
-    to_append->last = item;
-  } else {
-    to_append->last->next = item;
-    to_append->last = to_append->last->next;
+  for (;;) {
+    block_t *block = dock_dequeue(dock_queue);
+    block_enqueue(block_buffer_global_queues, block);
   }
 }
 
-int dock_log_fill_array(dock_log_t *log, block_t *blocks) {
-  assert(log && blocks);
-  int count = 0;
+void *dock_thread_pool_init(void *not_used) {
+  (void)not_used;
 
-  dock_log_item_t *queue = log->queue;
-  assert(queue);
-
-  if (log->checkpoint) {
-    queue = log->checkpoint;
-  }
-  uint64_t i;
-
-  for (i = 0; i < IMPORT_MAX_SIZE; ++i) {
-    if (!queue) {
-      return count;
-    }
-
-    memcpy(&blocks[i], &queue->block, sizeof(block_t));
-    blocks[i].used = true;
-
-    queue = queue->next;
-    count++;
+  for (size_t i = 0; i < DOCK_QUEUES_TOTAL; ++i) {
+    dock_queue_init(&dock_thread_pool.queue[i]);
+    pthread_create(&dock_thread_pool.threads[i], NULL,
+                   dock_queue_dequeue_worker_thread, (void *)i);
   }
 
-  if (i != IMPORT_MAX_SIZE) {
-    for (; i < IMPORT_MAX_SIZE; ++i) {
-      memset(&blocks[i], 0, sizeof(block_t));
-    }
-
-    log->checkpoint = NULL;
-    return IMPORT_MAX_SIZE - count;
+  for (size_t i = 0; i < DOCK_QUEUES_TOTAL; ++i) {
+    pthread_join(dock_thread_pool.threads[i], NULL);
   }
 
-  log->checkpoint = queue->next;
-  return count;
+  return NULL;
 }

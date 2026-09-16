@@ -1,5 +1,6 @@
 #include <assert.h>
 #include <replay_qlog_entry.h>
+#include <stdlib.h>
 #include <string.h>
 
 const char *replay_qlog_entry_description[] = {

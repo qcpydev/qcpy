@@ -1,9 +1,14 @@
 add_library(dock dock.c)
 
+add_subdirectory(logger)
+
 target_link_libraries(dock PUBLIC
    qcpy_error
    qcpy_base
-   args
+   boot
+   base_tools
+   dock_logger
+   importer
 )
 
 target_include_directories(dock PUBLIC

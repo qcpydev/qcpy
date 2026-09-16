@@ -1,12 +1,18 @@
-// #include <math.h>
-//  #include <qcpy_error.h>
 #include <assert.h>
 #include <qlog_entry.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-#define BITPACK_MAX 0x3F
-#define BITPACK_RANGE 6
+typedef qlog_entry_t *(*qlog_entry_known_gate_func)(qlog_entry_init_params_t *);
+
+const qlog_entry_known_gate_func qlog_entry_known_gate_funcs[GATE_MAX] = {
+    [GATE_HADAMARD] = qlog_entry_init_hadamard_gate,
+    [GATE_T] = qlog_entry_init_t_gate,
+    [GATE_TDG] = qlog_entry_init_tdg_gate,
+    [GATE_CX] = qlog_entry_init_cx_gate,
+};
 
 qlog_entry_t *qlog_entry_init(uint64_t id, block_t block) {
   qlog_entry_t *qlog_entry = (qlog_entry_t *)malloc(sizeof(qlog_entry_t));
@@ -15,19 +21,39 @@ qlog_entry_t *qlog_entry_init(uint64_t id, block_t block) {
   qlog_entry->qubit_bitmask = block.qubit_bitmask;
   qlog_entry->controlled_bitmask = block.controlled_bitmask;
   qlog_entry->target_bitmask = block.target_bitmask;
-  qlog_entry->inverted = block.inverted;
-  qlog_entry->gate_name = (base_gate_e)block.gate;
-  qlog_entry->gate_type = (base_type_e)block.type;
-  qlog_entry->qubit_count = block.qubits;
+
   qlog_entry->controlled_bitpack = block.controlled_bitpack;
   qlog_entry->target_bitpack = block.target_bitpack;
+  qlog_entry->theta = block.theta;
+  qlog_entry->phi = block.phi;
+  qlog_entry->lambda = block.lmbda;
+
   qlog_entry->controlled_count = block.controlled_count;
   qlog_entry->target_count = block.target_count;
 
-  // qlog_entry->gate_params = quantum_gate_params_init(gate, theta, phi,
-  // lambda);
-  if (block.theta || block.phi || block.lmbda) {
+  qlog_entry->gate_name = (base_gate_e)block.gate;
+  qlog_entry->gate_type = (base_type_e)block.type;
+  qlog_entry->qubit_count = block.qubits;
+
+  qubit_t qubit_min = QLOG_MAX_QUBITS;
+  qubit_t qubit_max = 0;
+
+  bitmask_t i = 1;
+  qubit_t qubit = 0;
+  while (i < BLOCK_BITMASK_MAX) {
+    if (i & qlog_entry->qubit_bitmask) {
+      qubit_min = QLOG_ENTRY_MIN_QUBIT(qubit_min, qubit);
+      qubit_max = QLOG_ENTRY_MAX_QUBIT(qubit_max, qubit);
+    }
+
+    qubit += 1;
+    i <<= 1;
   }
+
+  qlog_entry->min_qubit = qubit_min;
+  qlog_entry->max_qubit = qubit_max;
+
+  qlog_entry->inverted = block.inverted;
 
   return qlog_entry;
 }
@@ -185,13 +211,109 @@ bool qlog_entry_compare(qlog_entry_t *qlog_entry, qlog_entry_t *to_compare) {
          qlog_entry->qubit_bitmask == to_compare->qubit_bitmask;
 }
 
-uint16_t *qlog_entry_unpack(uint8_t qubits, uint64_t bitpack) {
-  uint16_t *unpacked = NULL;
-  unpacked = (uint16_t *)malloc(2 * sizeof(qubits));
+qlog_entry_t *
+qlog_entry_init_known_gate(qlog_entry_init_params_t *qlog_params) {
+  assert(qlog_params);
 
-  for (uint16_t i = 0; i < qubits; ++i) {
-    unpacked[i] = (bitpack >> (i * BITPACK_RANGE)) & BITPACK_MAX;
-  }
+  qlog_entry_t *qlog_entry = (qlog_entry_t *)malloc(sizeof(qlog_entry_t));
+  assert(qlog_entry);
 
-  return unpacked;
+  qlog_entry->qubit_bitmask =
+      base_create_qubit_bitmask(qlog_params->qubits, qlog_entry->qubit_count);
+
+  qlog_entry->theta = qlog_params->theta;
+  qlog_entry->phi = qlog_params->phi;
+  qlog_entry->lambda = qlog_params->lambda;
+  qlog_entry->gate_name = qlog_params->gate_name;
+  qlog_entry->gate_type = qlog_params->gate_type;
+  qlog_entry->qubit_count = qlog_params->qubit_count;
+  qlog_entry->controlled_count = qlog_params->controlled_count;
+  qlog_entry->target_count = qlog_params->target_count;
+  qlog_entry->inverted = qlog_params->inverted;
+
+  return qlog_entry;
+}
+
+static qlog_entry_t *qlog_entry_init_base(qubit_t *qubits, qubit_t qubit_count,
+                                          base_gate_e gate, base_type_e type) {
+  qlog_entry_t *qlog_entry = (qlog_entry_t *)malloc(sizeof(qlog_entry_t));
+  memset(qlog_entry, 0, sizeof(qlog_entry_t));
+  assert(qlog_entry);
+
+  qlog_entry->qubit_bitmask = base_create_qubit_bitmask(qubits, qubit_count);
+  qlog_entry->gate_name = gate;
+  qlog_entry->gate_type = type;
+  qlog_entry->entry_id = QLOG_ENTRY_DUMMY_ID;
+  qlog_entry->qubit_count = qubit_count;
+
+  return qlog_entry;
+}
+
+qlog_entry_t *
+qlog_entry_init_hadamard_gate(qlog_entry_init_params_t *qlog_params) {
+  assert(qlog_params);
+
+  qlog_entry_t *qlog_entry =
+      qlog_entry_init_base(qlog_params->qubits, qlog_params->qubit_count,
+                           GATE_HADAMARD, TYPE_SINGLE);
+
+  return qlog_entry;
+}
+
+qlog_entry_t *qlog_entry_init_t_gate(qlog_entry_init_params_t *qlog_params) {
+  assert(qlog_params);
+
+  qlog_entry_t *qlog_entry = qlog_entry_init_base(
+      qlog_params->qubits, qlog_params->qubit_count, GATE_T, TYPE_SINGLE);
+
+  return qlog_entry;
+}
+
+qlog_entry_t *qlog_entry_init_tdg_gate(qlog_entry_init_params_t *qlog_params) {
+  assert(qlog_params);
+  qlog_entry_t *qlog_entry = qlog_entry_init_base(
+      qlog_params->qubits, qlog_params->qubit_count, GATE_TDG, TYPE_SINGLE);
+  return qlog_entry;
+}
+qlog_entry_t *qlog_entry_init_rz_gate(qlog_entry_init_params_t *qlog_params) {
+  assert(qlog_params);
+
+  qlog_entry_t *qlog_entry = qlog_entry_init_base(
+      qlog_params->qubits, qlog_params->qubit_count, GATE_RZ, TYPE_SINGLE);
+
+  qlog_entry->theta = qlog_params->theta;
+
+  return qlog_entry;
+}
+
+qlog_entry_t *qlog_entry_init_rx_gate(qlog_entry_init_params_t *qlog_params) {
+  assert(qlog_params);
+
+  qlog_entry_t *qlog_entry = qlog_entry_init_base(
+      qlog_params->qubits, qlog_params->qubit_count, GATE_RX, TYPE_SINGLE);
+
+  qlog_entry->theta = qlog_params->theta;
+
+  return qlog_entry;
+}
+
+qlog_entry_t *qlog_entry_init_cx_gate(qlog_entry_init_params_t *qlog_params) {
+  assert(qlog_params);
+
+  qlog_entry_t *qlog_entry = qlog_entry_init_base(
+      qlog_params->qubits, qlog_params->qubit_count, GATE_CX, TYPE_CONTROLLED);
+
+  qlog_entry->controlled_bitmask = base_create_qubit_bitmask(
+      qlog_params->controls, qlog_params->controlled_count);
+
+  qlog_entry->controlled_bitpack = base_create_qubit_bitpack(
+      qlog_params->controls, qlog_params->controlled_count);
+
+  qlog_entry->target_bitmask = base_create_qubit_bitmask(
+      qlog_params->targets, qlog_params->target_count);
+
+  qlog_entry->target_bitpack = base_create_qubit_bitpack(
+      qlog_params->targets, qlog_params->target_count);
+
+  return qlog_entry;
 }

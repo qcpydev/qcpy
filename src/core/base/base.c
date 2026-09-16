@@ -1,4 +1,9 @@
+#include <assert.h>
 #include <base.h>
+#include <stdlib.h>
+
+#define BITPACK_MAX 0x3F
+#define BITPACK_RANGE 6
 
 const char *base_gate_strs[] = {
     [GATE_IDENTITY] = "IDENTITY",
@@ -41,12 +46,48 @@ const char *base_gate_strs[] = {
 };
 
 const char *base_type_strs[] = {
-    [TYPE_SINGLE] = "SINGLE",
-    [TYPE_CONTROLLED] = "CONTROLLED",
-    [TYPE_MULTI] = "MULTI",
-    [TYPE_BLOCK] = "BLOCK",
+    [TYPE_SINGLE] = "SINGLE",       [TYPE_CONTROLLED] = "CONTROLLED",
+    [TYPE_MULTI] = "MULTI",         [TYPE_BLOCK] = "BLOCK",
     [TYPE_ALGORITHM] = "ALGORITHM",
 };
 
-const char *base_get_gate_str(int gate) { return base_gate_strs[gate]; }
-const char *base_get_type_str(int type) { return base_type_strs[type]; }
+const char *base_get_gate_str(base_gate_e gate) { return base_gate_strs[gate]; }
+const char *base_get_type_str(base_type_e type) { return base_type_strs[type]; }
+
+bitmask_t base_create_qubit_bitmask(qubit_t *to_bitmask, qubit_t qubits) {
+  bitmask_t bitmask = 0;
+
+  for (qubit_t i = 0; i < qubits; ++i) {
+    bitmask |= (bitmask_t)1 << to_bitmask[i];
+  }
+
+  return bitmask;
+}
+
+bitpack_t base_create_qubit_bitpack(qubit_t *to_bitpack, qubit_t count) {
+  return 0;
+}
+
+qubit_t *base_decompress_qubit_bitpack(qubit_t qubits, bitpack_t bitpacked) {
+  qubit_t *unpacked = NULL;
+  unpacked = (qubit_t *)malloc(2 * sizeof(qubits));
+
+  for (qubit_t i = 0; i < qubits; ++i) {
+    unpacked[i] = (bitpacked >> (i * BITPACK_RANGE)) & BITPACK_MAX;
+  }
+
+  return unpacked;
+}
+
+qubit_t *base_unpack_qubit_bitmask(bitmask_t bitmasked, qubit_t count) {
+  qubit_t *qubits = (qubit_t *)malloc(sizeof(qubit_t) * count);
+
+  qubit_t qubit = 0;
+  for (bitmask_t i = 0; i < count; i <<= 1) {
+    if (i & bitmasked) {
+      qubits[i] = qubit;
+    }
+    ++qubit;
+  }
+  return qubits;
+}

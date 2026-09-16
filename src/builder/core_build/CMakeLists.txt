@@ -1,0 +1,3 @@
+add_subdirectory(qcpy_core_build)
+add_subdirectory(quack_core_build)
+add_subdirectory(quack_core_gpu_build)

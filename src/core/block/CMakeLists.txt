@@ -2,6 +2,7 @@ add_library(block block.c)
 
 target_link_libraries(block PUBLIC
    qcpy_error
+   qcpy_base
    port
 )
 

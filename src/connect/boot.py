@@ -2,13 +2,12 @@ import os
 from .connect import Connect
 
 FILE_PATH = os.path.dirname(os.path.realpath(__file__))
+BUILD_PATH = "/builder/build/"
 
-BUILD_PATH = "/core/build/"
-CONNECT_NAME = "libqcpy_connect.so"
-CORE_NAME = "qcpy_core"
-
-QUACK_NAME = "quack_core"
-QUACK_GPU_NAME = "quack_core_gpu"
+CONNECT_NAME = "lib/libqcpy_connect.so"
+CORE_NAME = "bin/qcpy_core"
+QUACK_NAME = "bin/quack_core"
+QUACK_GPU_NAME = "bin/quack_core_gpu"
 
 QCPY_CONNECT_FILE_PATH = (
     str(os.path.abspath(os.path.join(FILE_PATH, os.pardir))) + BUILD_PATH + CONNECT_NAME

@@ -17,13 +17,13 @@
  */
 
 typedef struct qlog_t {
-
   uint64_t entry_count;     // number of entries in qlog
   qlog_entry_t *entries;    // qlog entries
   qlog_entry_t *last_entry; // qlog last inserted item
   qlog_graph_t *graph;      // quantum circuit layout
   uint64_t id;              // id from the qlog_register
   uint16_t qubit_count;     // number of qubits
+  pthread_mutex_t lock;     // lock for exporting and importing
 } qlog_t;
 
 typedef enum {
@@ -35,7 +35,7 @@ typedef enum {
   QLOG_DELETE_FAILED
 } qlog_error_e;
 
-qlog_t *qlog_init(uint8_t qubits);
+qlog_t *qlog_init(uint8_t qubits, uint16_t reg);
 void qlog_delete(qlog_t *qlog);
 void qlog_append(qlog_t *qlog, block_t block);
 bool qlog_append_entry(qlog_t *qlog, qlog_entry_t *qlog_entry);
