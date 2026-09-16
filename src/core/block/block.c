@@ -181,7 +181,6 @@ block_t block_dequeue(block_buffer_global_t *block_buffer_global,
       // handle bell wait;
     } else {
       assert(status == QUEUE_STATUS_DEQUEUED);
-      assert(use_to_dequeue.qubits != 0);
       // tell dock something has happened here
       return use_to_dequeue;
     }

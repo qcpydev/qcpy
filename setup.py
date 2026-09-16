@@ -12,8 +12,8 @@ with open("requirements.txt", "r") as requirements_fh:
 setup(
     name=PACKAGE_NAME,
     version=VERSION,
-    author="Brennan Freeze, Paris Osuch, Aundre Barras",
-    author_email="freezebrennan@gmail.com",
+    author="TBD for name",
+    author_email="TBD for domain",
     description="qcpy is an open source python library and collaborative project for flexible simulations and visualizations of quantum circuits.",
     long_description=readme,
     long_description_content_type="text/markdown",
@@ -24,6 +24,6 @@ setup(
         "License :: OSI Approved :: Apache 2.0 License",
         "Operating System :: OS Independent",
     ],
-    python_requires=">=3.9",
+    python_requires=">=3.8",
     install_requires=requirements,
 )
