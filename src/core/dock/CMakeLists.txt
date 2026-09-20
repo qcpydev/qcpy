@@ -8,7 +8,6 @@ target_link_libraries(dock PUBLIC
    boot
    base_tools
    dock_logger
-   importer
 )
 
 target_include_directories(dock PUBLIC

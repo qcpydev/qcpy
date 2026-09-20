@@ -1,4 +1,7 @@
 #include <block.h>
 #include <iostream>
 
-int main() { return 0; }
+int main() {
+  std::cout << "hello world!\n";
+  return 0;
+}

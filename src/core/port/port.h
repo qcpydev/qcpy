@@ -1,7 +1,6 @@
 #include <block.h>
 #include <exporter.h>
 #include <fcntl.h>
-#include <importer.h>
 #include <pthread.h>
 #include <semaphore.h>
 #include <sys/mman.h>
@@ -20,14 +19,9 @@
  */
 
 void port_init(int argc, char **argv);
-void port_import_init();
 void port_export_init();
-void port_close();
 void *port_export(void *null);
-void *port_import(void *null);
-void port_boot();
 
-extern pthread_t import_thread;
 extern pthread_t export_thread;
 extern block_buffer_global_t *block_buffer_global_queues;
 

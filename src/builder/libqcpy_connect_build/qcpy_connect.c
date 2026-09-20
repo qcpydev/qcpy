@@ -1,6 +1,5 @@
 #include <dock.h>
 #include <pthread.h>
-#include <stdio.h>
 #include <stdlib.h>
 
 boot_thread_args_t *boot_thread_args = NULL;
@@ -20,8 +19,6 @@ int qcpy_boot_connect(char *args[]) {
   boot_thread_args->quack_gpu_exec_name = quack_gpu_name;
   boot_thread_args->is_gpu_enabled = is_gpu_enabled;
 
-  // this should be done differently IMO, dock should be for adding entries and
-  // logger
   dock_run_boot();
   qcpy_wait_for_boot();
   return 0;

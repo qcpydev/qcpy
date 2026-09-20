@@ -106,13 +106,6 @@ block_enqueue_find_buffer_queue(block_buffer_global_t *block_buffer_global,
   return &block_buffer_global->queues[queue_idx];
 }
 
-void block_add(block_t *block, import_t *importer) {
-  assert(block && importer);
-
-  importer->queue[importer->idx] = *block;
-  importer->queue[importer->idx].used = true;
-  importer->idx++;
-}
 static block_buffer_queue_t *
 block_buffer_queue_get_with_qid(block_buffer_global_t *block_buffer_global,
                                 block_buffer_queue_id_t queue_id) {

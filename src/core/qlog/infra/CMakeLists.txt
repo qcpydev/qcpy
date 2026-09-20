@@ -9,7 +9,6 @@ target_link_libraries(qlog_infra PUBLIC
    qlog_scheduler
    qlog_thread_pool
    qlog
-   importer
 )
 
 target_include_directories(qlog_infra PUBLIC

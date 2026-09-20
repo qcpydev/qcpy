@@ -7,29 +7,7 @@
 #include <sys/mman.h>
 #include <unistd.h>
 
-void *base_tools_create_shared_mem(size_t size, char *name) {
-  int shared_mem_space = memfd_create(BLOCK_BUFFER_QUEUE_GLOBAL_NAME, 0);
-  ;
-
-  if (shared_mem_space == -1) {
-    perror("shm_open");
-    _exit(1);
-  }
-
-  if (ftruncate(shared_mem_space, size) < 0) {
-    perror("ftruncate");
-  }
-
-  void *mem = mmap(NULL, size, PROT_ARGS, MAP_SHARED, shared_mem_space, 0);
-
-  assert(mem != MAP_FAILED);
-
-  memset(mem, 0, size);
-
-  return mem;
-}
-
-int base_tools_create_shared_mem_new(size_t size, char *name, void **mem) {
+int base_tools_create_shared_mem(size_t size, char *name, void **mem) {
   int shared_mem_space = memfd_create(BLOCK_BUFFER_QUEUE_GLOBAL_NAME, 0);
   ;
 

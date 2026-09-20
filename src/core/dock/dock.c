@@ -14,13 +14,6 @@
 #include <unistd.h>
 
 export_t *exporter = NULL;
-import_t *importer = NULL;
-
-sem_t *dock_import_sem;
-sem_t *port_import_sem;
-
-sem_t *dock_export_sem;
-sem_t *port_export_sem;
 
 int shared_export_space;
 
@@ -33,47 +26,20 @@ void dock_wait_for_boot() {
   atomic_size_t total = 0;
   do {
     total = atomic_load_explicit(&block_buffer_global_queues->total_queues,
-                                 memory_order_relaxed);
-  } while (total + 1 != IMPORTER_FUNNEL);
-}
-
-static void dock_create_importer() {
-  importer =
-      (import_t *)base_tools_create_shared_mem(sizeof(import_t), QCPY_IMPORT);
-  assert(importer);
-
-  port_import_sem = base_tools_create_shared_sem(PORT_IMPORT_SEM, 0);
-  assert(port_import_sem);
-
-  dock_import_sem = base_tools_create_shared_sem(DOCK_IMPORT_SEM, 0);
-  assert(dock_import_sem);
-}
-
-static void dock_create_exporter() {
-  assert(!exporter);
-  exporter =
-      (export_t *)base_tools_create_shared_mem(sizeof(export_t), QCPY_EXPORT);
-  assert(exporter);
-
-  port_export_sem = base_tools_create_shared_sem(PORT_EXPORT_SEM, 0);
-  assert(port_export_sem);
-
-  dock_export_sem = base_tools_create_shared_sem(DOCK_EXPORT_SEM, 0);
-  assert(dock_export_sem);
+                                 memory_order_acquire);
+  } while (total + 1 != DOCK_QUEUES_TOTAL);
 }
 
 void dock_port_init() {
   assert(!block_buffer_global_queues);
-  global_queues_shared_fd = base_tools_create_shared_mem_new(
+  global_queues_shared_fd = base_tools_create_shared_mem(
       sizeof(block_buffer_global_t), BLOCK_BUFFER_QUEUE_GLOBAL_NAME,
       (void **)&block_buffer_global_queues);
 
   assert(block_buffer_global_queues);
   assert(global_queues_shared_fd != -1);
 
-  // dock_create_importer();
   // dock_create_exporter();
-
   dock_thread_pool_launch();
 }
 
@@ -105,6 +71,7 @@ bool dock_set_gpu_enabled(char *args[]) { return (!strcmp(args[3], "Y")); }
 void dock_run_boot() {
   assert(boot_thread_args);
   dock_port_init();
+
   pid_t pid = fork();
   if (pid == 0) {
     prctl(PR_SET_PDEATHSIG, SIGTERM);
@@ -117,7 +84,7 @@ void dock_run_boot() {
     _exit(1);
   }
 
-  pid_t quack_pid = 1;
+  pid_t quack_pid = fork();
   if (quack_pid == 0) {
     prctl(PR_SET_PDEATHSIG, SIGTERM);
     char *args_test[] = {boot_thread_args->quack_exec_name, NULL};
@@ -130,16 +97,6 @@ void dock_run_boot() {
     perror("execvp failed");
     _exit(1);
   }
-}
-
-static void dock_flush_entries() {
-  sem_post(dock_import_sem);
-  sem_wait(port_import_sem);
-
-  importer->flushing = false;
-  importer->flush_reg = 0;
-
-  assert(importer->idx == 0);
 }
 
 void dock_get_qc_state(int flush_reg) {}

@@ -1,6 +1,5 @@
 #include <boot.h>
 #include <boot_args.h>
-#include <importer.h>
 #include <port.h>
 #include <qlog.h>
 #include <qlog_infra.h>
@@ -22,7 +21,6 @@
 void boot_args_init() {}
 
 void boot_core_init() {
-  port_boot();
   qlog_infra_init();
   qlog_infra_await_finish();
 }

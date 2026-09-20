@@ -33,8 +33,8 @@ void exporter_migrate_init() {
     assert(0);
   }
 
-  exporter_migrate = mmap(NULL, sizeof(*importer), PROT_ARGS, MAP_SHARED,
-                          exporter_migrate_shared, 0);
+  exporter_migrate = mmap(NULL, sizeof(*exporter_migrate), PROT_ARGS,
+                          MAP_SHARED, exporter_migrate_shared, 0);
 
   if (exporter_migrate == MAP_FAILED) {
     perror("map_failed");

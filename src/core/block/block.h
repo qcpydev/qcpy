@@ -66,20 +66,27 @@ typedef enum : uint8_t {
 } block_type_e;
 
 #ifdef __cplusplus
+#include <atomic>
 #include <complex>
 typedef std::complex<float> float_comp;
+typedef std::atomic<std::size_t> block_idx_t;
+typedef std::atomic<pthread_t> block_queue_tid_t;
+typedef std::atomic<std::size_t> atomic_size_t;
 #else
 #include <complex.h>
 typedef float complex float_comp;
+typedef atomic_size_t block_idx_t;
+typedef _Atomic(pthread_t) block_queue_tid_t;
 #endif
 
+typedef char dont_use_cache_align_t;
+typedef size_t block_buffer_queue_id_t;
 typedef uint16_t reg_t;
 typedef uint64_t bitmask_t;
 typedef uint64_t bitpack_t;
 typedef float param_t;
 typedef uint8_t qubit_t;
 typedef uint8_t gate_t;
-
 #define BITS_IN_BYTE 8
 
 typedef struct block_s {
@@ -109,11 +116,6 @@ typedef enum {
   QUEUE_STATUS_ENQUEUED,
   QUEUE_STATUS_DEQUEUED
 } buffer_queue_status_e;
-
-typedef atomic_size_t block_idx_t;
-typedef char dont_use_cache_align_t;
-typedef _Atomic(pthread_t) block_queue_tid_t;
-typedef size_t block_buffer_queue_id_t;
 
 #define BLOCK_QUEUE_SIZE 8192u
 #define BLOCK_QUEUE_IDX_MAX (BLOCK_QUEUE_SIZE - 1u)

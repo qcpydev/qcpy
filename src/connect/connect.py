@@ -15,7 +15,7 @@ class Connect:
 
         self.qcpy_connect = ctypes.CDLL(qcpy_connect)
         self.bootargs = [self.qcpy_core_bin_name, self.quack_core_bin_name, self.quack_gpu_core_bin_name] + bootargs
-        self.gpu_enabled = True
+        self.gpu_enabled = False
 
         self.quantum_circuit_count = 0
         '''
