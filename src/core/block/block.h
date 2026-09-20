@@ -72,6 +72,7 @@ typedef std::complex<float> float_comp;
 typedef std::atomic<std::size_t> block_idx_t;
 typedef std::atomic<pthread_t> block_queue_tid_t;
 typedef std::atomic<std::size_t> atomic_size_t;
+typedef std::atomic<bool> atomic_bool;
 #else
 #include <complex.h>
 typedef float complex float_comp;
@@ -189,7 +190,7 @@ typedef struct export_s {
   bool flushing;
   bool entries_ready;
   bool qcpy_core_ready;
-  bool quack_core_ready;
+  atomic_bool export_ready;
 } export_t;
 
 extern export_t *exporter;

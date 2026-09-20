@@ -12,6 +12,7 @@ target_link_libraries(qlog PUBLIC
    qlog_graph
    qlog_optimize
    qcpy_base
+   exporter
 )
 
 target_include_directories(qlog PUBLIC

@@ -1,5 +1,6 @@
 #include <assert.h>
 #include <exporter.h>
+#include <exporter_migrate.h>
 #include <port.h>
 #include <pthread.h>
 #include <qlog_infra.h>
@@ -13,23 +14,27 @@
 
 exporter_signal_t exporter_signal;
 
-// TODO: MOVE THIS TO QUACK_EXPORT. We will never actually need to use this
-// shared mem, so whats the point of opening it! We will use our own shared mem
-// for exporter to send info to quack. We are just the mediator for sending over
-// stuff to quack
-//
+void exporter_flush_init() {
+  pthread_mutex_init(&exporter_signal.lock, NULL);
+  pthread_cond_init(&exporter_signal.cond, NULL);
+}
 
-void exporter_flush_init() { pthread_mutex_init(&exporter_signal.lock, NULL); }
+export_t *exporter_init(int exporter_memfd) {
+  assert(exporter_memfd != -1);
 
-void exporter_init() {}
+  export_t *exporter = mmap(NULL, sizeof(export_t), PROT_READ | PROT_WRITE,
+                            MAP_SHARED, exporter_memfd, 0);
+
+  assert(open != MAP_FAILED);
+
+  assert(!atomic_load_explicit(&exporter->export_ready, memory_order_acquire));
+  atomic_store_explicit(&exporter->export_ready, true, memory_order_release);
+
+  return exporter;
+}
 
 void exporter_process() {
-  int to_process = exporter_signal_item_dequeue();
-
-  qlog_t *qlog = qlog_infra_find_qlog(to_process);
-  pthread_mutex_lock(&qlog->lock);
-
-  assert(qlog);
+  qlog_t *qlog = exporter_signal_item_dequeue();
 
   qlog_graph_t *graph_to_process = qlog->graph;
   assert(graph_to_process);
@@ -44,13 +49,15 @@ void exporter_process() {
 
   memcpy(qlog_nodes, to_copy, sizeof(qlog_node_t *) * size);
 
-  // exporter_migrate_fill_queue(qlog_nodes, size);
+  exporter_migrate_fill_queue(qlog_nodes, size);
   free(qlog_nodes);
 
-  pthread_mutex_unlock(&qlog->lock);
+  assert(qlog);
 }
 
-exporter_signal_item_t *exporter_signal_item_init(int flush_reg) {
+exporter_signal_item_t *exporter_signal_item_init(qlog_t *qlog) {
+  assert(qlog);
+
   exporter_signal_item_t *sig_item;
 
   sig_item = (exporter_signal_item_t *)malloc(sizeof(exporter_signal_item_t));
@@ -58,7 +65,7 @@ exporter_signal_item_t *exporter_signal_item_init(int flush_reg) {
 
   memset(sig_item, 0, sizeof(exporter_signal_item_t));
 
-  sig_item->reg = flush_reg;
+  sig_item->qlog = qlog;
   return sig_item;
 }
 
@@ -68,32 +75,24 @@ void exporter_signal_item_delete(exporter_signal_item_t *sig_item) {
   sig_item = NULL;
 }
 
-int exporter_signal_item_dequeue() {
+qlog_t *exporter_signal_item_dequeue() {
   assert(exporter_signal.items);
-  int reg = exporter_signal.items->reg;
 
-  exporter_signal_item_t *sig_item = exporter_signal.items;
-  bool was_last = sig_item == exporter_signal.last;
+  qlog_t *qlog = exporter_signal.items->qlog;
 
-  if (exporter_signal.items->next) {
-    exporter_signal.items = exporter_signal.items->next;
-  }
+  exporter_signal_item_delete(exporter_signal.items);
+  exporter_signal.count--;
 
-  if (was_last) {
-    exporter_signal.items = NULL;
-    exporter_signal.last = NULL;
-  }
-
-  exporter_signal_item_delete(sig_item);
-
-  return reg;
+  return qlog;
 }
 
-void exporter_signal_item_append(int flush_reg) {
-  exporter_signal_item_t *sig_item = exporter_signal_item_init(flush_reg);
+void exporter_signal_item_append(qlog_t *qlog) {
+  assert(qlog);
+  exporter_signal_item_t *sig_item = exporter_signal_item_init(qlog);
 
   assert(sig_item);
 
+  pthread_mutex_lock(&exporter_signal.lock);
   if (!exporter_signal.items) {
     exporter_signal.items = sig_item;
     exporter_signal.last = sig_item;
@@ -101,4 +100,9 @@ void exporter_signal_item_append(int flush_reg) {
     exporter_signal.last->next = sig_item;
     exporter_signal.last = exporter_signal.last->next;
   }
+
+  exporter_signal.count++;
+
+  pthread_cond_signal(&exporter_signal.cond);
+  pthread_mutex_unlock(&exporter_signal.lock);
 }

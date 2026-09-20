@@ -20,8 +20,20 @@ void *qlog_thread_pool_worker(void *thread_index) {
 
   while (qlog_thread_pool_open) {
     block_t block = block_dequeue(block_buffer_global_queues, queue_id);
-    qlog_register_buf_append_handler(qlog_buffer_find,
-                                     qlog_thread_pool.registers[key], block);
+
+    switch (block.type) {
+    case BLOCK_FLUSH_ENTRY:
+      qlog_register_buf_flush_handler(qlog_buffer_find,
+                                      qlog_thread_pool.registers[key], block);
+      break;
+    case BLOCK_QLOG_ENTRY:
+      qlog_register_buf_append_handler(qlog_buffer_find,
+                                       qlog_thread_pool.registers[key], block);
+      break;
+    default:
+      assert(0);
+      break;
+    }
   }
   return NULL;
 }

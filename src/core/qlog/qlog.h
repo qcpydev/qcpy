@@ -43,5 +43,6 @@ void qlog_clear(qlog_t *qlog);
 void qlog_dump_content(qlog_t *qlog, bool verbose);
 bool qlog_compare(qlog_t *qlog, qlog_t *qlog_q);
 qlog_t *qlog_combine(qlog_t *qlog, qlog_t *to_combine);
+void qlog_flush_handler(qlog_t *qlog);
 
 #endif

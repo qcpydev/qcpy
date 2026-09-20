@@ -1,7 +1,7 @@
+#include <exporter.h>
 #include <pthread.h>
 #include <qcpy_error.h>
 #include <qlog.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -70,7 +70,7 @@ void qlog_clear(qlog_t *qlog) {
 
   qlog->entry_count = 0;
 
-  pthread_mutex_lock(&qlog->lock);
+  pthread_mutex_unlock(&qlog->lock);
 
   return;
 }
@@ -82,6 +82,8 @@ void qlog_append(qlog_t *qlog, block_t block) {
 
   QCPY_ASSERT((block.qubits > qlog->qubit_count), QCPY_ERROR_QLOG, qlog,
               QLOG_BAD_SIZING);
+
+  pthread_mutex_lock(&qlog->lock);
 
   if (!qlog->entries) {
     qlog->entries = qlog_entry_init(qlog->entry_count, block);
@@ -104,6 +106,14 @@ void qlog_append(qlog_t *qlog, block_t block) {
   ++(qlog->entry_count);
 
   qlog_graph_append(qlog->graph, qlog->last_entry);
+
+  pthread_mutex_unlock(&qlog->lock);
+}
+
+void qlog_flush_handler(qlog_t *qlog) {
+  assert(qlog);
+
+  exporter_signal_item_append(qlog);
 }
 
 void qlog_dump_content(qlog_t *qlog, bool verbose) {

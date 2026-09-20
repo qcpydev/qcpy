@@ -71,7 +71,6 @@ static bool exporter_migrate_single_work(qlog_node_t **qlog_nodes,
       single_work = true;
       qlog_nodes[i] = qlog_nodes[i]->next;
       ++counter;
-      printf("counter: %d\n", counter);
     }
   }
 
@@ -98,7 +97,6 @@ static bool exporter_migrate_multi_work(qlog_node_t **qlog_nodes,
       qlog_nodes[i] = qlog_nodes[i]->next;
     }
     ++counter;
-    printf("counter: %d\n", counter);
   }
 
   return multi_work;
@@ -110,7 +108,6 @@ void exporter_migrate_fill_queue(qlog_node_t **qlog_nodes, uint32_t size) {
 
   bool single_work = false;
   bool multi_work = false;
-
   do {
     do {
       single_work = exporter_migrate_single_work(qlog_nodes, size);
@@ -121,4 +118,5 @@ void exporter_migrate_fill_queue(qlog_node_t **qlog_nodes, uint32_t size) {
     } while (multi_work);
 
   } while (single_work || multi_work);
+  printf("done!: %d\n", counter);
 }

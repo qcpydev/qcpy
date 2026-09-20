@@ -14,8 +14,7 @@
 #include <unistd.h>
 
 export_t *exporter = NULL;
-
-int shared_export_space;
+int shared_export_space = -1;
 
 block_buffer_global_t *block_buffer_global_queues = NULL;
 int global_queues_shared_fd = -1;
@@ -24,13 +23,23 @@ dock_thread_pool_t dock_thread_pool;
 
 void dock_wait_for_boot() {
   atomic_size_t total = 0;
+  atomic_bool export_ready = false;
+
   do {
     total = atomic_load_explicit(&block_buffer_global_queues->total_queues,
                                  memory_order_acquire);
-  } while (total + 1 != DOCK_QUEUES_TOTAL);
+    export_ready =
+        atomic_load_explicit(&exporter->export_ready, memory_order_acquire);
+
+  } while (total + 1 != DOCK_QUEUES_TOTAL && export_ready == false);
 }
 
 void dock_port_init() {
+  assert(!exporter);
+  shared_export_space = base_tools_create_shared_mem(
+      sizeof(export_t), QCPY_EXPORT, (void **)&exporter);
+  assert(exporter && shared_export_space != -1);
+
   assert(!block_buffer_global_queues);
   global_queues_shared_fd = base_tools_create_shared_mem(
       sizeof(block_buffer_global_t), BLOCK_BUFFER_QUEUE_GLOBAL_NAME,
@@ -39,7 +48,6 @@ void dock_port_init() {
   assert(block_buffer_global_queues);
   assert(global_queues_shared_fd != -1);
 
-  // dock_create_exporter();
   dock_thread_pool_launch();
 }
 
@@ -75,10 +83,16 @@ void dock_run_boot() {
   pid_t pid = fork();
   if (pid == 0) {
     prctl(PR_SET_PDEATHSIG, SIGTERM);
-    char shared_mem_fd[20];
-    snprintf(shared_mem_fd, sizeof(shared_mem_fd), "%d",
+    char buffer_queues_memfd_id[20];
+    snprintf(buffer_queues_memfd_id, sizeof(buffer_queues_memfd_id), "%d",
              global_queues_shared_fd);
-    char *args_test[] = {boot_thread_args->exec_name, shared_mem_fd, NULL};
+
+    char exporter_memfd_id[20];
+    snprintf(exporter_memfd_id, sizeof(exporter_memfd_id), "%d",
+             shared_export_space);
+
+    char *args_test[] = {boot_thread_args->exec_name, buffer_queues_memfd_id,
+                         exporter_memfd_id, NULL};
     execvp(boot_thread_args->exec_name, args_test);
     perror("execvp failed");
     _exit(1);
@@ -99,7 +113,16 @@ void dock_run_boot() {
   }
 }
 
-void dock_get_qc_state(int flush_reg) {}
+void dock_get_qc_state(int flush_reg) {
+  block_t *temp_block = (block_t *)malloc(sizeof(block_t));
+  temp_block->reg = flush_reg;
+  temp_block->type = BLOCK_FLUSH_ENTRY;
+  dock_enqueue(temp_block);
+
+  // await for response from quack_core or quack_core_gpu claiming they have
+  // gotten the response;
+  sleep(1);
+}
 
 void dock_thread_pool_launch() {
   pthread_create(&dock_thread_pool.boot_thread, NULL, dock_thread_pool_init,
@@ -136,7 +159,6 @@ void dock_enqueue(block_t *block) {
   ++dock_queue->item_count;
 
   pthread_cond_signal(&dock_queue->cond);
-
   pthread_mutex_unlock(&dock_queue->lock);
 }
 
