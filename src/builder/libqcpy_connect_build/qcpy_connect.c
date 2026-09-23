@@ -4,8 +4,6 @@
 
 boot_thread_args_t *boot_thread_args = NULL;
 
-static void qcpy_wait_for_boot() { dock_wait_for_boot(); }
-
 int qcpy_boot_connect(char *args[]) {
   char *exec_name = dock_init(args);
   char *quack_name = dock_quack_init(args);
@@ -20,6 +18,5 @@ int qcpy_boot_connect(char *args[]) {
   boot_thread_args->is_gpu_enabled = is_gpu_enabled;
 
   dock_run_boot();
-  qcpy_wait_for_boot();
   return 0;
 }

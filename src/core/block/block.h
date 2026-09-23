@@ -12,7 +12,7 @@
 // This all is going to go besides shared_mem
 #define IMPORT_MAX_SIZE (uint64_t)64
 
-#define IMPORTER_FUNNEL 16u
+#define IMPORTER_FUNNEL 8u
 
 #define QCPY_IMPORT "/qcpy_import"
 #define PORT_IMPORT_SEM "/port_import_sem"
@@ -118,12 +118,12 @@ typedef enum {
   QUEUE_STATUS_DEQUEUED
 } buffer_queue_status_e;
 
-#define BLOCK_QUEUE_SIZE 8192u
+#define BLOCK_QUEUE_SIZE 2048u
 #define BLOCK_QUEUE_IDX_MAX (BLOCK_QUEUE_SIZE - 1u)
 #define BLOCK_QUEUE_GET_IDX(idx) ((idx) & (BLOCK_QUEUE_IDX_MAX))
 #define CACHE_LINE_SIZE 64
 
-#define BLOCK_QUEUES_TOTAL 16u
+#define BLOCK_QUEUES_TOTAL 8u
 
 typedef struct block_buffer_queue_s {
   block_idx_t head;
@@ -131,8 +131,8 @@ typedef struct block_buffer_queue_s {
 
   block_idx_t tail;
   dont_use_cache_align_t _tail[CACHE_LINE_SIZE - sizeof(block_idx_t)];
-  block_t queue[BLOCK_QUEUE_SIZE]; // Is 64 byte * 128 entries, so already cache
-                                   // aligned
+
+  block_t queue[BLOCK_QUEUE_SIZE];
 
   block_queue_tid_t associated_tid;
   dont_use_cache_align_t

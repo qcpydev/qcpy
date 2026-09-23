@@ -38,7 +38,9 @@ class Connect:
 
         self.qcpy_connect.dock_add.restype = ctypes.c_int
         self.qcpy_connect.dock_add.argtypes = [ctypes.POINTER(Block)]
-        self.qcpy_connect.dock_get_qc_state.argtypes = [ctypes.c_int]
+        self.qcpy_connect.dock_get_qc_state.argtypes = [ctypes.c_uint16]
+        assert ctypes.sizeof(Block) == 64, f"Expected size 64, got {ctypes.sizeof(Block)}"
+
         '''
 
         self.qcpy_connect.dock_get_qc_entries.argtypes = [
@@ -135,19 +137,19 @@ class Connect:
         if (target_qubits):
             new_block.target_bitmask = self.__create_qubit_bitmask__(target_qubits)
             new_block.target_bitpack = self.__create_qubit_bitpack__(target_qubits)
-
         new_block.type = Block_Type.QLOG_ENTRY
         new_block.reg = reg
         new_block.qubits = num_qubits
         new_block.theta = theta
         new_block.phi = phi
         new_block.lmbda = lmbda
-        new_block.gate = int(gate)
+        new_block.gate = gate
         new_block.size = size
         new_block.controlled_count = num_controlled
         new_block.target_count = num_target
         new_block.inverted = False
         new_block.big_endian = False
+
 
         self.qcpy_connect.dock_add(new_block)
 

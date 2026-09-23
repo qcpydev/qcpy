@@ -6,6 +6,7 @@
 #include <qlog_infra.h>
 #include <qlog_optimize.h>
 #include <semaphore.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/mman.h>
@@ -27,6 +28,8 @@ export_t *exporter_init(int exporter_memfd) {
 
   assert(open != MAP_FAILED);
 
+  exporter_migrate_init();
+
   assert(!atomic_load_explicit(&exporter->export_ready, memory_order_acquire));
   atomic_store_explicit(&exporter->export_ready, true, memory_order_release);
 
@@ -35,29 +38,26 @@ export_t *exporter_init(int exporter_memfd) {
 
 void exporter_process() {
   qlog_t *qlog = exporter_signal_item_dequeue();
-
-  qlog_graph_t *graph_to_process = qlog->graph;
-  assert(graph_to_process);
-
-  uint32_t size = graph_to_process->size;
-
-  qlog_node_t **to_copy = graph_to_process->nodes;
-  qlog_node_t **qlog_nodes = NULL;
-
-  qlog_nodes = (qlog_node_t **)malloc(sizeof(qlog_node_t *) * size);
-  assert(qlog_nodes);
-
-  memcpy(qlog_nodes, to_copy, sizeof(qlog_node_t *) * size);
-
-  exporter_migrate_fill_queue(qlog_nodes, size);
-  free(qlog_nodes);
-
   assert(qlog);
+
+  pthread_mutex_lock(&qlog->lock);
+
+  printf("hello from exporter! %lu\n", qlog->graph->node_count);
+
+  qlog_graph_t *qlog_graph = qlog->graph;
+  assert(qlog_graph);
+
+  qlog_node_t *qlog_graph_walk[qlog_graph->size];
+
+  memcpy(&qlog_graph_walk, qlog_graph->nodes,
+         sizeof(qlog_node_t *) * qlog_graph->size);
+
+  exporter_migrate_fill_queue(qlog_graph_walk, qlog_graph->size);
+  pthread_mutex_unlock(&qlog->lock);
 }
 
 exporter_signal_item_t *exporter_signal_item_init(qlog_t *qlog) {
   assert(qlog);
-
   exporter_signal_item_t *sig_item;
 
   sig_item = (exporter_signal_item_t *)malloc(sizeof(exporter_signal_item_t));
@@ -72,17 +72,24 @@ exporter_signal_item_t *exporter_signal_item_init(qlog_t *qlog) {
 void exporter_signal_item_delete(exporter_signal_item_t *sig_item) {
   assert(sig_item);
   free(sig_item);
+
   sig_item = NULL;
 }
 
 qlog_t *exporter_signal_item_dequeue() {
   assert(exporter_signal.items);
+  exporter_signal_item_t *sig_item = exporter_signal.items;
 
-  qlog_t *qlog = exporter_signal.items->qlog;
+  qlog_t *qlog = sig_item->qlog;
 
-  exporter_signal_item_delete(exporter_signal.items);
+  exporter_signal.items = exporter_signal.items->next;
+  if (!exporter_signal.items) {
+    exporter_signal.last = NULL;
+  }
+
+  exporter_signal_item_delete(sig_item);
+
   exporter_signal.count--;
-
   return qlog;
 }
 
@@ -93,6 +100,7 @@ void exporter_signal_item_append(qlog_t *qlog) {
   assert(sig_item);
 
   pthread_mutex_lock(&exporter_signal.lock);
+
   if (!exporter_signal.items) {
     exporter_signal.items = sig_item;
     exporter_signal.last = sig_item;

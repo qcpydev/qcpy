@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-qlog_graph_t *qlog_graph_init(uint16_t size) {
+qlog_graph_t *qlog_graph_init(qubit_t size) {
   qlog_graph_t *qlog_graph = NULL;
   qlog_graph = (qlog_graph_t *)malloc(sizeof(qlog_graph_t));
   assert(qlog_graph);
@@ -86,6 +86,7 @@ void qlog_graph_append(qlog_graph_t *qlog_graph, qlog_entry_t *qlog_entry) {
 
   if (qlog_graph->node_count % IMPORT_MAX_SIZE == 0 &&
       qlog_graph->node_count > 0) {
+    return;
     if (qlog_optimize(qlog_graph, false)) {
       // coming back to this later for sake of headache...
       // qlog_graph_update_checkpoint(qlog_graph);

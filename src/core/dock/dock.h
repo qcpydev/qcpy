@@ -34,7 +34,7 @@ char *dock_quack_gpu_init(char *args[]);
 bool dock_set_gpu_enabled(char *args[]);
 
 void dock_port_init();
-void dock_wait_for_boot();
+void dock_wait_for_qcpy_core_boot();
 
 void dock_free_qc_entries(block_t *blocks);
 
@@ -63,7 +63,7 @@ typedef struct dock_queue_s {
   pthread_cond_t cond;
 } dock_queue_t;
 
-#define DOCK_QUEUES_TOTAL (BLOCK_QUEUES_TOTAL / 4)
+#define DOCK_QUEUES_TOTAL (2)
 
 typedef struct dock_thread_pool_s {
   pthread_t threads[DOCK_QUEUES_TOTAL];

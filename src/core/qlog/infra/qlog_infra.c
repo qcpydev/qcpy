@@ -11,8 +11,8 @@ qlog_t *qlog_infra_find_qlog(int reg) {
   assert(reg != -1);
 
   qlog_t *qlog = qlog_thread_pool_get_qlog(reg);
-
   assert(qlog);
+
   return qlog;
 }
 

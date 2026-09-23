@@ -59,6 +59,8 @@ typedef enum {
   TYPE_ALGORITHM,
 } base_type_e;
 
+#define QUBIT_MAX_SIZE 64
+
 const char *base_get_gate_str(base_gate_e gate);
 const char *base_get_type_str(base_type_e type);
 

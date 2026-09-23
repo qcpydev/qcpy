@@ -22,11 +22,11 @@ typedef struct qlog_graph_s {
   qlog_node_t **nodes;
   qlog_node_t **nodes_last;
   qlog_node_t **node_checkpoint;
-  uint16_t size;
+  qubit_t size;
   bool checkpointed;
 } qlog_graph_t;
 
-qlog_graph_t *qlog_graph_init(uint16_t size);
+qlog_graph_t *qlog_graph_init(qubit_t size);
 
 void qlog_graph_append(qlog_graph_t *qlog_graph, qlog_entry_t *qlog_entry);
 

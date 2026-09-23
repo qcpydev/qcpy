@@ -28,7 +28,6 @@ static void validate_block_buffer_queue(size_t queue_idx) {
 }
 
 #endif
-static _Atomic size_t counter;
 
 static atomic_size_t
 block_buffer_global_new(block_buffer_global_t *block_buffer_global,
@@ -126,9 +125,6 @@ void block_enqueue(block_buffer_global_t *block_buffer_global, block_t *block) {
     buffer_queue_status_e status = block_buffer_enqueue(buffer_queue, block);
 
     if (status == QUEUE_STATUS_FULL) {
-      _Atomic size_t counter_temp =
-          atomic_fetch_add_explicit(&counter, 1, memory_order_acquire);
-      // printf("full! full count: %lu\n", counter_temp);
     } else {
       return;
     }
@@ -161,6 +157,7 @@ block_t block_dequeue(block_buffer_global_t *block_buffer_global,
   pid_t tid = pthread_self();
   validate_block_buffer_queue(queue_idx, tid);
 #endif
+
   block_buffer_queue_t *buffer_queue =
       block_buffer_queue_get_with_qid(block_buffer_global, queue_id);
 
@@ -171,10 +168,8 @@ block_t block_dequeue(block_buffer_global_t *block_buffer_global,
         block_buffer_dequeue(buffer_queue, &use_to_dequeue);
 
     if (status == QUEUE_STATUS_EMPTY) {
-      // handle bell wait;
     } else {
       assert(status == QUEUE_STATUS_DEQUEUED);
-      // tell dock something has happened here
       return use_to_dequeue;
     }
   }

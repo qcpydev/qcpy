@@ -2,6 +2,7 @@
 #include <pthread.h>
 #include <qcpy_error.h>
 #include <qlog.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 

@@ -1,7 +1,4 @@
 #include <block.h>
-#include <iostream>
+#include <quack_start.h>
 
-int main() {
-  std::cout << "HELLO FROM NORMAL\n";
-  return 0;
-}
+int main() { return 0; }
