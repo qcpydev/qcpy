@@ -8,8 +8,7 @@
 #include <unistd.h>
 
 int base_tools_create_shared_mem(size_t size, char *name, void **mem) {
-  int shared_mem_space = memfd_create(BLOCK_BUFFER_QUEUE_GLOBAL_NAME, 0);
-  ;
+  int shared_mem_space = memfd_create(name, 0);
 
   if (shared_mem_space == -1) {
     perror("shm_open");

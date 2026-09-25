@@ -3,6 +3,7 @@
 #include <base_tools.h>
 #include <dock.h>
 #include <dock_logger.h>
+#include <exporter_migrate.h>
 #include <fcntl.h>
 #include <pthread.h>
 #include <qcpy_error.h>
@@ -18,6 +19,9 @@ int shared_export_space = -1;
 
 block_buffer_global_t *block_buffer_global_queues = NULL;
 int global_queues_shared_fd = -1;
+
+int temp_migrate_memfd;
+exporter_migrate_t *exporter_migrate_watcher;
 
 dock_thread_pool_t dock_thread_pool;
 
@@ -44,6 +48,10 @@ void dock_port_init() {
   global_queues_shared_fd = base_tools_create_shared_mem(
       sizeof(block_buffer_global_t), BLOCK_BUFFER_QUEUE_GLOBAL_NAME,
       (void **)&block_buffer_global_queues);
+
+  temp_migrate_memfd = base_tools_create_shared_mem(
+      sizeof(exporter_migrate_t), EXPORTER_MIGRATE_SHARED_MEM,
+      (void **)&exporter_migrate_watcher);
 
   assert(block_buffer_global_queues);
   assert(global_queues_shared_fd != -1);
@@ -91,8 +99,12 @@ void dock_run_boot() {
     snprintf(exporter_memfd_id, sizeof(exporter_memfd_id), "%d",
              shared_export_space);
 
+    char exporter_migrate_memfd[20];
+    snprintf(exporter_migrate_memfd, sizeof(exporter_migrate_memfd), "%d",
+             temp_migrate_memfd);
+
     char *args_test[] = {boot_thread_args->exec_name, buffer_queues_memfd_id,
-                         exporter_memfd_id, NULL};
+                         exporter_memfd_id, exporter_migrate_memfd, NULL};
     execvp(boot_thread_args->exec_name, args_test);
     perror("execvp failed");
     _exit(1);
@@ -103,7 +115,13 @@ void dock_run_boot() {
   pid_t quack_pid = fork();
   if (quack_pid == 0) {
     prctl(PR_SET_PDEATHSIG, SIGTERM);
-    char *args_test[] = {boot_thread_args->quack_exec_name, NULL};
+
+    char exporter_migrate_memfd[20];
+    snprintf(exporter_migrate_memfd, sizeof(exporter_migrate_memfd), "%d",
+             temp_migrate_memfd);
+
+    char *args_test[] = {boot_thread_args->quack_exec_name,
+                         exporter_migrate_memfd, NULL};
 
     char *run_quack_version = boot_thread_args->is_gpu_enabled
                                   ? boot_thread_args->quack_gpu_exec_name
@@ -128,7 +146,6 @@ void dock_get_qc_state(uint16_t flush_reg) {
   // gotten the response;
   // this works for now since yknow, there is no true back end for this to pick
   // up from
-  usleep(1000);
 }
 
 void dock_thread_pool_launch() {

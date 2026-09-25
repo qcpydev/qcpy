@@ -34,11 +34,12 @@ void port_init(int argc, char **argv) {
 
   int block_buffer_memfd = atoi(argv[1]);
   int exporter_memfd = atoi(argv[2]);
+  int exporter_migrate_memfd = atoi(argv[3]);
 
   block_buffer_global_queues = block_buffer_global_open(block_buffer_memfd);
   assert(block_buffer_global_queues);
 
-  exporter = exporter_init(exporter_memfd);
+  exporter = exporter_init(exporter_memfd, exporter_migrate_memfd);
   assert(exporter);
 
   pthread_create(&export_thread, NULL, port_export, NULL);

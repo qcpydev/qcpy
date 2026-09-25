@@ -3,6 +3,7 @@ add_library(dock dock.c)
 add_subdirectory(logger)
 
 target_link_libraries(dock PUBLIC
+  exporter_migrate
    qcpy_error
    qcpy_base
    boot

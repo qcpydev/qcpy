@@ -43,9 +43,21 @@ extern sem_t *exporter_migrate_ready;
 extern sem_t *exporter_migrate_empty;
 extern int exporter_migrate_shared;
 
-void exporter_migrate_dequeue(qlog_entry_t *qlog_entry);
-void exporter_migrate_enqueue_single(qlog_entry_t *qlog_entry, qubit_t qubit);
-void exporter_migrate_init();
+#ifdef __cplusplus
+extern "C" {
+#endif
+void exporter_migrate_dequeue_single(exporter_migrate_t *exporter_migrate,
+                                     qubit_t qubit,
+                                     qlog_entry_t *entry_dequeue);
+#ifdef __cplusplus
+}
+#endif
+
+void exporter_migrate_enqueue_single(exporter_migrate_t *exporter_migrate,
+                                     qlog_entry_t *qlog_entry, qubit_t qubit);
+void exporter_migrate_init(int exporter_migrate_memfd);
 void exporter_migrate_fill_queue(qlog_node_t **qlog_nodes, uint32_t size);
+
+extern int exporter_migrate_shared;
 
 #endif

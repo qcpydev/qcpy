@@ -10,13 +10,15 @@ add_subdirectory(start)
 add_subdirectory(tetris)
 
 target_link_libraries(quack PUBLIC
-    quack_dense
-    quack_export
-    quack_import
-    quack_hive
-    quack_merge
-    quack_start
-    quack_tetris
+  block
+  base_tools
+  quack_dense
+  quack_export
+  quack_import
+  quack_hive
+  quack_merge
+  quack_start
+  quack_tetris
 )
 
 if (CMAKE_CUDA_COMPILER)

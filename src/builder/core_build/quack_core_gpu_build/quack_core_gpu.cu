@@ -1,7 +1,3 @@
-#include <block.h>
-#include <iostream>
+#include <quack.h>
 
-int main() {
-  std::cout << "hello world!\n";
-  return 0;
-}
+int main(int argc, char **argv) { QuackBase::quack_start_instance(argv); }

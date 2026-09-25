@@ -73,11 +73,13 @@ typedef std::atomic<std::size_t> block_idx_t;
 typedef std::atomic<pthread_t> block_queue_tid_t;
 typedef std::atomic<std::size_t> atomic_size_t;
 typedef std::atomic<bool> atomic_bool;
+typedef std::atomic<int> atomic_memfd_t;
 #else
 #include <complex.h>
 typedef float complex float_comp;
 typedef atomic_size_t block_idx_t;
 typedef _Atomic(pthread_t) block_queue_tid_t;
+typedef atomic_int atomic_memfd_t;
 #endif
 
 typedef char dont_use_cache_align_t;
@@ -183,7 +185,6 @@ void block_add(block_t *block, import_t *port);
 
 // BYE BYE NO MORE
 typedef struct export_s {
-  float_comp queue[IMPORT_MAX_SIZE];
   uint64_t reg;
   int dock_idx;
   int port_idx;

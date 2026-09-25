@@ -13,7 +13,7 @@
  * */
 
 void exporter_process();
-export_t *exporter_init(int exporter_memfd);
+export_t *exporter_init(int exporter_memfd, int exporter_migrate_memfd);
 void exporter_await_quack_start();
 
 void exporter_flush_init();

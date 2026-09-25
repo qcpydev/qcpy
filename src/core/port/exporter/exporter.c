@@ -20,7 +20,7 @@ void exporter_flush_init() {
   pthread_cond_init(&exporter_signal.cond, NULL);
 }
 
-export_t *exporter_init(int exporter_memfd) {
+export_t *exporter_init(int exporter_memfd, int exporter_migrate_memfd) {
   assert(exporter_memfd != -1);
 
   export_t *exporter = mmap(NULL, sizeof(export_t), PROT_READ | PROT_WRITE,
@@ -28,7 +28,7 @@ export_t *exporter_init(int exporter_memfd) {
 
   assert(open != MAP_FAILED);
 
-  exporter_migrate_init();
+  exporter_migrate_init(exporter_migrate_memfd);
 
   assert(!atomic_load_explicit(&exporter->export_ready, memory_order_acquire));
   atomic_store_explicit(&exporter->export_ready, true, memory_order_release);
