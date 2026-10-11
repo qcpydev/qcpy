@@ -139,13 +139,10 @@ void dock_get_qc_state(uint16_t flush_reg) {
   memset(temp_block, 0, sizeof(block_t));
   temp_block->reg = flush_reg;
   temp_block->type = BLOCK_FLUSH_ENTRY;
-  // dock_enqueue(temp_block);
+
   block_enqueue(block_buffer_global_queues, temp_block);
 
-  // await for response from quack_core or quack_core_gpu claiming they have
-  // gotten the response;
-  // this works for now since yknow, there is no true back end for this to pick
-  // up from
+  usleep(1000);
 }
 
 void dock_thread_pool_launch() {
@@ -164,6 +161,7 @@ static struct dock_queue_item_t *dock_queue_item_init(block_t *block) {
 }
 
 void dock_enqueue(block_t *block) {
+  assert(0);
   struct dock_queue_item_t *dock_queue_item = dock_queue_item_init(block);
   assert(&dock_queue_item);
 
@@ -187,18 +185,8 @@ void dock_enqueue(block_t *block) {
 }
 
 int dock_add(block_t *block) {
-  // ?????????????????????????? WHAT something fucking stupid is happening
-  // there... child thread or something like that
-  // dock_enqueue(block);
-
   block_enqueue(block_buffer_global_queues, block);
   return 1;
-}
-
-void dock_queue_init(dock_queue_t *dock_queue) {
-  assert(dock_queue);
-  pthread_mutex_init(&dock_queue->lock, NULL);
-  pthread_cond_init(&dock_queue->cond, NULL);
 }
 
 static void *dock_queue_dequeue_worker_thread(void *queue_id) {
@@ -207,9 +195,8 @@ static void *dock_queue_dequeue_worker_thread(void *queue_id) {
   assert(id < DOCK_QUEUES_TOTAL && id >= 0);
   dock_queue_t *dock_queue = &dock_thread_pool.queue[id];
 
+  pthread_mutex_lock(&dock_queue->lock);
   for (;;) {
-
-    pthread_mutex_lock(&dock_queue->lock);
     assert(dock_queue);
     block_t *block = NULL;
 
@@ -232,24 +219,16 @@ static void *dock_queue_dequeue_worker_thread(void *queue_id) {
 
       assert(dock_queue->item_count > 0);
       --dock_queue->item_count;
+      block_enqueue(block_buffer_global_queues, block);
       free(head);
-      pthread_mutex_unlock(&dock_queue->lock);
     }
   }
+
+  pthread_mutex_unlock(&dock_queue->lock);
 }
 
 void *dock_thread_pool_init(void *not_used) {
   (void)not_used;
-
-  for (size_t i = 0; i < DOCK_QUEUES_TOTAL; ++i) {
-    dock_queue_init(&dock_thread_pool.queue[i]);
-    pthread_create(&dock_thread_pool.threads[i], NULL,
-                   dock_queue_dequeue_worker_thread, (void *)i);
-  }
-
-  for (size_t i = 0; i < DOCK_QUEUES_TOTAL; ++i) {
-    pthread_join(dock_thread_pool.threads[i], NULL);
-  }
 
   return NULL;
 }

@@ -74,7 +74,7 @@ block_buffer_enqueue(block_buffer_queue_t *block_buffer_queue, block_t *block) {
   assert(block && block_buffer_queue);
 
   block_idx_t tail =
-      atomic_load_explicit(&block_buffer_queue->tail, memory_order_relaxed);
+      atomic_load_explicit(&block_buffer_queue->tail, memory_order_acquire);
 
   block_idx_t next_idx = (tail + 1) & BLOCK_QUEUE_IDX_MAX;
 

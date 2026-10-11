@@ -105,6 +105,7 @@ void qlog_append(qlog_t *qlog, block_t block) {
   QCPY_ASSERT(qlog->last_entry, QCPY_ERROR_QLOG, qlog, QLOG_BAD_ENTRY);
 
   ++(qlog->entry_count);
+  // printf("qlog_size %p size: %lu\n", qlog, qlog->entry_count);
 
   qlog_graph_append(qlog->graph, qlog->last_entry);
 

@@ -63,7 +63,7 @@ typedef struct dock_queue_s {
   pthread_cond_t cond;
 } dock_queue_t;
 
-#define DOCK_QUEUES_TOTAL (2)
+#define DOCK_QUEUES_TOTAL (8)
 
 typedef struct dock_thread_pool_s {
   pthread_t threads[DOCK_QUEUES_TOTAL];

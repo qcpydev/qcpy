@@ -120,7 +120,7 @@ typedef enum {
   QUEUE_STATUS_DEQUEUED
 } buffer_queue_status_e;
 
-#define BLOCK_QUEUE_SIZE 2048u
+#define BLOCK_QUEUE_SIZE 4096u
 #define BLOCK_QUEUE_IDX_MAX (BLOCK_QUEUE_SIZE - 1u)
 #define BLOCK_QUEUE_GET_IDX(idx) ((idx) & (BLOCK_QUEUE_IDX_MAX))
 #define CACHE_LINE_SIZE 64

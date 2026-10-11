@@ -2,6 +2,9 @@ add_library(quack_tetris quack_tetris.cc)
 
 target_link_libraries(quack_tetris PRIVATE
     qcpy_error 
+    quack_start
+    qlog
+    block
 )
 
 target_include_directories(quack_tetris PUBLIC

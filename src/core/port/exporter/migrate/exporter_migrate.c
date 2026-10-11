@@ -7,7 +7,6 @@
 #include <qcpy_error.h>
 #include <semaphore.h>
 #include <stdatomic.h>
-#include <stdio.h>
 #include <string.h>
 #include <sys/prctl.h>
 #include <unistd.h>
@@ -19,12 +18,12 @@ void exporter_migrate_enqueue_single(exporter_migrate_t *exporter_migrate,
 
   assert(exporter_migrate);
   assert(qlog_entry);
-  assert(qlog_entry->qubit_bitmask & (1 << qubit));
+  assert(qlog_entry->qubit_bitmask & ((bitmask_t)1 << qubit));
   for (;;) {
     atomic_size_t tail = atomic_load_explicit(
         &exporter_migrate->queues[qubit].tail, memory_order_acquire);
 
-    atomic_size_t next_idx = EXPORT_MIGRATE_QUEUE_GET_IDX(++tail);
+    atomic_size_t next_idx = EXPORT_MIGRATE_QUEUE_GET_IDX(tail + 1);
 
     if (next_idx == atomic_load_explicit(&exporter_migrate->queues[qubit].head,
                                          memory_order_acquire)) {
@@ -43,22 +42,21 @@ void exporter_migrate_dequeue_single(exporter_migrate_t *exporter_migrate,
   assert(qubit < QUBIT_MAX_SIZE);
   assert(exporter_migrate);
 
-  for (;;) {
-    atomic_size_t head = atomic_load_explicit(
-        &exporter_migrate->queues[qubit].head, memory_order_acquire);
+  atomic_size_t head = atomic_load_explicit(
+      &exporter_migrate->queues[qubit].head, memory_order_acquire);
 
-    if (head == atomic_load_explicit(&exporter_migrate->queues[qubit].tail,
-                                     memory_order_acquire)) {
-      continue;
-    }
-
-    *entry_dequeue = exporter_migrate->queues[qubit].entries[head];
-
-    atomic_store_explicit(&exporter_migrate->queues[qubit].head,
-                          EXPORT_MIGRATE_QUEUE_GET_IDX(++head),
-                          memory_order_release);
+  if (head == atomic_load_explicit(&exporter_migrate->queues[qubit].tail,
+                                   memory_order_acquire)) {
+    entry_dequeue->qubit_count = 0;
     return;
   }
+
+  *entry_dequeue = exporter_migrate->queues[qubit].entries[head];
+
+  atomic_store_explicit(&exporter_migrate->queues[qubit].head,
+                        EXPORT_MIGRATE_QUEUE_GET_IDX(head + 1),
+                        memory_order_release);
+  return;
 }
 
 static void exporter_migrate_queue_init(qubit_t qubit) {
@@ -73,7 +71,6 @@ static void exporter_migrate_queue_init(qubit_t qubit) {
 
 void exporter_migrate_init(int memfd) {
   assert(!exporter_migrate);
-  printf("memfd: %d\n", memfd);
 
   exporter_migrate =
       (exporter_migrate_t *)mmap(NULL, sizeof(exporter_migrate_t),
@@ -122,7 +119,6 @@ static bool exporter_migrate_multi_work(qlog_node_t **qlog_nodes,
       }
 
       qlog_nodes[i] = qlog_nodes[i]->next;
-      // send off to shared mem
     }
   }
 
