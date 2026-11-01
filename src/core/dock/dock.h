@@ -7,6 +7,7 @@
 #include <stdint.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <uuid/uuid.h>
 
 #pragma once
 #ifndef DOCK_H
@@ -19,34 +20,28 @@
  * There is a thread pool that live on the process. The main Python/ctypes
  * thread will enqueue the block onto a thread via an LL, in which the
  */
-typedef struct dock_add_params_s {
-  uint64_t *qubits;
-  uint64_t *controlled_qubits;
-  uint64_t *target_qubits;
-} dock_add_params_t;
 
-int dock_add(block_t *block);
+void dock_add(block_t *block);
 void dock_run_boot();
 
-char *dock_init(char *args[]);
-char *dock_quack_init(char *args[]);
-char *dock_quack_gpu_init(char *args[]);
-bool dock_set_gpu_enabled(char *args[]);
-
-void dock_port_init();
+void dock_setup_global_shared_mem();
 void dock_wait_for_qcpy_core_boot();
 
-void dock_free_qc_entries(block_t *blocks);
+typedef enum {
+  QCPY_BOOTARG_CORE_EXEC_NAME,
+  QCPY_BOOTARG_QUACK_EXEC_NAME,
+  QCPY_BOOTARG_QUACK_GPU_EXEC_NAME,
+  QCPY_BOOTARG_IS_GPU_ENABLED,
+} boot_args_e;
 
-typedef struct boot_thread_args_s {
-  char *exec_name;
+typedef struct bootarg_wrapper_s {
+  char *qcpy_core_exec_name;
   char *quack_exec_name;
   char *quack_gpu_exec_name;
   bool is_gpu_enabled;
-  char **args;
-} boot_thread_args_t;
+} bootarg_wrapper_t;
 
-extern boot_thread_args_t *boot_thread_args;
+extern bootarg_wrapper_t qcpy_bootarg_wrapper;
 
 typedef struct dock_queue_item_t dock_queue_item_t;
 
@@ -65,19 +60,9 @@ typedef struct dock_queue_s {
 
 #define DOCK_QUEUES_TOTAL (8)
 
-typedef struct dock_thread_pool_s {
-  pthread_t threads[DOCK_QUEUES_TOTAL];
-  dock_queue_t queue[DOCK_QUEUES_TOTAL];
-  pthread_t boot_thread;
-} dock_thread_pool_t;
-
 void dock_queue_init(dock_queue_t *dock_queue);
 void dock_enqueue(block_t *block);
 block_t *dock_dequeue(dock_queue_t *dock_queue);
-void *dock_thread_pool_init(void *not_used);
-void dock_thread_pool_delete();
-void dock_thread_pool_launch();
-
-extern dock_thread_pool_t dock_thread_pool;
+void dock_setup_early_init(char *args[]);
 
 #endif // DOCK_H

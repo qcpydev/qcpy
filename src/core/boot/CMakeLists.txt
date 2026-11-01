@@ -1,15 +1,4 @@
-add_library(boot boot.c)
-
-add_subdirectory(args)
-
-target_link_libraries(boot PUBLIC
-   qcpy_error
-   boot_args
-   port
-   qlog_infra
-)
-
-target_include_directories(boot PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}
-)
+#add_subdirectory(qcpy_connect_boot)
+add_subdirectory(qcpy_core_boot)
+#add_subdirectory(quack_boot)
 

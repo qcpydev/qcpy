@@ -6,7 +6,7 @@ target_link_libraries(dock PUBLIC
   exporter_migrate
    qcpy_error
    qcpy_base
-   boot
+   qcpy_core_boot
    base_tools
    dock_logger
 )

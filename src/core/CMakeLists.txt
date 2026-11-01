@@ -5,5 +5,5 @@ add_subdirectory(boot)
 add_subdirectory(dock)
 add_subdirectory(port)
 add_subdirectory(qlog)
-add_subdirectory(register)
 add_subdirectory(quack)
+

@@ -160,7 +160,7 @@ void block_enqueue(block_buffer_global_t *block_buffer_global, block_t *block);
 block_t block_dequeue(block_buffer_global_t *block_buffer_global,
                       block_buffer_queue_id_t queue_id);
 
-#define BLOCK_BUFFER_QUEUE_GLOBAL_NAME "qcpy_core_block_buffer_queues"
+#define BLOCK_BUFFER_QUEUE_GLOBAL_NAME "/qcpy_core_block_buffer_queues"
 
 block_buffer_global_t *block_buffer_global_open(int shared_mem_fd);
 

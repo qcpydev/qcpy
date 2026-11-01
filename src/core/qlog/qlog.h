@@ -17,13 +17,15 @@
  */
 
 typedef struct qlog_t {
+  pthread_mutex_t lock;     // lock for exporting and importing
   uint64_t entry_count;     // number of entries in qlog
+  bitmask_t qubits_used;    // bitmask of qubits used
   qlog_entry_t *entries;    // qlog entries
   qlog_entry_t *last_entry; // qlog last inserted item
   qlog_graph_t *graph;      // quantum circuit layout
   uint64_t id;              // id from the qlog_register
   uint16_t qubit_count;     // number of qubits
-  pthread_mutex_t lock;     // lock for exporting and importing
+  bool was_dispatched;      // dispatched to be handled by quack
 } qlog_t;
 
 typedef enum {
@@ -43,6 +45,6 @@ void qlog_clear(qlog_t *qlog);
 void qlog_dump_content(qlog_t *qlog, bool verbose);
 bool qlog_compare(qlog_t *qlog, qlog_t *qlog_q);
 qlog_t *qlog_combine(qlog_t *qlog, qlog_t *to_combine);
-void qlog_flush_handler(qlog_t *qlog);
+void qlog_flush_handler(qlog_t *qlog, bitmask_t work_id);
 
 #endif

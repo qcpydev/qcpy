@@ -5,6 +5,7 @@ target_link_libraries(quack_hive PRIVATE
     qcpy_base
     quack_dense
     quack_start
+    quack_tetris
 )
 
 target_include_directories(quack_hive PUBLIC

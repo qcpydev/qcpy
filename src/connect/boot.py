@@ -26,5 +26,4 @@ QUACK_GPU_FILE_PATH = (
     str(os.path.abspath(os.path.join(FILE_PATH, os.pardir))) + BUILD_PATH + QUACK_GPU_NAME
 )
 
-# TODO: set up arguments, check if custom was imported from qcpy, and then dont boot until we get the function call
 qcpy_connect = Connect([], QCPY_CONNECT_FILE_PATH, QCPY_CORE_FILE_PATH, QUACK_FILE_PATH, QUACK_GPU_FILE_PATH)

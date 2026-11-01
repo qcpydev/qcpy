@@ -5,7 +5,7 @@ target_link_libraries(qcpy_core PRIVATE
   block
   port
   dock
-  boot
+  qcpy_core_boot
   qlog_register
   qlog
   qcpy_base

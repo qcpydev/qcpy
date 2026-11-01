@@ -1,9 +1,13 @@
+#include <atomic>
 #include <block.h>
 #include <qlog.h>
 #include <quack_start.h>
 #include <shared_mutex>
-#include <thread>
 #include <vector>
+
+#pragma once
+#ifndef QUACK_TETRIS_H
+#define QUACK_TETRIS_H
 
 namespace QuackTetris {
 typedef std::pair<QuackStart::QuackUnitaryMatrix,
@@ -22,14 +26,26 @@ public:
     return obj;
   }
 
-  static const void insert_entry(qlog_entry_t &qlog_entry, qubit_t qubit);
-
+  void insert_entry(qlog_entry_t &qlog_entry, qubit_t qubit,
+                    bitmask_t qubits_used, qlog_entry_id_t last_entry) const;
   mutable std::shared_mutex lock;
 
+  mutable std::pair<std::atomic<bitmask_t>, std::atomic<bitmask_t>>
+      pair_bitmask;
+
+  mutable std::vector<tetris_pair_t> tetrify_matrix;
+  size_t send_off_work_counter;
+  size_t send_off_work_sloppy_counter;
+
 private:
+  void send_off_work() const;
+  void reset_current_pair() const;
+  void insert_entry_pick_pair_slot(qlog_entry_t &qlog_entry,
+                                   qubit_t qubit) const;
+
   ~QuackImporterTetris() = default;
-  std::vector<tetris_pair_t> tetrify_matrix;
-  std::thread send_off_thread; // writer thread to send off to hive
 };
 
 }; // namespace QuackTetris
+
+#endif

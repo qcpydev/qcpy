@@ -1,22 +1,7 @@
 #include <dock.h>
 #include <pthread.h>
-#include <stdlib.h>
-
-boot_thread_args_t *boot_thread_args = NULL;
 
 int qcpy_boot_connect(char *args[]) {
-  char *exec_name = dock_init(args);
-  char *quack_name = dock_quack_init(args);
-  char *quack_gpu_name = dock_quack_gpu_init(args);
-  bool is_gpu_enabled = dock_set_gpu_enabled(args);
-
-  boot_thread_args = (boot_thread_args_t *)malloc(sizeof(boot_thread_args_t));
-  boot_thread_args->args = args;
-  boot_thread_args->exec_name = exec_name;
-  boot_thread_args->quack_exec_name = quack_name;
-  boot_thread_args->quack_gpu_exec_name = quack_gpu_name;
-  boot_thread_args->is_gpu_enabled = is_gpu_enabled;
-
-  dock_run_boot();
+  dock_setup_early_init(args);
   return 0;
 }

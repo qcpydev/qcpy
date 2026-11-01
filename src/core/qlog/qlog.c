@@ -2,17 +2,8 @@
 #include <pthread.h>
 #include <qcpy_error.h>
 #include <qlog.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-const char *replay_qlog_description[] = {
-    [QLOG_NULL] = "qlog is null",
-    [QLOG_BAD_ENTRY] = "qlog bad entry",
-    [QLOG_CORRUPT] = "qlog corruption",
-    [QLOG_OPTIMIZE_FAILED] = "qlog optimize failed",
-    [QLOG_BAD_SIZING] = "qlog bad sizing",
-    [QLOG_DELETE_FAILED] = "qlog failed to delete"};
 
 qlog_t *qlog_init(uint8_t qubits, uint16_t reg) {
   qlog_t *qlog = NULL;
@@ -102,6 +93,8 @@ void qlog_append(qlog_t *qlog, block_t block) {
     qlog->last_entry = qlog->last_entry->next_entry;
   }
 
+  qlog->qubits_used |= block.qubit_bitmask;
+
   QCPY_ASSERT(qlog->last_entry, QCPY_ERROR_QLOG, qlog, QLOG_BAD_ENTRY);
 
   ++(qlog->entry_count);
@@ -112,10 +105,10 @@ void qlog_append(qlog_t *qlog, block_t block) {
   pthread_mutex_unlock(&qlog->lock);
 }
 
-void qlog_flush_handler(qlog_t *qlog) {
+void qlog_flush_handler(qlog_t *qlog, bitmask_t work_id) {
   assert(qlog);
 
-  exporter_signal_item_append(qlog);
+  exporter_signal_item_append(qlog, work_id);
 }
 
 void qlog_dump_content(qlog_t *qlog, bool verbose) {

@@ -36,6 +36,10 @@ typedef struct exporter_migrate_queue_s {
 
 typedef struct exporter_migrate_s {
   exporter_migrate_queue_t queues[QUBIT_MAX_SIZE];
+  qlog_entry_id_t last_entry_id;
+  bitmask_t qubits_used;
+  uint64_t qlog_id;
+  // TODO: pass in uuid from user request to quack
 } exporter_migrate_t;
 
 extern exporter_migrate_t *exporter_migrate;

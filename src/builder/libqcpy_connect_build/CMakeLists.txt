@@ -4,7 +4,7 @@ target_link_libraries(qcpy_connect PRIVATE
   qcpy_error
   qcpy_base
   block
-  boot
+  qcpy_core_boot
   port
   dock
 )

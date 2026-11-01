@@ -7,6 +7,10 @@
 #include <unistd.h>
 #include <vector>
 
+#pragma once
+#ifndef QUACK_IMPORT_H
+#define QUACK_IMPORT_H
+
 namespace QuackImport {
 void quack_importer_worker_thread(size_t start_range);
 
@@ -62,3 +66,4 @@ private:
   };
 };
 }; // namespace QuackImport
+#endif

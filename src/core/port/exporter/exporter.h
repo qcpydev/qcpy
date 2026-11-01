@@ -24,13 +24,14 @@ typedef struct exporter_signal_item_t exporter_signal_item_t;
 struct exporter_signal_item_t {
   exporter_signal_item_t *next;
   qlog_t *qlog;
+  bitmask_t work_id;
 };
 
 exporter_signal_item_t *exporter_signal_item_init(qlog_t *qlog);
 void exporter_signal_item_delete(exporter_signal_item_t *sig_item);
-void exporter_signal_item_append(qlog_t *qlog);
+void exporter_signal_item_append(qlog_t *qlog, bitmask_t work_id);
 
-qlog_t *exporter_signal_item_dequeue();
+qlog_t *exporter_signal_item_dequeue(bitmask_t *work_id);
 
 typedef struct exporter_signal_s {
   pthread_mutex_t lock;

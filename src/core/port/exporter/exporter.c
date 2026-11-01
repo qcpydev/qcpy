@@ -37,8 +37,9 @@ export_t *exporter_init(int exporter_memfd, int exporter_migrate_memfd) {
 }
 
 void exporter_process() {
-  qlog_t *qlog = exporter_signal_item_dequeue();
-  assert(qlog);
+  bitmask_t work_id = 0;
+  qlog_t *qlog = exporter_signal_item_dequeue(&work_id);
+  assert(qlog && work_id);
 
   pthread_mutex_lock(&qlog->lock);
 
@@ -51,6 +52,10 @@ void exporter_process() {
 
   memcpy(&qlog_graph_walk, qlog_graph->nodes,
          sizeof(qlog_node_t *) * qlog_graph->size);
+
+  exporter_migrate->qubits_used = qlog->qubits_used;
+  exporter_migrate->last_entry_id = qlog->last_entry->entry_id;
+  exporter_migrate->qlog_id = qlog->id;
 
   exporter_migrate_fill_queue(qlog_graph_walk, qlog_graph->size);
   pthread_mutex_unlock(&qlog->lock);
@@ -76,11 +81,14 @@ void exporter_signal_item_delete(exporter_signal_item_t *sig_item) {
   sig_item = NULL;
 }
 
-qlog_t *exporter_signal_item_dequeue() {
+qlog_t *exporter_signal_item_dequeue(bitmask_t *work_id) {
   assert(exporter_signal.items);
   exporter_signal_item_t *sig_item = exporter_signal.items;
 
   qlog_t *qlog = sig_item->qlog;
+
+  *work_id = sig_item->work_id;
+  assert(*work_id != 0);
 
   exporter_signal.items = exporter_signal.items->next;
   if (!exporter_signal.items) {
@@ -93,9 +101,10 @@ qlog_t *exporter_signal_item_dequeue() {
   return qlog;
 }
 
-void exporter_signal_item_append(qlog_t *qlog) {
+void exporter_signal_item_append(qlog_t *qlog, bitmask_t work_id) {
   assert(qlog);
   exporter_signal_item_t *sig_item = exporter_signal_item_init(qlog);
+  sig_item->work_id = work_id;
 
   assert(sig_item);
 
