@@ -5,16 +5,18 @@ add_subdirectory(infra)
 add_subdirectory(graph)
 add_subdirectory(optimize)
 add_subdirectory(register)
+add_subdirectory(print)
 
 target_link_libraries(qlog PUBLIC
+   qcpy_base
    qcpy_error
    block
    qlog_entry
    qlog_graph
    qlog_optimize
-   qcpy_base
    exporter
    qlog_register
+   qlog_print
 )
 
 target_include_directories(qlog PUBLIC

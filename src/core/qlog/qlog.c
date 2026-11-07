@@ -2,10 +2,11 @@
 #include <pthread.h>
 #include <qcpy_error.h>
 #include <qlog.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-qlog_t *qlog_init(uint8_t qubits, uint16_t reg) {
+qlog_t *qlog_init(qubit_t qubits, uint16_t reg) {
   qlog_t *qlog = NULL;
 
   qlog = (qlog_t *)malloc(sizeof(qlog_t));
@@ -20,6 +21,8 @@ qlog_t *qlog_init(uint8_t qubits, uint16_t reg) {
 
   pthread_mutex_init(&qlog->lock, NULL);
 
+  qlog_print_init(&qlog->printer, qubits);
+
   return qlog;
 }
 
@@ -28,16 +31,6 @@ void qlog_delete(qlog_t *qlog) {
   QCPY_ASSERT(!qlog, QCPY_ERROR_QLOG, qlog, QLOG_NULL);
 
   pthread_mutex_lock(&qlog->lock);
-
-  for (uint16_t i = qlog->entry_count; i > 0; --i) {
-    qlog_entry_t *temp_ptr = qlog->last_entry;
-
-    qlog->last_entry = qlog->last_entry->prev_entry;
-
-    qlog_entry_delete(temp_ptr);
-
-    QCPY_ASSERT(!temp_ptr, QCPY_ERROR_QLOG, qlog, QLOG_DELETE_FAILED);
-  }
 
   pthread_mutex_unlock(&qlog->lock);
 
@@ -52,14 +45,6 @@ void qlog_clear(qlog_t *qlog) {
   QCPY_ASSERT(qlog, QCPY_ERROR_QLOG, qlog, QLOG_NULL);
 
   pthread_mutex_lock(&qlog->lock);
-  qlog_entry_t *qlog_walker = qlog->entries;
-
-  while (qlog_walker) {
-    qlog_entry_t *temp_walker = qlog_walker;
-    qlog_walker = qlog_walker->next_entry;
-    qlog_entry_delete(temp_walker);
-  }
-
   qlog->entry_count = 0;
 
   pthread_mutex_unlock(&qlog->lock);
@@ -75,24 +60,10 @@ void qlog_append(qlog_t *qlog, block_t block) {
   QCPY_ASSERT((block.qubits > qlog->qubit_count), QCPY_ERROR_QLOG, qlog,
               QLOG_BAD_SIZING);
 
+  qlog_entry_t *qlog_entry = qlog_entry_init(qlog->entry_count, block);
+
   pthread_mutex_lock(&qlog->lock);
-
-  if (!qlog->entries) {
-    qlog->entries = qlog_entry_init(qlog->entry_count, block);
-    qlog->last_entry = qlog->entries;
-  } else {
-    qlog->entries = qlog_entry_init(qlog->entry_count, block);
-    qlog->last_entry->next_entry = qlog_entry_init(qlog->entry_count, block);
-
-    if (!qlog->last_entry->prev_entry) {
-      qlog->last_entry->next_entry->prev_entry = qlog->entries;
-    } else {
-      qlog->last_entry->next_entry->prev_entry = qlog->last_entry;
-    }
-
-    qlog->last_entry = qlog->last_entry->next_entry;
-  }
-
+  qlog->last_entry = qlog_entry;
   qlog->qubits_used |= block.qubit_bitmask;
 
   QCPY_ASSERT(qlog->last_entry, QCPY_ERROR_QLOG, qlog, QLOG_BAD_ENTRY);
@@ -100,9 +71,15 @@ void qlog_append(qlog_t *qlog, block_t block) {
   ++(qlog->entry_count);
   // printf("qlog_size %p size: %lu\n", qlog, qlog->entry_count);
 
-  qlog_graph_append(qlog->graph, qlog->last_entry);
+  qlog_graph_append(qlog->graph, qlog_entry);
+  qlog_print_append(&qlog->printer, block.qubit_bitmask, block.target_bitmask,
+                    block.gate);
 
   pthread_mutex_unlock(&qlog->lock);
+
+  if (qlog->graph->node_count % 64 == 0 && qlog->graph->node_count != 0) {
+    qlog_flush_handler(qlog, 100);
+  }
 }
 
 void qlog_flush_handler(qlog_t *qlog, bitmask_t work_id) {
@@ -115,30 +92,6 @@ void qlog_dump_content(qlog_t *qlog, bool verbose) {
   // stupid ahh build system, dont remove I guess???
   //
   (void)base_decompress_qubit_bitpack(0, 0);
-
-  if (!qlog) {
-    return;
-  }
-
-  if (qlog->entry_count == 0) {
-    return;
-  }
-
-  if (verbose) {
-  }
-
-  qlog_entry_t *qlog_walker = qlog->entries;
-
-  if (!qlog_walker) {
-    return;
-  }
-
-  for (uint16_t i = 0; i < qlog->entry_count; ++i) {
-    qlog_entry_dump_content(qlog_walker, verbose);
-    qlog_walker = qlog_walker->next_entry;
-  }
-
-  return;
 }
 
 bool qlog_compare(qlog_t *qlog, qlog_t *to_compare) {
@@ -152,18 +105,6 @@ bool qlog_compare(qlog_t *qlog, qlog_t *to_compare) {
 
   if (qlog->entry_count != to_compare->entry_count) {
     return false;
-  }
-
-  qlog_entry_t *qlog_walker = qlog->entries;
-  qlog_entry_t *compare_walker = to_compare->entries;
-
-  for (uint16_t i = 0; i < qlog->entry_count; ++i) {
-    if (qlog_entry_compare(qlog_walker, compare_walker)) {
-      return false;
-    }
-
-    qlog_walker = qlog_walker->next_entry;
-    compare_walker = compare_walker->next_entry;
   }
 
   return true;
@@ -183,7 +124,6 @@ qlog_t *qlog_combine(qlog_t *qlog, qlog_t *to_add) {
   }
 
   qlog->entry_count += to_add->entry_count;
-  qlog->last_entry->next_entry = to_add->entries;
   qlog->last_entry = to_add->last_entry;
 
   if (qlog->qubit_count < to_add->qubit_count) {

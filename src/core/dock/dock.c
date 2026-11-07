@@ -80,7 +80,6 @@ static void dock_run_qcpy_core_boot() {
     char exporter_memfd_id[20];
     snprintf(exporter_memfd_id, sizeof(exporter_memfd_id), "%d",
              shared_export_space);
-
     char exporter_migrate_memfd[20];
     snprintf(exporter_migrate_memfd, sizeof(exporter_migrate_memfd), "%d",
              temp_migrate_memfd);
@@ -145,7 +144,11 @@ void dock_get_qc_state(uint16_t flush_reg) {
   dock_create_random_id(temp_block);
   block_enqueue(block_buffer_global_queues, temp_block);
 
-  usleep(1000);
+  // TODO: await for unique rand id to be stored back into the exporter data,
+  // letting us know that this round of statevector info  is uniquely ours in
+  // this routine.
+
+  usleep(4000);
 }
 
 void dock_add(block_t *block) {

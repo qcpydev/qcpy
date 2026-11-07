@@ -127,6 +127,8 @@ typedef enum {
 
 #define BLOCK_QUEUES_TOTAL 8u
 
+#define BLOCK_FULL_SLEEP (200)
+
 typedef struct block_buffer_queue_s {
   block_idx_t head;
   dont_use_cache_align_t _head[CACHE_LINE_SIZE - sizeof(block_idx_t)];
@@ -157,6 +159,10 @@ typedef struct block_buffer_global_s {
 } block_buffer_global_t;
 
 void block_enqueue(block_buffer_global_t *block_buffer_global, block_t *block);
+
+buffer_queue_status_e
+block_buffer_dequeue(block_buffer_queue_t *block_buffer_queue,
+                     block_t *block_to_use);
 block_t block_dequeue(block_buffer_global_t *block_buffer_global,
                       block_buffer_queue_id_t queue_id);
 

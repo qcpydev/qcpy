@@ -125,13 +125,16 @@ void block_enqueue(block_buffer_global_t *block_buffer_global, block_t *block) {
     buffer_queue_status_e status = block_buffer_enqueue(buffer_queue, block);
 
     if (status == QUEUE_STATUS_FULL) {
+      // TODO: I really wanna say this is fine, since this is "blocking work",
+      // it just feels a bit gross to fully let it spin.
+      usleep(BLOCK_FULL_SLEEP);
     } else {
       return;
     }
   }
 }
 
-static buffer_queue_status_e
+buffer_queue_status_e
 block_buffer_dequeue(block_buffer_queue_t *block_buffer_queue,
                      block_t *block_to_use) {
   assert(block_buffer_queue);
@@ -168,6 +171,7 @@ block_t block_dequeue(block_buffer_global_t *block_buffer_global,
         block_buffer_dequeue(buffer_queue, &use_to_dequeue);
 
     if (status == QUEUE_STATUS_EMPTY) {
+      usleep(100);
     } else {
       assert(status == QUEUE_STATUS_DEQUEUED);
       return use_to_dequeue;

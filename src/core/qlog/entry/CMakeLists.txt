@@ -3,6 +3,7 @@ add_library(qlog_entry qlog_entry.c)
 add_subdirectory(stats)
 
 target_link_libraries(qlog_entry PRIVATE
+    qcpy_base
     block
     replay_qlog_entry
     qlog_entry_stats

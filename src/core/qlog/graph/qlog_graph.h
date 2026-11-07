@@ -38,4 +38,7 @@ void qlog_graph_get_batch(qlog_node_t **qlog_nodes, uint32_t size);
 
 void qlog_graph_insert(qlog_graph_t *qlog_graph, qlog_node_t *qlog_node,
                        qlog_entry_t *qlog_entry);
+
+void qlog_graph_flush(qlog_graph_t *qlog_graph);
+
 #endif

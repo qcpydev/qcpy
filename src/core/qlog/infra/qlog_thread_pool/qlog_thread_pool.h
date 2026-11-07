@@ -36,6 +36,7 @@ typedef struct qlog_worker_s {
 typedef struct qlog_thread_pool_s {
   qlog_worker_t workers[IMPORTER_FUNNEL];
   qlog_register_buf_t *registers[IMPORTER_FUNNEL];
+  pthread_t admin;
 } qlog_thread_pool_t;
 
 extern qlog_thread_pool_t qlog_thread_pool;
@@ -47,5 +48,7 @@ void qlog_thread_pool_await();
 qlog_t *qlog_thread_pool_get_qlog(uint32_t reg);
 void qlog_thread_pool_reset_current();
 void qlog_thread_join(uint64_t idx);
+
+void qlog_thread_pool_admin_start();
 
 #endif

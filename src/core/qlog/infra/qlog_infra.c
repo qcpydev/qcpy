@@ -2,6 +2,8 @@
 #include <sched.h>
 
 void qlog_infra_init() {
+
+  qlog_thread_pool_admin_start();
   for (uint64_t i = 0; i < IMPORTER_FUNNEL; ++i) {
     qlog_thread_pool_init(i, &qlog_scheduler.attributes[i]);
   }

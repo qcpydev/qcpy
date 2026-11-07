@@ -43,7 +43,7 @@ void exporter_process() {
 
   pthread_mutex_lock(&qlog->lock);
 
-  printf("hello from exporter! %p, %lu\n", qlog, qlog->graph->node_count);
+  // printf("hello from exporter! %p, %lu\n", qlog, qlog->graph->node_count);
 
   qlog_graph_t *qlog_graph = qlog->graph;
   assert(qlog_graph);
@@ -58,6 +58,8 @@ void exporter_process() {
   exporter_migrate->qlog_id = qlog->id;
 
   exporter_migrate_fill_queue(qlog_graph_walk, qlog_graph->size);
+
+  qlog_handle_flush_aftermath(qlog);
   pthread_mutex_unlock(&qlog->lock);
 }
 

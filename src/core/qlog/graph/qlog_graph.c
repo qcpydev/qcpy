@@ -86,7 +86,6 @@ void qlog_graph_append(qlog_graph_t *qlog_graph, qlog_entry_t *qlog_entry) {
 
   if (qlog_graph->node_count % IMPORT_MAX_SIZE == 0 &&
       qlog_graph->node_count > 0) {
-    return;
     if (qlog_optimize(qlog_graph, false)) {
       // coming back to this later for sake of headache...
       // qlog_graph_update_checkpoint(qlog_graph);
@@ -257,3 +256,5 @@ void qlog_graph_insert(qlog_graph_t *qlog_graph, qlog_node_t *qlog_node,
   ++qlog_graph->total_node_count;
   ++qlog_graph->node_count;
 }
+
+void qlog_graph_flush(qlog_graph_t *qlog_graph);
