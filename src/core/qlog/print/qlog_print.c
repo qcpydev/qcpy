@@ -26,7 +26,11 @@ void qlog_print_append(qlog_print_t *qlog_print, bitmask_t qubit_bitmask,
 }
 
 void qlog_print_delete(qlog_print_t *qlog_print);
-void qlog_printer(qlog_print_t *qlog_print);
+
+void qlog_printer(qlog_print_t *qlog_print) {
+  assert(qlog_print);
+  printf("I am printing!\n");
+}
 
 qlog_print_item_t *qlog_print_item_init(bitmask_t qubit_bitmask,
                                         bitmask_t target_bitmask,

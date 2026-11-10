@@ -4,6 +4,10 @@ from typing import List
 from .port_entry import Block, Block_Type, IMPORT_MAX_SIZE
 from collections import defaultdict
 
+QUBIT_MAX_SIZE = 64
+BLOCK_BYTE_SIZE = 64
+
+
 class Connect:
     def __init__(self, bootargs: List[str], qcpy_connect: str, qcpy_core: str, quack_core: str, quack_gpu_core: str):
         self.qcpy_core_bin_name = qcpy_core
@@ -12,7 +16,7 @@ class Connect:
 
         self.qcpy_connect = ctypes.CDLL(qcpy_connect)
         self.bootargs = [self.qcpy_core_bin_name, self.quack_core_bin_name, self.quack_gpu_core_bin_name] + bootargs
-        self.gpu_enabled = False
+        self.gpu_enabled = True
 
         self.quantum_circuit_count = 0
         '''
@@ -31,13 +35,16 @@ class Connect:
 
         for i, param in enumerate(encoded_args):
             c_array[i] = param
+
         self.qcpy_connect.qcpy_boot_connect(c_array)
 
         self.qcpy_connect.dock_add.argtypes = [ctypes.POINTER(Block)]
         self.qcpy_connect.dock_get_qc_state.argtypes = [ctypes.c_uint16]
-        assert ctypes.sizeof(Block) == 64, f"Expected size 64, got {ctypes.sizeof(Block)}"
 
-        self.qcs = defaultdict(list)
+        self.qcpy_connect.dock_get_qc_print.argtypes = [ctypes.c_uint16]
+        self.qcpy_connect.dock_get_qc_state.argtypes = [ctypes.c_uint16]
+
+        assert ctypes.sizeof(Block) == BLOCK_BYTE_SIZE, f"Expected size 64, got {ctypes.sizeof(Block)}"
 
         '''
         self.qcpy_connect.dock_get_qc_entries.argtypes = [
@@ -51,7 +58,7 @@ class Connect:
         bitmask = 0
 
         for val in to_bitmask:
-            if val >= 64:
+            if val >= QUBIT_MAX_SIZE:
                 return -1
 
             bitmask |= 1 << val
@@ -62,11 +69,11 @@ class Connect:
         bitpack = 0
         size = len(to_bitpack)
 
-        if size >= 64:
+        if size >= QUBIT_MAX_SIZE:
             return -1
 
         for i in range(size):
-            if to_bitpack[i] >= 64:
+            if to_bitpack[i] >= QUBIT_MAX_SIZE:
                 return -1
 
             bitpack |= to_bitpack[i] << (i * 6)
@@ -80,7 +87,7 @@ class Connect:
         res = []
         bitmask = 0
         qubit = 0
-        while bitmask < (1 << 64):
+        while bitmask < (1 << QUBIT_MAX_SIZE):
             if to_decode & bitmask:
                 res.append((qubit - 1))
 
@@ -119,12 +126,6 @@ class Connect:
         ):
             return
 
-        #self.qcs[reg].append((reg, qubits, gate, size, controlled_qubits, target_qubits, theta, phi, lmbda))
-
-        num_qubits = len(qubits)
-        num_controlled = len(controlled_qubits)
-        num_target = len(target_qubits)
-
         new_block = Block()
 
         new_block.qubit_bitmask = self.__create_qubit_bitmask__(qubits)
@@ -136,16 +137,17 @@ class Connect:
         if (target_qubits):
             new_block.target_bitmask = self.__create_qubit_bitmask__(target_qubits)
             new_block.target_bitpack = self.__create_qubit_bitpack__(target_qubits)
+
         new_block.type = Block_Type.QLOG_ENTRY
         new_block.reg = reg
-        new_block.qubits = num_qubits
+        new_block.qubits = len(qubits)
         new_block.theta = theta
         new_block.phi = phi
         new_block.lmbda = lmbda
         new_block.gate = gate
         new_block.size = size
-        new_block.controlled_count = num_controlled
-        new_block.target_count = num_target
+        new_block.controlled_count = len(controlled_qubits)
+        new_block.target_count = len(target_qubits)
         new_block.inverted = False
         new_block.big_endian = False
 
@@ -162,17 +164,6 @@ class Connect:
     def get_quantum_circuit_state(self, reg: int, is_print: bool = False) -> None:
         self.qcpy_connect.dock_get_qc_state(reg)
 
-    def get_gates_for_circuit(self, reg: int):
-        entries = []
-        sub_entries = (Block * IMPORT_MAX_SIZE)()
+    def print_quantum_circuit_state(self, reg: int) -> None:
+        self.qcpy_connect.dock_get_qc_print(reg)
 
-        entries += sub_entries
-        """
-        while (output == IMPORT_MAX_SIZE):
-            count += output
-            output = self.qcpy_connect.dock_get_qc_entries(reg, sub_entries)
-            entries += sub_entries
-            print("looping")
-        """
-
-        return entries

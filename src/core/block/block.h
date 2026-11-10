@@ -60,9 +60,10 @@
 
 /* Used to identify what is in the buffer queue  */
 typedef enum : uint8_t {
-  BLOCK_QLOG_ENTRY, // qlog (quantum gate) entry
-  BLOCK_CLOG_ENTRY, // clog (classical gate) entry
-  BLOCK_FLUSH_ENTRY // flush queue signal
+  BLOCK_QLOG_ENTRY,  // qlog (quantum gate) entry
+  BLOCK_CLOG_ENTRY,  // clog (classical gate) entry
+  BLOCK_FLUSH_ENTRY, // flush queue signal
+  BLOCK_PRINT_ENTRY  // prints quantum circuit
 } block_type_e;
 
 #ifdef __cplusplus
@@ -179,17 +180,6 @@ block_buffer_queue_assign_tid(block_buffer_global_t *block_buffer_global,
 void block_buffer_global_await_setup(
     block_buffer_global_t *block_buffer_global);
 
-// BYE BYE NO MORE
-typedef struct import_s {
-  block_t queue[IMPORT_MAX_SIZE];
-  uint64_t flush_reg;
-  int idx;
-  bool flushing;
-  bool ready;
-} import_t;
-void block_add(block_t *block, import_t *port);
-
-// BYE BYE NO MORE
 typedef struct export_s {
   uint64_t reg;
   int dock_idx;
@@ -201,8 +191,5 @@ typedef struct export_s {
 } export_t;
 
 extern export_t *exporter;
-// BYE BYE NO MORE
-extern sem_t *dock_export_sem;
-extern sem_t *port_export_sem;
 
 #endif // BLOCK_H

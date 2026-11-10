@@ -69,9 +69,7 @@ void dock_setup_global_shared_mem() {
 
 static void dock_run_qcpy_core_boot() {
   pid_t pid = fork();
-
   if (pid == 0) {
-    // i fucking hate this, change it
     prctl(PR_SET_PDEATHSIG, SIGTERM);
     char buffer_queues_memfd_id[20];
     snprintf(buffer_queues_memfd_id, sizeof(buffer_queues_memfd_id), "%d",
@@ -109,9 +107,7 @@ static void dock_run_quack_boot() {
     char *args_test[] = {qcpy_bootarg_wrapper.quack_exec_name,
                          exporter_migrate_memfd, NULL};
 
-    char *run_quack_version = qcpy_bootarg_wrapper.is_gpu_enabled
-                                  ? qcpy_bootarg_wrapper.quack_gpu_exec_name
-                                  : qcpy_bootarg_wrapper.quack_exec_name;
+    char *run_quack_version = qcpy_bootarg_wrapper.quack_exec_name;
 
     execvp(run_quack_version, args_test);
     perror("execvp failed");
@@ -134,10 +130,21 @@ void dock_create_random_id(block_t *block) {
   block->qubit_bitmask |= (size_t)rand() << (sizeof(int));
 }
 
-void dock_get_qc_state(uint16_t flush_reg) {
-  block_t *temp_block = (block_t *)malloc(sizeof(block_t));
+void dock_get_qc_print(uint16_t flush_reg) {
+  block_t *temp_block = (block_t *)calloc(1, sizeof(block_t));
   assert(temp_block);
-  memset(temp_block, 0, sizeof(block_t));
+  temp_block->reg = flush_reg;
+  temp_block->type = BLOCK_PRINT_ENTRY;
+
+  dock_create_random_id(temp_block);
+  block_enqueue(block_buffer_global_queues, temp_block);
+
+  usleep(4000);
+}
+
+void dock_get_qc_state(uint16_t flush_reg) {
+  block_t *temp_block = (block_t *)calloc(1, sizeof(block_t));
+  assert(temp_block);
   temp_block->reg = flush_reg;
   temp_block->type = BLOCK_FLUSH_ENTRY;
 

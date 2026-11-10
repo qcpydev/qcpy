@@ -59,7 +59,7 @@ void exporter_process() {
 
   exporter_migrate_fill_queue(qlog_graph_walk, qlog_graph->size);
 
-  qlog_handle_flush_aftermath(qlog);
+  //qlog_handle_flush_aftermath(qlog);
   pthread_mutex_unlock(&qlog->lock);
 }
 

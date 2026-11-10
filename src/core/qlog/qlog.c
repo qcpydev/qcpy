@@ -69,7 +69,7 @@ void qlog_append(qlog_t *qlog, block_t block) {
   QCPY_ASSERT(qlog->last_entry, QCPY_ERROR_QLOG, qlog, QLOG_BAD_ENTRY);
 
   ++(qlog->entry_count);
-  // printf("qlog_size %p size: %lu\n", qlog, qlog->entry_count);
+  printf("qlog_size %p size: %lu\n", qlog, qlog->entry_count);
 
   qlog_graph_append(qlog->graph, qlog_entry);
   qlog_print_append(&qlog->printer, block.qubit_bitmask, block.target_bitmask,
@@ -131,4 +131,9 @@ qlog_t *qlog_combine(qlog_t *qlog, qlog_t *to_add) {
   }
 
   return qlog;
+}
+
+void qlog_print_handler(qlog_t *qlog) {
+  assert(qlog);
+  qlog_printer(&qlog->printer);
 }

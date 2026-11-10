@@ -47,5 +47,6 @@ bool qlog_compare(qlog_t *qlog, qlog_t *qlog_q);
 qlog_t *qlog_combine(qlog_t *qlog, qlog_t *to_combine);
 void qlog_flush_handler(qlog_t *qlog, bitmask_t work_id);
 void qlog_handle_flush_aftermath(qlog_t *qlog);
+void qlog_print_handler(qlog_t *qlog);
 
 #endif
