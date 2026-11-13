@@ -2,10 +2,6 @@ import os
 from .connect import Connect
 import sys
 
-env = os.environ.copy()
-env["PYTHONUNBUFFERED"] = "1"
-sys.stdout.flush()
-
 FILE_PATH = os.path.dirname(os.path.realpath(__file__))
 BUILD_PATH = "/builder/build/"
 

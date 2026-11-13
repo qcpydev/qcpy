@@ -46,8 +46,10 @@ class QuantumGates(IntEnum):
 
 
 class Block_Type(IntEnum):
-    QLOG_ENTRY = 0
-    CLOG_ENTRY = 1
+  BLOCK_QLOG_ENTRY = 0
+  BLOCK_CLOG_ENTRY = 1
+  BLOCK_FLUSH_ENTRY = 2
+  BLOCK_PRINT_ENTRY = 3
 
 class Block(ctypes.Structure):
     _fields_ = [

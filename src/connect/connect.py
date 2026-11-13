@@ -19,6 +19,7 @@ class Connect:
         self.gpu_enabled = True
 
         self.quantum_circuit_count = 0
+
         '''
         try:
             subprocess.check_output(["nvcc", "--version"]).decode()
@@ -138,7 +139,7 @@ class Connect:
             new_block.target_bitmask = self.__create_qubit_bitmask__(target_qubits)
             new_block.target_bitpack = self.__create_qubit_bitpack__(target_qubits)
 
-        new_block.type = Block_Type.QLOG_ENTRY
+        new_block.type = Block_Type.BLOCK_QLOG_ENTRY
         new_block.reg = reg
         new_block.qubits = len(qubits)
         new_block.theta = theta
@@ -153,6 +154,7 @@ class Connect:
 
         self.qcpy_connect.dock_add(new_block)
 
+
     def add_quantum_circuit(self, attempt_using_gpu: bool = False) -> int:
         if attempt_using_gpu and not self.gpu_enabled:
             pass
@@ -164,6 +166,8 @@ class Connect:
     def get_quantum_circuit_state(self, reg: int, is_print: bool = False) -> None:
         self.qcpy_connect.dock_get_qc_state(reg)
 
-    def print_quantum_circuit_state(self, reg: int) -> None:
+    def print_quantum_circuit_state(self, reg: int, qubits: int) -> str:
+        circuit_draw = CircuitDrawing(qubits)
         self.qcpy_connect.dock_get_qc_print(reg)
+        return circuit_draw.make([])
 

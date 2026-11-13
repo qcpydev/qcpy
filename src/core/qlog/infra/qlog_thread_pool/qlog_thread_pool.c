@@ -11,6 +11,7 @@ bool qlog_thread_pool_open = true;
 
 // TODO: switch to using a named pipe, so that we can inter process communicate
 // instead of doing these cond waits, for now its "ok"
+
 static void qlog_thread_pool_worker_dequeue_await(block_t *block,
                                                   uint64_t key) {
   while (block_buffer_dequeue(&block_buffer_global_queues->queues[key],
@@ -42,8 +43,10 @@ void *qlog_thread_pool_worker(void *thread_index) {
     } else {
       qlog_register_handle_input(qlog_buffer_find,
                                  qlog_thread_pool.registers[key], block);
+      ++qlog_thread_pool.workers[key].items_processed;
     }
   }
+
   pthread_mutex_unlock(&qlog_thread_pool.workers[key].lock);
   return NULL;
 }

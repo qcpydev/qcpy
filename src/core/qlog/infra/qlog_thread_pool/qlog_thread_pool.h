@@ -17,7 +17,7 @@
  * optimized, to reduce redundant work.
  * */
 
-typedef enum {
+typedef enum : uint8_t {
   QLOG_PROCESS_EMPTY,
   QLOG_PROCESS_START,
   QLOG_PROCESS_APPENDING,
@@ -30,6 +30,7 @@ typedef struct qlog_worker_s {
   pthread_t thread;
   pthread_cond_t cond;
   pthread_mutex_t lock;
+  size_t items_processed;
   qlog_process_state_e state;
 } qlog_worker_t;
 

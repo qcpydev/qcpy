@@ -33,27 +33,31 @@ circuit_drawing_gate_names = {
 
 
 def convert_gate_name(gate_name: int) -> str:
-    gate_val = QG(gate_name)
+    try:
+        gate_val = QG(gate_name)
 
-    if gate_val in circuit_drawing_gate_names:
-        return circuit_drawing_gate_names[gate_val]
-    match gate_name:
-        case QG.CX | QG.CCX:
-            return circuit_drawing_gate_names[QG(QG.PAULIX)]
-        case QG.CY:
-            return circuit_drawing_gate_names[QG(QG.PAULIY)]
-        case QG.CZ:
-            return circuit_drawing_gate_names[QG(QG.PAULIZ)]
-        case QG.CH:
-            return circuit_drawing_gate_names[QG(QG.HADAMARD)]
-        case QG.CRX:
-            return circuit_drawing_gate_names[QG(QG.RX)]
-        case QG.CRY:
-            return circuit_drawing_gate_names[QG(QG.RY)]
-        case QG.CRZ:
-            return circuit_drawing_gate_names[QG(QG.RZ)]
-        case QG.SWAP:
-            return "SWAP"
+        if gate_val in circuit_drawing_gate_names:
+            return circuit_drawing_gate_names[gate_val]
+
+        match gate_name:
+            case QG.CX | QG.CCX:
+                return circuit_drawing_gate_names[QG(QG.PAULIX)]
+            case QG.CY:
+                return circuit_drawing_gate_names[QG(QG.PAULIY)]
+            case QG.CZ:
+                return circuit_drawing_gate_names[QG(QG.PAULIZ)]
+            case QG.CH:
+                return circuit_drawing_gate_names[QG(QG.HADAMARD)]
+            case QG.CRX:
+                return circuit_drawing_gate_names[QG(QG.RX)]
+            case QG.CRY:
+                return circuit_drawing_gate_names[QG(QG.RY)]
+            case QG.CRZ:
+                return circuit_drawing_gate_names[QG(QG.RZ)]
+            case QG.SWAP:
+                return "SWAP"
+    finally:
+        assert(0)
 
     return ""
 

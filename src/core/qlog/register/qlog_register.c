@@ -62,25 +62,36 @@ qlog_register_buf_t *qlog_register_buf_find(qlog_register_buf_t *qlog_buffer,
     qlog_register_buf->reg.id = id;
   }
 
+  assert(qlog_register_buf->reg.qlog);
+
   return qlog_register_buf;
+}
+
+static void qlog_register_append_handler(qlog_register_buf_t *qlog_buf_finder,
+                                         qlog_register_buf_t *qlog_buffer,
+                                         block_t block) {
+  assert(qlog_buf_finder && qlog_buffer && block.qubit_bitmask);
 }
 
 void qlog_register_handle_input(qlog_register_buf_t *qlog_buf_finder,
                                 qlog_register_buf_t *qlog_buffer,
                                 block_t block) {
   assert(qlog_buf_finder && qlog_buffer);
+
   if (block.reg != qlog_buf_finder->reg.id) {
     qlog_buf_finder = qlog_register_buf_find(qlog_buffer, block.reg);
   }
 
-  printf("here what\n");
-
+  assert(block.reg == qlog_buf_finder->reg.id);
   switch (block.type) {
   case BLOCK_FLUSH_ENTRY:
+    if (!qlog_buf_finder->reg.qlog) {
+      return;
+    }
     qlog_flush_handler(qlog_buf_finder->reg.qlog, block.qubit_bitmask);
     break;
   case BLOCK_QLOG_ENTRY:
-    qlog_append(qlog_buf_finder->reg.qlog, block);
+    qlog_register_add(qlog_buf_finder, block);
     break;
   case BLOCK_PRINT_ENTRY:
     qlog_print_handler(qlog_buf_finder->reg.qlog);

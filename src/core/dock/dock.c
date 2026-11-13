@@ -138,8 +138,6 @@ void dock_get_qc_print(uint16_t flush_reg) {
 
   dock_create_random_id(temp_block);
   block_enqueue(block_buffer_global_queues, temp_block);
-
-  usleep(4000);
 }
 
 void dock_get_qc_state(uint16_t flush_reg) {

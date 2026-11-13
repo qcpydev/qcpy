@@ -70,14 +70,12 @@ class QuantumCircuit:
         """
         pass
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Prints out a circuit drawing in console.
         Returns:
             str: String output of the quantum circuit drawing.
         """
-
-        qcpy_connect.print_quantum_circuit_state(self.reg)
-        return ""
+        return qcpy_connect.print_quantum_circuit_state(self.reg, self.qubits)
 
     def __len__(self) -> int:
         """Amount of possible states in the quantum circuit (2^num_qubits).
