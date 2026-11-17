@@ -3,6 +3,7 @@ import ctypes
 
 IMPORT_MAX_SIZE = 64
 
+
 class QuantumGates(IntEnum):
     IDENTITY = 0
     HADAMARD = 1
@@ -46,11 +47,12 @@ class QuantumGates(IntEnum):
 
 
 class Block_Type(IntEnum):
-  BLOCK_QLOG_ENTRY = 0
-  BLOCK_CLOG_ENTRY = 1
-  BLOCK_FLUSH_ENTRY = 2
-  BLOCK_PRINT_ENTRY = 3
-  BLOCK_QLOG_CREATE = 4
+    BLOCK_QLOG_ENTRY = 0
+    BLOCK_CLOG_ENTRY = 1
+    BLOCK_FLUSH_ENTRY = 2
+    BLOCK_PRINT_ENTRY = 3
+    BLOCK_QLOG_CREATE = 4
+
 
 class Block(ctypes.Structure):
     _fields_ = [
@@ -71,4 +73,3 @@ class Block(ctypes.Structure):
         ("big_endian", ctypes.c_bool, 1),
         ("used", ctypes.c_bool, 1),
     ]
-

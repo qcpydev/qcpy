@@ -130,8 +130,6 @@ typedef enum {
 
 typedef struct block_buffer_queue_s {
   block_idx_t head;
-  dont_use_cache_align_t _head[CACHE_LINE_SIZE - sizeof(block_idx_t)];
-
   block_idx_t tail;
   dont_use_cache_align_t _tail[CACHE_LINE_SIZE - sizeof(block_idx_t)];
 

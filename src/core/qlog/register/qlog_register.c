@@ -19,7 +19,7 @@ qlog_register_buf_t *qlog_register_buf_init(qlog_register_buf_t **qlog_buffer,
     (*qlog_buffer)->last = new_qlog_buffer;
   } else {
     (*qlog_buffer)->last->next = new_qlog_buffer;
-    (*qlog_buffer)->last = new_qlog_buffer;
+    (*qlog_buffer)->last = (*qlog_buffer)->last->next;
   }
 
   return new_qlog_buffer;
@@ -48,14 +48,16 @@ void qlog_register_add(qlog_register_buf_t *qlog_register_buf, block_t *block) {
 }
 
 qlog_register_buf_t *
-qlog_register_buf_find(qlog_register_buf_t *thread_register_pool, reg_t id) {
+qlog_register_buf_find(qlog_register_buf_t **thread_register_pool, reg_t id) {
   assert(thread_register_pool);
 
-  while (thread_register_pool && thread_register_pool->qlog->id != id) {
-    thread_register_pool = thread_register_pool->next;
+  qlog_register_buf_t *walk_pool = *thread_register_pool;
+
+  while (walk_pool && walk_pool->qlog->id != id) {
+    walk_pool = walk_pool->next;
   }
 
-  return thread_register_pool;
+  return walk_pool;
 }
 
 void qlog_register_handle_input(qlog_register_buf_t **register_finder,
@@ -64,8 +66,9 @@ void qlog_register_handle_input(qlog_register_buf_t **register_finder,
 
   if (block->type != BLOCK_QLOG_CREATE) {
     if ((*register_finder)->qlog->id != block->reg) {
-      assert(register_finder && thread_register_pool);
-      qlog_register_buf_find(*thread_register_pool, block->reg);
+      assert(*register_finder && *thread_register_pool);
+      *register_finder =
+          qlog_register_buf_find(thread_register_pool, block->reg);
       assert((*register_finder)->qlog->id == block->reg);
     }
   }
@@ -85,7 +88,7 @@ void qlog_register_handle_input(qlog_register_buf_t **register_finder,
     reg_t reg = block->qubit_bitmask;
     *register_finder =
         qlog_register_buf_init(thread_register_pool, block->qubits, reg);
-    assert(register_finder);
+    assert(*register_finder);
     break;
   default:
     assert(0);

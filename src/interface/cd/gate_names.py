@@ -57,7 +57,7 @@ def convert_gate_name(gate_name: int) -> str:
             case QG.SWAP:
                 return "SWAP"
     finally:
-        assert(0)
+        assert 0
 
     return ""
 

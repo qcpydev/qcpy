@@ -24,7 +24,15 @@ QUACK_FILE_PATH = (
 
 
 QUACK_GPU_FILE_PATH = (
-    str(os.path.abspath(os.path.join(FILE_PATH, os.pardir))) + BUILD_PATH + QUACK_GPU_NAME
+    str(os.path.abspath(os.path.join(FILE_PATH, os.pardir)))
+    + BUILD_PATH
+    + QUACK_GPU_NAME
 )
 
-qcpy_connect = Connect([], QCPY_CONNECT_FILE_PATH, QCPY_CORE_FILE_PATH, QUACK_FILE_PATH, QUACK_GPU_FILE_PATH)
+qcpy_connect = Connect(
+    [],
+    QCPY_CONNECT_FILE_PATH,
+    QCPY_CORE_FILE_PATH,
+    QUACK_FILE_PATH,
+    QUACK_GPU_FILE_PATH,
+)

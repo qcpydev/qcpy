@@ -10,23 +10,34 @@ QUBIT_BITS_NEEDED = 6
 
 
 class Connect:
-    def __init__(self, bootargs: List[str], qcpy_connect: str, qcpy_core: str, quack_core: str, quack_gpu_core: str):
+    def __init__(
+        self,
+        bootargs: List[str],
+        qcpy_connect: str,
+        qcpy_core: str,
+        quack_core: str,
+        quack_gpu_core: str,
+    ):
         self.qcpy_core_bin_name = qcpy_core
         self.quack_core_bin_name = quack_core
         self.quack_gpu_core_bin_name = quack_gpu_core
 
         self.qcpy_connect = ctypes.CDLL(qcpy_connect)
-        self.bootargs = [self.qcpy_core_bin_name, self.quack_core_bin_name, self.quack_gpu_core_bin_name] + bootargs
+        self.bootargs = [
+            self.qcpy_core_bin_name,
+            self.quack_core_bin_name,
+            self.quack_gpu_core_bin_name,
+        ] + bootargs
         self.gpu_enabled = True
 
         self.quantum_circuit_count = 0
 
-        '''
+        """
         try:
             subprocess.check_output(["nvcc", "--version"]).decode()
         except FileNotFoundError:
             self.gpu_enabled = False
-        '''
+        """
         self.bootargs += "Y" if self.gpu_enabled else "N"
 
         self.qcpy_connect.qcpy_boot_connect.restype = ctypes.c_int
@@ -46,18 +57,20 @@ class Connect:
         self.qcpy_connect.dock_get_qc_print.argtypes = [ctypes.c_size_t]
         self.qcpy_connect.dock_get_qc_state.argtypes = [ctypes.c_size_t]
 
-        self.qcpy_connect.dock_create_qc.argtypes = [ctypes.c_uint8];
-        self.qcpy_connect.dock_create_qc.restype = ctypes.c_size_t;
+        self.qcpy_connect.dock_create_qc.argtypes = [ctypes.c_uint8]
+        self.qcpy_connect.dock_create_qc.restype = ctypes.c_size_t
 
-        assert ctypes.sizeof(Block) == BLOCK_BYTE_SIZE, f"Expected size 64, got {ctypes.sizeof(Block)}"
+        assert (
+            ctypes.sizeof(Block) == BLOCK_BYTE_SIZE
+        ), f"Expected size 64, got {ctypes.sizeof(Block)}"
 
-        '''
+        """
         self.qcpy_connect.dock_get_qc_entries.argtypes = [
             ctypes.c_int,
             ctypes.POINTER(Block),
         ]
         self.qcpy_connect.dock_get_qc_entries.restype = ctypes.c_int
-        '''
+        """
 
     def __create_qubit_bitmask__(self, to_bitmask: List[int]) -> int:
         bitmask = 0
@@ -89,7 +102,10 @@ class Connect:
         return 0
 
     def unpack_qubit_bitpack(self, to_decode: int, size: int) -> List[int]:
-        return [(to_decode >> (i * QUBIT_BITS_NEEDED)) & (QUBIT_MAX_SIZE - 1) for i in range(size)]
+        return [
+            (to_decode >> (i * QUBIT_BITS_NEEDED)) & (QUBIT_MAX_SIZE - 1)
+            for i in range(size)
+        ]
 
     def unpack_qubit_bitmask(self, to_decode: int) -> List[int]:
         res = []
@@ -130,7 +146,7 @@ class Connect:
         lmbda: float = 0,
     ) -> None:
 
-        assert(reg != 0)
+        assert reg != 0
         if not self.__validate_control_target_qubits__(
             controlled_qubits, target_qubits
         ):
@@ -140,17 +156,21 @@ class Connect:
 
         new_block.qubit_bitmask = self.__create_qubit_bitmask__(qubits)
 
-        if (controlled_qubits):
-            new_block.controlled_bitmask = self.__create_qubit_bitmask__(controlled_qubits)
-            new_block.controlled_bitpack = self.__create_qubit_bitpack__(controlled_qubits)
+        if controlled_qubits:
+            new_block.controlled_bitmask = self.__create_qubit_bitmask__(
+                controlled_qubits
+            )
+            new_block.controlled_bitpack = self.__create_qubit_bitpack__(
+                controlled_qubits
+            )
 
-        if (target_qubits):
+        if target_qubits:
             new_block.target_bitmask = self.__create_qubit_bitmask__(target_qubits)
             new_block.target_bitpack = self.__create_qubit_bitpack__(target_qubits)
 
-        new_block.param_bitpack = self.__create_qubit_bitpack__([int(theta), int(phi), int(lmbda)])
+        # whelp...shit this is hitting performance, fuck it lets just hit this in a int maybe
+        # new_block.param_bitpack = self.__create_qubit_bitpack__([int(theta), int(phi), int(lmbda)])
 
-        new_block.type = Block_Type.BLOCK_QLOG_ENTRY
         new_block.reg = reg
         new_block.qubits = len(qubits)
         new_block.theta = theta
@@ -165,9 +185,8 @@ class Connect:
 
         self.qcpy_connect.dock_add(new_block)
 
-
     def add_quantum_circuit(self, qubits: int) -> int:
-        temp_count = self.qcpy_connect.dock_create_qc(qubits);
+        temp_count = self.qcpy_connect.dock_create_qc(qubits)
         self.quantum_circuit_count += 1
 
         return temp_count
@@ -176,8 +195,7 @@ class Connect:
         self.qcpy_connect.dock_get_qc_state(reg)
 
     def print_quantum_circuit_state(self, reg: int, qubits: int) -> str:
-        #circuit_draw = CircuitDrawing(qubits)
+        # circuit_draw = CircuitDrawing(qubits)
         self.qcpy_connect.dock_get_qc_print(reg)
-        #return circuit_draw.make([])
+        # return circuit_draw.make([])
         return ""
-

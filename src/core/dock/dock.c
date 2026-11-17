@@ -169,6 +169,7 @@ size_t dock_create_qc(qubit_t qubits) {
 }
 
 void dock_add(block_t *block) {
+  block->type = BLOCK_QLOG_ENTRY;
   block_enqueue(block_buffer_global_queues, block);
 }
 

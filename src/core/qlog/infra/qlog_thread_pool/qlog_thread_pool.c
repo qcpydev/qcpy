@@ -68,7 +68,7 @@ qlog_t *qlog_thread_pool_get_qlog(uint32_t reg) {
   assert(qlog_thread_pool.registers[key]);
 
   qlog_register_buf_t *qlog_reg_buffer =
-      qlog_register_buf_find(qlog_thread_pool.registers[key], reg);
+      qlog_register_buf_find(&qlog_thread_pool.registers[key], reg);
 
   assert(qlog_reg_buffer);
 

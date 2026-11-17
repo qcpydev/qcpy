@@ -2,7 +2,6 @@
 #include <qlog.h>
 #include <stdbool.h>
 #include <stdint.h>
-
 #pragma once
 #ifndef QLOG_REGISTER_H
 #define QLOG_REGISTER_H
@@ -29,13 +28,14 @@ struct qlog_register_buf_s {
 
 qlog_register_buf_t *qlog_register_buf_init(qlog_register_buf_t **qlog_buffer,
                                             qubit_t qubits, reg_t id);
+
 void qlog_register_buf_delete(qlog_register_buf_t *qlog_register_buf);
 void qlog_register_add(qlog_register_buf_t *qlog_register_buf, block_t *block);
 
 bool qlog_register_buf_check_id(qlog_register_buf_t *qlog_register_buf,
                                 uint64_t id);
-qlog_register_buf_t *qlog_register_buf_find(qlog_register_buf_t *qlog_buffer,
-                                            uint64_t id);
+qlog_register_buf_t *
+qlog_register_buf_find(qlog_register_buf_t **thread_register_pool, reg_t id);
 
 void qlog_register_handle_input(qlog_register_buf_t **register_finder,
                                 qlog_register_buf_t **thread_register_pool,
