@@ -20,30 +20,24 @@ typedef enum {
   QLOG_REGISTER_NULL,
 } qlog_register_error_e;
 
-typedef struct qlog_register_s qlog_register_t;
-struct qlog_register_s {
-  qlog_t *qlog;
-  uint64_t id;
-};
-
 typedef struct qlog_register_buf_s qlog_register_buf_t;
 struct qlog_register_buf_s {
-  qlog_register_t reg;
+  qlog_t *qlog;
   qlog_register_buf_t *next;
   qlog_register_buf_t *last;
 };
 
-qlog_register_buf_t *qlog_register_buf_init(qlog_register_buf_t *qlog_buffer);
+qlog_register_buf_t *qlog_register_buf_init(qlog_register_buf_t **qlog_buffer,
+                                            qubit_t qubits, reg_t id);
 void qlog_register_buf_delete(qlog_register_buf_t *qlog_register_buf);
-void qlog_register_delete(qlog_register_t *qlog_register);
-void qlog_register_add(qlog_register_buf_t *qlog_register_buf, block_t block);
+void qlog_register_add(qlog_register_buf_t *qlog_register_buf, block_t *block);
 
 bool qlog_register_buf_check_id(qlog_register_buf_t *qlog_register_buf,
                                 uint64_t id);
 qlog_register_buf_t *qlog_register_buf_find(qlog_register_buf_t *qlog_buffer,
                                             uint64_t id);
 
-void qlog_register_handle_input(qlog_register_buf_t *qlog_buf_finder,
-                                qlog_register_buf_t *qlog_buffer,
-                                block_t block);
+void qlog_register_handle_input(qlog_register_buf_t **register_finder,
+                                qlog_register_buf_t **thread_register_pool,
+                                block_t *block);
 #endif // !QLOG_REGISTER_H

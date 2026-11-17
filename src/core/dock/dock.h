@@ -64,5 +64,6 @@ void dock_queue_init(dock_queue_t *dock_queue);
 void dock_enqueue(block_t *block);
 block_t *dock_dequeue(dock_queue_t *dock_queue);
 void dock_setup_early_init(char *args[]);
+size_t dock_create_qc(qubit_t qubits);
 
 #endif // DOCK_H

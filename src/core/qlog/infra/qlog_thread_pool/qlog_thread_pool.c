@@ -14,6 +14,7 @@ bool qlog_thread_pool_open = true;
 
 static void qlog_thread_pool_worker_dequeue_await(block_t *block,
                                                   uint64_t key) {
+  pthread_mutex_unlock(&qlog_thread_pool.workers[key].lock);
   while (block_buffer_dequeue(&block_buffer_global_queues->queues[key],
                               block) == QUEUE_STATUS_EMPTY) {
     pthread_cond_wait(&qlog_thread_pool.workers[key].cond,
@@ -23,8 +24,8 @@ static void qlog_thread_pool_worker_dequeue_await(block_t *block,
 
 void *qlog_thread_pool_worker(void *thread_index) {
   uint64_t key = (uint64_t)thread_index;
-  qlog_thread_pool.registers[key] = qlog_register_buf_init(NULL);
-  qlog_register_buf_t *qlog_buffer_find = qlog_thread_pool.registers[key];
+
+  qlog_register_buf_t *register_finder = qlog_thread_pool.registers[key];
 
   pthread_t tid = pthread_self();
   block_buffer_queue_id_t queue_id =
@@ -38,13 +39,13 @@ void *qlog_thread_pool_worker(void *thread_index) {
         block_buffer_dequeue(&block_buffer_global_queues->queues[key], &block);
 
     if (status == QUEUE_STATUS_EMPTY) {
-      pthread_mutex_unlock(&qlog_thread_pool.workers[key].lock);
       qlog_thread_pool_worker_dequeue_await(&block, key);
-    } else {
-      qlog_register_handle_input(qlog_buffer_find,
-                                 qlog_thread_pool.registers[key], block);
-      ++qlog_thread_pool.workers[key].items_processed;
     }
+
+    qlog_register_handle_input(&register_finder,
+                               &qlog_thread_pool.registers[key], &block);
+
+    ++qlog_thread_pool.workers[key].items_processed;
   }
 
   pthread_mutex_unlock(&qlog_thread_pool.workers[key].lock);
@@ -71,7 +72,7 @@ qlog_t *qlog_thread_pool_get_qlog(uint32_t reg) {
 
   assert(qlog_reg_buffer);
 
-  return qlog_reg_buffer->reg.qlog;
+  return qlog_reg_buffer->qlog;
 }
 
 static void *qlog_thread_pool_admin() {

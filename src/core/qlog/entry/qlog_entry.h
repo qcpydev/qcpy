@@ -25,6 +25,8 @@ typedef uint64_t qlog_entry_id_t;
 
 #define QLOG_MAX_QUBITS 64
 
+typedef float param_t;
+
 struct qlog_entry_t {
   qlog_entry_id_t entry_id;     // Unique ID, each id is (qlog, qlog_entry)
   qlog_entry_t *prev_entry;     // prev node for the qlog
@@ -53,7 +55,7 @@ typedef enum {
   QLOG_ENTRY_FAILED_QUBIT_FLAGS
 } qlog_entry_error_e;
 
-qlog_entry_t *qlog_entry_init(uint64_t id, block_t block);
+qlog_entry_t *qlog_entry_init(uint64_t id, block_t *block);
 uint64_t qlog_entry_qubit_set_flags(uint8_t *qubits, uint8_t count);
 uint8_t *qlog_entry_deconstruct_qubits(qlog_entry_t *qlog_entry);
 void qlog_entry_delete(qlog_entry_t *qlog_entry);

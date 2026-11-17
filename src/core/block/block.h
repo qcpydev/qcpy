@@ -63,7 +63,8 @@ typedef enum : uint8_t {
   BLOCK_QLOG_ENTRY,  // qlog (quantum gate) entry
   BLOCK_CLOG_ENTRY,  // clog (classical gate) entry
   BLOCK_FLUSH_ENTRY, // flush queue signal
-  BLOCK_PRINT_ENTRY  // prints quantum circuit
+  BLOCK_PRINT_ENTRY, // prints quantum circuit
+  BLOCK_QLOG_CREATE  // creates a qlog
 } block_type_e;
 
 #ifdef __cplusplus
@@ -85,10 +86,9 @@ typedef atomic_int atomic_memfd_t;
 
 typedef char dont_use_cache_align_t;
 typedef size_t block_buffer_queue_id_t;
-typedef uint16_t reg_t;
+typedef size_t reg_t;
 typedef uint64_t bitmask_t;
 typedef uint64_t bitpack_t;
-typedef float param_t;
 typedef uint8_t qubit_t;
 typedef uint8_t gate_t;
 #define BITS_IN_BYTE 8
@@ -99,16 +99,14 @@ typedef struct block_s {
   bitpack_t controlled_bitpack;
   bitmask_t target_bitmask;
   bitpack_t target_bitpack;
-  param_t theta;
-  param_t phi;
-  param_t lmbda;
-  reg_t reg : (sizeof(reg_t) * BITS_IN_BYTE);
+  bitpack_t param_bitpack;
+  reg_t reg;
   gate_t gate : (sizeof(gate_t) * BITS_IN_BYTE);
   qubit_t qubits : (sizeof(qubit_t) * BITS_IN_BYTE);
   qubit_t size : (sizeof(qubit_t) * BITS_IN_BYTE);
   qubit_t controlled_count : (sizeof(qubit_t) * BITS_IN_BYTE);
   qubit_t target_count : (sizeof(qubit_t) * BITS_IN_BYTE);
-  block_type_e type : 4;
+  block_type_e type : 5;
   bool inverted : 1;
   bool big_endian : 1;
   bool used : 1;
@@ -164,8 +162,6 @@ void block_enqueue(block_buffer_global_t *block_buffer_global, block_t *block);
 buffer_queue_status_e
 block_buffer_dequeue(block_buffer_queue_t *block_buffer_queue,
                      block_t *block_to_use);
-block_t block_dequeue(block_buffer_global_t *block_buffer_global,
-                      block_buffer_queue_id_t queue_id);
 
 #define BLOCK_BUFFER_QUEUE_GLOBAL_NAME "/qcpy_core_block_buffer_queues"
 

@@ -84,9 +84,9 @@ block_buffer_enqueue(block_buffer_queue_t *block_buffer_queue, block_t *block) {
   }
 
   block_buffer_queue->queue[tail] = *block;
+
   atomic_store_explicit(&block_buffer_queue->tail, next_idx,
                         memory_order_release);
-
   return QUEUE_STATUS_ENQUEUED;
 }
 
@@ -138,6 +138,7 @@ buffer_queue_status_e
 block_buffer_dequeue(block_buffer_queue_t *block_buffer_queue,
                      block_t *block_to_use) {
   assert(block_buffer_queue);
+
   size_t head =
       atomic_load_explicit(&block_buffer_queue->head, memory_order_relaxed);
 
@@ -152,33 +153,6 @@ block_buffer_dequeue(block_buffer_queue_t *block_buffer_queue,
                         (head + 1) & BLOCK_QUEUE_IDX_MAX, memory_order_release);
 
   return QUEUE_STATUS_DEQUEUED;
-}
-
-block_t block_dequeue(block_buffer_global_t *block_buffer_global,
-                      block_buffer_queue_id_t queue_id) {
-#ifdef DEBUG
-  pid_t tid = pthread_self();
-  validate_block_buffer_queue(queue_idx, tid);
-#endif
-
-  block_buffer_queue_t *buffer_queue =
-      block_buffer_queue_get_with_qid(block_buffer_global, queue_id);
-
-  block_t use_to_dequeue = {0};
-
-  for (;;) {
-    buffer_queue_status_e status =
-        block_buffer_dequeue(buffer_queue, &use_to_dequeue);
-
-    if (status == QUEUE_STATUS_EMPTY) {
-      usleep(100);
-    } else {
-      assert(status == QUEUE_STATUS_DEQUEUED);
-      return use_to_dequeue;
-    }
-  }
-
-  return use_to_dequeue;
 }
 
 block_buffer_global_t *block_buffer_global_open(int shared_mem_fd) {

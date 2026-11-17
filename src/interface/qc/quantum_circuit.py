@@ -50,7 +50,7 @@ class QuantumCircuit:
         if prep != "z" and prep != "y" and prep != "x":
             raise InvalidQubitPrepError("Qubit prep is not x,y,or z")
 
-        self.reg = qcpy_connect.add_quantum_circuit(self.gpu)
+        self.reg = qcpy_connect.add_quantum_circuit(self.qubits)
 
     def __eq__(self, circuit) -> bool:
         """Determines if the states of a given QC and this current one are equal to each other.

@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-qlog_t *qlog_init(qubit_t qubits, uint16_t reg) {
+qlog_t *qlog_init(qubit_t qubits, reg_t reg) {
   qlog_t *qlog = NULL;
 
   qlog = (qlog_t *)malloc(sizeof(qlog_t));
@@ -52,8 +52,8 @@ void qlog_clear(qlog_t *qlog) {
   return;
 }
 
-void qlog_append(qlog_t *qlog, block_t block) {
-  assert(block.type == BLOCK_QLOG_ENTRY);
+void qlog_append(qlog_t *qlog, block_t *block) {
+  assert(block->type == BLOCK_QLOG_ENTRY);
 
   QCPY_ASSERT(qlog, QCPY_ERROR_QLOG, qlog, QLOG_NULL);
 
@@ -64,16 +64,16 @@ void qlog_append(qlog_t *qlog, block_t block) {
 
   pthread_mutex_lock(&qlog->lock);
   qlog->last_entry = qlog_entry;
-  qlog->qubits_used |= block.qubit_bitmask;
+  qlog->qubits_used |= block->qubit_bitmask;
 
   QCPY_ASSERT(qlog->last_entry, QCPY_ERROR_QLOG, qlog, QLOG_BAD_ENTRY);
 
   ++(qlog->entry_count);
-  printf("qlog_size %p size: %lu\n", qlog, qlog->entry_count);
+  // printf("qlog_size %p size: %lu\n", qlog, qlog->entry_count);
 
-  qlog_graph_append(qlog->graph, qlog_entry);
-  qlog_print_append(&qlog->printer, block.qubit_bitmask, block.target_bitmask,
-                    block.gate);
+  // qlog_graph_append(qlog->graph, qlog_entry);
+  qlog_print_append(&qlog->printer, block->qubit_bitmask, block->target_bitmask,
+                    block->gate);
 
   pthread_mutex_unlock(&qlog->lock);
 

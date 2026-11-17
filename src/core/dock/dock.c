@@ -130,7 +130,7 @@ void dock_create_random_id(block_t *block) {
   block->qubit_bitmask |= (size_t)rand() << (sizeof(int));
 }
 
-void dock_get_qc_print(uint16_t flush_reg) {
+void dock_get_qc_print(reg_t flush_reg) {
   block_t *temp_block = (block_t *)calloc(1, sizeof(block_t));
   assert(temp_block);
   temp_block->reg = flush_reg;
@@ -140,20 +140,32 @@ void dock_get_qc_print(uint16_t flush_reg) {
   block_enqueue(block_buffer_global_queues, temp_block);
 }
 
-void dock_get_qc_state(uint16_t flush_reg) {
-  block_t *temp_block = (block_t *)calloc(1, sizeof(block_t));
-  assert(temp_block);
-  temp_block->reg = flush_reg;
-  temp_block->type = BLOCK_FLUSH_ENTRY;
+void dock_get_qc_state(reg_t flush_reg) {
+  block_t temp_block = {0};
+  temp_block.reg = flush_reg;
+  temp_block.type = BLOCK_FLUSH_ENTRY;
 
-  dock_create_random_id(temp_block);
-  block_enqueue(block_buffer_global_queues, temp_block);
+  dock_create_random_id(&temp_block);
+  block_enqueue(block_buffer_global_queues, &temp_block);
 
   // TODO: await for unique rand id to be stored back into the exporter data,
   // letting us know that this round of statevector info  is uniquely ours in
   // this routine.
-
   usleep(4000);
+}
+
+size_t dock_create_qc(qubit_t qubits) {
+  assert(qubits != 0);
+
+  block_t temp_block = {0};
+  temp_block.type = BLOCK_QLOG_CREATE;
+  temp_block.qubits = qubits;
+
+  dock_create_random_id(&temp_block);
+  temp_block.reg = temp_block.qubit_bitmask;
+  block_enqueue(block_buffer_global_queues, &temp_block);
+
+  return temp_block.reg;
 }
 
 void dock_add(block_t *block) {

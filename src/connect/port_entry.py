@@ -50,24 +50,23 @@ class Block_Type(IntEnum):
   BLOCK_CLOG_ENTRY = 1
   BLOCK_FLUSH_ENTRY = 2
   BLOCK_PRINT_ENTRY = 3
+  BLOCK_QLOG_CREATE = 4
 
 class Block(ctypes.Structure):
     _fields_ = [
-        ("qubit_bitmask", ctypes.c_uint64),
-        ("controlled_bitmask", ctypes.c_uint64),
-        ("controlled_bitpack", ctypes.c_uint64),
-        ("target_bitmask", ctypes.c_uint64),
-        ("target_bitpack", ctypes.c_uint64),
-        ("theta", ctypes.c_float),
-        ("phi", ctypes.c_float),
-        ("lmbda", ctypes.c_float),
-        ("reg", ctypes.c_uint16, 16),
+        ("qubit_bitmask", ctypes.c_size_t),
+        ("controlled_bitmask", ctypes.c_size_t),
+        ("controlled_bitpack", ctypes.c_size_t),
+        ("target_bitmask", ctypes.c_size_t),
+        ("target_bitpack", ctypes.c_size_t),
+        ("param_bitpack", ctypes.c_size_t),
+        ("reg", ctypes.c_size_t),
         ("gate", ctypes.c_uint8, 8),
         ("qubits", ctypes.c_uint8, 8),
         ("size", ctypes.c_uint8, 8),
         ("controlled_count", ctypes.c_uint8, 8),
         ("target_count", ctypes.c_uint8, 8),
-        ("type", ctypes.c_int8, 4),
+        ("type", ctypes.c_int8, 5),
         ("inverted", ctypes.c_bool, 1),
         ("big_endian", ctypes.c_bool, 1),
         ("used", ctypes.c_bool, 1),
