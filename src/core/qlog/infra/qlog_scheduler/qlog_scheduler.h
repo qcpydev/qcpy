@@ -1,3 +1,4 @@
+#define _GNU_SOURCE
 #include <block.h>
 #include <pthread.h>
 #include <sched.h>
@@ -8,13 +9,8 @@
 #define QLOG_SCHEDULER_H
 
 /*
- * qlog scheduler will consider the priority of threads
+ * qlog scheduler will consider the priority of threads,
  */
-
-#define QLOG_SCHED_POLICY SCHED_RR
-
-#define QLOG_SCHED_MIN_PRIORITY 5
-#define QLOG_SCHED_MAX_PRIORITY 85
 
 typedef struct qlog_scheduler_s {
   struct sched_param params[IMPORTER_FUNNEL];

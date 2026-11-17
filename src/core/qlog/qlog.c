@@ -71,7 +71,7 @@ void qlog_append(qlog_t *qlog, block_t *block) {
   ++(qlog->entry_count);
   // printf("qlog_size %p size: %lu\n", qlog, qlog->entry_count);
 
-  // qlog_graph_append(qlog->graph, qlog_entry);
+  qlog_graph_append(qlog->graph, qlog_entry);
   qlog_print_append(&qlog->printer, block->qubit_bitmask, block->target_bitmask,
                     block->gate);
 

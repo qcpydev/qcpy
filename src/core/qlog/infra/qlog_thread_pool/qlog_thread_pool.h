@@ -3,7 +3,6 @@
 #include <sys/mman.h>
 #include <sys/stat.h>
 #include <unistd.h>
-
 #pragma once
 #ifndef QLOG_THREAD_POOL_H
 #define QLOG_THREAD_POOL_H
@@ -34,8 +33,16 @@ typedef struct qlog_worker_s {
   qlog_process_state_e state;
 } qlog_worker_t;
 
+typedef struct qlog_bg_cleaner_s {
+  pthread_t thread;
+  pthread_cond_t cond;
+  pthread_mutex_t lock;
+  size_t items_cleaned;
+} qlog_bg_cleaner_t;
+
 typedef struct qlog_thread_pool_s {
   qlog_worker_t workers[IMPORTER_FUNNEL];
+  qlog_bg_cleaner_t cleaner[IMPORTER_FUNNEL];
   qlog_register_buf_t *registers[IMPORTER_FUNNEL];
   pthread_t admin;
 } qlog_thread_pool_t;
